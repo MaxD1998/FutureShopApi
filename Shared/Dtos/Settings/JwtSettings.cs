@@ -2,7 +2,7 @@
 
 public class JwtSettings
 {
-    public int ExpireTime { get; }
+    public int ExpireTime { get; init; }
 
-    public string JwtKey { get; }
+    public string JwtKey { get; init; }
 }

@@ -1,11 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Shared.Bases;
+using Shared.Dtos.Settings;
 using System.Reflection;
 
 namespace Infrastructure;
 
 public class DataContext : DbContext
 {
+    private readonly ConnectionSettings _connectionSettings;
+
+    public DataContext(IOptions<ConnectionSettings> connectionSettings)
+    {
+        _connectionSettings = connectionSettings.Value;
+    }
+
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         var entities = ChangeTracker
@@ -30,6 +39,11 @@ public class DataContext : DbContext
         }
 
         return base.SaveChangesAsync(cancellationToken);
+    }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseNpgsql(_connectionSettings.DbConnectionString);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

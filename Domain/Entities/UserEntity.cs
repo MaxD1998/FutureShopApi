@@ -9,7 +9,7 @@ public class UserEntity : BaseEntity
 
     public string Email { get; set; }
 
-    public string FirsName { get; set; }
+    public string FirstName { get; set; }
 
     public string HashedPassword { get; set; }
 

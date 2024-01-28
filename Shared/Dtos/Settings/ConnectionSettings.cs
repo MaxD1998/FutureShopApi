@@ -2,5 +2,5 @@
 
 public class ConnectionSettings
 {
-    public string DbConnectionString { get; }
+    public string DbConnectionString { get; init; }
 }

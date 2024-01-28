@@ -2,5 +2,5 @@
 
 public class RefreshTokenSettings
 {
-    public int ExpireTime { get; }
+    public int ExpireTime { get; init; }
 }

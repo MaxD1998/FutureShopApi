@@ -1,4 +1,5 @@
 using Api.Extensions;
+using Shared.Middlewares;
 
 namespace Api;
 
@@ -10,8 +11,12 @@ public class Program
         var services = builder.Services;
         var config = builder.Configuration;
 
-        // Add services to the container.
-        services.ConfigureServices(config);
+        // Add services to the container.+
+
+        services.AddAppsettings(config);
+        services.AddJwtAuthentication(config);
+        services.ConfigureServices();
+        services.RegisterServices();
 
         services.AddControllers();
         services.AddHttpContextAccessor();
@@ -27,6 +32,7 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+        app.UseMiddleware<ErrorHandlingMiddleware>();
 
         app.UseHttpsRedirection();
 
