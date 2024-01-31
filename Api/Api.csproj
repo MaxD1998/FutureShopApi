@@ -15,7 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Modules\Authorization\Authorization.Api\Authorization.Api.csproj" />
+    <ProjectReference Include="..\Modules\Product\Product.Api\Product.Api.csproj" />
   </ItemGroup>
 
 </Project>

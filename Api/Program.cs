@@ -1,5 +1,6 @@
 using Api.Extensions;
-using Shared.Middlewares;
+using Authorization.Api.Extensions;
+using Shared.Api.Middlewares;
 
 namespace Api;
 
@@ -15,8 +16,11 @@ public class Program
 
         services.AddAppsettings(config);
         services.AddJwtAuthentication(config);
-        services.ConfigureServices();
-        services.RegisterServices();
+
+        services.AddScoped<ErrorHandlingMiddleware>();
+
+        services.RegisterAuthModule();
+        services.RegisterProductModule();
 
         services.AddControllers();
         services.AddHttpContextAccessor();

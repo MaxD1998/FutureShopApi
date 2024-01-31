@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Shared\Shared.Api\Shared.Api.csproj" />
+    <ProjectReference Include="..\Authorization.Core\Authorization.Core.csproj" />
+  </ItemGroup>
+
+</Project>

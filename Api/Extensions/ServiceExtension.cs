@@ -1,13 +1,6 @@
-﻿using Core;
-using Core.Interfaces.Services;
-using Core.Services;
-using FluentValidation;
-using Infrastructure;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Shared.Dtos.Settings;
-using Shared.Factories.FluentValidation;
-using Shared.Middlewares;
+using Shared.Infrastructure.Settings;
 using System.Text;
 
 namespace Api.Extensions;
@@ -46,25 +39,5 @@ public static class ServiceExtension
                     ValidateAudience = false,
                 };
             });
-    }
-
-    public static void ConfigureServices(this IServiceCollection services)
-    {
-        services.AddDbContext<DataContext>();
-        services.AddMediatR(cfg =>
-        {
-            cfg.RegisterServicesFromAssembly(typeof(CoreAssembly).Assembly);
-        });
-        services.AddValidatorsFromAssembly(typeof(CoreAssembly).Assembly);
-        services.AddAutoMapper(typeof(CoreAssembly).Assembly);
-        services.AddScoped<ErrorHandlingMiddleware>();
-    }
-
-    public static void RegisterServices(this IServiceCollection services)
-    {
-        services.AddScoped<IFluentValidatorFactory, FluentValidatorFactory>();
-
-        services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<ICookieService, CookieService>();
     }
 }
