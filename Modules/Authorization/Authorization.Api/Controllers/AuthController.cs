@@ -36,7 +36,7 @@ public class AuthController : BaseController
     public async Task<IActionResult> LoginAsync([FromBody] LoginDto dto)
         => await ApiResponseAsync(dto, () => _authService.LoginAsync(dto));
 
-    [HttpDelete("Logout")]
+    [HttpGet("Logout")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [Authorize]
     public async Task<IActionResult> Logout()

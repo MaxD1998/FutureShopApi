@@ -9,6 +9,23 @@ using System.Linq.Expressions;
 
 namespace Shared.Core.Bases;
 
+public abstract class BaseRequestHandler<TContext, TRequest> : IRequestHandler<TRequest>
+    where TContext : BaseContext
+    where TRequest : IRequest
+{
+    protected readonly TContext _context;
+
+    public BaseRequestHandler(TContext context)
+    {
+        _context = context;
+    }
+
+    public abstract Task Handle(TRequest request, CancellationToken cancellationToken);
+
+    protected async Task DeleteAsync<TEntity>(Expression<Func<TEntity, bool>> predicate) where TEntity : BaseEntity
+        => await _context.Set<TEntity>().Where(predicate).ExecuteDeleteAsync();
+}
+
 public abstract class BaseRequestHandler<TContext, TRequest, TResponse> : IRequestHandler<TRequest, TResponse>
     where TContext : BaseContext
     where TRequest : IRequest<TResponse>
@@ -25,9 +42,11 @@ public abstract class BaseRequestHandler<TContext, TRequest, TResponse> : IReque
     public abstract Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken);
 
     protected async Task<TEntity> CreateOrUpdateAsync<TEntity>(IDto dto, Expression<Func<TEntity, bool>> predicate)
-        where TEntity : BaseEntity
+        where TEntity : BaseEntity, new()
     {
         var entity = await _context.Set<TEntity>().FirstOrDefaultAsync(predicate);
+
+        entity ??= new TEntity();
 
         _mapper.Map(dto, entity);
 
