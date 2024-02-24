@@ -57,12 +57,18 @@ namespace Authorization.Inrfrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "CreateTime", "DateOfBirth", "Email", "FirstName", "HashedPassword", "LastName", "ModifyTime", "PhoneNumber", "Type" },
-                values: new object[] { new Guid("d6669a68-5afb-432d-858f-3f5181579a90"), new DateTime(2024, 2, 1, 6, 6, 59, 329, DateTimeKind.Utc).AddTicks(9731), new DateOnly(1, 1, 1), "superadmin@futureshop.pl", "Super", "$2a$11$q8W8NxaRIwLKqW4uUdBNgOD1CWasdvkLdSwvO8CY1M8VBcUqgqEr.", "Admin", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0 });
+                values: new object[] { new Guid("d6669a68-5afb-432d-858f-3f5181579a90"), new DateTime(2024, 2, 24, 18, 58, 33, 797, DateTimeKind.Utc).AddTicks(5633), new DateOnly(1, 1, 1), "superadmin@futureshop.pl", "Super", "$2a$11$OyX6ZiOl8hkFb93w.HZ9uuqceq6vw/JJYgn1riVpsW9l9w82L9viK", "Admin", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshToken_UserId",
                 table: "RefreshToken",
                 column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_User_Email",
+                table: "User",
+                column: "Email",
                 unique: true);
         }
 

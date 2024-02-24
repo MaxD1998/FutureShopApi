@@ -1,4 +1,5 @@
 ﻿using Authorization.Domain.Entities;
+using Shared.Domain.Enums;
 using Shared.Infrastructure.Constants;
 using Crypt = BCrypt.Net.BCrypt;
 
@@ -14,6 +15,7 @@ public class UserSeed
         LastName = "Admin",
         DateOfBirth = DateOnly.MinValue,
         Email = "superadmin@futureshop.pl",
-        HashedPassword = Crypt.HashPassword("123456789")
+        HashedPassword = Crypt.HashPassword("123456789"),
+        Type = UserType.SuperAdmin
     };
 }

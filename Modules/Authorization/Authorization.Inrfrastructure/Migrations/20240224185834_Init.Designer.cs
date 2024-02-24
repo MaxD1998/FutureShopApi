@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Authorization.Inrfrastructure.Migrations
 {
     [DbContext(typeof(AuthContext))]
-    [Migration("20240201060659_Init")]
+    [Migration("20240224185834_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -117,17 +117,20 @@ namespace Authorization.Inrfrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.ToTable("User", (string)null);
 
                     b.HasData(
                         new
                         {
                             Id = new Guid("d6669a68-5afb-432d-858f-3f5181579a90"),
-                            CreateTime = new DateTime(2024, 2, 1, 6, 6, 59, 329, DateTimeKind.Utc).AddTicks(9731),
+                            CreateTime = new DateTime(2024, 2, 24, 18, 58, 33, 797, DateTimeKind.Utc).AddTicks(5633),
                             DateOfBirth = new DateOnly(1, 1, 1),
                             Email = "superadmin@futureshop.pl",
                             FirstName = "Super",
-                            HashedPassword = "$2a$11$q8W8NxaRIwLKqW4uUdBNgOD1CWasdvkLdSwvO8CY1M8VBcUqgqEr.",
+                            HashedPassword = "$2a$11$OyX6ZiOl8hkFb93w.HZ9uuqceq6vw/JJYgn1riVpsW9l9w82L9viK",
                             LastName = "Admin",
                             ModifyTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 0

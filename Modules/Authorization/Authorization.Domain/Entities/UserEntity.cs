@@ -17,7 +17,7 @@ public class UserEntity : BaseEntity
 
     public string PhoneNumber { get; set; }
 
-    public UserType Type { get; set; }
+    public UserType Type { get; set; } = UserType.Client;
 
     #region Related Data
 

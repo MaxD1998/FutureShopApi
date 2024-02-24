@@ -2,6 +2,8 @@
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Shared.Core.Errors;
+using Shared.Core.Exceptions;
 using Shared.Core.Interfaces;
 using Shared.Domain.Bases;
 using Shared.Infrastructure.Bases;
@@ -17,6 +19,9 @@ public abstract class BaseRequestHandler<TContext, TRequest> : IRequestHandler<T
 
     public BaseRequestHandler(TContext context)
     {
+        if (!context.Database.CanConnect())
+            throw new ServiceUnavailableException(ExceptionMessage.DatabaseNotAvailable);
+
         _context = context;
     }
 
@@ -35,8 +40,21 @@ public abstract class BaseRequestHandler<TContext, TRequest, TResponse> : IReque
 
     public BaseRequestHandler(TContext context, IMapper mapper)
     {
+        if (!context.Database.CanConnect())
+            throw new ServiceUnavailableException(ExceptionMessage.DatabaseNotAvailable);
+
         _context = context;
         _mapper = mapper;
+    }
+
+    public async Task<TEntity> Create<TEntity>(IDto dto) where TEntity : BaseEntity
+    {
+        var entity = _mapper.Map<TEntity>(dto);
+        var result = await _context.Set<TEntity>().AddAsync(entity);
+
+        await _context.SaveChangesAsync();
+
+        return result.Entity;
     }
 
     public abstract Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken);

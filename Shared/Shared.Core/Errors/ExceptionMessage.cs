@@ -18,4 +18,6 @@ public static class ExceptionMessage
 
     public static ErrorMessageDto BadGuidFormat => new ErrorMessageDto("E007", "Bad Guid format");
 
+    public static ErrorMessageDto RecordAlreadyExists => new ErrorMessageDto("E008", "Record already exists");
+
 }

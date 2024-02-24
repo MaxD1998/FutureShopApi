@@ -1,5 +1,6 @@
 ﻿using Authorization.Core.Dtos;
 using Authorization.Core.Dtos.Login;
+using Authorization.Core.Dtos.User;
 using Authorization.Core.Interfaces.Services;
 using AutoMapper;
 using MediatR;
@@ -41,4 +42,10 @@ public class AuthController : BaseController
     [Authorize]
     public async Task<IActionResult> Logout()
         => await ApiResponseAsync(_authService.LogoutAsync);
+
+    [HttpPost("Register")]
+    [ProducesResponseType(typeof(AuthorizeDto), StatusCodes.Status200OK)]
+    [AllowAnonymous]
+    public async Task<IActionResult> RegisterAsync([FromBody] UserInputDto dto)
+        => await ApiResponseAsync(dto, () => _authService.RegisterAsync(dto));
 }

@@ -10,5 +10,7 @@ public static class ErrorMessage
 
     public static ErrorMessageDto IsNotEmail => new ErrorMessageDto("C002", "Input value is not email");
 
+    public static ErrorMessageDto TooLongString => new ErrorMessageDto("C003", "String was too long");
+
     #endregion Common
 }

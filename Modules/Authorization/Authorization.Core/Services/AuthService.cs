@@ -1,16 +1,17 @@
 ﻿using Authorization.Core.Cqrs.RefreshToken.Commands;
 using Authorization.Core.Cqrs.RefreshToken.Queries;
+using Authorization.Core.Cqrs.User.Commands;
 using Authorization.Core.Cqrs.User.Queries;
 using Authorization.Core.Dtos;
 using Authorization.Core.Dtos.Login;
 using Authorization.Core.Dtos.RefreshToken;
+using Authorization.Core.Dtos.User;
 using Authorization.Core.Interfaces.Services;
 using Authorization.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Shared.Core.Dtos;
 using Shared.Core.Errors;
 using Shared.Core.Exceptions;
 using Shared.Domain.Extensions;
@@ -42,7 +43,6 @@ public class AuthService : IAuthService
         _jwtSettings = jwtSettings.Value;
         _mediator = mediator;
         _refreshTokenSettings = refreshTokenSettings.Value;
-
     }
 
     public async Task<AuthorizeDto> LoginAsync(LoginDto dto)
@@ -102,6 +102,24 @@ public class AuthService : IAuthService
             Username = $"{user.FirstName} {user.LastName}",
             Token = GenerateJwt(user),
         };
+    }
+
+    public async Task<AuthorizeDto> RegisterAsync(UserInputDto dto)
+    {
+        var user = await _mediator.Send(new CreateUserEntityCommand(dto));
+        var refreshToken = await AddOrUpdateRefreshTokenAsync(user.Id);
+        var result = new AuthorizeDto()
+        {
+            Id = user.Id,
+            Username = $"{user.FirstName} {user.LastName}",
+            Token = GenerateJwt(user),
+        };
+
+        var expireDays = _refreshTokenSettings.ExpireTime;
+
+        _cookieService.AddCookie(CookieNameConst.RefreshToken, refreshToken.ToString(), expireDays, true);
+
+        return result;
     }
 
     private async Task<Guid> AddOrUpdateRefreshTokenAsync(Guid userId)

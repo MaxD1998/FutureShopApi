@@ -42,6 +42,9 @@ public class UserConfig : BaseConfig<UserEntity>
             .HasColumnOrder(107)
             .IsRequired();
 
+        builder.HasIndex(x => x.Email)
+            .IsUnique();
+
         builder.HasOne(x => x.RefreshToken)
             .WithOne(x => x.User)
             .HasForeignKey<RefreshTokenEntity>(x => x.UserId);
