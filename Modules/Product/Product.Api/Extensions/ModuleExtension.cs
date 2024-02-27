@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Product.Core;
 using Product.Infrastructure;
 
-namespace Authorization.Api.Extensions;
+namespace Product.Api.Extensions;
 
 public static class ModuleExtension
 {

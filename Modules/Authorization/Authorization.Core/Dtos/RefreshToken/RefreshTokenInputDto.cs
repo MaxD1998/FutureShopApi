@@ -2,7 +2,7 @@
 
 namespace Authorization.Core.Dtos.RefreshToken;
 
-public class RefreshTokenInputDto : IDto
+public class RefreshTokenInputDto : IInputDto
 {
     public DateOnly EndDate { get; set; }
 

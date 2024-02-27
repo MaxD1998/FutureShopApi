@@ -47,7 +47,9 @@ public abstract class BaseRequestHandler<TContext, TRequest, TResponse> : IReque
         _mapper = mapper;
     }
 
-    public async Task<TEntity> Create<TEntity>(IDto dto) where TEntity : BaseEntity
+    public abstract Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken);
+
+    protected async Task<TEntity> CreateAsync<TEntity>(IInputDto dto) where TEntity : BaseEntity
     {
         var entity = _mapper.Map<TEntity>(dto);
         var result = await _context.Set<TEntity>().AddAsync(entity);
@@ -57,9 +59,14 @@ public abstract class BaseRequestHandler<TContext, TRequest, TResponse> : IReque
         return result.Entity;
     }
 
-    public abstract Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken);
+    protected async Task<TResult> CreateAsync<TEntity, TResult>(IInputDto dto) where TEntity : BaseEntity
+    {
+        var result = await CreateAsync<TEntity>(dto);
 
-    protected async Task<TEntity> CreateOrUpdateAsync<TEntity>(IDto dto, Expression<Func<TEntity, bool>> predicate)
+        return _mapper.Map<TResult>(result);
+    }
+
+    protected async Task<TEntity> CreateOrUpdateAsync<TEntity>(IInputDto dto, Expression<Func<TEntity, bool>> predicate)
         where TEntity : BaseEntity, new()
     {
         var entity = await _context.Set<TEntity>().FirstOrDefaultAsync(predicate);
@@ -89,4 +96,16 @@ public abstract class BaseRequestHandler<TContext, TRequest, TResponse> : IReque
             .Where(condition)
             .ProjectTo<TEntity>(_mapper.ConfigurationProvider)
             .FirstOrDefaultAsync();
+
+    protected async Task<IEnumerable<TResult>> GetsAsync<TEntity, TResult>(Expression<Func<TEntity, bool>> condition = null)
+        where TEntity : BaseEntity
+    {
+        var query = _context.Set<TEntity>()
+            .AsNoTracking();
+
+        if (condition != null)
+            query = query.Where(condition);
+
+        return await query.ProjectTo<TResult>(_mapper.ConfigurationProvider).ToListAsync();
+    }
 }

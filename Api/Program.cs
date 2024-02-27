@@ -1,5 +1,6 @@
 using Api.Extensions;
 using Authorization.Api.Extensions;
+using Product.Api.Extensions;
 using Shared.Api.Middlewares;
 
 namespace Api;
@@ -12,7 +13,7 @@ public class Program
         var services = builder.Services;
         var config = builder.Configuration;
 
-        // Add services to the container.+
+        // Add services to the container.
 
         services.AddAppsettings(config);
         services.AddJwtAuthentication(config);

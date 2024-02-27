@@ -2,7 +2,7 @@
 
 namespace Authorization.Core.Dtos.User;
 
-public class UserInputDto : IDto
+public class UserInputDto : IInputDto
 {
     public DateTime DateOfBirth { get; set; }
 

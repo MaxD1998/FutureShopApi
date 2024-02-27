@@ -39,7 +39,6 @@ public class AuthController : BaseController
 
     [HttpGet("Logout")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [Authorize]
     public async Task<IActionResult> Logout()
         => await ApiResponseAsync(_authService.LogoutAsync);
 

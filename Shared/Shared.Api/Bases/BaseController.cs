@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Core.Dtos;
 using Shared.Core.Errors;
@@ -10,6 +11,7 @@ namespace Shared.Api.Bases;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class BaseController : ControllerBase
 {
     private readonly IFluentValidatorFactory _fluentValidatorFactory;
@@ -50,7 +52,7 @@ public class BaseController : ControllerBase
         return Ok(await action());
     }
 
-    protected async Task<IActionResult> ApiResponseAsync<TRespone>(IBaseRequest request)
+    protected async Task<IActionResult> ApiResponseAsync(IBaseRequest request)
     {
         if (request is IRequest)
         {

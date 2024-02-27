@@ -24,6 +24,6 @@ internal class CreateUserEntityCommandHandler : BaseRequestHandler<AuthContext, 
         if (isExist)
             throw new ConflictException(ExceptionMessage.RecordAlreadyExists);
 
-        return await Create<UserEntity>(request.Dto);
+        return await CreateAsync<UserEntity>(request.Dto);
     }
 }
