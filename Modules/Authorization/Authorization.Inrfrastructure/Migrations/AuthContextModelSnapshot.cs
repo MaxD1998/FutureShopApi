@@ -37,7 +37,7 @@ namespace Authorization.Inrfrastructure.Migrations
                         .HasColumnType("date")
                         .HasColumnOrder(103);
 
-                    b.Property<DateTime>("ModifyTime")
+                    b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(2);
 
@@ -99,7 +99,7 @@ namespace Authorization.Inrfrastructure.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnOrder(101);
 
-                    b.Property<DateTime>("ModifyTime")
+                    b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(2);
 
@@ -123,13 +123,12 @@ namespace Authorization.Inrfrastructure.Migrations
                         new
                         {
                             Id = new Guid("d6669a68-5afb-432d-858f-3f5181579a90"),
-                            CreateTime = new DateTime(2024, 2, 24, 18, 58, 33, 797, DateTimeKind.Utc).AddTicks(5633),
+                            CreateTime = new DateTime(2024, 3, 2, 15, 35, 4, 653, DateTimeKind.Utc).AddTicks(3303),
                             DateOfBirth = new DateOnly(1, 1, 1),
                             Email = "superadmin@futureshop.pl",
                             FirstName = "Super",
-                            HashedPassword = "$2a$11$OyX6ZiOl8hkFb93w.HZ9uuqceq6vw/JJYgn1riVpsW9l9w82L9viK",
+                            HashedPassword = "$2a$11$5tVc.NkKOpJvavSzTx3Wm.fdZ.S6gESA7LXZPO1z71feaeykq1yse",
                             LastName = "Admin",
-                            ModifyTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Type = 0
                         });
                 });

@@ -5,11 +5,13 @@ namespace Authorization.Core.Services;
 
 public class CookieService : ICookieService
 {
-    private readonly IHttpContextAccessor _accessor;
+    private readonly IResponseCookies _reponseCookies;
+    private readonly IRequestCookieCollection _requestCookieCollection;
 
     public CookieService(IHttpContextAccessor accessor)
     {
-        _accessor = accessor;
+        _reponseCookies = accessor.HttpContext.Response.Cookies;
+        _requestCookieCollection = accessor.HttpContext.Request.Cookies;
     }
 
     public void AddCookie(string name, string value, int expire, bool httpOnly)
@@ -22,16 +24,16 @@ public class CookieService : ICookieService
             Secure = true,
         };
 
-        _accessor.HttpContext.Response.Cookies.Append(name, value, cookie);
+        _reponseCookies.Append(name, value, cookie);
     }
 
     public string GetCookie(string name)
     {
-        var isValue = _accessor.HttpContext.Request.Cookies.TryGetValue(name, out var value);
+        var isValue = _requestCookieCollection.TryGetValue(name, out var value);
 
         return isValue ? value : string.Empty;
     }
 
     public void RemoveCookie(string name)
-        => _accessor.HttpContext.Response.Cookies.Delete(name);
+        => _reponseCookies.Delete(name);
 }

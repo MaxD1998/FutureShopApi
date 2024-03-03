@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Product.Core;
+using Product.Core.Interfaces.Services;
+using Product.Core.Services;
 using Product.Infrastructure;
 
 namespace Product.Api.Extensions;
@@ -26,5 +28,6 @@ public static class ModuleExtension
 
     private static void RegisterServices(this IServiceCollection services)
     {
+        services.AddScoped<IHeaderService, HeaderService>();
     }
 }

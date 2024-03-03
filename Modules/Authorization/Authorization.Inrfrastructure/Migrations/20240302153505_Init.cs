@@ -17,7 +17,7 @@ namespace Authorization.Inrfrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     FirstName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     PhoneNumber = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: true),
@@ -37,7 +37,7 @@ namespace Authorization.Inrfrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     Token = table.Column<Guid>(type: "uuid", nullable: false),
                     StartDate = table.Column<DateOnly>(type: "date", nullable: false),
@@ -57,7 +57,7 @@ namespace Authorization.Inrfrastructure.Migrations
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "CreateTime", "DateOfBirth", "Email", "FirstName", "HashedPassword", "LastName", "ModifyTime", "PhoneNumber", "Type" },
-                values: new object[] { new Guid("d6669a68-5afb-432d-858f-3f5181579a90"), new DateTime(2024, 2, 24, 18, 58, 33, 797, DateTimeKind.Utc).AddTicks(5633), new DateOnly(1, 1, 1), "superadmin@futureshop.pl", "Super", "$2a$11$OyX6ZiOl8hkFb93w.HZ9uuqceq6vw/JJYgn1riVpsW9l9w82L9viK", "Admin", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), null, 0 });
+                values: new object[] { new Guid("d6669a68-5afb-432d-858f-3f5181579a90"), new DateTime(2024, 3, 2, 15, 35, 4, 653, DateTimeKind.Utc).AddTicks(3303), new DateOnly(1, 1, 1), "superadmin@futureshop.pl", "Super", "$2a$11$5tVc.NkKOpJvavSzTx3Wm.fdZ.S6gESA7LXZPO1z71feaeykq1yse", "Admin", null, null, 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshToken_UserId",

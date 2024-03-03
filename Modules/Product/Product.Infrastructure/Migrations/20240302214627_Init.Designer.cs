@@ -12,7 +12,7 @@ using Product.Infrastructure;
 namespace Product.Infrastructure.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    [Migration("20240201100539_Init")]
+    [Migration("20240302214627_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -36,7 +36,7 @@ namespace Product.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(1);
 
-                    b.Property<DateTime>("ModifyTime")
+                    b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(2);
 
@@ -54,6 +54,44 @@ namespace Product.Infrastructure.Migrations
                     b.HasIndex("ParentCategoryId");
 
                     b.ToTable("Category", (string)null);
+                });
+
+            modelBuilder.Entity("Product.Domain.Entities.CategoryTranslationEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(100);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("Lang")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("character varying(5)")
+                        .HasColumnOrder(50);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("Translation")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnOrder(51);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId", "Lang")
+                        .IsUnique();
+
+                    b.ToTable("CategoryTranslation", (string)null);
                 });
 
             modelBuilder.Entity("Product.Domain.Entities.ProductBaseEntity", b =>
@@ -76,7 +114,7 @@ namespace Product.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnOrder(102);
 
-                    b.Property<DateTime>("ModifyTime")
+                    b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(2);
 
@@ -104,7 +142,7 @@ namespace Product.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(1);
 
-                    b.Property<DateTime>("ModifyTime")
+                    b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(2);
 
@@ -136,7 +174,7 @@ namespace Product.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(1);
 
-                    b.Property<DateTime>("ModifyTime")
+                    b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(2);
 
@@ -168,7 +206,7 @@ namespace Product.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(1);
 
-                    b.Property<DateTime>("ModifyTime")
+                    b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(2);
 
@@ -201,6 +239,17 @@ namespace Product.Infrastructure.Migrations
                         .HasForeignKey("ParentCategoryId");
 
                     b.Navigation("ParentCategory");
+                });
+
+            modelBuilder.Entity("Product.Domain.Entities.CategoryTranslationEntity", b =>
+                {
+                    b.HasOne("Product.Domain.Entities.CategoryEntity", "Category")
+                        .WithMany("Translations")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("Product.Domain.Entities.ProductBaseEntity", b =>
@@ -260,6 +309,8 @@ namespace Product.Infrastructure.Migrations
                     b.Navigation("ProductBases");
 
                     b.Navigation("SubCategories");
+
+                    b.Navigation("Translations");
                 });
 
             modelBuilder.Entity("Product.Domain.Entities.ProductBaseEntity", b =>

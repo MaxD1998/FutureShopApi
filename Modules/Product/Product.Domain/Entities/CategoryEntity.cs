@@ -16,5 +16,7 @@ public class CategoryEntity : BaseEntity
 
     public ICollection<CategoryEntity> SubCategories { get; set; }
 
+    public ICollection<CategoryTranslationEntity> Translations { get; set; }
+
     #endregion Related Data
 }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation.Results;
 using Product.Core.Dtos.Category;
+using Product.Core.Dtos.CategoryTranslation;
 using Product.Domain.Entities;
 using Shared.Core.Dtos;
 
@@ -23,6 +24,7 @@ public class MapProfile : Profile
         #region Dto to Entity
 
         CreateMap<CategoryInputDto, CategoryEntity>();
+        CreateMap<CategoryTranslationInputDto, CategoryTranslationEntity>();
 
         #endregion Dto to Entity
 

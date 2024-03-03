@@ -6,5 +6,5 @@ public class BaseEntity
 
     public Guid Id { get; set; }
 
-    public DateTime ModifyTime { get; set; }
+    public DateTime? ModifyTime { get; set; }
 }

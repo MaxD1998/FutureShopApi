@@ -14,7 +14,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Shared.Core.Errors;
 using Shared.Core.Exceptions;
-using Shared.Domain.Extensions;
+using Shared.Domain.Enums;
 using Shared.Infrastructure.Constants;
 using Shared.Infrastructure.Settings;
 using System.IdentityModel.Tokens.Jwt;
