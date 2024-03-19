@@ -28,13 +28,6 @@ public class MapProfile : Profile
 
         #endregion Dto to Entity
 
-        #region Entity to Dto
-
-        CreateMap<CategoryEntity, CategoryDto>()
-            .ForMember(dest => dest.HasChildren, cfg => cfg.MapFrom(src => src.SubCategories.Any()));
-
-        #endregion Entity to Dto
-
         #region Dto to Dto
 
         CreateMap<ValidationFailure, ErrorDto>();
