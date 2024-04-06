@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +12,7 @@ namespace Product.Api.Controllers;
 
 public class CategoryController : BaseController
 {
-    public CategoryController(IFluentValidatorFactory fluentValidatorFactory, IMapper mapper, IMediator mediator) : base(fluentValidatorFactory, mapper, mediator)
+    public CategoryController(IFluentValidatorFactory fluentValidatorFactory, IMediator mediator) : base(fluentValidatorFactory, mediator)
     {
     }
 
@@ -21,6 +20,12 @@ public class CategoryController : BaseController
     [ProducesResponseType(typeof(CategoryDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> CreateAsync([FromBody] CategoryInputDto dto)
         => await ApiResponseAsync(dto, new CreateCategoryDtoCommand(dto));
+
+    [HttpGet]
+    [ProducesResponseType(typeof(IEnumerable<CategoryDto>), StatusCodes.Status200OK)]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetsAsync()
+        => await ApiResponseAsync(new GetsCategoryDtoQuery());
 
     [HttpGet("CategoryParentId")]
     [HttpGet("CategoryParentId/{categoryParentId:guid}")]

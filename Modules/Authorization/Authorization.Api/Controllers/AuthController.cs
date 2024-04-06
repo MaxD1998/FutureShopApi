@@ -2,7 +2,6 @@
 using Authorization.Core.Dtos.Login;
 using Authorization.Core.Dtos.User;
 using Authorization.Core.Interfaces.Services;
-using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -19,8 +18,7 @@ public class AuthController : BaseController
     public AuthController(
         IAuthService authService,
         IFluentValidatorFactory fluentValidatorFactory,
-        IMapper mapper,
-        IMediator mediator) : base(fluentValidatorFactory, mapper, mediator)
+        IMediator mediator) : base(fluentValidatorFactory, mediator)
     {
         _authService = authService;
     }

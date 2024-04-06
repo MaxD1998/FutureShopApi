@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Product.Core.Dtos.Category;
 using Product.Domain.Entities;
 using Product.Infrastructure;
@@ -10,10 +9,16 @@ public record CreateCategoryDtoCommand(CategoryInputDto Dto) : IRequest<Category
 
 internal class CreateCategoryDtoCommandHandler : BaseRequestHandler<ProductContext, CreateCategoryDtoCommand, CategoryDto>
 {
-    public CreateCategoryDtoCommandHandler(ProductContext context, IMapper mapper) : base(context, mapper)
+    public CreateCategoryDtoCommandHandler(ProductContext context) : base(context)
     {
     }
 
     public override async Task<CategoryDto> Handle(CreateCategoryDtoCommand request, CancellationToken cancellationToken)
-        => await CreateAsync<CategoryEntity, CategoryDto>(request.Dto);
+    {
+        var result = await _context.Set<CategoryEntity>().AddAsync(request.Dto.ToEntity());
+
+        await _context.SaveChangesAsync();
+
+        return new CategoryDto(result.Entity);
+    }
 }

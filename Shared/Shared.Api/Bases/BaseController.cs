@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Core.Dtos;
@@ -15,16 +14,13 @@ namespace Shared.Api.Bases;
 public class BaseController : ControllerBase
 {
     private readonly IFluentValidatorFactory _fluentValidatorFactory;
-    private readonly IMapper _mapper;
     private readonly IMediator _mediator;
 
     public BaseController(
     IFluentValidatorFactory fluentValidatorFactory,
-    IMapper mapper,
     IMediator mediator)
     {
         _fluentValidatorFactory = fluentValidatorFactory;
-        _mapper = mapper;
         _mediator = mediator;
     }
 
@@ -83,7 +79,7 @@ public class BaseController : ControllerBase
         var validation = validator.Validate(param);
         var isValid = validation.IsValid;
 
-        errors = isValid ? null : _mapper.Map<IEnumerable<ErrorDto>>(validation.Errors);
+        errors = isValid ? null : validation.Errors.Select(x => new ErrorDto(x));
 
         return isValid;
     }

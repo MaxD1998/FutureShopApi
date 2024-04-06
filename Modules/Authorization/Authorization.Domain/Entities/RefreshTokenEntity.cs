@@ -17,4 +17,16 @@ public class RefreshTokenEntity : BaseEntity
     public UserEntity User { get; set; }
 
     #endregion Related Data
+
+    #region Methods
+
+    public void Update(RefreshTokenEntity entity)
+    {
+        EndDate = entity.EndDate;
+        StartDate = entity.StartDate;
+        Token = entity.Token;
+        User = entity.User;
+    }
+
+    #endregion Methods
 }

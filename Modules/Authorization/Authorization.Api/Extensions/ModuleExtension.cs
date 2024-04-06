@@ -24,7 +24,6 @@ public static class ModuleExtension
             cfg.RegisterServicesFromAssembly(typeof(CoreAssembly).Assembly);
         });
         services.AddValidatorsFromAssembly(typeof(CoreAssembly).Assembly);
-        services.AddAutoMapper(typeof(CoreAssembly).Assembly);
     }
 
     private static void RegisterServices(this IServiceCollection services)

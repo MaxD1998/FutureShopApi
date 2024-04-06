@@ -1,7 +1,6 @@
 ﻿using Authorization.Core.Dtos.User;
 using Authorization.Domain.Entities;
 using Authorization.Inrfrastructure;
-using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Core.Bases;
@@ -13,7 +12,7 @@ public record CreateUserEntityCommand(UserInputDto Dto) : IRequest<UserEntity>;
 
 internal class CreateUserEntityCommandHandler : BaseRequestHandler<AuthContext, CreateUserEntityCommand, UserEntity>
 {
-    public CreateUserEntityCommandHandler(AuthContext context, IMapper mapper) : base(context, mapper)
+    public CreateUserEntityCommandHandler(AuthContext context) : base(context)
     {
     }
 
@@ -24,6 +23,10 @@ internal class CreateUserEntityCommandHandler : BaseRequestHandler<AuthContext, 
         if (isExist)
             throw new ConflictException(ExceptionMessage.RecordAlreadyExists);
 
-        return await CreateAsync<UserEntity>(request.Dto);
+        var result = await _context.Set<UserEntity>().AddAsync(request.Dto.ToEntity());
+
+        await _context.SaveChangesAsync();
+
+        return result.Entity;
     }
 }

@@ -1,10 +1,7 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using MediatR;
+﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Core.Errors;
 using Shared.Core.Exceptions;
-using Shared.Core.Interfaces;
 using Shared.Domain.Bases;
 using Shared.Infrastructure.Bases;
 using System.Linq.Expressions;
@@ -36,76 +33,14 @@ public abstract class BaseRequestHandler<TContext, TRequest, TResponse> : IReque
     where TRequest : IRequest<TResponse>
 {
     protected readonly TContext _context;
-    protected readonly IMapper _mapper;
 
-    public BaseRequestHandler(TContext context, IMapper mapper)
+    public BaseRequestHandler(TContext context)
     {
         if (!context.Database.CanConnect())
             throw new ServiceUnavailableException(ExceptionMessage.DatabaseNotAvailable);
 
         _context = context;
-        _mapper = mapper;
     }
 
     public abstract Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken);
-
-    protected async Task<TEntity> CreateAsync<TEntity>(IInputDto dto) where TEntity : BaseEntity
-    {
-        var entity = _mapper.Map<TEntity>(dto);
-        var result = await _context.Set<TEntity>().AddAsync(entity);
-
-        await _context.SaveChangesAsync();
-
-        return result.Entity;
-    }
-
-    protected async Task<TResult> CreateAsync<TEntity, TResult>(IInputDto dto) where TEntity : BaseEntity
-    {
-        var result = await CreateAsync<TEntity>(dto);
-
-        return _mapper.Map<TResult>(result);
-    }
-
-    protected async Task<TEntity> CreateOrUpdateAsync<TEntity>(IInputDto dto, Expression<Func<TEntity, bool>> predicate)
-        where TEntity : BaseEntity, new()
-    {
-        var entity = await _context.Set<TEntity>().FirstOrDefaultAsync(predicate);
-
-        entity ??= new TEntity();
-
-        _mapper.Map(dto, entity);
-
-        if (entity.Id == Guid.Empty)
-        {
-            var newEntity = await _context.Set<TEntity>().AddAsync(entity);
-
-            await _context.SaveChangesAsync();
-
-            return newEntity.Entity;
-        }
-
-        await _context.SaveChangesAsync();
-
-        return entity;
-    }
-
-    protected async Task<TEntity> GetAsync<TEntity>(Expression<Func<TEntity, bool>> condition)
-        where TEntity : BaseEntity
-        => await _context.Set<TEntity>()
-            .AsNoTracking()
-            .Where(condition)
-            .ProjectTo<TEntity>(_mapper.ConfigurationProvider)
-            .FirstOrDefaultAsync();
-
-    protected async Task<IEnumerable<TResult>> GetsAsync<TEntity, TResult>(Expression<Func<TEntity, bool>> condition = null)
-        where TEntity : BaseEntity
-    {
-        var query = _context.Set<TEntity>()
-            .AsNoTracking();
-
-        if (condition != null)
-            query = query.Where(condition);
-
-        return await query.ProjectTo<TResult>(_mapper.ConfigurationProvider).ToListAsync();
-    }
 }

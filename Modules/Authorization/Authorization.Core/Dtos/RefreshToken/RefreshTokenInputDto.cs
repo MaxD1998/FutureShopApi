@@ -1,4 +1,5 @@
-﻿using Shared.Core.Interfaces;
+﻿using Authorization.Domain.Entities;
+using Shared.Core.Interfaces;
 
 namespace Authorization.Core.Dtos.RefreshToken;
 
@@ -11,4 +12,12 @@ public class RefreshTokenInputDto : IInputDto
     public Guid Token { get; set; }
 
     public Guid UserId { get; set; }
+
+    public RefreshTokenEntity ToEntity() => new RefreshTokenEntity()
+    {
+        EndDate = EndDate,
+        StartDate = StartDate,
+        Token = Token,
+        UserId = UserId
+    };
 }

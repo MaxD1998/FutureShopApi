@@ -1,6 +1,7 @@
 ﻿using Authorization.Domain.Entities;
 using Authorization.Inrfrastructure;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Shared.Core.Bases;
 
 namespace Authorization.Core.Cqrs.RefreshToken.Commands;
@@ -13,5 +14,5 @@ internal class DeleteRefreshTokenByUserIdCommandHandler : BaseRequestHandler<Aut
     }
 
     public override async Task Handle(DeleteRefreshTokenByUserIdCommand request, CancellationToken cancellationToken)
-        => await DeleteAsync<RefreshTokenEntity>(x => x.UserId == request.UserId);
+        => await _context.Set<RefreshTokenEntity>().Where(x => x.UserId == request.UserId).ExecuteDeleteAsync();
 }

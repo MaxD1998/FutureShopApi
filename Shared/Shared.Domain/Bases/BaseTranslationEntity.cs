@@ -2,7 +2,7 @@
 
 public class BaseTranslationEntity : BaseEntity
 {
-    public string Lang { get; private set; }
+    public string Lang { get; set; }
 
     public string Translation { get; set; }
 }
