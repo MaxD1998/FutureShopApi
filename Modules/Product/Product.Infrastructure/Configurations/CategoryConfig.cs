@@ -17,7 +17,8 @@ public class CategoryConfig : BaseConfig<CategoryEntity>
 
         builder.HasMany(x => x.SubCategories)
             .WithOne(x => x.ParentCategory)
-            .HasForeignKey(x => x.ParentCategoryId);
+            .HasForeignKey(x => x.ParentCategoryId)
+            .OnDelete(DeleteBehavior.SetNull);
 
         builder.HasMany(x => x.ProductBases)
             .WithOne(x => x.Category)

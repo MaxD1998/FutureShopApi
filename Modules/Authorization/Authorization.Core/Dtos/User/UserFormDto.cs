@@ -4,7 +4,7 @@ using Crypt = BCrypt.Net.BCrypt;
 
 namespace Authorization.Core.Dtos.User;
 
-public class UserInputDto : IInputDto
+public class UserFormDto : IFormDto
 {
     public DateTime DateOfBirth { get; set; }
 

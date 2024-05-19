@@ -3,7 +3,7 @@ using Shared.Core.Interfaces;
 
 namespace Authorization.Core.Dtos.RefreshToken;
 
-public class RefreshTokenInputDto : IInputDto
+public class RefreshTokenFormDto : IFormDto
 {
     public DateOnly EndDate { get; set; }
 

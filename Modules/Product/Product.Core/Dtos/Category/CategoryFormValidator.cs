@@ -4,9 +4,9 @@ using Shared.Core.Extensions;
 
 namespace Product.Core.Dtos.Category;
 
-public class CategoryInputValidator : AbstractValidator<CategoryInputDto>
+public class CategoryFormValidator : AbstractValidator<CategoryFormDto>
 {
-    public CategoryInputValidator()
+    public CategoryFormValidator()
     {
         RuleFor(x => x.Name)
             .NotEmpty()

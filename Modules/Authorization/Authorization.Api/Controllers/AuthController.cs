@@ -43,6 +43,6 @@ public class AuthController : BaseController
     [HttpPost("Register")]
     [ProducesResponseType(typeof(AuthorizeDto), StatusCodes.Status200OK)]
     [AllowAnonymous]
-    public async Task<IActionResult> RegisterAsync([FromBody] UserInputDto dto)
+    public async Task<IActionResult> RegisterAsync([FromBody] UserFormDto dto)
         => await ApiResponseAsync(dto, () => _authService.RegisterAsync(dto));
 }

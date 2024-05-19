@@ -12,7 +12,7 @@ using Product.Infrastructure;
 namespace Product.Infrastructure.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    [Migration("20240302214627_Init")]
+    [Migration("20240515083302_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace Product.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.1")
+                .HasAnnotation("ProductVersion", "8.0.3")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -236,7 +236,8 @@ namespace Product.Infrastructure.Migrations
                 {
                     b.HasOne("Product.Domain.Entities.CategoryEntity", "ParentCategory")
                         .WithMany("SubCategories")
-                        .HasForeignKey("ParentCategoryId");
+                        .HasForeignKey("ParentCategoryId")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("ParentCategory");
                 });

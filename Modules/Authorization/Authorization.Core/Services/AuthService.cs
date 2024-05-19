@@ -104,7 +104,7 @@ public class AuthService : IAuthService
         };
     }
 
-    public async Task<AuthorizeDto> RegisterAsync(UserInputDto dto)
+    public async Task<AuthorizeDto> RegisterAsync(UserFormDto dto)
     {
         var user = await _mediator.Send(new CreateUserEntityCommand(dto));
         var refreshToken = await AddOrUpdateRefreshTokenAsync(user.Id);
@@ -124,7 +124,7 @@ public class AuthService : IAuthService
 
     private async Task<Guid> AddOrUpdateRefreshTokenAsync(Guid userId)
     {
-        var inputRefreshToken = new RefreshTokenInputDto()
+        var inputRefreshToken = new RefreshTokenFormDto()
         {
             StartDate = DateOnly.FromDateTime(DateTime.UtcNow),
             EndDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(_refreshTokenSettings.ExpireTime)),

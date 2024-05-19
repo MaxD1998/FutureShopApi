@@ -2,9 +2,17 @@
 
 namespace Product.Core.Dtos.CategoryTranslation;
 
-public class CategoryTranslationInputDto
+public class CategoryTranslationFormDto
 {
-    public Guid CategoryId { get; set; }
+    public CategoryTranslationFormDto()
+    {
+    }
+
+    public CategoryTranslationFormDto(CategoryTranslationEntity entity)
+    {
+        Lang = entity.Lang;
+        Translation = entity.Translation;
+    }
 
     public string Lang { get; set; }
 
@@ -12,7 +20,6 @@ public class CategoryTranslationInputDto
 
     public CategoryTranslationEntity ToEntity() => new()
     {
-        CategoryId = CategoryId,
         Lang = Lang,
         Translation = Translation
     };

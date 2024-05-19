@@ -28,7 +28,8 @@ namespace Product.Infrastructure.Migrations
                         name: "FK_Category_Category_ParentCategoryId",
                         column: x => x.ParentCategoryId,
                         principalTable: "Category",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(

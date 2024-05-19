@@ -12,5 +12,5 @@ public interface IAuthService
 
     Task<AuthorizeDto> RefreshTokenAsync();
 
-    Task<AuthorizeDto> RegisterAsync(UserInputDto dto);
+    Task<AuthorizeDto> RegisterAsync(UserFormDto dto);
 }

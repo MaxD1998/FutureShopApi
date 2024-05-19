@@ -5,9 +5,9 @@ using Shared.Infrastructure.Constants;
 
 namespace Authorization.Core.Dtos.User;
 
-public class UserInputValidator : AbstractValidator<UserInputDto>
+public class UserFormValidator : AbstractValidator<UserFormDto>
 {
-    public UserInputValidator()
+    public UserFormValidator()
     {
         RuleFor(x => x.DateOfBirth)
             .NotEmpty()

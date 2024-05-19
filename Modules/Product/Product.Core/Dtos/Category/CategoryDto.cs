@@ -11,13 +11,13 @@ public class CategoryDto : IDto
 
     public CategoryDto(CategoryEntity entity)
     {
-        HasChildren = entity.SubCategories.Any();
+        HasSubCategories = entity.SubCategories.Any();
         Id = entity.Id;
         Name = entity.Translations.FirstOrDefault()?.Translation ?? entity.Name;
         ParentCategoryId = entity.ParentCategoryId;
     }
 
-    public bool HasChildren { get; set; }
+    public bool HasSubCategories { get; set; }
 
     public Guid Id { get; set; }
 

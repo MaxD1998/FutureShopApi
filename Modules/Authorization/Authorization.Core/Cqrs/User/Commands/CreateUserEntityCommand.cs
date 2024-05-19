@@ -8,7 +8,7 @@ using Shared.Core.Errors;
 using Shared.Core.Exceptions;
 
 namespace Authorization.Core.Cqrs.User.Commands;
-public record CreateUserEntityCommand(UserInputDto Dto) : IRequest<UserEntity>;
+public record CreateUserEntityCommand(UserFormDto Dto) : IRequest<UserEntity>;
 
 internal class CreateUserEntityCommandHandler : BaseRequestHandler<AuthContext, CreateUserEntityCommand, UserEntity>
 {

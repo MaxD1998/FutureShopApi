@@ -1,5 +1,5 @@
 ﻿namespace Shared.Core.Interfaces;
 
-public interface IInputDto
+public interface IFormDto
 {
 }

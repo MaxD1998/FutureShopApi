@@ -8,7 +8,7 @@ using Shared.Core.Bases;
 using Shared.Infrastructure.Constants;
 
 namespace Product.Core.Cqrs.Category.Queries;
-public record GetsCategoryDtoByCategoryParentQuery(Guid? CategoryParentId) : IRequest<IEnumerable<CategoryDto>>;
+public record GetsCategoryDtoByCategoryParentQuery(Guid? CategoryParentId = null) : IRequest<IEnumerable<CategoryDto>>;
 
 internal class GetsCategoryDtoByCategoryParentQueryHandler : BaseRequestHandler<ProductContext, GetsCategoryDtoByCategoryParentQuery, IEnumerable<CategoryDto>>
 {

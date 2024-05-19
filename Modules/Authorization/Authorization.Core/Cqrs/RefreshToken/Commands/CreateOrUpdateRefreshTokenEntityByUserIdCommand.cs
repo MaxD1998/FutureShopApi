@@ -7,7 +7,7 @@ using Shared.Core.Bases;
 
 namespace Authorization.Core.Cqrs.RefreshToken.Commands;
 
-public record CreateOrUpdateRefreshTokenEntityByUserIdCommand(Guid UserId, RefreshTokenInputDto Dto) : IRequest<RefreshTokenEntity>;
+public record CreateOrUpdateRefreshTokenEntityByUserIdCommand(Guid UserId, RefreshTokenFormDto Dto) : IRequest<RefreshTokenEntity>;
 
 internal class CreateOrUpdateRefreshTokenEntityByUserIdCommandHandler : BaseRequestHandler<AuthContext, CreateOrUpdateRefreshTokenEntityByUserIdCommand, RefreshTokenEntity>
 {

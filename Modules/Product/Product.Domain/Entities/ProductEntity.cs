@@ -12,7 +12,7 @@ public class ProductEntity : BaseEntity
 
     public ProductBaseEntity ProductBase { get; set; }
 
-    public ICollection<ProductParameterValueEntity> ProductParameterValues { get; set; }
+    public ICollection<ProductParameterValueEntity> ProductParameterValues { get; set; } = [];
 
     #endregion Related Data
 }

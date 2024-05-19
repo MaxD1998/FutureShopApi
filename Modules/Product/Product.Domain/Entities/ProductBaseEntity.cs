@@ -14,9 +14,9 @@ public class ProductBaseEntity : BaseEntity
 
     public CategoryEntity Category { get; set; }
 
-    public ICollection<ProductParameterEntity> ProductParameters { get; set; }
+    public ICollection<ProductParameterEntity> ProductParameters { get; set; } = [];
 
-    public ICollection<ProductEntity> Products { get; set; }
+    public ICollection<ProductEntity> Products { get; set; } = [];
 
     #endregion Related Data
 }
