@@ -25,7 +25,7 @@ public class RefreshTokenEntity : BaseEntity
         EndDate = entity.EndDate;
         StartDate = entity.StartDate;
         Token = entity.Token;
-        User = entity.User;
+        UserId = entity.UserId;
     }
 
     #endregion Methods
