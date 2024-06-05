@@ -6,6 +6,7 @@ using Product.Domain.Entities;
 using Product.Infrastructure;
 using Shared.Core.Bases;
 using Shared.Infrastructure.Constants;
+using System.Threading;
 
 namespace Product.Core.Cqrs.Category.Queries;
 public record GetsCategoryDtoAvailableToBeChildCategoryQuery(Guid? Id, Guid? ParentId, IEnumerable<Guid> ChildIds) : IRequest<IEnumerable<CategoryDto>>;
@@ -33,7 +34,7 @@ internal class GetsCategoryDtoAvailableToBeChildCategoryQueryHandler : BaseReque
 
         if (request.ParentId.HasValue)
         {
-            var parentIds = await GetExceptionIdAsync(request.ParentId.Value);
+            var parentIds = await GetExceptionIdAsync(request.ParentId.Value, cancellationToken);
             query = query.Where(x => !parentIds.Contains(x.Id));
         }
 
@@ -42,16 +43,16 @@ internal class GetsCategoryDtoAvailableToBeChildCategoryQueryHandler : BaseReque
 
         var results = await query
             .Select(x => new CategoryDto(x))
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         return results;
     }
 
-    private async Task<IEnumerable<Guid>> GetExceptionIdAsync(Guid parentId)
+    private async Task<IEnumerable<Guid>> GetExceptionIdAsync(Guid parentId, CancellationToken cancellationToken = default)
     {
         var results = new List<Guid>();
         var exceptionCategory = await _context.Set<CategoryEntity>()
-            .FirstOrDefaultAsync(x => x.Id == parentId);
+            .FirstOrDefaultAsync(x => x.Id == parentId, cancellationToken);
 
         if (exceptionCategory == null)
             return results;
@@ -59,7 +60,7 @@ internal class GetsCategoryDtoAvailableToBeChildCategoryQueryHandler : BaseReque
         results.Add(exceptionCategory.Id);
 
         if (exceptionCategory.ParentCategoryId.HasValue)
-            results.AddRange(await GetExceptionIdAsync((Guid)exceptionCategory.ParentCategoryId));
+            results.AddRange(await GetExceptionIdAsync((Guid)exceptionCategory.ParentCategoryId, cancellationToken));
 
         return results;
     }

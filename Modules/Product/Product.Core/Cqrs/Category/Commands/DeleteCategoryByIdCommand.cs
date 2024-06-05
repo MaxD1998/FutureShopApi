@@ -14,5 +14,5 @@ internal class DeleteCategoryByIdCommandHandler : BaseRequestHandler<ProductCont
     }
 
     public override async Task Handle(DeleteCategoryByIdCommand request, CancellationToken cancellationToken)
-        => await _context.Set<CategoryEntity>().Where(x => x.Id == request.Id).ExecuteDeleteAsync();
+        => await _context.Set<CategoryEntity>().Where(x => x.Id == request.Id).ExecuteDeleteAsync(cancellationToken);
 }

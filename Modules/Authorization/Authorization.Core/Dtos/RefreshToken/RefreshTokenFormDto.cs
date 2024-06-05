@@ -13,7 +13,7 @@ public class RefreshTokenFormDto : IFormDto
 
     public Guid UserId { get; set; }
 
-    public RefreshTokenEntity ToEntity() => new RefreshTokenEntity()
+    public RefreshTokenEntity ToEntity() => new()
     {
         EndDate = EndDate,
         StartDate = StartDate,

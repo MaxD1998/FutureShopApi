@@ -17,5 +17,5 @@ internal class GetUserEntityByEmailQueryHandler : BaseRequestHandler<AuthContext
     public override async Task<UserEntity> Handle(GetUserEntityByEmailQuery request, CancellationToken cancellationToken)
         => await _context.Set<UserEntity>()
             .AsNoTracking()
-            .FirstOrDefaultAsync(x => x.Email == request.Email);
+            .FirstOrDefaultAsync(x => x.Email == request.Email, cancellationToken);
 }

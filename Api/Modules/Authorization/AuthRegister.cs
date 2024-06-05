@@ -3,7 +3,6 @@ using Authorization.Core.Interfaces.Services;
 using Authorization.Core.Services;
 using Authorization.Inrfrastructure;
 using FluentValidation;
-using Product.Infrastructure;
 using Shared.Api.Middlewares;
 using Shared.Core.Factories.FluentValidator;
 

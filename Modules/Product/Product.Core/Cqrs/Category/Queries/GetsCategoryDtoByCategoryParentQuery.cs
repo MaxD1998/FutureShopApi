@@ -26,5 +26,5 @@ internal class GetsCategoryDtoByCategoryParentQueryHandler : BaseRequestHandler<
             .Include(x => x.Translations.Where(x => x.Lang == _headerService.GetHeader(HeaderNameConst.Lang)))
             .Where(x => x.ParentCategoryId == request.CategoryParentId)
             .Select(x => new CategoryDto(x))
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 }

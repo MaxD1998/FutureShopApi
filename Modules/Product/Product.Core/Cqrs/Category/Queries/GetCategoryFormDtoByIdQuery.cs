@@ -20,7 +20,7 @@ internal class GetCategoryFormDtoByIdQueryHandler : BaseRequestHandler<ProductCo
             .AsNoTracking()
             .Include(x => x.SubCategories)
             .Include(x => x.Translations)
-            .FirstOrDefaultAsync(x => x.Id == request.Id);
+            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
         return result is null ? null : new CategoryFormDto(result);
     }

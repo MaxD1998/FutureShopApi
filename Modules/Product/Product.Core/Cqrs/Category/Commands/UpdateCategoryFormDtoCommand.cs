@@ -19,11 +19,11 @@ internal class UpdateCategoryFormDtoCommandHandler : BaseRequestHandler<ProductC
         var entity = await _context.Set<CategoryEntity>()
             .Include(x => x.SubCategories)
             .Include(x => x.Translations)
-            .FirstOrDefaultAsync(x => x.Id == request.Id);
+            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
         entity.Update(request.Dto.ToEntity(_context));
 
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
 
         return new CategoryFormDto(entity);
     }

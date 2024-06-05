@@ -17,21 +17,21 @@ internal class CreateOrUpdateRefreshTokenEntityByUserIdCommandHandler : BaseRequ
 
     public override async Task<RefreshTokenEntity> Handle(CreateOrUpdateRefreshTokenEntityByUserIdCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Set<RefreshTokenEntity>().FirstOrDefaultAsync(x => x.UserId == request.UserId);
+        var entity = await _context.Set<RefreshTokenEntity>().FirstOrDefaultAsync(x => x.UserId == request.UserId, cancellationToken);
 
         entity ??= new RefreshTokenEntity();
         entity.Update(request.Dto.ToEntity());
 
         if (entity.Id == Guid.Empty)
         {
-            var newEntity = await _context.Set<RefreshTokenEntity>().AddAsync(entity);
+            var newEntity = await _context.Set<RefreshTokenEntity>().AddAsync(entity, cancellationToken);
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(cancellationToken);
 
             return newEntity.Entity;
         }
 
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
 
         return entity;
     }

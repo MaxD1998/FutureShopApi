@@ -26,7 +26,7 @@ internal class GetsCategoryDtoQueryHandler : BaseRequestHandler<ProductContext, 
             .Include(x => x.SubCategories)
             .Include(x => x.Translations.Where(x => x.Lang == _headerService.GetHeader(HeaderNameConst.Lang)))
             .Select(x => new CategoryDto(x))
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         return result.OrderBy(x => x.Name);
     }

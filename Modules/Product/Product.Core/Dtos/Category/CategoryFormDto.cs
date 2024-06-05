@@ -27,7 +27,7 @@ public class CategoryFormDto : IFormDto
 
     public List<CategoryTranslationFormDto> Translations { get; set; }
 
-    public CategoryEntity ToEntity(ProductContext context) => new CategoryEntity()
+    public CategoryEntity ToEntity(ProductContext context) => new()
     {
         Name = Name,
         ParentCategoryId = ParentCategoryId,

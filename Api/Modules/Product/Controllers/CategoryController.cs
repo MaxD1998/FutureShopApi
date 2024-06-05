@@ -18,66 +18,66 @@ public class CategoryController : BaseController
     [HttpPost]
     [ProducesResponseType(typeof(CategoryFormDto), StatusCodes.Status200OK)]
     [AllowAnonymous]
-    public async Task<IActionResult> CreateAsync([FromBody] CategoryFormDto dto)
-        => await ApiResponseAsync(dto, new CreateCategoryFormDtoCommand(dto));
+    public async Task<IActionResult> CreateAsync([FromBody] CategoryFormDto dto, CancellationToken cancellationToken = default)
+        => await ApiResponseAsync(dto, new CreateCategoryFormDtoCommand(dto), cancellationToken);
 
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [AllowAnonymous]
-    public async Task<IActionResult> DeleteAsync([FromRoute] Guid id)
-        => await ApiResponseAsync(new DeleteCategoryByIdCommand(id));
+    public async Task<IActionResult> DeleteAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
+        => await ApiResponseAsync(new DeleteCategoryByIdCommand(id), cancellationToken);
 
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(CategoryFormDto), StatusCodes.Status200OK)]
     [AllowAnonymous]
-    public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id)
-        => await ApiResponseAsync(new GetCategoryFormDtoByIdQuery(id));
+    public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
+        => await ApiResponseAsync(new GetCategoryFormDtoByIdQuery(id), cancellationToken);
 
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<CategoryDto>), StatusCodes.Status200OK)]
     [AllowAnonymous]
-    public async Task<IActionResult> GetsAsync()
-        => await ApiResponseAsync(new GetsCategoryDtoQuery());
+    public async Task<IActionResult> GetsAsync(CancellationToken cancellationToken = default)
+        => await ApiResponseAsync(new GetsCategoryDtoQuery(), cancellationToken);
 
     [HttpGet("AvailableToBeChild")]
     [ProducesResponseType(typeof(IEnumerable<CategoryDto>), StatusCodes.Status200OK)]
     [AllowAnonymous]
-    public async Task<IActionResult> GetsAvailableToBeChildAsync([FromQuery] Guid? parentId, [FromQuery] IEnumerable<Guid> childIds)
-        => await ApiResponseAsync(new GetsCategoryDtoAvailableToBeChildCategoryQuery(null, parentId, childIds));
+    public async Task<IActionResult> GetsAvailableToBeChildAsync([FromQuery] Guid? parentId, [FromQuery] IEnumerable<Guid> childIds, CancellationToken cancellationToken = default)
+        => await ApiResponseAsync(new GetsCategoryDtoAvailableToBeChildCategoryQuery(null, parentId, childIds), cancellationToken);
 
     [HttpGet("AvailableToBeChild/{id:guid}")]
     [ProducesResponseType(typeof(IEnumerable<CategoryDto>), StatusCodes.Status200OK)]
     [AllowAnonymous]
-    public async Task<IActionResult> GetsAvailableToBeChildAsync([FromRoute] Guid id, [FromQuery] Guid? parentId, [FromQuery] IEnumerable<Guid> childIds)
-        => await ApiResponseAsync(new GetsCategoryDtoAvailableToBeChildCategoryQuery(id, parentId, childIds));
+    public async Task<IActionResult> GetsAvailableToBeChildAsync([FromRoute] Guid id, [FromQuery] Guid? parentId, [FromQuery] IEnumerable<Guid> childIds, CancellationToken cancellationToken = default)
+        => await ApiResponseAsync(new GetsCategoryDtoAvailableToBeChildCategoryQuery(id, parentId, childIds), cancellationToken);
 
     [HttpGet("AvailableToBeParent")]
     [ProducesResponseType(typeof(IEnumerable<CategoryDto>), StatusCodes.Status200OK)]
     [AllowAnonymous]
-    public async Task<IActionResult> GetsAvailableToBeParentAsync([FromQuery] IEnumerable<Guid> childIds)
-        => await ApiResponseAsync(new GetsCategoryDtoAvailableToBeParentCategoryQuery(null, childIds));
+    public async Task<IActionResult> GetsAvailableToBeParentAsync([FromQuery] IEnumerable<Guid> childIds, CancellationToken cancellationToken = default)
+        => await ApiResponseAsync(new GetsCategoryDtoAvailableToBeParentCategoryQuery(null, childIds), cancellationToken);
 
     [HttpGet("AvailableToBeParent/{id:guid}")]
     [ProducesResponseType(typeof(IEnumerable<CategoryDto>), StatusCodes.Status200OK)]
     [AllowAnonymous]
-    public async Task<IActionResult> GetsAvailableToBeParentAsync([FromRoute] Guid id, [FromQuery] IEnumerable<Guid> childIds)
-        => await ApiResponseAsync(new GetsCategoryDtoAvailableToBeParentCategoryQuery(id, childIds));
+    public async Task<IActionResult> GetsAvailableToBeParentAsync([FromRoute] Guid id, [FromQuery] IEnumerable<Guid> childIds, CancellationToken cancellationToken = default)
+        => await ApiResponseAsync(new GetsCategoryDtoAvailableToBeParentCategoryQuery(id, childIds), cancellationToken);
 
     [HttpGet("CategoryParentId")]
     [ProducesResponseType(typeof(IEnumerable<CategoryDto>), StatusCodes.Status200OK)]
     [AllowAnonymous]
-    public async Task<IActionResult> GetsByCategoryParentIdAsync()
-        => await ApiResponseAsync(new GetsCategoryDtoByCategoryParentQuery());
+    public async Task<IActionResult> GetsByCategoryParentIdAsync(CancellationToken cancellationToken = default)
+        => await ApiResponseAsync(new GetsCategoryDtoByCategoryParentQuery(), cancellationToken);
 
     [HttpGet("CategoryParentId/{categoryParentId:guid}")]
     [ProducesResponseType(typeof(IEnumerable<CategoryDto>), StatusCodes.Status200OK)]
     [AllowAnonymous]
-    public async Task<IActionResult> GetsByCategoryParentIdAsync([FromRoute] Guid categoryParentId)
-        => await ApiResponseAsync(new GetsCategoryDtoByCategoryParentQuery(categoryParentId));
+    public async Task<IActionResult> GetsByCategoryParentIdAsync([FromRoute] Guid categoryParentId, CancellationToken cancellationToken = default)
+        => await ApiResponseAsync(new GetsCategoryDtoByCategoryParentQuery(categoryParentId), cancellationToken);
 
     [HttpPut("{id:guid}")]
     [ProducesResponseType(typeof(CategoryFormDto), StatusCodes.Status200OK)]
     [AllowAnonymous]
-    public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] CategoryFormDto dto)
-        => await ApiResponseAsync(dto, new UpdateCategoryFormDtoCommand(id, dto));
+    public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] CategoryFormDto dto, CancellationToken cancellationToken = default)
+        => await ApiResponseAsync(dto, new UpdateCategoryFormDtoCommand(id, dto), cancellationToken);
 }

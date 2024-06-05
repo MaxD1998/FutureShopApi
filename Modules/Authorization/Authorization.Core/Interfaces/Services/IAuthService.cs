@@ -6,11 +6,11 @@ namespace Authorization.Core.Interfaces.Services;
 
 public interface IAuthService
 {
-    Task<AuthorizeDto> LoginAsync(LoginDto dto);
+    Task<AuthorizeDto> LoginAsync(LoginDto dto, CancellationToken cancellationToken = default);
 
-    Task LogoutAsync();
+    Task LogoutAsync(CancellationToken cancellationToken = default);
 
-    Task<AuthorizeDto> RefreshTokenAsync();
+    Task<AuthorizeDto> RefreshTokenAsync(CancellationToken cancellationToken = default);
 
-    Task<AuthorizeDto> RegisterAsync(UserFormDto dto);
+    Task<AuthorizeDto> RegisterAsync(UserFormDto dto, CancellationToken cancellationToken = default);
 }

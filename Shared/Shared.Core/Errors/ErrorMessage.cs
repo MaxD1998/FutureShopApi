@@ -6,11 +6,11 @@ public static class ErrorMessage
 {
     #region Common
 
-    public static ErrorMessageDto IsNotEmail => new ErrorMessageDto("C002", "Input value is not email");
+    public static ErrorMessageDto IsNotEmail => new("C002", "Input value is not email");
 
-    public static ErrorMessageDto TooLongString => new ErrorMessageDto("C003", "String was too long");
+    public static ErrorMessageDto TooLongString => new("C003", "String was too long");
 
-    public static ErrorMessageDto ValueWasEmpty => new ErrorMessageDto("C001", "Value was empty");
+    public static ErrorMessageDto ValueWasEmpty => new("C001", "Value was empty");
 
     #endregion Common
 }

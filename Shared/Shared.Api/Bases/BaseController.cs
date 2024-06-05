@@ -14,6 +14,7 @@ namespace Shared.Api.Bases;
 public class BaseController : ControllerBase
 {
     private readonly IFluentValidatorFactory _fluentValidatorFactory;
+
     private readonly IMediator _mediator;
 
     public BaseController(
@@ -24,7 +25,7 @@ public class BaseController : ControllerBase
         _mediator = mediator;
     }
 
-    protected async Task<IActionResult> ApiResponseAsync<TParam>(TParam param, IBaseRequest request)
+    protected async Task<IActionResult> ApiResponseAsync<TParam>(TParam param, IBaseRequest request, CancellationToken cancellationToken = default)
         where TParam : class
     {
         if (!IsValid(param, out var errors))
@@ -32,11 +33,11 @@ public class BaseController : ControllerBase
 
         if (request is IRequest)
         {
-            await _mediator.Send(request);
+            await _mediator.Send(request, cancellationToken);
             return NoContent();
         }
 
-        return Ok(await _mediator.Send(request));
+        return Ok(await _mediator.Send(request, cancellationToken));
     }
 
     protected async Task<IActionResult> ApiResponseAsync<TParam, TRespone>(TParam param, Func<Task<TRespone>> action)
@@ -48,15 +49,15 @@ public class BaseController : ControllerBase
         return Ok(await action());
     }
 
-    protected async Task<IActionResult> ApiResponseAsync(IBaseRequest request)
+    protected async Task<IActionResult> ApiResponseAsync(IBaseRequest request, CancellationToken cancellationToken = default)
     {
         if (request is IRequest)
         {
-            await _mediator.Send(request);
+            await _mediator.Send(request, cancellationToken);
             return NoContent();
         }
 
-        return Ok(await _mediator.Send(request));
+        return Ok(await _mediator.Send(request, cancellationToken));
     }
 
     protected async Task<IActionResult> ApiResponseAsync<T>(Func<Task<T>> action)

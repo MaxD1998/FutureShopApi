@@ -15,7 +15,7 @@ internal class CreateCategoryFormDtoCommandHandler : BaseRequestHandler<ProductC
 
     public override async Task<CategoryFormDto> Handle(CreateCategoryFormDtoCommand request, CancellationToken cancellationToken)
     {
-        var result = await _context.Set<CategoryEntity>().AddAsync(request.Dto.ToEntity(_context));
+        var result = await _context.Set<CategoryEntity>().AddAsync(request.Dto.ToEntity(_context), cancellationToken);
 
         await _context.SaveChangesAsync();
 

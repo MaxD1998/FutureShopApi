@@ -33,28 +33,28 @@ internal class GetsCategoryDtoAvailableToBeParentCategoryQueryHandler : BaseRequ
 
         if (request.ChildIds.Any())
         {
-            var childIds = request.ChildIds.Concat(await ExceptionIdsAsync(request.ChildIds));
+            var childIds = request.ChildIds.Concat(await ExceptionIdsAsync(request.ChildIds, cancellationToken));
             query = query.Where(x => !childIds.Contains(x.Id));
         }
 
         var results = await query
             .Select(x => new CategoryDto(x))
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         return results;
     }
 
-    private async Task<IEnumerable<Guid>> ExceptionIdsAsync(IEnumerable<Guid> ids)
+    private async Task<IEnumerable<Guid>> ExceptionIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken = default)
     {
         var results = await _context.Set<CategoryEntity>()
             .Include(x => x.SubCategories)
             .Where(x => ids.Contains(x.Id))
             .SelectMany(x => x.SubCategories.Select(x => x.Id))
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         if (!results.Any())
             return [];
 
-        return results.Concat(await ExceptionIdsAsync(results));
+        return results.Concat(await ExceptionIdsAsync(results, cancellationToken));
     }
 }

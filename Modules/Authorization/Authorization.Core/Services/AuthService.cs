@@ -45,14 +45,14 @@ public class AuthService : IAuthService
         _refreshTokenSettings = refreshTokenSettings.Value;
     }
 
-    public async Task<AuthorizeDto> LoginAsync(LoginDto dto)
+    public async Task<AuthorizeDto> LoginAsync(LoginDto dto, CancellationToken cancellationToken = default)
     {
-        var user = await _mediator.Send(new GetUserEntityByEmailQuery(dto.Email));
+        var user = await _mediator.Send(new GetUserEntityByEmailQuery(dto.Email), cancellationToken);
 
         if (user is null)
             throw new ForbiddenException(ExceptionMessage.WrongEmailOrPassword);
 
-        var refreshToken = await AddOrUpdateRefreshTokenAsync(user.Id);
+        var refreshToken = await AddOrUpdateRefreshTokenAsync(user.Id, cancellationToken);
         var result = new AuthorizeDto()
         {
             Id = user.Id,
@@ -67,19 +67,19 @@ public class AuthService : IAuthService
         return result;
     }
 
-    public async Task LogoutAsync()
+    public async Task LogoutAsync(CancellationToken cancellationToken = default)
     {
         var nullableUserId = _httpContext.User.Claims.FirstOrDefault(x => x.Type == JwtClaimNameConst.Id)?.Value;
 
         if (!Guid.TryParse(nullableUserId, out var userId))
             throw new BadRequestException(ExceptionMessage.BadGuidFormat);
 
-        await _mediator.Send(new DeleteRefreshTokenByUserIdCommand(userId));
+        await _mediator.Send(new DeleteRefreshTokenByUserIdCommand(userId), cancellationToken);
 
         _cookieService.RemoveCookie(CookieNameConst.RefreshToken);
     }
 
-    public async Task<AuthorizeDto> RefreshTokenAsync()
+    public async Task<AuthorizeDto> RefreshTokenAsync(CancellationToken cancellationToken = default)
     {
         var userRefreshToken = _cookieService.GetCookie(CookieNameConst.RefreshToken);
 
@@ -89,7 +89,7 @@ public class AuthService : IAuthService
         if (!Guid.TryParse(userRefreshToken, out var token))
             throw new ForbiddenException(ExceptionMessage.WrongRefreshTokenFormat);
 
-        var refreshToken = await _mediator.Send(new GetRefereshTokenEntityByTokenQuery(token));
+        var refreshToken = await _mediator.Send(new GetRefereshTokenEntityByTokenQuery(token), cancellationToken);
 
         if (refreshToken is null)
             throw new ForbiddenException(ExceptionMessage.SessionHasExpired);
@@ -104,10 +104,10 @@ public class AuthService : IAuthService
         };
     }
 
-    public async Task<AuthorizeDto> RegisterAsync(UserFormDto dto)
+    public async Task<AuthorizeDto> RegisterAsync(UserFormDto dto, CancellationToken cancellationToken = default)
     {
-        var user = await _mediator.Send(new CreateUserEntityCommand(dto));
-        var refreshToken = await AddOrUpdateRefreshTokenAsync(user.Id);
+        var user = await _mediator.Send(new CreateUserEntityCommand(dto), cancellationToken);
+        var refreshToken = await AddOrUpdateRefreshTokenAsync(user.Id, cancellationToken);
         var result = new AuthorizeDto()
         {
             Id = user.Id,
@@ -122,7 +122,7 @@ public class AuthService : IAuthService
         return result;
     }
 
-    private async Task<Guid> AddOrUpdateRefreshTokenAsync(Guid userId)
+    private async Task<Guid> AddOrUpdateRefreshTokenAsync(Guid userId, CancellationToken cancellationToken = default)
     {
         var inputRefreshToken = new RefreshTokenFormDto()
         {
@@ -132,7 +132,7 @@ public class AuthService : IAuthService
             UserId = userId,
         };
 
-        var refreshToken = await _mediator.Send(new CreateOrUpdateRefreshTokenEntityByUserIdCommand(userId, inputRefreshToken));
+        var refreshToken = await _mediator.Send(new CreateOrUpdateRefreshTokenEntityByUserIdCommand(userId, inputRefreshToken), cancellationToken);
         return refreshToken.Token;
     }
 
@@ -159,11 +159,11 @@ public class AuthService : IAuthService
     {
         var result = new List<Claim>()
         {
-            new Claim(JwtClaimNameConst.Id, user.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim(JwtRegisteredClaimNames.Name, user.FirstName),
-            new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
-            new Claim(JwtClaimNameConst.Role, user.Type.ToString()),
+            new(JwtClaimNameConst.Id, user.Id.ToString()),
+            new(JwtRegisteredClaimNames.Email, user.Email),
+            new(JwtRegisteredClaimNames.Name, user.FirstName),
+            new(JwtRegisteredClaimNames.FamilyName, user.LastName),
+            new(JwtClaimNameConst.Role, user.Type.ToString()),
         };
 
         foreach (var type in user.Type.GetUserPrivileges())

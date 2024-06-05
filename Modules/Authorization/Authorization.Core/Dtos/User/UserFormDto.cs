@@ -18,7 +18,7 @@ public class UserFormDto : IFormDto
 
     public string PhoneNumber { get; set; }
 
-    public UserEntity ToEntity() => new UserEntity()
+    public UserEntity ToEntity() => new()
     {
         DateOfBirth = DateOnly.FromDateTime(DateOfBirth),
         Email = Email,

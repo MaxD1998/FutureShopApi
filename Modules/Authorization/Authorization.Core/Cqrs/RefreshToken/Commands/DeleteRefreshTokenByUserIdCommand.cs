@@ -14,5 +14,5 @@ internal class DeleteRefreshTokenByUserIdCommandHandler : BaseRequestHandler<Aut
     }
 
     public override async Task Handle(DeleteRefreshTokenByUserIdCommand request, CancellationToken cancellationToken)
-        => await _context.Set<RefreshTokenEntity>().Where(x => x.UserId == request.UserId).ExecuteDeleteAsync();
+        => await _context.Set<RefreshTokenEntity>().Where(x => x.UserId == request.UserId).ExecuteDeleteAsync(cancellationToken);
 }

@@ -18,14 +18,14 @@ internal class CreateUserEntityCommandHandler : BaseRequestHandler<AuthContext, 
 
     public override async Task<UserEntity> Handle(CreateUserEntityCommand request, CancellationToken cancellationToken)
     {
-        var isExist = await _context.Set<UserEntity>().AnyAsync(x => x.Email == request.Dto.Email);
+        var isExist = await _context.Set<UserEntity>().AnyAsync(x => x.Email == request.Dto.Email, cancellationToken);
 
         if (isExist)
             throw new ConflictException(ExceptionMessage.RecordAlreadyExists);
 
-        var result = await _context.Set<UserEntity>().AddAsync(request.Dto.ToEntity());
+        var result = await _context.Set<UserEntity>().AddAsync(request.Dto.ToEntity(), cancellationToken);
 
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
 
         return result.Entity;
     }

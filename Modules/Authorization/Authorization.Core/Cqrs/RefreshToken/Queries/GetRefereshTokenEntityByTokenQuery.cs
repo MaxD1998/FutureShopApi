@@ -18,5 +18,5 @@ internal class GetRefereshTokenEntityByTokenQueryHandler : BaseRequestHandler<Au
         => await _context.Set<RefreshTokenEntity>()
             .AsNoTracking()
             .Include(x => x.User)
-            .FirstOrDefaultAsync(x => x.Token == request.Token);
+            .FirstOrDefaultAsync(x => x.Token == request.Token, cancellationToken);
 }
