@@ -7,16 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.3">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Modules\Authorization\Authorization.Api\Authorization.Api.csproj" />
-    <ProjectReference Include="..\Modules\Product\Product.Api\Product.Api.csproj" />
+    <ProjectReference Include="..\Modules\Authorization\Authorization.Core\Authorization.Core.csproj" />
+    <ProjectReference Include="..\Modules\Product\Product.Core\Product.Core.csproj" />
+    <ProjectReference Include="..\Shared\Shared.Api\Shared.Api.csproj" />
   </ItemGroup>
 
 </Project>

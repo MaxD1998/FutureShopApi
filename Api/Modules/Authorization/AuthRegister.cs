@@ -3,17 +3,19 @@ using Authorization.Core.Interfaces.Services;
 using Authorization.Core.Services;
 using Authorization.Inrfrastructure;
 using FluentValidation;
-using Microsoft.Extensions.DependencyInjection;
+using Product.Infrastructure;
+using Shared.Api.Middlewares;
 using Shared.Core.Factories.FluentValidator;
 
-namespace Authorization.Api.Extensions;
+namespace Api.Modules.Authorization;
 
-public static class ModuleExtension
+public static class AuthRegister
 {
     public static void RegisterAuthModule(this IServiceCollection services)
     {
         services.ConfigureServices();
         services.RegisterServices();
+        services.RegisterMiddlewares();
     }
 
     private static void ConfigureServices(this IServiceCollection services)
@@ -24,6 +26,11 @@ public static class ModuleExtension
             cfg.RegisterServicesFromAssembly(typeof(CoreAssembly).Assembly);
         });
         services.AddValidatorsFromAssembly(typeof(CoreAssembly).Assembly);
+    }
+
+    private static void RegisterMiddlewares(this IServiceCollection services)
+    {
+        services.AddScoped<DbTransactionMiddleware<AuthContext>>();
     }
 
     private static void RegisterServices(this IServiceCollection services)

@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Product.Core.Cqrs.Category.Commands;
 using Product.Core.Cqrs.Category.Queries;
@@ -8,7 +7,7 @@ using Product.Core.Dtos.Category;
 using Shared.Api.Bases;
 using Shared.Core.Factories.FluentValidator;
 
-namespace Product.Api.Controllers;
+namespace Api.Modules.Product.Controllers;
 
 public class CategoryController : BaseController
 {

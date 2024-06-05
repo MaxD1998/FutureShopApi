@@ -155,7 +155,7 @@ public class AuthService : IAuthService
         return getToken;
     }
 
-    private List<Claim> GetClaims(UserEntity user)
+    private static List<Claim> GetClaims(UserEntity user)
     {
         var result = new List<Claim>()
         {

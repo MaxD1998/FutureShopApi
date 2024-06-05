@@ -4,12 +4,11 @@ using Authorization.Core.Dtos.User;
 using Authorization.Core.Interfaces.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Api.Bases;
 using Shared.Core.Factories.FluentValidator;
 
-namespace Authorization.Api.Controllers;
+namespace Api.Modules.Authorization.Controllers;
 
 public class AuthController : BaseController
 {

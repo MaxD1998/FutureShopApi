@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -8,6 +7,28 @@ namespace Product.Infrastructure.Migrations
     /// <inheritdoc />
     public partial class Init : Migration
     {
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "CategoryTranslation");
+
+            migrationBuilder.DropTable(
+                name: "ProductParameterValue");
+
+            migrationBuilder.DropTable(
+                name: "ProductParameter");
+
+            migrationBuilder.DropTable(
+                name: "Product");
+
+            migrationBuilder.DropTable(
+                name: "ProductBase");
+
+            migrationBuilder.DropTable(
+                name: "Category");
+        }
+
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -181,28 +202,6 @@ namespace Product.Infrastructure.Migrations
                 name: "IX_ProductParameterValue_ProductParameterId",
                 table: "ProductParameterValue",
                 column: "ProductParameterId");
-        }
-
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "CategoryTranslation");
-
-            migrationBuilder.DropTable(
-                name: "ProductParameterValue");
-
-            migrationBuilder.DropTable(
-                name: "ProductParameter");
-
-            migrationBuilder.DropTable(
-                name: "Product");
-
-            migrationBuilder.DropTable(
-                name: "ProductBase");
-
-            migrationBuilder.DropTable(
-                name: "Category");
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -8,6 +7,16 @@ namespace Authorization.Inrfrastructure.Migrations
     /// <inheritdoc />
     public partial class Init : Migration
     {
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "RefreshToken");
+
+            migrationBuilder.DropTable(
+                name: "User");
+        }
+
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -70,16 +79,6 @@ namespace Authorization.Inrfrastructure.Migrations
                 table: "User",
                 column: "Email",
                 unique: true);
-        }
-
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "RefreshToken");
-
-            migrationBuilder.DropTable(
-                name: "User");
         }
     }
 }

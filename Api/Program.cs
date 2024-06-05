@@ -1,6 +1,8 @@
 using Api.Extensions;
-using Authorization.Api.Extensions;
-using Product.Api.Extensions;
+using Api.Modules.Authorization;
+using Api.Modules.Product;
+using Authorization.Inrfrastructure;
+using Product.Infrastructure;
 using Shared.Api.Middlewares;
 
 namespace Api;
@@ -37,7 +39,10 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
         app.UseMiddleware<ErrorHandlingMiddleware>();
+        app.UseMiddleware<DbTransactionMiddleware<AuthContext>>();
+        app.UseMiddleware<DbTransactionMiddleware<ProductContext>>();
 
         app.UseHttpsRedirection();
         app.UseRouting();
