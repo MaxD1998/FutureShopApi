@@ -14,11 +14,11 @@ public class CookieService : ICookieService
         _requestCookieCollection = accessor.HttpContext.Request.Cookies;
     }
 
-    public void AddCookie(string name, string value, int expire, bool httpOnly)
+    public void AddCookie(string name, string value, int expire)
     {
         var cookie = new CookieOptions()
         {
-            HttpOnly = httpOnly,
+            HttpOnly = true,
             Expires = DateTime.UtcNow.AddDays(expire),
             SameSite = SameSiteMode.None,
             Secure = true,
@@ -27,7 +27,7 @@ public class CookieService : ICookieService
         _reponseCookies.Append(name, value, cookie);
     }
 
-    public string GetCookie(string name)
+    public string GetCookieValue(string name)
     {
         var isValue = _requestCookieCollection.TryGetValue(name, out var value);
 

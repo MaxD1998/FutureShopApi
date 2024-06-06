@@ -2,9 +2,9 @@
 
 public interface ICookieService
 {
-    void AddCookie(string name, string value, int expire, bool httpOnly);
+    void AddCookie(string name, string value, int expire);
 
-    string GetCookie(string name);
+    string GetCookieValue(string name);
 
     void RemoveCookie(string name);
 }

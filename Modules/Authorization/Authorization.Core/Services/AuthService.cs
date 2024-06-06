@@ -62,7 +62,7 @@ public class AuthService : IAuthService
 
         var expireDays = _refreshTokenSettings.ExpireTime;
 
-        _cookieService.AddCookie(CookieNameConst.RefreshToken, refreshToken.ToString(), expireDays, true);
+        _cookieService.AddCookie(CookieNameConst.RefreshToken, refreshToken.ToString(), expireDays);
 
         return result;
     }
@@ -81,7 +81,7 @@ public class AuthService : IAuthService
 
     public async Task<AuthorizeDto> RefreshTokenAsync(CancellationToken cancellationToken = default)
     {
-        var userRefreshToken = _cookieService.GetCookie(CookieNameConst.RefreshToken);
+        var userRefreshToken = _cookieService.GetCookieValue(CookieNameConst.RefreshToken);
 
         if (userRefreshToken.IsNullOrEmpty())
             return null;
@@ -117,7 +117,24 @@ public class AuthService : IAuthService
 
         var expireDays = _refreshTokenSettings.ExpireTime;
 
-        _cookieService.AddCookie(CookieNameConst.RefreshToken, refreshToken.ToString(), expireDays, true);
+        _cookieService.AddCookie(CookieNameConst.RefreshToken, refreshToken.ToString(), expireDays);
+
+        return result;
+    }
+
+    private static List<Claim> GetClaims(UserEntity user)
+    {
+        var result = new List<Claim>()
+        {
+            new(JwtClaimNameConst.Id, user.Id.ToString()),
+            new(JwtRegisteredClaimNames.Email, user.Email),
+            new(JwtRegisteredClaimNames.Name, user.FirstName),
+            new(JwtRegisteredClaimNames.FamilyName, user.LastName),
+            new(JwtClaimNameConst.Role, user.Type.ToString()),
+        };
+
+        foreach (var type in user.Type.GetUserPrivileges())
+            result.Add(new Claim(JwtClaimNameConst.Role, type.ToString()));
 
         return result;
     }
@@ -153,22 +170,5 @@ public class AuthService : IAuthService
         var getToken = tokenHandler.WriteToken(token);
 
         return getToken;
-    }
-
-    private static List<Claim> GetClaims(UserEntity user)
-    {
-        var result = new List<Claim>()
-        {
-            new(JwtClaimNameConst.Id, user.Id.ToString()),
-            new(JwtRegisteredClaimNames.Email, user.Email),
-            new(JwtRegisteredClaimNames.Name, user.FirstName),
-            new(JwtRegisteredClaimNames.FamilyName, user.LastName),
-            new(JwtClaimNameConst.Role, user.Type.ToString()),
-        };
-
-        foreach (var type in user.Type.GetUserPrivileges())
-            result.Add(new Claim(JwtClaimNameConst.Role, type.ToString()));
-
-        return result;
     }
 }

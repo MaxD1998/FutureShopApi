@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared.Domain", "Shared\Sha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared.Infrastructure", "Shared\Shared.Infrastructure\Shared.Infrastructure.csproj", "{34CF1B9E-53ED-4D43-AF7B-3F81716FF45B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authorization.Test", "Modules\Authorization\Authorization.Test\Authorization.Test.csproj", "{581672BC-E4C5-4109-AE08-5DFDBDBA0AAD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,10 @@ Global
 		{34CF1B9E-53ED-4D43-AF7B-3F81716FF45B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34CF1B9E-53ED-4D43-AF7B-3F81716FF45B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34CF1B9E-53ED-4D43-AF7B-3F81716FF45B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{581672BC-E4C5-4109-AE08-5DFDBDBA0AAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{581672BC-E4C5-4109-AE08-5DFDBDBA0AAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{581672BC-E4C5-4109-AE08-5DFDBDBA0AAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{581672BC-E4C5-4109-AE08-5DFDBDBA0AAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -100,6 +106,7 @@ Global
 		{7EC6F10F-0575-4CA9-8A7E-72735830372C} = {E2B1A148-C417-498C-BAC8-32E0A7611A22}
 		{9FD4E044-8D04-4C52-9AA4-BBCFF0705923} = {E2B1A148-C417-498C-BAC8-32E0A7611A22}
 		{34CF1B9E-53ED-4D43-AF7B-3F81716FF45B} = {E2B1A148-C417-498C-BAC8-32E0A7611A22}
+		{581672BC-E4C5-4109-AE08-5DFDBDBA0AAD} = {C015221A-6C90-465D-8CDB-A435FEED5B1A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {839C8B2F-2FD5-4DB1-9272-C520B41954F5}
