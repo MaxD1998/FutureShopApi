@@ -11,7 +11,7 @@ public class CategoryDto : IDto
 
     public CategoryDto(CategoryEntity entity)
     {
-        HasSubCategories = entity.SubCategories.Any();
+        HasSubCategories = entity.SubCategories.Count != 0;
         Id = entity.Id;
         Name = entity.Translations.FirstOrDefault()?.Translation ?? entity.Name;
         ParentCategoryId = entity.ParentCategoryId;

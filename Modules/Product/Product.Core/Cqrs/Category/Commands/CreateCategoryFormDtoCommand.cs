@@ -17,7 +17,7 @@ internal class CreateCategoryFormDtoCommandHandler : BaseRequestHandler<ProductC
     {
         var result = await _context.Set<CategoryEntity>().AddAsync(request.Dto.ToEntity(_context), cancellationToken);
 
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
 
         return new CategoryFormDto(result.Entity);
     }

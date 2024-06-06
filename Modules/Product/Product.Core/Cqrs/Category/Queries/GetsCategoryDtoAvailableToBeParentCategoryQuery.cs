@@ -52,7 +52,7 @@ internal class GetsCategoryDtoAvailableToBeParentCategoryQueryHandler : BaseRequ
             .SelectMany(x => x.SubCategories.Select(x => x.Id))
             .ToListAsync(cancellationToken);
 
-        if (!results.Any())
+        if (results.Count == 0)
             return [];
 
         return results.Concat(await ExceptionIdsAsync(results, cancellationToken));
