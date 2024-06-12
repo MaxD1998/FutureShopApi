@@ -33,11 +33,11 @@ public class CategoryController : BaseController
     public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
         => await ApiResponseAsync(new GetCategoryFormDtoByIdQuery(id), cancellationToken);
 
-    [HttpGet]
+    [HttpGet("Page/{pageNumber:int}")]
     [ProducesResponseType(typeof(IEnumerable<CategoryDto>), StatusCodes.Status200OK)]
     [AllowAnonymous]
-    public async Task<IActionResult> GetsAsync(CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(new GetsCategoryDtoQuery(), cancellationToken);
+    public async Task<IActionResult> GetPageAsync([FromRoute] int pageNumber, CancellationToken cancellationToken = default)
+        => await ApiResponseAsync(new GetPageCategoryDtoQuery(pageNumber), cancellationToken);
 
     [HttpGet("AvailableToBeChild")]
     [ProducesResponseType(typeof(IEnumerable<CategoryDto>), StatusCodes.Status200OK)]
