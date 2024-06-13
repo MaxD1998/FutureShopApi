@@ -17,7 +17,7 @@ namespace Product.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.3")
+                .HasAnnotation("ProductVersion", "8.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -106,11 +106,6 @@ namespace Product.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(1);
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnOrder(102);
-
                     b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(2);
@@ -139,6 +134,11 @@ namespace Product.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(1);
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnOrder(102);
+
                     b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(2);
@@ -148,6 +148,9 @@ namespace Product.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
                         .HasColumnOrder(101);
+
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
 
                     b.Property<Guid>("ProductBaseId")
                         .HasColumnType("uuid")

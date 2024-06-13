@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -7,28 +8,6 @@ namespace Product.Infrastructure.Migrations
     /// <inheritdoc />
     public partial class Init : Migration
     {
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "CategoryTranslation");
-
-            migrationBuilder.DropTable(
-                name: "ProductParameterValue");
-
-            migrationBuilder.DropTable(
-                name: "ProductParameter");
-
-            migrationBuilder.DropTable(
-                name: "Product");
-
-            migrationBuilder.DropTable(
-                name: "ProductBase");
-
-            migrationBuilder.DropTable(
-                name: "Category");
-        }
-
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -83,8 +62,7 @@ namespace Product.Infrastructure.Migrations
                     CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false)
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -105,7 +83,9 @@ namespace Product.Infrastructure.Migrations
                     CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ProductBaseId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    Price = table.Column<double>(type: "double precision", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -202,6 +182,28 @@ namespace Product.Infrastructure.Migrations
                 name: "IX_ProductParameterValue_ProductParameterId",
                 table: "ProductParameterValue",
                 column: "ProductParameterId");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "CategoryTranslation");
+
+            migrationBuilder.DropTable(
+                name: "ProductParameterValue");
+
+            migrationBuilder.DropTable(
+                name: "ProductParameter");
+
+            migrationBuilder.DropTable(
+                name: "Product");
+
+            migrationBuilder.DropTable(
+                name: "ProductBase");
+
+            migrationBuilder.DropTable(
+                name: "Category");
         }
     }
 }

@@ -6,8 +6,6 @@ public class ProductBaseEntity : BaseEntity
 {
     public Guid CategoryId { get; set; }
 
-    public string Description { get; set; }
-
     public string Name { get; set; }
 
     #region Related Data
