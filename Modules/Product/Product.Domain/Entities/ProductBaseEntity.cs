@@ -17,4 +17,10 @@ public class ProductBaseEntity : BaseEntity
     public ICollection<ProductEntity> Products { get; set; } = [];
 
     #endregion Related Data
+
+    public void Update(ProductBaseEntity entity)
+    {
+        CategoryId = entity.CategoryId;
+        Name = entity.Name;
+    }
 }

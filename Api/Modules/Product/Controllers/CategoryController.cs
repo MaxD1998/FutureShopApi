@@ -5,6 +5,7 @@ using Product.Core.Cqrs.Category.Commands;
 using Product.Core.Cqrs.Category.Queries;
 using Product.Core.Dtos.Category;
 using Shared.Api.Bases;
+using Shared.Core.Dtos;
 using Shared.Core.Factories.FluentValidator;
 
 namespace Api.Modules.Product.Controllers;
@@ -34,7 +35,7 @@ public class CategoryController : BaseController
         => await ApiResponseAsync(new GetCategoryFormDtoByIdQuery(id), cancellationToken);
 
     [HttpGet("Page/{pageNumber:int}")]
-    [ProducesResponseType(typeof(IEnumerable<CategoryDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PageDto<CategoryDto>), StatusCodes.Status200OK)]
     [AllowAnonymous]
     public async Task<IActionResult> GetPageAsync([FromRoute] int pageNumber, CancellationToken cancellationToken = default)
         => await ApiResponseAsync(new GetPageCategoryDtoQuery(pageNumber), cancellationToken);
