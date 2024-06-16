@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Product.Core.Dtos.Category;
+using Product.Core.Dtos;
 using Product.Core.Interfaces.Services;
 using Product.Domain.Entities;
 using Product.Infrastructure;
@@ -9,18 +9,18 @@ using Shared.Infrastructure.Constants;
 
 namespace Product.Core.Cqrs.Category.Queries;
 
-public record GetsCategoryDtoAvailableToBeParentCategoryQuery(Guid? Id, IEnumerable<Guid> ChildIds) : IRequest<IEnumerable<CategoryDto>>;
+public record GetsCategoryIdNameDtoAvailableToBeParentCategoryQuery(Guid? Id, IEnumerable<Guid> ChildIds) : IRequest<IEnumerable<IdNameDto>>;
 
-internal class GetsCategoryDtoAvailableToBeParentCategoryQueryHandler : BaseRequestHandler<ProductContext, GetsCategoryDtoAvailableToBeParentCategoryQuery, IEnumerable<CategoryDto>>
+internal class GetsCategoryIdNameDtoAvailableToBeParentCategoryQueryHandler : BaseRequestHandler<ProductContext, GetsCategoryIdNameDtoAvailableToBeParentCategoryQuery, IEnumerable<IdNameDto>>
 {
     private readonly IHeaderService _headerService;
 
-    public GetsCategoryDtoAvailableToBeParentCategoryQueryHandler(IHeaderService headerService, ProductContext context) : base(context)
+    public GetsCategoryIdNameDtoAvailableToBeParentCategoryQueryHandler(IHeaderService headerService, ProductContext context) : base(context)
     {
         _headerService = headerService;
     }
 
-    public override async Task<IEnumerable<CategoryDto>> Handle(GetsCategoryDtoAvailableToBeParentCategoryQuery request, CancellationToken cancellationToken)
+    public override async Task<IEnumerable<IdNameDto>> Handle(GetsCategoryIdNameDtoAvailableToBeParentCategoryQuery request, CancellationToken cancellationToken)
     {
         var query = _context.Set<CategoryEntity>()
             .AsNoTracking()
@@ -38,7 +38,7 @@ internal class GetsCategoryDtoAvailableToBeParentCategoryQueryHandler : BaseRequ
         }
 
         var results = await query
-            .Select(x => new CategoryDto(x))
+            .Select(x => new IdNameDto(x))
             .ToListAsync(cancellationToken);
 
         return results;
