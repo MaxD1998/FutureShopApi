@@ -10,7 +10,7 @@ public static class DbQueryExtension
         cancellationToken.ThrowIfCancellationRequested();
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(pageNumber);
 
-        var itemsCount = 50;
+        var itemsCount = 25;
         var items = await query
             .Skip(itemsCount * (pageNumber - 1))
             .Take(itemsCount)

@@ -1,5 +1,4 @@
-﻿using Product.Core.Dtos.Product;
-using Product.Core.Dtos.ProductParameter;
+﻿using Product.Core.Dtos.ProductParameter;
 using Product.Domain.Entities;
 
 namespace Product.Core.Dtos.ProductBase;
@@ -22,8 +21,6 @@ public class ProductBaseFormDto
     public string Name { get; set; }
 
     public List<ProductParameterFormDto> ProductParameters { get; set; }
-
-    public List<ProductFormDto> Products { get; set; }
 
     public ProductBaseEntity ToEntity() => new()
     {
