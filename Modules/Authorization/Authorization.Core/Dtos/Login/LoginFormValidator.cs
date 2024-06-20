@@ -4,9 +4,9 @@ using Shared.Core.Extensions;
 
 namespace Authorization.Core.Dtos.Login;
 
-public class LoginValidator : AbstractValidator<LoginDto>
+public class LoginFormValidator : AbstractValidator<LoginFormDto>
 {
-    public LoginValidator()
+    public LoginFormValidator()
     {
         RuleFor(x => x.Email)
             .NotEmpty()

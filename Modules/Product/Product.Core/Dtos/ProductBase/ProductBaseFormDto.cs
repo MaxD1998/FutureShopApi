@@ -25,6 +25,7 @@ public class ProductBaseFormDto
     public ProductBaseEntity ToEntity() => new()
     {
         CategoryId = CategoryId,
-        Name = Name
+        Name = Name,
+        ProductParameters = ProductParameters.Select(x => x.ToEntity()).ToList(),
     };
 }

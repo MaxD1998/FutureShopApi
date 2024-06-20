@@ -120,6 +120,28 @@ namespace Product.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductParameterTranslation",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Lang = table.Column<string>(type: "character varying(5)", maxLength: 5, nullable: false),
+                    Translation = table.Column<string>(type: "text", nullable: false),
+                    ProductParameterId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductParameterTranslation", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductParameterTranslation_ProductParameter_ProductParamet~",
+                        column: x => x.ProductParameterId,
+                        principalTable: "ProductParameter",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductParameterValue",
                 columns: table => new
                 {
@@ -174,6 +196,12 @@ namespace Product.Infrastructure.Migrations
                 column: "ProductBaseId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductParameterTranslation_ProductParameterId_Lang",
+                table: "ProductParameterTranslation",
+                columns: new[] { "ProductParameterId", "Lang" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductParameterValue_ProductId",
                 table: "ProductParameterValue",
                 column: "ProductId");
@@ -189,6 +217,9 @@ namespace Product.Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "CategoryTranslation");
+
+            migrationBuilder.DropTable(
+                name: "ProductParameterTranslation");
 
             migrationBuilder.DropTable(
                 name: "ProductParameterValue");

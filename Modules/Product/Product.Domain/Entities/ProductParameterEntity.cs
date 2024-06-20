@@ -12,5 +12,7 @@ public class ProductParameterEntity : BaseEntity
 
     public ProductBaseEntity ProductBase { get; set; }
 
+    public ICollection<ProductParameterTranslationEntity> Translations { get; set; }
+
     #endregion Related Data
 }

@@ -12,7 +12,7 @@ using Product.Infrastructure;
 namespace Product.Infrastructure.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    [Migration("20240613115002_Init")]
+    [Migration("20240620060809_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -198,6 +198,44 @@ namespace Product.Infrastructure.Migrations
                     b.ToTable("ProductParameter", (string)null);
                 });
 
+            modelBuilder.Entity("Product.Domain.Entities.ProductParameterTranslationEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("Lang")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("character varying(5)")
+                        .HasColumnOrder(50);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<Guid>("ProductParameterId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(100);
+
+                    b.Property<string>("Translation")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnOrder(51);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductParameterId", "Lang")
+                        .IsUnique();
+
+                    b.ToTable("ProductParameterTranslation", (string)null);
+                });
+
             modelBuilder.Entity("Product.Domain.Entities.ProductParameterValueEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -289,6 +327,17 @@ namespace Product.Infrastructure.Migrations
                     b.Navigation("ProductBase");
                 });
 
+            modelBuilder.Entity("Product.Domain.Entities.ProductParameterTranslationEntity", b =>
+                {
+                    b.HasOne("Product.Domain.Entities.ProductParameterEntity", "ProductParameter")
+                        .WithMany("Translations")
+                        .HasForeignKey("ProductParameterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductParameter");
+                });
+
             modelBuilder.Entity("Product.Domain.Entities.ProductParameterValueEntity", b =>
                 {
                     b.HasOne("Product.Domain.Entities.ProductEntity", "Product")
@@ -327,6 +376,11 @@ namespace Product.Infrastructure.Migrations
             modelBuilder.Entity("Product.Domain.Entities.ProductEntity", b =>
                 {
                     b.Navigation("ProductParameterValues");
+                });
+
+            modelBuilder.Entity("Product.Domain.Entities.ProductParameterEntity", b =>
+                {
+                    b.Navigation("Translations");
                 });
 #pragma warning restore 612, 618
         }

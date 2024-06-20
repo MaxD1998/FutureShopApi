@@ -45,7 +45,7 @@ public class AuthService : IAuthService
         _refreshTokenSettings = refreshTokenSettings.Value;
     }
 
-    public async Task<AuthorizeDto> LoginAsync(LoginDto dto, CancellationToken cancellationToken = default)
+    public async Task<AuthorizeDto> LoginAsync(LoginFormDto dto, CancellationToken cancellationToken = default)
     {
         var user = await _mediator.Send(new GetUserEntityByEmailQuery(dto.Email), cancellationToken);
 
@@ -53,13 +53,7 @@ public class AuthService : IAuthService
             throw new ForbiddenException(ExceptionMessage.WrongEmailOrPassword);
 
         var refreshToken = await AddOrUpdateRefreshTokenAsync(user.Id, cancellationToken);
-        var result = new AuthorizeDto()
-        {
-            Id = user.Id,
-            Username = $"{user.FirstName} {user.LastName}",
-            Token = GenerateJwt(user),
-        };
-
+        var result = new AuthorizeDto(user, GenerateJwt(user));
         var expireDays = _refreshTokenSettings.ExpireTime;
 
         _cookieService.AddCookie(CookieNameConst.RefreshToken, refreshToken.ToString(), expireDays);
@@ -96,25 +90,14 @@ public class AuthService : IAuthService
 
         var user = refreshToken.User;
 
-        return new AuthorizeDto()
-        {
-            Id = user.Id,
-            Username = $"{user.FirstName} {user.LastName}",
-            Token = GenerateJwt(user),
-        };
+        return new AuthorizeDto(user, GenerateJwt(user));
     }
 
     public async Task<AuthorizeDto> RegisterAsync(UserFormDto dto, CancellationToken cancellationToken = default)
     {
         var user = await _mediator.Send(new CreateUserEntityCommand(dto), cancellationToken);
         var refreshToken = await AddOrUpdateRefreshTokenAsync(user.Id, cancellationToken);
-        var result = new AuthorizeDto()
-        {
-            Id = user.Id,
-            Username = $"{user.FirstName} {user.LastName}",
-            Token = GenerateJwt(user),
-        };
-
+        var result = new AuthorizeDto(user, GenerateJwt(user));
         var expireDays = _refreshTokenSettings.ExpireTime;
 
         _cookieService.AddCookie(CookieNameConst.RefreshToken, refreshToken.ToString(), expireDays);

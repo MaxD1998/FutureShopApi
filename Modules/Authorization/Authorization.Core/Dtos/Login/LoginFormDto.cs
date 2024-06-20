@@ -1,6 +1,6 @@
 ﻿namespace Authorization.Core.Dtos.Login;
 
-public class LoginDto
+public class LoginFormDto
 {
     public string Email { get; set; }
 

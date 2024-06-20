@@ -53,7 +53,7 @@ public class AuthServiceTest
         _mediatorMock.Setup(x => x.Send(It.IsAny<GetUserEntityByEmailQuery>(), default)).ReturnsAsync((UserEntity)null);
 
         // Act
-        var result = () => _authService.LoginAsync(new LoginDto(), default);
+        var result = () => _authService.LoginAsync(new LoginFormDto(), default);
 
         //Assert
         await Assert.ThrowsAsync<ForbiddenException>(result);
@@ -86,7 +86,7 @@ public class AuthServiceTest
         _mediatorMock.Setup(x => x.Send(It.IsAny<CreateOrUpdateRefreshTokenEntityByUserIdCommand>(), default)).ReturnsAsync(refreshTokenEntity);
 
         // Act
-        var result = await _authService.LoginAsync(new LoginDto(), default);
+        var result = await _authService.LoginAsync(new LoginFormDto(), default);
 
         //Assert
         _cookieServiceMock.Verify(x
