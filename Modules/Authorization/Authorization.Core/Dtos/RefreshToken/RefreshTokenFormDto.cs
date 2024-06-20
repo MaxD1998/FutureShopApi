@@ -1,9 +1,8 @@
 ﻿using Authorization.Domain.Entities;
-using Shared.Core.Interfaces;
 
 namespace Authorization.Core.Dtos.RefreshToken;
 
-public class RefreshTokenFormDto : IFormDto
+public class RefreshTokenFormDto
 {
     public DateOnly EndDate { get; set; }
 

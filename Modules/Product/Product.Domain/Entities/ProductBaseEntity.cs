@@ -22,5 +22,6 @@ public class ProductBaseEntity : BaseEntity
     {
         CategoryId = entity.CategoryId;
         Name = entity.Name;
+        ProductParameters = entity.ProductParameters;
     }
 }
