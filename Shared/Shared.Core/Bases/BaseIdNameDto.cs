@@ -2,7 +2,7 @@
 
 public class BaseIdNameDto
 {
-    public Guid Id { get; set; }
+    public Guid Id { get; }
 
-    public string Name { get; set; }
+    public string Name { get; }
 }

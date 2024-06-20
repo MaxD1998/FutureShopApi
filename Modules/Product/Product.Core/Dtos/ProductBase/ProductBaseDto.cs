@@ -12,11 +12,11 @@ public class ProductBaseDto
         ProductParameterCount = entity.ProductParameters.Count();
     }
 
-    public string CategoryName { get; set; }
+    public string CategoryName { get; }
 
-    public string Name { get; set; }
+    public string Name { get; }
 
-    public int ProductCount { get; set; }
+    public int ProductCount { get; }
 
-    public int ProductParameterCount { get; set; }
+    public int ProductParameterCount { get; }
 }

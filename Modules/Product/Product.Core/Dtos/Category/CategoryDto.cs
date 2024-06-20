@@ -5,10 +5,6 @@ namespace Product.Core.Dtos.Category;
 
 public class CategoryDto : IDto
 {
-    public CategoryDto()
-    {
-    }
-
     public CategoryDto(CategoryEntity entity)
     {
         HasSubCategories = entity.SubCategories.Count != 0;
@@ -17,11 +13,11 @@ public class CategoryDto : IDto
         ParentCategoryId = entity.ParentCategoryId;
     }
 
-    public bool HasSubCategories { get; set; }
+    public bool HasSubCategories { get; }
 
-    public Guid Id { get; set; }
+    public Guid Id { get; }
 
-    public string Name { get; set; }
+    public string Name { get; }
 
-    public Guid? ParentCategoryId { get; set; }
+    public Guid? ParentCategoryId { get; }
 }
