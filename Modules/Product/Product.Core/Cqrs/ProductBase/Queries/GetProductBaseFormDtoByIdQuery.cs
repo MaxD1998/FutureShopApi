@@ -19,6 +19,7 @@ internal class GetProductBaseFormDtoByIdQueryHandler : BaseRequestHandler<Produc
         var result = await _context.Set<ProductBaseEntity>()
             .Include(x => x.Products)
             .Include(x => x.ProductParameters)
+                .ThenInclude(x => x.Translations)
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
         return result is null ? null : new ProductBaseFormDto(result);
