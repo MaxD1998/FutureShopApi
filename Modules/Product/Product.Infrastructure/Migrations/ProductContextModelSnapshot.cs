@@ -17,7 +17,7 @@ namespace Product.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.3")
+                .HasAnnotation("ProductVersion", "8.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -106,11 +106,6 @@ namespace Product.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(1);
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnOrder(102);
-
                     b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(2);
@@ -139,6 +134,11 @@ namespace Product.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(1);
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnOrder(102);
+
                     b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(2);
@@ -148,6 +148,9 @@ namespace Product.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
                         .HasColumnOrder(101);
+
+                    b.Property<double>("Price")
+                        .HasColumnType("double precision");
 
                     b.Property<Guid>("ProductBaseId")
                         .HasColumnType("uuid")
@@ -190,6 +193,44 @@ namespace Product.Infrastructure.Migrations
                     b.HasIndex("ProductBaseId");
 
                     b.ToTable("ProductParameter", (string)null);
+                });
+
+            modelBuilder.Entity("Product.Domain.Entities.ProductParameterTranslationEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("Lang")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("character varying(5)")
+                        .HasColumnOrder(50);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<Guid>("ProductParameterId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(100);
+
+                    b.Property<string>("Translation")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnOrder(51);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductParameterId", "Lang")
+                        .IsUnique();
+
+                    b.ToTable("ProductParameterTranslation", (string)null);
                 });
 
             modelBuilder.Entity("Product.Domain.Entities.ProductParameterValueEntity", b =>
@@ -283,6 +324,17 @@ namespace Product.Infrastructure.Migrations
                     b.Navigation("ProductBase");
                 });
 
+            modelBuilder.Entity("Product.Domain.Entities.ProductParameterTranslationEntity", b =>
+                {
+                    b.HasOne("Product.Domain.Entities.ProductParameterEntity", "ProductParameter")
+                        .WithMany("Translations")
+                        .HasForeignKey("ProductParameterId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductParameter");
+                });
+
             modelBuilder.Entity("Product.Domain.Entities.ProductParameterValueEntity", b =>
                 {
                     b.HasOne("Product.Domain.Entities.ProductEntity", "Product")
@@ -321,6 +373,11 @@ namespace Product.Infrastructure.Migrations
             modelBuilder.Entity("Product.Domain.Entities.ProductEntity", b =>
                 {
                     b.Navigation("ProductParameterValues");
+                });
+
+            modelBuilder.Entity("Product.Domain.Entities.ProductParameterEntity", b =>
+                {
+                    b.Navigation("Translations");
                 });
 #pragma warning restore 612, 618
         }

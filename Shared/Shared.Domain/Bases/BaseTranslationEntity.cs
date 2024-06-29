@@ -1,6 +1,6 @@
 ﻿namespace Shared.Domain.Bases;
 
-public class BaseTranslationEntity : BaseEntity
+public abstract class BaseTranslationEntity : BaseEntity
 {
     public string Lang { get; set; }
 

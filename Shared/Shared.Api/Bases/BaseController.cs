@@ -28,6 +28,8 @@ public class BaseController : ControllerBase
     protected async Task<IActionResult> ApiResponseAsync<TParam>(TParam param, IBaseRequest request, CancellationToken cancellationToken = default)
         where TParam : class
     {
+        cancellationToken.ThrowIfCancellationRequested();
+
         if (!IsValid(param, out var errors))
             return BadRequest(errors);
 
@@ -51,6 +53,8 @@ public class BaseController : ControllerBase
 
     protected async Task<IActionResult> ApiResponseAsync(IBaseRequest request, CancellationToken cancellationToken = default)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+
         if (request is IRequest)
         {
             await _mediator.Send(request, cancellationToken);

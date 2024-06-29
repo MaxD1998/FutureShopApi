@@ -19,10 +19,6 @@ public class ProductBaseConfig : BaseConfig<ProductBaseEntity>
             .HasColumnOrder(101)
             .IsRequired();
 
-        builder.Property(x => x.Description)
-            .HasColumnOrder(102)
-            .IsRequired();
-
         builder.HasMany(x => x.ProductParameters)
             .WithOne(x => x.ProductBase)
             .HasForeignKey(x => x.ProductBaseId);

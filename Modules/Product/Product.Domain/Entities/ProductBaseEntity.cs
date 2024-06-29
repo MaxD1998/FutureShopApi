@@ -6,8 +6,6 @@ public class ProductBaseEntity : BaseEntity
 {
     public Guid CategoryId { get; set; }
 
-    public string Description { get; set; }
-
     public string Name { get; set; }
 
     #region Related Data
@@ -19,4 +17,11 @@ public class ProductBaseEntity : BaseEntity
     public ICollection<ProductEntity> Products { get; set; } = [];
 
     #endregion Related Data
+
+    public void Update(ProductBaseEntity entity)
+    {
+        CategoryId = entity.CategoryId;
+        Name = entity.Name;
+        ProductParameters = entity.ProductParameters;
+    }
 }

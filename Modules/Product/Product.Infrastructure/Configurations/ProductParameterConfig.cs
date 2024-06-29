@@ -18,5 +18,9 @@ public class ProductParameterConfig : BaseConfig<ProductParameterEntity>
             .HasMaxLength(StringLengthConst.LongString)
             .HasColumnOrder(101)
             .IsRequired();
+
+        builder.HasMany(x => x.Translations)
+            .WithOne(x => x.ProductParameter)
+            .HasForeignKey(x => x.ProductParameterId);
     }
 }

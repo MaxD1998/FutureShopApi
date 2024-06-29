@@ -1,10 +1,19 @@
-﻿namespace Authorization.Core.Dtos;
+﻿using Authorization.Domain.Entities;
+
+namespace Authorization.Core.Dtos;
 
 public class AuthorizeDto
 {
-    public Guid Id { get; set; }
+    public AuthorizeDto(UserEntity entity, string token)
+    {
+        Id = entity.Id;
+        Username = $"{entity.FirstName} {entity.LastName}";
+        Token = token;
+    }
 
-    public string Token { get; set; }
+    public Guid Id { get; }
 
-    public string Username { get; set; }
+    public string Token { get; }
+
+    public string Username { get; }
 }

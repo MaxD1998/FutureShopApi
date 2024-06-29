@@ -6,7 +6,7 @@ namespace Authorization.Core.Interfaces.Services;
 
 public interface IAuthService
 {
-    Task<AuthorizeDto> LoginAsync(LoginDto dto, CancellationToken cancellationToken = default);
+    Task<AuthorizeDto> LoginAsync(LoginFormDto dto, CancellationToken cancellationToken = default);
 
     Task LogoutAsync(CancellationToken cancellationToken = default);
 

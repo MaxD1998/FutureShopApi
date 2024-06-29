@@ -31,7 +31,7 @@ public class AuthController : BaseController
     [HttpPost("Login")]
     [ProducesResponseType(typeof(AuthorizeDto), StatusCodes.Status200OK)]
     [AllowAnonymous]
-    public async Task<IActionResult> LoginAsync([FromBody] LoginDto dto, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> LoginAsync([FromBody] LoginFormDto dto, CancellationToken cancellationToken = default)
         => await ApiResponseAsync(dto, () => _authService.LoginAsync(dto, cancellationToken));
 
     [HttpGet("Logout")]

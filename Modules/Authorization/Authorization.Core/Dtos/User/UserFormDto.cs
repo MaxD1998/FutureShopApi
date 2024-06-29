@@ -1,10 +1,9 @@
 ﻿using Authorization.Domain.Entities;
-using Shared.Core.Interfaces;
 using Crypt = BCrypt.Net.BCrypt;
 
 namespace Authorization.Core.Dtos.User;
 
-public class UserFormDto : IFormDto
+public class UserFormDto
 {
     public DateTime DateOfBirth { get; set; }
 

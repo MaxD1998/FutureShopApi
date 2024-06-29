@@ -1,11 +1,10 @@
 ﻿using Product.Core.Dtos.CategoryTranslation;
 using Product.Domain.Entities;
 using Product.Infrastructure;
-using Shared.Core.Interfaces;
 
 namespace Product.Core.Dtos.Category;
 
-public class CategoryFormDto : IFormDto
+public class CategoryFormDto
 {
     public CategoryFormDto()
     {

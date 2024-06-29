@@ -1,30 +1,28 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Product.Core.Dtos.Category;
+using Product.Core.Dtos;
 using Product.Core.Interfaces.Services;
 using Product.Domain.Entities;
 using Product.Infrastructure;
 using Shared.Core.Bases;
 using Shared.Infrastructure.Constants;
-using System.Threading;
 
 namespace Product.Core.Cqrs.Category.Queries;
-public record GetsCategoryDtoAvailableToBeChildCategoryQuery(Guid? Id, Guid? ParentId, IEnumerable<Guid> ChildIds) : IRequest<IEnumerable<CategoryDto>>;
+public record GetsCategoryIdNameDtoAvailableToBeChildCategoryQuery(Guid? Id, Guid? ParentId, IEnumerable<Guid> ChildIds) : IRequest<IEnumerable<IdNameDto>>;
 
-internal class GetsCategoryDtoAvailableToBeChildCategoryQueryHandler : BaseRequestHandler<ProductContext, GetsCategoryDtoAvailableToBeChildCategoryQuery, IEnumerable<CategoryDto>>
+internal class GetsCategoryIdNameDtoAvailableToBeChildCategoryQueryHandler : BaseRequestHandler<ProductContext, GetsCategoryIdNameDtoAvailableToBeChildCategoryQuery, IEnumerable<IdNameDto>>
 {
     private readonly IHeaderService _headerService;
 
-    public GetsCategoryDtoAvailableToBeChildCategoryQueryHandler(IHeaderService headerService, ProductContext context) : base(context)
+    public GetsCategoryIdNameDtoAvailableToBeChildCategoryQueryHandler(IHeaderService headerService, ProductContext context) : base(context)
     {
         _headerService = headerService;
     }
 
-    public override async Task<IEnumerable<CategoryDto>> Handle(GetsCategoryDtoAvailableToBeChildCategoryQuery request, CancellationToken cancellationToken)
+    public override async Task<IEnumerable<IdNameDto>> Handle(GetsCategoryIdNameDtoAvailableToBeChildCategoryQuery request, CancellationToken cancellationToken)
     {
         var query = _context.Set<CategoryEntity>()
             .AsNoTracking()
-            .Include(x => x.SubCategories)
             .Include(x => x.Translations.Where(x => x.Lang == _headerService.GetHeader(HeaderNameConst.Lang)))
             .AsQueryable();
 
@@ -42,7 +40,7 @@ internal class GetsCategoryDtoAvailableToBeChildCategoryQueryHandler : BaseReque
             query = query.Where(x => !request.ChildIds.Contains(x.Id));
 
         var results = await query
-            .Select(x => new CategoryDto(x))
+            .Select(x => new IdNameDto(x))
             .ToListAsync(cancellationToken);
 
         return results;

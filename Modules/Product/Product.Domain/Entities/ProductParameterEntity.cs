@@ -2,7 +2,7 @@
 
 namespace Product.Domain.Entities;
 
-public class ProductParameterEntity : BaseEntity
+public class ProductParameterEntity : BaseTranslatableEntity<ProductParameterTranslationEntity>
 {
     public string Name { get; set; }
 
@@ -13,4 +13,10 @@ public class ProductParameterEntity : BaseEntity
     public ProductBaseEntity ProductBase { get; set; }
 
     #endregion Related Data
+
+    public void Update(ProductParameterEntity entity)
+    {
+        Name = entity.Name;
+        UpdateTranslations(entity.Translations);
+    }
 }
