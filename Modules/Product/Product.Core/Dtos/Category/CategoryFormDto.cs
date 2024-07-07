@@ -14,7 +14,7 @@ public class CategoryFormDto
     {
         Name = entity.Name;
         ParentCategoryId = entity.ParentCategoryId;
-        SubCategoryIds = entity.SubCategories.Select(x => x.Id).ToList();
+        SubCategories = entity.SubCategories.Select(x => new IdNameDto(x)).ToList();
         Translations = entity.Translations.Select(x => new CategoryTranslationFormDto(x)).ToList();
     }
 
@@ -22,7 +22,7 @@ public class CategoryFormDto
 
     public Guid? ParentCategoryId { get; set; }
 
-    public List<Guid> SubCategoryIds { get; set; }
+    public List<IdNameDto> SubCategories { get; set; }
 
     public List<CategoryTranslationFormDto> Translations { get; set; }
 
@@ -30,7 +30,7 @@ public class CategoryFormDto
     {
         Name = Name,
         ParentCategoryId = ParentCategoryId,
-        SubCategories = context.Set<CategoryEntity>().Where(x => SubCategoryIds.Contains(x.Id)).ToList(),
+        SubCategories = SubCategories != null ? context.Set<CategoryEntity>().Where(x => SubCategories.Select(x => x.Id).Contains(x.Id)).ToList() : null,
         Translations = Translations.Select(x => x.ToEntity()).ToList(),
     };
 }

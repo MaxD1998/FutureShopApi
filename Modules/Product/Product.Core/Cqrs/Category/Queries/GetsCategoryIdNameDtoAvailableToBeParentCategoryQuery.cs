@@ -5,7 +5,6 @@ using Product.Core.Interfaces.Services;
 using Product.Domain.Entities;
 using Product.Infrastructure;
 using Shared.Core.Bases;
-using Shared.Infrastructure.Constants;
 
 namespace Product.Core.Cqrs.Category.Queries;
 
@@ -25,7 +24,6 @@ internal class GetsCategoryIdNameDtoAvailableToBeParentCategoryQueryHandler : Ba
         var query = _context.Set<CategoryEntity>()
             .AsNoTracking()
             .Include(x => x.SubCategories)
-            .Include(x => x.Translations.Where(x => x.Lang == _headerService.GetHeader(HeaderNameConst.Lang)))
             .AsQueryable();
 
         if (request.Id.HasValue)
