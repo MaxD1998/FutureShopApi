@@ -84,8 +84,8 @@ namespace Product.Infrastructure.Migrations
                     ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ProductBaseId = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    Price = table.Column<double>(type: "double precision", nullable: false)
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    Price = table.Column<decimal>(type: "numeric", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -120,6 +120,28 @@ namespace Product.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductTranslation",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Lang = table.Column<string>(type: "character varying(5)", maxLength: 5, nullable: false),
+                    Translation = table.Column<string>(type: "text", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductTranslation", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductTranslation_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductParameterTranslation",
                 columns: table => new
                 {
@@ -149,8 +171,8 @@ namespace Product.Infrastructure.Migrations
                     CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Value = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    ProductParameterId = table.Column<Guid>(type: "uuid", nullable: false)
+                    ProductParameterId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Value = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -210,6 +232,12 @@ namespace Product.Infrastructure.Migrations
                 name: "IX_ProductParameterValue_ProductParameterId",
                 table: "ProductParameterValue",
                 column: "ProductParameterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductTranslation_ProductId_Lang",
+                table: "ProductTranslation",
+                columns: new[] { "ProductId", "Lang" },
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -223,6 +251,9 @@ namespace Product.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProductParameterValue");
+
+            migrationBuilder.DropTable(
+                name: "ProductTranslation");
 
             migrationBuilder.DropTable(
                 name: "ProductParameter");

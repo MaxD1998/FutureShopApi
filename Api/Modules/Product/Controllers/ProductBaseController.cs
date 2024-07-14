@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Product.Core.Cqrs.ProductBase.Commands;
 using Product.Core.Cqrs.ProductBase.Queries;
+using Product.Core.Dtos;
 using Product.Core.Dtos.ProductBase;
 using Shared.Api.Bases;
 using Shared.Core.Dtos;
@@ -34,11 +35,23 @@ public class ProductBaseController : BaseController
     public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
         => await ApiResponseAsync(new GetProductBaseFormDtoByIdQuery(id), cancellationToken);
 
+    [HttpGet("IdNameById/{id:guid}")]
+    [ProducesResponseType(typeof(IdNameDto), StatusCodes.Status200OK)]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetIdNameByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
+        => await ApiResponseAsync(new GetProductBaseIdNameDtoByIdQuery(id), cancellationToken);
+
     [HttpGet("Page/{pageNumber:int}")]
-    [ProducesResponseType(typeof(PageDto<ProductBaseDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PageDto<ProductBaseListDto>), StatusCodes.Status200OK)]
     [AllowAnonymous]
     public async Task<IActionResult> GetPageAsync([FromRoute] int pageNumber, CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(new GetPageProductBaseDtoQuery(pageNumber), cancellationToken);
+        => await ApiResponseAsync(new GetPageProductBaseListDtoQuery(pageNumber), cancellationToken);
+
+    [HttpGet("All")]
+    [ProducesResponseType(typeof(IEnumerable<IdNameDto>), StatusCodes.Status200OK)]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetsIdNameAsync(CancellationToken cancellationToken = default)
+        => await ApiResponseAsync(new GetsProductBaseIdNameDtoQuery(), cancellationToken);
 
     [HttpPut("{id:guid}")]
     [ProducesResponseType(typeof(ProductBaseFormDto), StatusCodes.Status200OK)]

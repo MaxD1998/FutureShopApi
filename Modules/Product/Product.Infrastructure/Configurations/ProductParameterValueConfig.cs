@@ -14,7 +14,7 @@ public class ProductParameterValueConfig : BaseConfig<ProductParameterValueEntit
             .HasColumnOrder(100)
             .IsRequired();
 
-        builder.Property(x => x.ProductId)
+        builder.Property(x => x.ProductParameterId)
             .HasColumnOrder(101)
             .IsRequired();
 

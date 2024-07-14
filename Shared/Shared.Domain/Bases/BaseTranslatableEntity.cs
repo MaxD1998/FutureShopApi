@@ -1,6 +1,6 @@
 ﻿namespace Shared.Domain.Bases;
 
-public class BaseTranslatableEntity<T> : BaseEntity where T : BaseTranslationEntity
+public abstract class BaseTranslatableEntity<T> : BaseEntity where T : BaseTranslationEntity
 {
     public ICollection<T> Translations { get; set; }
 

@@ -135,7 +135,6 @@ namespace Product.Infrastructure.Migrations
                         .HasColumnOrder(1);
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnOrder(102);
 
@@ -149,8 +148,8 @@ namespace Product.Infrastructure.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnOrder(101);
 
-                    b.Property<double>("Price")
-                        .HasColumnType("double precision");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric");
 
                     b.Property<Guid>("ProductBaseId")
                         .HasColumnType("uuid")
@@ -250,10 +249,11 @@ namespace Product.Infrastructure.Migrations
 
                     b.Property<Guid>("ProductId")
                         .HasColumnType("uuid")
-                        .HasColumnOrder(101);
+                        .HasColumnOrder(100);
 
                     b.Property<Guid>("ProductParameterId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(101);
 
                     b.Property<string>("Value")
                         .IsRequired()
@@ -268,6 +268,44 @@ namespace Product.Infrastructure.Migrations
                     b.HasIndex("ProductParameterId");
 
                     b.ToTable("ProductParameterValue", (string)null);
+                });
+
+            modelBuilder.Entity("Product.Domain.Entities.ProductTranslationEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("Lang")
+                        .IsRequired()
+                        .HasMaxLength(5)
+                        .HasColumnType("character varying(5)")
+                        .HasColumnOrder(50);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(100);
+
+                    b.Property<string>("Translation")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnOrder(51);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId", "Lang")
+                        .IsUnique();
+
+                    b.ToTable("ProductTranslation", (string)null);
                 });
 
             modelBuilder.Entity("Product.Domain.Entities.CategoryEntity", b =>
@@ -354,6 +392,17 @@ namespace Product.Infrastructure.Migrations
                     b.Navigation("ProductParameter");
                 });
 
+            modelBuilder.Entity("Product.Domain.Entities.ProductTranslationEntity", b =>
+                {
+                    b.HasOne("Product.Domain.Entities.ProductEntity", "Product")
+                        .WithMany("Translations")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Product.Domain.Entities.CategoryEntity", b =>
                 {
                     b.Navigation("ProductBases");
@@ -373,6 +422,8 @@ namespace Product.Infrastructure.Migrations
             modelBuilder.Entity("Product.Domain.Entities.ProductEntity", b =>
                 {
                     b.Navigation("ProductParameterValues");
+
+                    b.Navigation("Translations");
                 });
 
             modelBuilder.Entity("Product.Domain.Entities.ProductParameterEntity", b =>

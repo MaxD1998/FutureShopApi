@@ -1,6 +1,8 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Shared.Core.Errors;
 using Shared.Core.Exceptions;
+using Shared.Domain.Bases;
 using Shared.Infrastructure.Bases;
 
 namespace Shared.Core.Bases;
@@ -20,6 +22,9 @@ public abstract class BaseRequestHandler<TContext, TRequest> : IRequestHandler<T
     }
 
     public abstract Task Handle(TRequest request, CancellationToken cancellationToken);
+
+    protected async Task DeleteByIdAsync<TEntity>(Guid id, CancellationToken cancellationToken) where TEntity : BaseEntity
+        => await _context.Set<TEntity>().Where(x => x.Id == id).ExecuteDeleteAsync(cancellationToken);
 }
 
 public abstract class BaseRequestHandler<TContext, TRequest, TResponse> : IRequestHandler<TRequest, TResponse>

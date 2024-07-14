@@ -1,26 +1,15 @@
 ﻿using Product.Domain.Entities;
+using Shared.Core.Bases;
 
 namespace Product.Core.Dtos.ProductParameterTranslation;
 
-public class ProgramParameterTranslationFormDto
+public class ProgramParameterTranslationFormDto : BaseTranslationFormDto<ProductParameterTranslationEntity>
 {
     public ProgramParameterTranslationFormDto()
     {
     }
 
-    public ProgramParameterTranslationFormDto(ProductParameterTranslationEntity entity)
+    public ProgramParameterTranslationFormDto(ProductParameterTranslationEntity entity) : base(entity)
     {
-        Lang = entity.Lang;
-        Translation = entity.Translation;
     }
-
-    public string Lang { get; set; }
-
-    public string Translation { get; set; }
-
-    public ProductParameterTranslationEntity ToEntity() => new()
-    {
-        Lang = Lang,
-        Translation = Translation
-    };
 }

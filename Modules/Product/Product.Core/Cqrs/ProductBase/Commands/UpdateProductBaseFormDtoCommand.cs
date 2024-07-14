@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Product.Core.Dtos.Category;
 using Product.Core.Dtos.ProductBase;
 using Product.Domain.Entities;
 using Product.Infrastructure;

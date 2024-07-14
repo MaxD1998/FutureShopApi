@@ -2,9 +2,9 @@
 
 namespace Product.Core.Dtos.ProductBase;
 
-public class ProductBaseDto
+public class ProductBaseListDto
 {
-    public ProductBaseDto(ProductBaseEntity entity)
+    public ProductBaseListDto(ProductBaseEntity entity)
     {
         CategoryName = entity.Category.Name;
         Id = entity.Id;

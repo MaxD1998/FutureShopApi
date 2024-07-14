@@ -8,9 +8,9 @@ using Shared.Core.Bases;
 using Shared.Infrastructure.Constants;
 
 namespace Product.Core.Cqrs.Category.Queries;
-public record GetsCategoryDtoByCategoryParentQuery(Guid? CategoryParentId = null) : IRequest<IEnumerable<CategoryDto>>;
+public record GetsCategoryListDtoByCategoryParentQuery(Guid? CategoryParentId = null) : IRequest<IEnumerable<CategoryListDto>>;
 
-internal class GetsCategoryDtoByCategoryParentQueryHandler : BaseRequestHandler<ProductContext, GetsCategoryDtoByCategoryParentQuery, IEnumerable<CategoryDto>>
+internal class GetsCategoryDtoByCategoryParentQueryHandler : BaseRequestHandler<ProductContext, GetsCategoryListDtoByCategoryParentQuery, IEnumerable<CategoryListDto>>
 {
     private readonly IHeaderService _headerService;
 
@@ -19,12 +19,12 @@ internal class GetsCategoryDtoByCategoryParentQueryHandler : BaseRequestHandler<
         _headerService = headerService;
     }
 
-    public override async Task<IEnumerable<CategoryDto>> Handle(GetsCategoryDtoByCategoryParentQuery request, CancellationToken cancellationToken)
+    public override async Task<IEnumerable<CategoryListDto>> Handle(GetsCategoryListDtoByCategoryParentQuery request, CancellationToken cancellationToken)
         => await _context.Set<CategoryEntity>()
             .AsNoTracking()
             .Include(x => x.SubCategories)
             .Include(x => x.Translations.Where(x => x.Lang == _headerService.GetHeader(HeaderNameConst.Lang)))
             .Where(x => x.ParentCategoryId == request.CategoryParentId)
-            .Select(x => new CategoryDto(x))
+            .Select(x => new CategoryListDto(x))
             .ToListAsync(cancellationToken);
 }

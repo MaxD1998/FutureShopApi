@@ -10,23 +10,23 @@ using Shared.Core.Extensions;
 using Shared.Infrastructure.Constants;
 
 namespace Product.Core.Cqrs.Category.Queries;
-public record GetPageCategoryDtoQuery(int PageNumber) : IRequest<PageDto<CategoryDto>>;
+public record GetPageCategoryListDtoQuery(int PageNumber) : IRequest<PageDto<CategoryListDto>>;
 
-internal class GetPageCategoryDtoQueryHandler : BaseRequestHandler<ProductContext, GetPageCategoryDtoQuery, PageDto<CategoryDto>>
+internal class GetPageCategoryListDtoQueryHandler : BaseRequestHandler<ProductContext, GetPageCategoryListDtoQuery, PageDto<CategoryListDto>>
 {
     private readonly IHeaderService _headerService;
 
-    public GetPageCategoryDtoQueryHandler(IHeaderService headerService, ProductContext context) : base(context)
+    public GetPageCategoryListDtoQueryHandler(IHeaderService headerService, ProductContext context) : base(context)
     {
         _headerService = headerService;
     }
 
-    public override async Task<PageDto<CategoryDto>> Handle(GetPageCategoryDtoQuery request, CancellationToken cancellationToken)
+    public override async Task<PageDto<CategoryListDto>> Handle(GetPageCategoryListDtoQuery request, CancellationToken cancellationToken)
         => await _context.Set<CategoryEntity>()
             .AsNoTracking()
             .Include(x => x.SubCategories)
             .Include(x => x.Translations.Where(x => x.Lang == _headerService.GetHeader(HeaderNameConst.Lang)))
             .OrderBy(x => x.Translations.FirstOrDefault()!.Translation ?? x.Name)
-            .Select(x => new CategoryDto(x))
+            .Select(x => new CategoryListDto(x))
             .ToPageAsync(request.PageNumber, cancellationToken);
 }

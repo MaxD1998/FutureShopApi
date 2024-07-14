@@ -1,8 +1,10 @@
-﻿namespace Shared.Core.Bases;
+﻿using Shared.Core.Interfaces;
 
-public abstract class BaseIdNameDto
+namespace Shared.Core.Bases;
+
+public abstract class BaseIdNameDto : IDto
 {
-    protected BaseIdNameDto(Guid id, string name)
+    public BaseIdNameDto(Guid id, string name)
     {
         Id = id;
         Name = name;

@@ -9,19 +9,19 @@ using Shared.Core.Extensions;
 
 namespace Product.Core.Cqrs.ProductBase.Queries;
 
-public record GetPageProductBaseDtoQuery(int PageNumber) : IRequest<PageDto<ProductBaseDto>>;
+public record GetPageProductBaseListDtoQuery(int PageNumber) : IRequest<PageDto<ProductBaseListDto>>;
 
-internal class GetPageProductBaseDtoQueryHandler : BaseRequestHandler<ProductContext, GetPageProductBaseDtoQuery, PageDto<ProductBaseDto>>
+internal class GetPageProductBaseListDtoQueryHandler : BaseRequestHandler<ProductContext, GetPageProductBaseListDtoQuery, PageDto<ProductBaseListDto>>
 {
-    public GetPageProductBaseDtoQueryHandler(ProductContext context) : base(context)
+    public GetPageProductBaseListDtoQueryHandler(ProductContext context) : base(context)
     {
     }
 
-    public override async Task<PageDto<ProductBaseDto>> Handle(GetPageProductBaseDtoQuery request, CancellationToken cancellationToken)
+    public override async Task<PageDto<ProductBaseListDto>> Handle(GetPageProductBaseListDtoQuery request, CancellationToken cancellationToken)
         => await _context.Set<ProductBaseEntity>()
             .Include(x => x.Category)
             .Include(x => x.Products)
             .Include(x => x.ProductParameters)
-            .Select(x => new ProductBaseDto(x))
+            .Select(x => new ProductBaseListDto(x))
             .ToPageAsync(request.PageNumber, cancellationToken);
 }

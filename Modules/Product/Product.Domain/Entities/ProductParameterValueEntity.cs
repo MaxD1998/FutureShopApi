@@ -17,4 +17,9 @@ public class ProductParameterValueEntity : BaseEntity
     public ProductParameterEntity ProductParameter { get; set; }
 
     #endregion Related Data
+
+    public void Update(ProductParameterValueEntity entity)
+    {
+        Value = entity.Value;
+    }
 }

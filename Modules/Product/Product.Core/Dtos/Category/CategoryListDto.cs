@@ -3,9 +3,9 @@ using Shared.Core.Interfaces;
 
 namespace Product.Core.Dtos.Category;
 
-public class CategoryDto : IDto
+public class CategoryListDto : IDto
 {
-    public CategoryDto(CategoryEntity entity)
+    public CategoryListDto(CategoryEntity entity)
     {
         HasSubCategories = entity.SubCategories.Count != 0;
         Id = entity.Id;

@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Product.Domain.Entities;
 using Product.Infrastructure;
 using Shared.Core.Bases;
@@ -14,5 +13,5 @@ internal class DeleteProductBaseCommandHandler : BaseRequestHandler<ProductConte
     }
 
     public override async Task Handle(DeleteProductBaseCommand request, CancellationToken cancellationToken)
-        => await _context.Set<ProductBaseEntity>().Where(x => x.Id == request.Id).ExecuteDeleteAsync(cancellationToken);
+        => await DeleteByIdAsync<ProductBaseEntity>(request.Id, cancellationToken);
 }
