@@ -24,24 +24,22 @@ public class AuthController : BaseController
 
     [HttpGet("RefreshToken")]
     [ProducesResponseType(typeof(AuthorizeDto), StatusCodes.Status200OK)]
-    [AllowAnonymous]
     public async Task<IActionResult> GenerateTokenAsync(CancellationToken cancellationToken = default)
         => await ApiResponseAsync(() => _authService.RefreshTokenAsync(cancellationToken));
 
     [HttpPost("Login")]
     [ProducesResponseType(typeof(AuthorizeDto), StatusCodes.Status200OK)]
-    [AllowAnonymous]
     public async Task<IActionResult> LoginAsync([FromBody] LoginFormDto dto, CancellationToken cancellationToken = default)
         => await ApiResponseAsync(dto, () => _authService.LoginAsync(dto, cancellationToken));
 
     [HttpGet("Logout")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [Authorize]
     public async Task<IActionResult> Logout(CancellationToken cancellationToken = default)
         => await ApiResponseAsync(() => _authService.LogoutAsync(cancellationToken));
 
     [HttpPost("Register")]
     [ProducesResponseType(typeof(AuthorizeDto), StatusCodes.Status200OK)]
-    [AllowAnonymous]
     public async Task<IActionResult> RegisterAsync([FromBody] UserFormDto dto, CancellationToken cancellationToken = default)
         => await ApiResponseAsync(dto, () => _authService.RegisterAsync(dto, cancellationToken));
 }

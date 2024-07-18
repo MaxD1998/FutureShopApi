@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Moq;
 using Shared.Core.Exceptions;
+using Shared.Domain.Enums;
 using Shared.Infrastructure.Constants;
 using Shared.Infrastructure.Settings;
 using System.Security.Claims;
@@ -148,6 +149,7 @@ public class AuthServiceTest
             HashedPassword = "HashedPassword",
             FirstName = "Test",
             LastName = "User",
+            Type = UserType.SuperAdmin
         };
 
         var refreshTokenEntity = new RefreshTokenEntity()
@@ -157,7 +159,7 @@ public class AuthServiceTest
             User = userEntity,
             StartDate = DateOnly.FromDateTime(DateTime.UtcNow),
             EndDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(_refreshTokenSettingsMock.Object.Value.ExpireTime)),
-            Token = Guid.NewGuid()
+            Token = Guid.NewGuid(),
         };
 
         _cookieServiceMock.Setup(x => x.GetCookieValue(CookieNameConst.RefreshToken)).Returns(Guid.NewGuid().ToString());
@@ -171,6 +173,7 @@ public class AuthServiceTest
         Assert.Equal(userEntity.Id, result.Id);
         Assert.Equal($"{userEntity.FirstName} {userEntity.LastName}", result.Username);
         Assert.NotEmpty(result.Token);
+        Assert.Equal(userEntity.Type.GetUserPrivileges(), result.Roles);
     }
 
     [Fact]

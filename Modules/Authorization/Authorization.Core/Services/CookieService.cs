@@ -35,5 +35,10 @@ public class CookieService : ICookieService
     }
 
     public void RemoveCookie(string name)
-        => _reponseCookies.Delete(name);
+    {
+        if (!_requestCookieCollection.ContainsKey(name))
+            return;
+
+        AddCookie(name, string.Empty, -1);
+    }
 }

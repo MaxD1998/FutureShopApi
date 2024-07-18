@@ -1,4 +1,5 @@
 ﻿using Authorization.Domain.Entities;
+using Shared.Domain.Enums;
 
 namespace Authorization.Core.Dtos;
 
@@ -9,9 +10,12 @@ public class AuthorizeDto
         Id = entity.Id;
         Username = $"{entity.FirstName} {entity.LastName}";
         Token = token;
+        Roles = entity.Type.GetUserPrivileges();
     }
 
     public Guid Id { get; }
+
+    public IEnumerable<UserType> Roles { get; set; }
 
     public string Token { get; }
 
