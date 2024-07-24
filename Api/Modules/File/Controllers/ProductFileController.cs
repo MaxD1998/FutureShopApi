@@ -19,6 +19,24 @@ public class ProductFileController : BaseController
     [HttpGet]
     public async Task<IActionResult> A()
     {
+        //var a = System.IO.File.ReadAllBytes("C:\\Users\\MaksMichalski\\Desktop\\ala.exe");
+
+        //if (a.Length < 16 * 1000 * 1024)
+        //{
+        //    await _context.AddAsync<ProductPhotoEntity>(new()
+        //    {
+        //        Data = [],
+        //        Name = "name",
+        //    });
+        //}
+
+        //var bucket = new GridFSBucket(_context.Database, new()
+        //{
+        //    BucketName = "ProductPhoto",
+        //    ChunkSizeBytes = 5 * 1000 * 1024 //5MB
+        //});
+        //await bucket.UploadFromBytesAsync("Test.exe", a);
+
         await _context.AddAsync<ProductPhotoEntity>(new()
         {
             Name = "name",

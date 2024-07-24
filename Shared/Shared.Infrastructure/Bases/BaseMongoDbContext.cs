@@ -24,20 +24,17 @@ public abstract class BaseMongoDbContext
     public IMongoDatabase Database { get; private set; }
 
     public async Task AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default)
-    {
-        var collection = Database.GetCollection<TEntity>(typeof(TEntity).Name.Replace("Entity", string.Empty));
-        await collection.InsertOneAsync(entity, null, cancellationToken);
-    }
+        => await Set<TEntity>().InsertOneAsync(entity, null, cancellationToken);
 
     public async Task AddRangeAsync<TEntity>(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
+        => await Set<TEntity>().InsertManyAsync(entities, null, cancellationToken);
+
+    public async Task<List<TEntity>> GetAllAsync<TEntity>(CancellationToken cancellationToken = default)
     {
-        var collection = Database.GetCollection<TEntity>(typeof(TEntity).Name.Replace("Entity", string.Empty));
-        await collection.InsertManyAsync(entities, null, cancellationToken);
+        var filter = FilterDefinition<TEntity>.Empty;
+        return await Set<TEntity>().Find(filter).ToListAsync(cancellationToken);
     }
 
-    public IQueryable<TEntity> Set<TEntity>()
-    {
-        var collection = Database.GetCollection<TEntity>(typeof(TEntity).Name.Replace("Entity", string.Empty));
-        return collection.AsQueryable();
-    }
+    public IMongoCollection<TEntity> Set<TEntity>()
+        => Database.GetCollection<TEntity>(typeof(TEntity).Name.Replace("Entity", string.Empty));
 }
