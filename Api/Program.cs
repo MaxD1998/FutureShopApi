@@ -40,7 +40,10 @@ public class Program
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(conf =>
+            {
+                conf.DefaultModelsExpandDepth(-1);
+            });
         }
 
         app.UseMiddleware<ErrorHandlingMiddleware>();

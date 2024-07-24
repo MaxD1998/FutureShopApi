@@ -21,7 +21,6 @@ public class ProductFileController : BaseController
     {
         await _context.AddAsync<ProductPhotoEntity>(new()
         {
-            Id = "ss",
             Name = "name",
         });
 
