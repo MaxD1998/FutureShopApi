@@ -1,22 +1,18 @@
-﻿using Shared.Core.Dtos;
+﻿using Shared.Infrastructure.Dtos;
 
 namespace Shared.Core.Errors;
 
-public static class ExceptionMessage
+public static partial class ExceptionMessage
 {
-    public static ErrorMessageDto BadGuidFormat => new("E007", "Bad Guid format");
+    public static ErrorMessageDto E001SessionHasExpired => new("E001", "Session has expired");
 
-    public static ErrorMessageDto DatabaseNotAvailable => new("E005", "Database is not available");
+    public static ErrorMessageDto E002ValidatorNotExist => new("E002", "Validator not exist");
 
-    public static ErrorMessageDto NoDataToUpdate => new("E001", "No data to update");
+    public static ErrorMessageDto E003WrongRefreshTokenFormat => new("E003", "Wrong refresh token format");
 
-    public static ErrorMessageDto RecordAlreadyExists => new("E008", "Record already exists");
+    public static ErrorMessageDto E004WrongEmailOrPassword => new("E004", "Wrong email or password");
 
-    public static ErrorMessageDto SessionHasExpired => new("E002", "Session has expired");
+    public static ErrorMessageDto E005BadGuidFormat => new("E005", "Bad Guid format");
 
-    public static ErrorMessageDto ValidatorNotExist => new("E003", "Validator not exist");
-
-    public static ErrorMessageDto WrongEmailOrPassword => new("E006", "Wrong email or password");
-
-    public static ErrorMessageDto WrongRefreshTokenFormat => new("E004", "Wrong refresh token format");
+    public static ErrorMessageDto E006RecordAlreadyExists => new("E006", "Record already exists");
 }

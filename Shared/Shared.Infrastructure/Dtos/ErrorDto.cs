@@ -1,6 +1,6 @@
 ﻿using FluentValidation.Results;
 
-namespace Shared.Core.Dtos;
+namespace Shared.Infrastructure.Dtos;
 
 public class ErrorDto
 {

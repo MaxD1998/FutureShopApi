@@ -3,18 +3,20 @@ using Microsoft.EntityFrameworkCore;
 using Product.Core.Dtos.Product;
 using Product.Domain.Entities;
 using Product.Infrastructure;
-using Shared.Core.Bases;
 
 namespace Product.Core.Cqrs.Product.Queries;
 public record GetProductFormDtoByIdQuery(Guid Id) : IRequest<ProductFormDto>;
 
-internal class GetProductFormDtoByIdQueryHandler : BaseRequestHandler<ProductContext, GetProductFormDtoByIdQuery, ProductFormDto>
+internal class GetProductFormDtoByIdQueryHandler : IRequestHandler<GetProductFormDtoByIdQuery, ProductFormDto>
 {
-    public GetProductFormDtoByIdQueryHandler(ProductContext context) : base(context)
+    private readonly ProductContext _context;
+
+    public GetProductFormDtoByIdQueryHandler(ProductContext context)
     {
+        _context = context;
     }
 
-    public override async Task<ProductFormDto> Handle(GetProductFormDtoByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ProductFormDto> Handle(GetProductFormDtoByIdQuery request, CancellationToken cancellationToken)
     {
         var result = await _context.Set<ProductEntity>()
             .Include(x => x.ProductParameterValues)

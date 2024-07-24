@@ -1,9 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Core.Dtos;
 using Shared.Core.Errors;
 using Shared.Core.Exceptions;
 using Shared.Core.Factories.FluentValidator;
+using Shared.Infrastructure.Dtos;
 
 namespace Shared.Api.Bases;
 
@@ -77,7 +77,7 @@ public class BaseController : ControllerBase
         var validator = _fluentValidatorFactory.GetValidator<TInput>();
 
         if (validator is null)
-            throw new NoValidatorException(ExceptionMessage.ValidatorNotExist);
+            throw new NoValidatorException(ExceptionMessage.E002ValidatorNotExist);
 
         var validation = validator.Validate(param);
         var isValid = validation.IsValid;

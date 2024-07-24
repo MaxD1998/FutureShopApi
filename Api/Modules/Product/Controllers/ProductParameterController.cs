@@ -18,6 +18,6 @@ public class ProductParameterController : BaseController
 
     [HttpGet("ProductBaseId/{id:guid}")]
     [ProducesResponseType(typeof(IEnumerable<IdNameDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetsByParameterBaseIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(new GetsProductParameterIdNameDtoByParameterBaseIdQuery(id), cancellationToken);
+    public async Task<IActionResult> GetListByParameterBaseIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
+        => await ApiResponseAsync(new GetListProductParameterIdNameDtoByParameterBaseIdQuery(id), cancellationToken);
 }

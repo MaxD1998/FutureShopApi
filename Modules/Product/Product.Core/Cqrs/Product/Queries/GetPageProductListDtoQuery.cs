@@ -3,20 +3,22 @@ using Microsoft.EntityFrameworkCore;
 using Product.Core.Dtos.Product;
 using Product.Domain.Entities;
 using Product.Infrastructure;
-using Shared.Core.Bases;
 using Shared.Core.Dtos;
 using Shared.Core.Extensions;
 
 namespace Product.Core.Cqrs.Product.Queries;
 public record GetPageProductListDtoQuery(int PageNumber) : IRequest<PageDto<ProductListDto>>;
 
-internal class GetPageProductListDtoQueryHandler : BaseRequestHandler<ProductContext, GetPageProductListDtoQuery, PageDto<ProductListDto>>
+internal class GetPageProductListDtoQueryHandler : IRequestHandler<GetPageProductListDtoQuery, PageDto<ProductListDto>>
 {
-    public GetPageProductListDtoQueryHandler(ProductContext context) : base(context)
+    private readonly ProductContext _context;
+
+    public GetPageProductListDtoQueryHandler(ProductContext context)
     {
+        _context = context;
     }
 
-    public override async Task<PageDto<ProductListDto>> Handle(GetPageProductListDtoQuery request, CancellationToken cancellationToken)
+    public async Task<PageDto<ProductListDto>> Handle(GetPageProductListDtoQuery request, CancellationToken cancellationToken)
         => await _context.Set<ProductEntity>()
             .AsNoTracking()
             .Include(x => x.ProductBase.ProductParameters)

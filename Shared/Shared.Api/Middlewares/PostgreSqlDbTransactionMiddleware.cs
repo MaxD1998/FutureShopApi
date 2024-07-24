@@ -2,11 +2,12 @@
 using Shared.Infrastructure.Bases;
 
 namespace Shared.Api.Middlewares;
-public class DbTransactionMiddleware<TContext> : IMiddleware where TContext : BaseContext
+
+public class PostgreSqlDbTransactionMiddleware<TContext> : IMiddleware where TContext : BasePostgreSqlContext
 {
     private readonly TContext _context;
 
-    public DbTransactionMiddleware(TContext context)
+    public PostgreSqlDbTransactionMiddleware(TContext context)
     {
         _context = context;
     }

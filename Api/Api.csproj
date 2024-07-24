@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.6">
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.7">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Modules\Authorization\Authorization.Core\Authorization.Core.csproj" />
+    <ProjectReference Include="..\Modules\File\File.Core\File.Core.csproj" />
     <ProjectReference Include="..\Modules\Product\Product.Core\Product.Core.csproj" />
     <ProjectReference Include="..\Shared\Shared.Api\Shared.Api.csproj" />
   </ItemGroup>

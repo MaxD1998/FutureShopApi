@@ -1,6 +1,6 @@
-﻿using Shared.Core.Dtos;
+﻿using Shared.Infrastructure.Dtos;
 
-namespace Shared.Core.Bases;
+namespace Shared.Infrastructure.Bases;
 
 public abstract class BaseException : Exception
 {

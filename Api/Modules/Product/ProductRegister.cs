@@ -14,7 +14,6 @@ public static class ProductRegister
         services.ConfigureServices();
         services.RegisterServices();
         services.RegisterMiddlewares();
-
     }
 
     private static void ConfigureServices(this IServiceCollection services)
@@ -29,7 +28,7 @@ public static class ProductRegister
 
     private static void RegisterMiddlewares(this IServiceCollection services)
     {
-        services.AddScoped<DbTransactionMiddleware<ProductContext>>();
+        services.AddScoped<PostgreSqlDbTransactionMiddleware<ProductContext>>();
     }
 
     private static void RegisterServices(this IServiceCollection services)

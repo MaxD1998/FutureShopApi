@@ -2,19 +2,21 @@
 using Authorization.Inrfrastructure;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using Shared.Core.Bases;
 
 namespace Authorization.Core.Cqrs.User.Queries;
 
 public record GetUserEntityByEmailQuery(string Email) : IRequest<UserEntity>;
 
-internal class GetUserEntityByEmailQueryHandler : BaseRequestHandler<AuthContext, GetUserEntityByEmailQuery, UserEntity>
+internal class GetUserEntityByEmailQueryHandler : IRequestHandler<GetUserEntityByEmailQuery, UserEntity>
 {
-    public GetUserEntityByEmailQueryHandler(AuthContext context) : base(context)
+    private readonly AuthContext _context;
+
+    public GetUserEntityByEmailQueryHandler(AuthContext context)
     {
+        _context = context;
     }
 
-    public override async Task<UserEntity> Handle(GetUserEntityByEmailQuery request, CancellationToken cancellationToken)
+    public async Task<UserEntity> Handle(GetUserEntityByEmailQuery request, CancellationToken cancellationToken)
         => await _context.Set<UserEntity>()
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Email == request.Email, cancellationToken);

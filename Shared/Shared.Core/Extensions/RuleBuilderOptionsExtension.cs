@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using Shared.Core.Dtos;
+using Shared.Infrastructure.Dtos;
 
 namespace Shared.Core.Extensions;
 

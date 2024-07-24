@@ -2,7 +2,7 @@
 
 public class ConnectionSettings
 {
-    public string AuthorizationDbCs { get; init; }
+    public MongoDBSettings MongoDB { get; init; }
 
-    public string ProductDbCs { get; init; }
+    public PostgreSQLSettings PostgreSQL { get; init; }
 }
