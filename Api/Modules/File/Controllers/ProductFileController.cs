@@ -1,5 +1,4 @@
-﻿using File.Domain.Entities;
-using File.Infrastructure;
+﻿using File.Core.Cqrs.ProductPhoto.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Api.Bases;
@@ -9,39 +8,11 @@ namespace Api.Modules.File.Controllers;
 
 public class ProductFileController : BaseController
 {
-    private readonly FileContext _context;
-
-    public ProductFileController(IFluentValidatorFactory fluentValidatorFactory, IMediator mediator, FileContext context) : base(fluentValidatorFactory, mediator)
+    public ProductFileController(IFluentValidatorFactory fluentValidatorFactory, IMediator mediator) : base(fluentValidatorFactory, mediator)
     {
-        _context = context;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> A()
-    {
-        //var a = System.IO.File.ReadAllBytes("C:\\Users\\MaksMichalski\\Desktop\\ala.exe");
-
-        //if (a.Length < 16 * 1000 * 1024)
-        //{
-        //    await _context.AddAsync<ProductPhotoEntity>(new()
-        //    {
-        //        Data = [],
-        //        Name = "name",
-        //    });
-        //}
-
-        //var bucket = new GridFSBucket(_context.Database, new()
-        //{
-        //    BucketName = "ProductPhoto",
-        //    ChunkSizeBytes = 5 * 1000 * 1024 //5MB
-        //});
-        //await bucket.UploadFromBytesAsync("Test.exe", a);
-
-        await _context.AddAsync<ProductPhotoEntity>(new()
-        {
-            Name = "name",
-        });
-
-        return Ok();
-    }
+    [HttpPost("Photo/Upload/{id:guid}")]
+    public async Task<IActionResult> CreatePhoto([FromRoute] Guid id, [FromForm] IFormFile file, CancellationToken cancellationToken = default)
+        => await ApiResponseAsync(new CreateProductPhotoCommand(id, file), cancellationToken);
 }

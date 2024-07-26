@@ -1,4 +1,5 @@
 ﻿using MongoDB.Driver;
+using Shared.Domain.Bases;
 using Shared.Infrastructure.Errors;
 using Shared.Infrastructure.Exceptions;
 
@@ -23,18 +24,28 @@ public abstract class BaseMongoDbContext
 
     public IMongoDatabase Database { get; private set; }
 
-    public async Task AddAsync<TEntity>(TEntity entity, CancellationToken cancellationToken = default)
-        => await Set<TEntity>().InsertOneAsync(entity, null, cancellationToken);
-
-    public async Task AddRangeAsync<TEntity>(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
-        => await Set<TEntity>().InsertManyAsync(entities, null, cancellationToken);
-
-    public async Task<List<TEntity>> GetAllAsync<TEntity>(CancellationToken cancellationToken = default)
+    public async Task AddAsync<TDocument>(TDocument document, CancellationToken cancellationToken = default) where TDocument : BaseDocument
     {
-        var filter = FilterDefinition<TEntity>.Empty;
-        return await Set<TEntity>().Find(filter).ToListAsync(cancellationToken);
+        document.CreateTime = DateTime.UtcNow;
+        await Set<TDocument>().InsertOneAsync(document, null, cancellationToken);
     }
 
-    public IMongoCollection<TEntity> Set<TEntity>()
-        => Database.GetCollection<TEntity>(typeof(TEntity).Name.Replace("Entity", string.Empty));
+    public async Task AddRangeAsync<TDocument>(IEnumerable<TDocument> documents, CancellationToken cancellationToken = default) where TDocument : BaseDocument
+    {
+        var date = DateTime.UtcNow;
+
+        foreach (var document in documents)
+            document.CreateTime = date;
+
+        await Set<TDocument>().InsertManyAsync(documents, null, cancellationToken);
+    }
+
+    public async Task<List<TDocument>> GetAllAsync<TDocument>(CancellationToken cancellationToken = default) where TDocument : BaseDocument
+    {
+        var filter = FilterDefinition<TDocument>.Empty;
+        return await Set<TDocument>().Find(filter).ToListAsync(cancellationToken);
+    }
+
+    public IMongoCollection<TDocument> Set<TDocument>() where TDocument : BaseDocument
+        => Database.GetCollection<TDocument>(typeof(TDocument).Name.Replace("Document", string.Empty));
 }
