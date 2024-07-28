@@ -2,5 +2,5 @@
 
 public class MongoDBSettings
 {
-    public MongoDBDetailSettings File { get; set; }
+    public MongoDBDetailSettings Product { get; set; }
 }

@@ -18,7 +18,8 @@ public static class ProductRegister
 
     private static void ConfigureServices(this IServiceCollection services)
     {
-        services.AddDbContext<ProductContext>();
+        services.AddDbContext<ProductPostgreSqlContext>();
+        services.AddScoped<ProductMongoDbContext>();
         services.AddMediatR(cfg =>
         {
             cfg.RegisterServicesFromAssembly(typeof(CoreAssembly).Assembly);
@@ -28,7 +29,8 @@ public static class ProductRegister
 
     private static void RegisterMiddlewares(this IServiceCollection services)
     {
-        services.AddScoped<PostgreSqlDbTransactionMiddleware<ProductContext>>();
+        services.AddScoped<PostgreSqlDbTransactionMiddleware<ProductPostgreSqlContext>>();
+        services.AddScoped<MongoDbTransactionMiddleware<ProductMongoDbContext>>();
     }
 
     private static void RegisterServices(this IServiceCollection services)

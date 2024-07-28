@@ -11,9 +11,9 @@ public record GetPageProductListDtoQuery(int PageNumber) : IRequest<PageDto<Prod
 
 internal class GetPageProductListDtoQueryHandler : IRequestHandler<GetPageProductListDtoQuery, PageDto<ProductListDto>>
 {
-    private readonly ProductContext _context;
+    private readonly ProductPostgreSqlContext _context;
 
-    public GetPageProductListDtoQueryHandler(ProductContext context)
+    public GetPageProductListDtoQueryHandler(ProductPostgreSqlContext context)
     {
         _context = context;
     }

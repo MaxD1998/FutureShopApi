@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace File.Core.Helpers;
+namespace Product.Core.Helpers;
 
 public static class ConversionHelper
 {

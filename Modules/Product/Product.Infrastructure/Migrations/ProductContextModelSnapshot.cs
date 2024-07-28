@@ -10,7 +10,7 @@ using Product.Infrastructure;
 
 namespace Product.Infrastructure.Migrations
 {
-    [DbContext(typeof(ProductContext))]
+    [DbContext(typeof(ProductPostgreSqlContext))]
     partial class ProductContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

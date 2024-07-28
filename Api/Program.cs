@@ -48,7 +48,7 @@ public class Program
 
         app.UseMiddleware<ErrorHandlingMiddleware>();
         app.UseMiddleware<PostgreSqlDbTransactionMiddleware<AuthContext>>();
-        app.UseMiddleware<PostgreSqlDbTransactionMiddleware<ProductContext>>();
+        app.UseMiddleware<PostgreSqlDbTransactionMiddleware<ProductPostgreSqlContext>>();
         app.UseMiddleware<MongoDbTransactionMiddleware<FileContext>>();
 
         app.UseHttpsRedirection();

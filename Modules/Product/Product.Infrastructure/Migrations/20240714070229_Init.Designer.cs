@@ -11,7 +11,7 @@ using Product.Infrastructure;
 
 namespace Product.Infrastructure.Migrations
 {
-    [DbContext(typeof(ProductContext))]
+    [DbContext(typeof(ProductPostgreSqlContext))]
     [Migration("20240714070229_Init")]
     partial class Init
     {

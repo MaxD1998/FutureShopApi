@@ -9,9 +9,9 @@ public record GetProductBaseIdNameDtoByIdQuery(Guid Id) : IRequest<IdNameDto>;
 
 internal class GetProductBaseIdNameDtoByIdQueryHandler : IRequestHandler<GetProductBaseIdNameDtoByIdQuery, IdNameDto>
 {
-    private readonly ProductContext _context;
+    private readonly ProductPostgreSqlContext _context;
 
-    public GetProductBaseIdNameDtoByIdQueryHandler(ProductContext context)
+    public GetProductBaseIdNameDtoByIdQueryHandler(ProductPostgreSqlContext context)
     {
         _context = context;
     }

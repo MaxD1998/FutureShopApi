@@ -10,9 +10,9 @@ public record GetListProductBaseIdNameDtoQuery : IRequest<IEnumerable<IdNameDto>
 
 internal class GetsProductBaseIdNameDtoQueryHandler : IRequestHandler<GetListProductBaseIdNameDtoQuery, IEnumerable<IdNameDto>>
 {
-    private readonly ProductContext _context;
+    private readonly ProductPostgreSqlContext _context;
 
-    public GetsProductBaseIdNameDtoQueryHandler(ProductContext context)
+    public GetsProductBaseIdNameDtoQueryHandler(ProductPostgreSqlContext context)
     {
         _context = context;
     }

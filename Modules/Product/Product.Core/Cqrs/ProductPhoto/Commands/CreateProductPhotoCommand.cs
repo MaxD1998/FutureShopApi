@@ -1,17 +1,17 @@
-﻿using File.Core.Helpers;
-using File.Domain.Entities;
-using File.Infrastructure;
-using MediatR;
+﻿using MediatR;
 using Microsoft.AspNetCore.Http;
+using Product.Core.Helpers;
+using Product.Domain.Documents;
+using Product.Infrastructure;
 
-namespace File.Core.Cqrs.ProductPhoto.Commands;
+namespace Product.Core.Cqrs.ProductPhoto.Commands;
 public record CreateProductPhotoCommand(Guid ProductId, IFormFile File) : IRequest;
 
 internal class CreateProductPhotoCommandHandler : IRequestHandler<CreateProductPhotoCommand>
 {
-    private readonly FileContext _context;
+    private readonly ProductMongoDbContext _context;
 
-    public CreateProductPhotoCommandHandler(FileContext context)
+    public CreateProductPhotoCommandHandler(ProductMongoDbContext context)
     {
         _context = context;
     }

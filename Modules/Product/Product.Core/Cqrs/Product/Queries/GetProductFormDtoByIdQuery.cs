@@ -9,9 +9,9 @@ public record GetProductFormDtoByIdQuery(Guid Id) : IRequest<ProductFormDto>;
 
 internal class GetProductFormDtoByIdQueryHandler : IRequestHandler<GetProductFormDtoByIdQuery, ProductFormDto>
 {
-    private readonly ProductContext _context;
+    private readonly ProductPostgreSqlContext _context;
 
-    public GetProductFormDtoByIdQueryHandler(ProductContext context)
+    public GetProductFormDtoByIdQueryHandler(ProductPostgreSqlContext context)
     {
         _context = context;
     }

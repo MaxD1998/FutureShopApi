@@ -10,9 +10,9 @@ public record UpdateProductBaseFormDtoCommand(Guid Id, ProductBaseFormDto Dto) :
 
 internal class UpdateProductBaseFormDtoCommandHandler : IRequestHandler<UpdateProductBaseFormDtoCommand, ProductBaseFormDto>
 {
-    private readonly ProductContext _context;
+    private readonly ProductPostgreSqlContext _context;
 
-    public UpdateProductBaseFormDtoCommandHandler(ProductContext context)
+    public UpdateProductBaseFormDtoCommandHandler(ProductPostgreSqlContext context)
     {
         _context = context;
     }

@@ -2,7 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using Shared.Domain.Bases;
 
-namespace File.Domain.Entities;
+namespace Product.Domain.Documents;
 
 public class ProductPhotoDocument : BaseDocument
 {

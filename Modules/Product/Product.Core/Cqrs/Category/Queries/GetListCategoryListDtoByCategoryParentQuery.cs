@@ -11,10 +11,10 @@ public record GetListCategoryListDtoByCategoryParentQuery(Guid? CategoryParentId
 
 internal class GetsCategoryDtoByCategoryParentQueryHandler : IRequestHandler<GetListCategoryListDtoByCategoryParentQuery, IEnumerable<CategoryListDto>>
 {
-    private readonly ProductContext _context;
+    private readonly ProductPostgreSqlContext _context;
     private readonly IHeaderService _headerService;
 
-    public GetsCategoryDtoByCategoryParentQueryHandler(IHeaderService headerService, ProductContext context)
+    public GetsCategoryDtoByCategoryParentQueryHandler(IHeaderService headerService, ProductPostgreSqlContext context)
     {
         _headerService = headerService;
         _context = context;

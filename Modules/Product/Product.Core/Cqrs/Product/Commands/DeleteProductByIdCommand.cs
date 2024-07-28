@@ -8,9 +8,9 @@ public record DeleteProductByIdCommand(Guid Id) : IRequest;
 
 internal class DeleteProductByIdCommandHandler : IRequestHandler<DeleteProductByIdCommand>
 {
-    private readonly ProductContext _context;
+    private readonly ProductPostgreSqlContext _context;
 
-    public DeleteProductByIdCommandHandler(ProductContext context)
+    public DeleteProductByIdCommandHandler(ProductPostgreSqlContext context)
     {
         _context = context;
     }

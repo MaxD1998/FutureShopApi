@@ -8,9 +8,9 @@ public record CreateProductFormDtoCommand(ProductFormDto Dto) : IRequest<Product
 
 internal class CreateProductFormDtoCommandHandler : IRequestHandler<CreateProductFormDtoCommand, ProductFormDto>
 {
-    private readonly ProductContext _context;
+    private readonly ProductPostgreSqlContext _context;
 
-    public CreateProductFormDtoCommandHandler(ProductContext context)
+    public CreateProductFormDtoCommandHandler(ProductPostgreSqlContext context)
     {
         _context = context;
     }

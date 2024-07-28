@@ -10,9 +10,9 @@ public record GetListProductParameterIdNameDtoByParameterBaseIdQuery(Guid Id) : 
 
 internal class GetsProductParameterIdNameDtoByParameterBaseIdQueryHandler : IRequestHandler<GetListProductParameterIdNameDtoByParameterBaseIdQuery, IEnumerable<IdNameDto>>
 {
-    private readonly ProductContext _context;
+    private readonly ProductPostgreSqlContext _context;
 
-    public GetsProductParameterIdNameDtoByParameterBaseIdQueryHandler(ProductContext context)
+    public GetsProductParameterIdNameDtoByParameterBaseIdQueryHandler(ProductPostgreSqlContext context)
     {
         _context = context;
     }

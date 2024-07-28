@@ -13,10 +13,10 @@ public record GetPageCategoryListDtoQuery(int PageNumber) : IRequest<PageDto<Cat
 
 internal class GetPageCategoryListDtoQueryHandler : IRequestHandler<GetPageCategoryListDtoQuery, PageDto<CategoryListDto>>
 {
-    private readonly ProductContext _context;
+    private readonly ProductPostgreSqlContext _context;
     private readonly IHeaderService _headerService;
 
-    public GetPageCategoryListDtoQueryHandler(IHeaderService headerService, ProductContext context)
+    public GetPageCategoryListDtoQueryHandler(IHeaderService headerService, ProductPostgreSqlContext context)
     {
         _headerService = headerService;
         _context = context;

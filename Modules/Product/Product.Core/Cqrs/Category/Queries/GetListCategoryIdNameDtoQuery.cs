@@ -11,10 +11,10 @@ public record GetListCategoryIdNameDtoQuery : IRequest<IEnumerable<IdNameDto>>;
 
 internal class GetsCategoryIdNameDtoQueryHandler : IRequestHandler<GetListCategoryIdNameDtoQuery, IEnumerable<IdNameDto>>
 {
-    private readonly ProductContext _context;
+    private readonly ProductPostgreSqlContext _context;
     private IHeaderService _headerService;
 
-    public GetsCategoryIdNameDtoQueryHandler(IHeaderService headerService, ProductContext context)
+    public GetsCategoryIdNameDtoQueryHandler(IHeaderService headerService, ProductPostgreSqlContext context)
     {
         _headerService = headerService;
         _context = context;
