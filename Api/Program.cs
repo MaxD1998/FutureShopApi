@@ -1,9 +1,7 @@
 using Api.Extensions;
 using Api.Modules.Authorization;
-using Api.Modules.File;
 using Api.Modules.Product;
 using Authorization.Inrfrastructure;
-using File.Infrastructure;
 using Product.Infrastructure;
 using Shared.Api.Middlewares;
 
@@ -25,7 +23,6 @@ public class Program
         services.AddScoped<ErrorHandlingMiddleware>();
 
         services.RegisterAuthModule();
-        services.RegisterFileModule();
         services.RegisterProductModule();
 
         services.AddControllers();
@@ -49,7 +46,7 @@ public class Program
         app.UseMiddleware<ErrorHandlingMiddleware>();
         app.UseMiddleware<PostgreSqlDbTransactionMiddleware<AuthContext>>();
         app.UseMiddleware<PostgreSqlDbTransactionMiddleware<ProductPostgreSqlContext>>();
-        app.UseMiddleware<MongoDbTransactionMiddleware<FileContext>>();
+        app.UseMiddleware<MongoDbTransactionMiddleware<ProductMongoDbContext>>();
 
         app.UseHttpsRedirection();
         app.UseRouting();
