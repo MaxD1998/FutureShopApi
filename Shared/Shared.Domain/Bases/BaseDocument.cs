@@ -7,6 +7,7 @@ public class BaseDocument
 {
     [BsonRepresentation(BsonType.DateTime)]
     [BsonElement(Order = 2)]
+    [BsonRequired]
     public DateTime CreateTime { get; set; }
 
     [BsonId]

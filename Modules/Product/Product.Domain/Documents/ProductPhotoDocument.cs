@@ -4,17 +4,10 @@ using Shared.Domain.Bases;
 
 namespace Product.Domain.Documents;
 
-public class ProductPhotoDocument : BaseDocument
+public class ProductPhotoDocument : BaseFileDocument
 {
-    [BsonElement(Order = 105)]
-    [BsonRepresentation(BsonType.String)]
-    public byte[] Data { get; set; }
-
-    [BsonElement(Order = 101)]
-    [BsonRepresentation(BsonType.String)]
-    public string Name { get; set; }
-
     [BsonElement(Order = 100)]
     [BsonRepresentation(BsonType.String)]
+    [BsonRequired]
     public Guid ProductId { get; set; }
 }

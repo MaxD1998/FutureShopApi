@@ -14,8 +14,7 @@ public abstract class BasePostgreSqlContext : DbContext
     protected BasePostgreSqlContext(IOptions<ConnectionSettings> connectionSettings)
     {
         _connectionSettings = connectionSettings.Value;
-
-        if (!Database.CanConnect())
+        if (!_connectionSettings.MigrationMode && !Database.CanConnect())
             throw new ServiceUnavailableException(ExceptionMessage.D001DatabaseNotAvailable);
     }
 

@@ -20,8 +20,8 @@ public class ProductController : BaseController
 
     [HttpPost]
     [ProducesResponseType(typeof(ProductFormDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> CreateAsync([FromBody] ProductFormDto dto, CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(dto, new CreateProductFormDtoCommand(dto), cancellationToken);
+    public async Task<IActionResult> CreateAsync([FromBody] ProductFormDto dto, [FromForm] IEnumerable<IFormFile> files, CancellationToken cancellationToken = default)
+        => await ApiResponseAsync(dto, new CreateProductFormDtoCommand(dto, files), cancellationToken);
 
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
