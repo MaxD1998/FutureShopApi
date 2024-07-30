@@ -2,7 +2,7 @@
 
 namespace Shared.Core.Errors;
 
-public static partial class ExceptionMessage
+public static class ExceptionMessage
 {
     public static ErrorMessageDto E001SessionHasExpired => new("E001", "Session has expired");
 
@@ -15,6 +15,4 @@ public static partial class ExceptionMessage
     public static ErrorMessageDto E005BadGuidFormat => new("E005", "Bad Guid format");
 
     public static ErrorMessageDto E006RecordAlreadyExists => new("E006", "Record already exists");
-
-    public static ErrorMessageDto E007IdIsUnknown => new("E007", "Id is unknown");
 }

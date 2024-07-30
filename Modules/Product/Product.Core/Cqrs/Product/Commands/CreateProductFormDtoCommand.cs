@@ -1,9 +1,11 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Product.Core.Dtos.Product;
+using Product.Core.Errors;
 using Product.Core.Extensions;
 using Product.Domain.Entities;
 using Product.Infrastructure;
+using Shared.Core.Exceptions;
 
 namespace Product.Core.Cqrs.Product.Commands;
 public record CreateProductFormDtoCommand(ProductFormDto Dto, IEnumerable<IFormFile> Files) : IRequest<ProductFormDto>;
@@ -21,6 +23,9 @@ internal class CreateProductFormDtoCommandHandler : IRequestHandler<CreateProduc
 
     public async Task<ProductFormDto> Handle(CreateProductFormDtoCommand request, CancellationToken cancellationToken)
     {
+        if (request.Dto.ProductPhotos.Count != request.Files.Count())
+            throw new BadRequestException(ExceptionMessage.Product001NoSynchronizedDataQueantityOfProductPhotosIsNotEqualWithRealFiles);
+
         var result = await _postgreSqlContext.Set<ProductEntity>().AddAsync(request.Dto.ToEntity(), cancellationToken);
 
         await _postgreSqlContext.SaveChangesAsync(cancellationToken);
