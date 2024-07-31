@@ -1,8 +1,10 @@
-﻿namespace Product.Core.Dtos.ProductPhoto;
+﻿using Microsoft.AspNetCore.Http;
+
+namespace Product.Core.Dtos.ProductPhoto;
 
 public class ProductPhotoFormDto
 {
-    public string Name { get; set; }
+    public IFormFile File { get; set; }
 
     public int Position { get; set; }
 }

@@ -1,11 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
-using Product.Core.Helpers;
-using Product.Domain.Documents;
+using Product.Core.Extensions;
 using Product.Infrastructure;
 
 namespace Product.Core.Cqrs.ProductPhoto.Commands;
-public record CreateListProductPhotoCommand(IEnumerable<IFormFile> Files) : IRequest;
+public record CreateListProductPhotoCommand(IFormFileCollection Files) : IRequest;
 
 internal class CreateListProductPhotoCommandHandler : IRequestHandler<CreateListProductPhotoCommand>
 {
@@ -20,16 +19,10 @@ internal class CreateListProductPhotoCommandHandler : IRequestHandler<CreateList
 
     public async Task Handle(CreateListProductPhotoCommand request, CancellationToken cancellationToken)
     {
-        foreach (var file in request.Files)
-        {
-            var document = new ProductPhotoDocument()
-            {
-                ContentType = file.ContentType,
-                Data = ConversionHelper.ToByte(file),
-                Name = file.FileName,
-            };
+        if (!request.Files.Any())
+            return;
 
-            await _mongoDbContext.AddAsync(document, cancellationToken);
-        }
+        var productPhotos = request.Files.Select(x => x.ToProductPhotoDocument()).ToList();
+        await _mongoDbContext.AddRangeAsync(productPhotos, cancellationToken);
     }
 }

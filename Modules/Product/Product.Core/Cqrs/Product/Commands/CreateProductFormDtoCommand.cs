@@ -1,14 +1,10 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Product.Core.Dtos.Product;
-using Product.Core.Errors;
-using Product.Core.Extensions;
 using Product.Domain.Entities;
 using Product.Infrastructure;
-using Shared.Core.Exceptions;
 
 namespace Product.Core.Cqrs.Product.Commands;
-public record CreateProductFormDtoCommand(ProductFormDto Dto, IEnumerable<IFormFile> Files) : IRequest<ProductFormDto>;
+public record CreateProductFormDtoCommand(ProductFormDto Dto) : IRequest<ProductFormDto>;
 
 internal class CreateProductFormDtoCommandHandler : IRequestHandler<CreateProductFormDtoCommand, ProductFormDto>
 {
@@ -23,25 +19,9 @@ internal class CreateProductFormDtoCommandHandler : IRequestHandler<CreateProduc
 
     public async Task<ProductFormDto> Handle(CreateProductFormDtoCommand request, CancellationToken cancellationToken)
     {
-        if (request.Dto.ProductPhotos.Count != request.Files.Count())
-            throw new BadRequestException(ExceptionMessage.Product001NoSynchronizedDataQueantityOfProductPhotosIsNotEqualWithRealFiles);
-
         var result = await _postgreSqlContext.Set<ProductEntity>().AddAsync(request.Dto.ToEntity(), cancellationToken);
 
         await _postgreSqlContext.SaveChangesAsync(cancellationToken);
-
-        if (result.Entity.ProductPhotos.Count > 0)
-        {
-            var fileNames = result.Entity.ProductPhotos
-                .Select(x => x.Name)
-                .ToList();
-
-            var photos = request.Files
-                .Where(x => fileNames.Contains(x.FileName))
-                .Select(x => x.ToProductPhotoDocument());
-
-            await _mongoDbContext.AddRangeAsync(photos, cancellationToken);
-        }
 
         return new ProductFormDto(result.Entity);
     }

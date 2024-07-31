@@ -13,6 +13,6 @@ public class ProductPhotoController : BaseController
     }
 
     [HttpPost("Photo/Upload/")]
-    public async Task<IActionResult> CreatePhoto(IEnumerable<IFormFile> files, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> CreatePhoto([FromForm] IFormFileCollection files, CancellationToken cancellationToken = default)
         => await ApiResponseAsync(new CreateListProductPhotoCommand(files), cancellationToken);
 }

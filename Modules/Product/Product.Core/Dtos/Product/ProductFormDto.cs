@@ -1,5 +1,4 @@
 ﻿using Product.Core.Dtos.ProductParameterValue;
-using Product.Core.Dtos.ProductPhoto;
 using Product.Core.Dtos.ProductTranslation;
 using Product.Domain.Entities;
 
@@ -30,8 +29,6 @@ public class ProductFormDto
     public Guid ProductBaseId { get; set; }
 
     public List<ProductParameterValueFormDto> ProductParameterValues { get; set; }
-
-    public List<ProductPhotoFormDto> ProductPhotos { get; set; }
 
     public List<ProductTranslationFormDto> Translations { get; set; }
 
