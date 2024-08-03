@@ -3,6 +3,7 @@ using Api.Modules.Authorization;
 using Api.Modules.Product;
 using Authorization.Inrfrastructure;
 using Product.Infrastructure;
+using Quartz.AspNetCore;
 using Shared.Api.Middlewares;
 
 namespace Api;
@@ -19,6 +20,7 @@ public class Program
 
         services.AddAppsettings(config);
         services.AddJwtAuthentication(config);
+        services.AddQuartzServer(config => config.WaitForJobsToComplete = true);
 
         services.AddScoped<ErrorHandlingMiddleware>();
 
