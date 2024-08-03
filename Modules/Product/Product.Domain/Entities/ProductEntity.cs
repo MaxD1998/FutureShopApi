@@ -27,6 +27,7 @@ public class ProductEntity : BaseTranslatableEntity<ProductTranslationEntity>
         Description = entity.Description;
         Name = entity.Name;
         Price = entity.Price;
+        ProductPhotos = entity.ProductPhotos;
         UpdateProductParameterValues(entity.ProductParameterValues);
         UpdateTranslations(entity.Translations);
     }

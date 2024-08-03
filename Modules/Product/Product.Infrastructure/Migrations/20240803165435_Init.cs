@@ -127,7 +127,7 @@ namespace Product.Infrastructure.Migrations
                     CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ProductId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: false),
+                    FileId = table.Column<string>(type: "text", nullable: false),
                     Position = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -256,9 +256,9 @@ namespace Product.Infrastructure.Migrations
                 column: "ProductParameterId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductPhoto_ProductId_Name",
+                name: "IX_ProductPhoto_FileId",
                 table: "ProductPhoto",
-                columns: new[] { "ProductId", "Name" },
+                column: "FileId",
                 unique: true);
 
             migrationBuilder.CreateIndex(

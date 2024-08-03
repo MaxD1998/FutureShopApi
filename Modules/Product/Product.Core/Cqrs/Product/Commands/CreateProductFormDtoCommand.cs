@@ -8,20 +8,18 @@ public record CreateProductFormDtoCommand(ProductFormDto Dto) : IRequest<Product
 
 internal class CreateProductFormDtoCommandHandler : IRequestHandler<CreateProductFormDtoCommand, ProductFormDto>
 {
-    private readonly ProductMongoDbContext _mongoDbContext;
-    private readonly ProductPostgreSqlContext _postgreSqlContext;
+    private readonly ProductPostgreSqlContext _context;
 
-    public CreateProductFormDtoCommandHandler(ProductMongoDbContext mongoDbContext, ProductPostgreSqlContext postgreSqlContext)
+    public CreateProductFormDtoCommandHandler(ProductPostgreSqlContext context)
     {
-        _mongoDbContext = mongoDbContext;
-        _postgreSqlContext = postgreSqlContext;
+        _context = context;
     }
 
     public async Task<ProductFormDto> Handle(CreateProductFormDtoCommand request, CancellationToken cancellationToken)
     {
-        var result = await _postgreSqlContext.Set<ProductEntity>().AddAsync(request.Dto.ToEntity(), cancellationToken);
+        var result = await _context.Set<ProductEntity>().AddAsync(request.Dto.ToEntity(), cancellationToken);
 
-        await _postgreSqlContext.SaveChangesAsync(cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
 
         return new ProductFormDto(result.Entity);
     }

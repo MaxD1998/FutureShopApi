@@ -281,14 +281,14 @@ namespace Product.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(1);
 
-                    b.Property<DateTime?>("ModifyTime")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("Name")
+                    b.Property<string>("FileId")
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnOrder(101);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
 
                     b.Property<int>("Position")
                         .HasColumnType("integer")
@@ -300,7 +300,7 @@ namespace Product.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId", "Name")
+                    b.HasIndex("FileId")
                         .IsUnique();
 
                     b.HasIndex("ProductId", "Position")

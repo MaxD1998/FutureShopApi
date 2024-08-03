@@ -23,6 +23,7 @@ internal class GetPageProductListDtoQueryHandler : IRequestHandler<GetPageProduc
             .AsNoTracking()
             .Include(x => x.ProductBase.ProductParameters)
             .Include(x => x.ProductParameterValues)
+            .Include(x => x.ProductPhotos)
             .Include(x => x.Translations)
             .Select(x => new ProductListDto(x))
             .ToPageAsync(request.PageNumber, cancellationToken);

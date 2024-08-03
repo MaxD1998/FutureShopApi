@@ -1,10 +1,22 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Product.Domain.Entities;
 
 namespace Product.Core.Dtos.ProductPhoto;
 
 public class ProductPhotoFormDto
 {
-    public IFormFile File { get; set; }
+    public ProductPhotoFormDto(ProductPhotoEntity entity)
+    {
+        FileId = entity.FileId;
+        Position = entity.Position;
+    }
+
+    public string FileId { get; set; }
 
     public int Position { get; set; }
+
+    public ProductPhotoEntity ToEntity() => new()
+    {
+        FileId = FileId,
+        Position = Position,
+    };
 }

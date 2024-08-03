@@ -13,7 +13,7 @@ public class ProductPhotoConfig : BaseConfig<ProductPhotoEntity>
             .HasColumnOrder(100)
             .IsRequired();
 
-        builder.Property(x => x.Name)
+        builder.Property(x => x.FileId)
             .HasColumnOrder(101)
             .IsRequired();
 
@@ -21,7 +21,7 @@ public class ProductPhotoConfig : BaseConfig<ProductPhotoEntity>
             .HasColumnOrder(102)
             .IsRequired();
 
-        builder.HasIndex(x => new { x.ProductId, x.Name })
+        builder.HasIndex(x => new { x.FileId })
             .IsUnique();
 
         builder.HasIndex(x => new { x.ProductId, x.Position })

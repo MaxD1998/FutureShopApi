@@ -4,7 +4,7 @@ namespace Product.Domain.Entities;
 
 public class ProductPhotoEntity : BaseEntity
 {
-    public string Name { get; set; }
+    public string FileId { get; set; }
 
     public int Position { get; set; }
 

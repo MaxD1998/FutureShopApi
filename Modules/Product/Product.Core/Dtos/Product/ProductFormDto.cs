@@ -1,4 +1,5 @@
 ﻿using Product.Core.Dtos.ProductParameterValue;
+using Product.Core.Dtos.ProductPhoto;
 using Product.Core.Dtos.ProductTranslation;
 using Product.Domain.Entities;
 
@@ -17,6 +18,7 @@ public class ProductFormDto
         Price = entity.Price;
         ProductBaseId = entity.ProductBaseId;
         ProductParameterValues = entity.ProductParameterValues.Select(x => new ProductParameterValueFormDto(x)).ToList();
+        ProductPhotos = entity.ProductPhotos.Select(x => new ProductPhotoFormDto(x)).ToList();
         Translations = entity.Translations.Select(x => new ProductTranslationFormDto(x)).ToList();
     }
 
@@ -30,6 +32,8 @@ public class ProductFormDto
 
     public List<ProductParameterValueFormDto> ProductParameterValues { get; set; }
 
+    public List<ProductPhotoFormDto> ProductPhotos { get; set; }
+
     public List<ProductTranslationFormDto> Translations { get; set; }
 
     public ProductEntity ToEntity() => new()
@@ -39,6 +43,7 @@ public class ProductFormDto
         Price = Price,
         ProductBaseId = ProductBaseId,
         ProductParameterValues = ProductParameterValues.Select(x => x.ToEntity()).ToList(),
+        ProductPhotos = ProductPhotos.Select(x => x.ToEntity()).ToList(),
         Translations = Translations.Select(x => x.ToEntity()).ToList(),
     };
 }
