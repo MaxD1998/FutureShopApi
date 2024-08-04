@@ -22,6 +22,6 @@ public class DeleteNotAssignedPhotoJob : IJob
     public async Task Execute(IJobExecutionContext context)
     {
         var fileIds = await _postgreSqlContext.Set<ProductPhotoEntity>().Select(p => p.FileId).ToListAsync(context.CancellationToken);
-        await _mongoDbContext.Set<ProductPhotoDocument>().DeleteManyAsync(x => !fileIds.Contains(x.Id), context.CancellationToken);
+        await _mongoDbContext.Set<ProductPhotoDocument>().DeleteManyAsync(x => !fileIds.Contains(x.Id) && x.CreateTime.AddMinutes(1) < DateTime.UtcNow, context.CancellationToken);
     }
 }
