@@ -23,7 +23,7 @@ internal class CreateUserEntityCommandHandler : IRequestHandler<CreateUserEntity
         var isExist = await _context.Set<UserEntity>().AnyAsync(x => x.Email == request.Dto.Email, cancellationToken);
 
         if (isExist)
-            throw new ConflictException(ExceptionMessage.E006RecordAlreadyExists);
+            throw new ConflictException(CommonExceptionMessage.E006RecordAlreadyExists);
 
         var result = await _context.Set<UserEntity>().AddAsync(request.Dto.ToEntity(), cancellationToken);
 

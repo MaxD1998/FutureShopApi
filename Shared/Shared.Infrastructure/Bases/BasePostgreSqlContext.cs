@@ -15,7 +15,7 @@ public abstract class BasePostgreSqlContext : DbContext
     {
         _connectionSettings = connectionSettings.Value;
         if (!_connectionSettings.MigrationMode && !Database.CanConnect())
-            throw new ServiceUnavailableException(ExceptionMessage.D001DatabaseNotAvailable);
+            throw new ServiceUnavailableException(CommonExceptionMessage.D001DatabaseNotAvailable);
     }
 
     protected abstract string ConnectionString { get; }

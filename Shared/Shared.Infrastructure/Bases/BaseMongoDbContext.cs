@@ -16,7 +16,7 @@ public abstract class BaseMongoDbContext
         }
         catch
         {
-            throw new ServiceUnavailableException(ExceptionMessage.D001DatabaseNotAvailable);
+            throw new ServiceUnavailableException(CommonExceptionMessage.D001DatabaseNotAvailable);
         }
     }
 

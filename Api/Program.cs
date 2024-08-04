@@ -5,6 +5,7 @@ using Authorization.Inrfrastructure;
 using Product.Infrastructure;
 using Quartz.AspNetCore;
 using Shared.Api.Middlewares;
+using System.Reflection;
 
 namespace Api;
 
@@ -31,7 +32,12 @@ public class Program
         services.AddHttpContextAccessor();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
+        services.AddSwaggerGen(config =>
+        {
+            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            config.IncludeXmlComments(xmlPath);
+        });
 
         var app = builder.Build();
 
@@ -39,9 +45,9 @@ public class Program
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
-            app.UseSwaggerUI(conf =>
+            app.UseSwaggerUI(config =>
             {
-                conf.DefaultModelsExpandDepth(-1);
+                config.DefaultModelsExpandDepth(-1);
             });
         }
 

@@ -2,7 +2,7 @@
 
 namespace Shared.Core.Errors;
 
-public static class ExceptionMessage
+public static class CommonExceptionMessage
 {
     public static ErrorMessageDto E001SessionHasExpired => new("E001", "Session has expired");
 

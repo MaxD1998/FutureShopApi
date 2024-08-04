@@ -36,7 +36,10 @@ public static class ServiceExtension
             .ForJob(jobKey)
             .WithIdentity($"{jobName}-trigger")
             .StartNow()
-            .WithSimpleSchedule(x => x.WithIntervalInMinutes(5)));
+            .WithSimpleSchedule(x =>
+                x.WithIntervalInMinutes(5).RepeatForever()
+            )
+        );
     }
 
     public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)
