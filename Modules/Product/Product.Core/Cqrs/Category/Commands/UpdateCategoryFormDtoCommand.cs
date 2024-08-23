@@ -3,18 +3,20 @@ using Microsoft.EntityFrameworkCore;
 using Product.Core.Dtos.Category;
 using Product.Domain.Entities;
 using Product.Infrastructure;
-using Shared.Core.Bases;
 
 namespace Product.Core.Cqrs.Category.Commands;
 public record UpdateCategoryFormDtoCommand(Guid Id, CategoryFormDto Dto) : IRequest<CategoryFormDto>;
 
-internal class UpdateCategoryFormDtoCommandHandler : BaseRequestHandler<ProductContext, UpdateCategoryFormDtoCommand, CategoryFormDto>
+internal class UpdateCategoryFormDtoCommandHandler : IRequestHandler<UpdateCategoryFormDtoCommand, CategoryFormDto>
 {
-    public UpdateCategoryFormDtoCommandHandler(ProductContext context) : base(context)
+    private readonly ProductPostgreSqlContext _context;
+
+    public UpdateCategoryFormDtoCommandHandler(ProductPostgreSqlContext context)
     {
+        _context = context;
     }
 
-    public override async Task<CategoryFormDto> Handle(UpdateCategoryFormDtoCommand request, CancellationToken cancellationToken)
+    public async Task<CategoryFormDto> Handle(UpdateCategoryFormDtoCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.Set<CategoryEntity>()
             .Include(x => x.SubCategories)

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Quartz;
 using Shared.Infrastructure.Settings;
 using System.Text;
 
@@ -23,6 +24,22 @@ public static class ServiceExtension
             .Bind(configuration.GetSection(nameof(RefreshTokenSettings)))
             .ValidateDataAnnotations()
             .ValidateOnStart();
+    }
+
+    public static void AddJobAndTrigger<TJob>(this IServiceCollectionQuartzConfigurator quartz) where TJob : IJob
+    {
+        var jobName = typeof(TJob).Name;
+        var jobKey = new JobKey(jobName);
+
+        quartz.AddJob<TJob>(jobKey);
+        quartz.AddTrigger(opt => opt
+            .ForJob(jobKey)
+            .WithIdentity($"{jobName}-trigger")
+            .StartNow()
+            .WithSimpleSchedule(x =>
+                x.WithIntervalInMinutes(5).RepeatForever()
+            )
+        );
     }
 
     public static void AddJwtAuthentication(this IServiceCollection services, IConfiguration configuration)

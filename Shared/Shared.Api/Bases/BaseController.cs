@@ -1,9 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Core.Dtos;
 using Shared.Core.Errors;
 using Shared.Core.Exceptions;
 using Shared.Core.Factories.FluentValidator;
+using Shared.Domain.Bases;
+using Shared.Infrastructure.Dtos;
 
 namespace Shared.Api.Bases;
 
@@ -21,6 +22,17 @@ public class BaseController : ControllerBase
     {
         _fluentValidatorFactory = fluentValidatorFactory;
         _mediator = mediator;
+    }
+
+    protected async Task<IActionResult> ApiFileResponseAsync<TFile>(IRequest<TFile> request, CancellationToken cancellationToken = default) where TFile : BaseFileDocument
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        var file = await _mediator.Send(request);
+
+        return file != null
+            ? File(file.Data, file.ContentType, file.Name)
+            : NoContent();
     }
 
     protected async Task<IActionResult> ApiResponseAsync<TParam>(TParam param, IBaseRequest request, CancellationToken cancellationToken = default)
@@ -77,7 +89,7 @@ public class BaseController : ControllerBase
         var validator = _fluentValidatorFactory.GetValidator<TInput>();
 
         if (validator is null)
-            throw new NoValidatorException(ExceptionMessage.ValidatorNotExist);
+            throw new NoValidatorException(CommonExceptionMessage.E002ValidatorNotExist);
 
         var validation = validator.Validate(param);
         var isValid = validation.IsValid;

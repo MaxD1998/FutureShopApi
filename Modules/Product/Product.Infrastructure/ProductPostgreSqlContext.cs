@@ -6,13 +6,13 @@ using System.Reflection;
 
 namespace Product.Infrastructure;
 
-public class ProductContext : BaseContext
+public class ProductPostgreSqlContext : BasePostgreSqlContext
 {
-    public ProductContext(IOptions<ConnectionSettings> connectionSettings) : base(connectionSettings)
+    public ProductPostgreSqlContext(IOptions<ConnectionSettings> connectionSettings) : base(connectionSettings)
     {
     }
 
-    protected override string ConnectionString => _connectionSettings.ProductDbCs;
+    protected override string ConnectionString => _connectionSettings.PostgreSQL.ProductDbCs;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

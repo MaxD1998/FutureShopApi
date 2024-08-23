@@ -3,18 +3,20 @@ using Microsoft.EntityFrameworkCore;
 using Product.Core.Dtos.Category;
 using Product.Domain.Entities;
 using Product.Infrastructure;
-using Shared.Core.Bases;
 
 namespace Product.Core.Cqrs.Category.Queries;
 public record GetCategoryFormDtoByIdQuery(Guid Id) : IRequest<CategoryFormDto>;
 
-internal class GetCategoryFormDtoByIdQueryHandler : BaseRequestHandler<ProductContext, GetCategoryFormDtoByIdQuery, CategoryFormDto>
+internal class GetCategoryFormDtoByIdQueryHandler : IRequestHandler<GetCategoryFormDtoByIdQuery, CategoryFormDto>
 {
-    public GetCategoryFormDtoByIdQueryHandler(ProductContext context) : base(context)
+    private readonly ProductPostgreSqlContext _context;
+
+    public GetCategoryFormDtoByIdQueryHandler(ProductPostgreSqlContext context)
     {
+        _context = context;
     }
 
-    public override async Task<CategoryFormDto> Handle(GetCategoryFormDtoByIdQuery request, CancellationToken cancellationToken)
+    public async Task<CategoryFormDto> Handle(GetCategoryFormDtoByIdQuery request, CancellationToken cancellationToken)
     {
         var result = await _context.Set<CategoryEntity>()
             .AsNoTracking()

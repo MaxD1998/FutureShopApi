@@ -1,17 +1,20 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Product.Domain.Entities;
 using Product.Infrastructure;
-using Shared.Core.Bases;
 
 namespace Product.Core.Cqrs.Product.Commands;
 public record DeleteProductByIdCommand(Guid Id) : IRequest;
 
-internal class DeleteProductByIdCommandHandler : BaseRequestHandler<ProductContext, DeleteProductByIdCommand>
+internal class DeleteProductByIdCommandHandler : IRequestHandler<DeleteProductByIdCommand>
 {
-    public DeleteProductByIdCommandHandler(ProductContext context) : base(context)
+    private readonly ProductPostgreSqlContext _context;
+
+    public DeleteProductByIdCommandHandler(ProductPostgreSqlContext context)
     {
+        _context = context;
     }
 
-    public override async Task Handle(DeleteProductByIdCommand request, CancellationToken cancellationToken)
-        => await DeleteByIdAsync<ProductEntity>(request.Id, cancellationToken);
+    public async Task Handle(DeleteProductByIdCommand request, CancellationToken cancellationToken)
+        => await _context.Set<ProductEntity>().Where(x => x.Id == request.Id).ExecuteDeleteAsync(cancellationToken);
 }

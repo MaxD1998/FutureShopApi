@@ -120,6 +120,28 @@ namespace Product.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductPhoto",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: false),
+                    FileId = table.Column<string>(type: "text", nullable: false),
+                    Position = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductPhoto", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProductPhoto_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductTranslation",
                 columns: table => new
                 {
@@ -234,6 +256,18 @@ namespace Product.Infrastructure.Migrations
                 column: "ProductParameterId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductPhoto_FileId",
+                table: "ProductPhoto",
+                column: "FileId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductPhoto_ProductId_Position",
+                table: "ProductPhoto",
+                columns: new[] { "ProductId", "Position" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductTranslation_ProductId_Lang",
                 table: "ProductTranslation",
                 columns: new[] { "ProductId", "Lang" },
@@ -251,6 +285,9 @@ namespace Product.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProductParameterValue");
+
+            migrationBuilder.DropTable(
+                name: "ProductPhoto");
 
             migrationBuilder.DropTable(
                 name: "ProductTranslation");

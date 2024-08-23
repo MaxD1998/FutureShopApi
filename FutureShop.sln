@@ -33,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared.Domain", "Shared\Sha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared.Infrastructure", "Shared\Shared.Infrastructure\Shared.Infrastructure.csproj", "{34CF1B9E-53ED-4D43-AF7B-3F81716FF45B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authorization.Test", "Modules\Authorization\Authorization.Test\Authorization.Test.csproj", "{581672BC-E4C5-4109-AE08-5DFDBDBA0AAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authorization.Test", "Modules\Authorization\Authorization.Test\Authorization.Test.csproj", "{581672BC-E4C5-4109-AE08-5DFDBDBA0AAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

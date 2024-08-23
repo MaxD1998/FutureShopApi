@@ -1,17 +1,21 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Shared.Domain.Bases;
+using Shared.Infrastructure.Errors;
+using Shared.Infrastructure.Exceptions;
 using Shared.Infrastructure.Settings;
 
 namespace Shared.Infrastructure.Bases;
 
-public abstract class BaseContext : DbContext
+public abstract class BasePostgreSqlContext : DbContext
 {
     protected readonly ConnectionSettings _connectionSettings;
 
-    public BaseContext(IOptions<ConnectionSettings> connectionSettings)
+    protected BasePostgreSqlContext(IOptions<ConnectionSettings> connectionSettings)
     {
         _connectionSettings = connectionSettings.Value;
+        if (!_connectionSettings.MigrationMode && !Database.CanConnect())
+            throw new ServiceUnavailableException(CommonExceptionMessage.D001DatabaseNotAvailable);
     }
 
     protected abstract string ConnectionString { get; }

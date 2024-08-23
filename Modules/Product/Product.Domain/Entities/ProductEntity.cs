@@ -18,11 +18,16 @@ public class ProductEntity : BaseTranslatableEntity<ProductTranslationEntity>
 
     public ICollection<ProductParameterValueEntity> ProductParameterValues { get; set; } = [];
 
+    public ICollection<ProductPhotoEntity> ProductPhotos { get; set; } = [];
+
+    #endregion Related Data
+
     public void Update(ProductEntity entity)
     {
         Description = entity.Description;
         Name = entity.Name;
         Price = entity.Price;
+        ProductPhotos = entity.ProductPhotos;
         UpdateProductParameterValues(entity.ProductParameterValues);
         UpdateTranslations(entity.Translations);
     }
@@ -47,6 +52,4 @@ public class ProductEntity : BaseTranslatableEntity<ProductTranslationEntity>
                 ProductParameterValues.Remove(productParameterValue);
         }
     }
-
-    #endregion Related Data
 }

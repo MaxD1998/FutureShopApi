@@ -39,15 +39,15 @@ public class ProductBaseController : BaseController
     public async Task<IActionResult> GetIdNameByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
         => await ApiResponseAsync(new GetProductBaseIdNameDtoByIdQuery(id), cancellationToken);
 
+    [HttpGet("All")]
+    [ProducesResponseType(typeof(IEnumerable<IdNameDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetListIdNameAsync(CancellationToken cancellationToken = default)
+        => await ApiResponseAsync(new GetListProductBaseIdNameDtoQuery(), cancellationToken);
+
     [HttpGet("Page/{pageNumber:int}")]
     [ProducesResponseType(typeof(PageDto<ProductBaseListDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetPageAsync([FromRoute] int pageNumber, CancellationToken cancellationToken = default)
         => await ApiResponseAsync(new GetPageProductBaseListDtoQuery(pageNumber), cancellationToken);
-
-    [HttpGet("All")]
-    [ProducesResponseType(typeof(IEnumerable<IdNameDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetsIdNameAsync(CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(new GetsProductBaseIdNameDtoQuery(), cancellationToken);
 
     [HttpPut("{id:guid}")]
     [ProducesResponseType(typeof(ProductBaseFormDto), StatusCodes.Status200OK)]

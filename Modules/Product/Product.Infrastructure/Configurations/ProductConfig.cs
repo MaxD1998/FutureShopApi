@@ -26,6 +26,10 @@ public class ProductConfig : BaseConfig<ProductEntity>
             .WithOne(x => x.Product)
             .HasForeignKey(x => x.ProductId);
 
+        builder.HasMany(x => x.ProductPhotos)
+            .WithOne(x => x.Product)
+            .HasForeignKey(x => x.ProductId);
+
         builder.HasMany(x => x.Translations)
             .WithOne(x => x.Product)
             .HasForeignKey(x => x.ProductId);

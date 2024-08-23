@@ -10,14 +10,14 @@ using Product.Infrastructure;
 
 namespace Product.Infrastructure.Migrations
 {
-    [DbContext(typeof(ProductContext))]
-    partial class ProductContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(ProductPostgreSqlContext))]
+    partial class ProductPostgreSqlContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.6")
+                .HasAnnotation("ProductVersion", "8.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -270,6 +270,45 @@ namespace Product.Infrastructure.Migrations
                     b.ToTable("ProductParameterValue", (string)null);
                 });
 
+            modelBuilder.Entity("Product.Domain.Entities.ProductPhotoEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("FileId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnOrder(101);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<int>("Position")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FileId")
+                        .IsUnique();
+
+                    b.HasIndex("ProductId", "Position")
+                        .IsUnique();
+
+                    b.ToTable("ProductPhoto", (string)null);
+                });
+
             modelBuilder.Entity("Product.Domain.Entities.ProductTranslationEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -392,6 +431,17 @@ namespace Product.Infrastructure.Migrations
                     b.Navigation("ProductParameter");
                 });
 
+            modelBuilder.Entity("Product.Domain.Entities.ProductPhotoEntity", b =>
+                {
+                    b.HasOne("Product.Domain.Entities.ProductEntity", "Product")
+                        .WithMany("ProductPhotos")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Product.Domain.Entities.ProductTranslationEntity", b =>
                 {
                     b.HasOne("Product.Domain.Entities.ProductEntity", "Product")
@@ -422,6 +472,8 @@ namespace Product.Infrastructure.Migrations
             modelBuilder.Entity("Product.Domain.Entities.ProductEntity", b =>
                 {
                     b.Navigation("ProductParameterValues");
+
+                    b.Navigation("ProductPhotos");
 
                     b.Navigation("Translations");
                 });

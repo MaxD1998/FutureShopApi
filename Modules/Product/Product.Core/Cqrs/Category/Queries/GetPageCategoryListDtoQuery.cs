@@ -4,7 +4,6 @@ using Product.Core.Dtos.Category;
 using Product.Core.Interfaces.Services;
 using Product.Domain.Entities;
 using Product.Infrastructure;
-using Shared.Core.Bases;
 using Shared.Core.Dtos;
 using Shared.Core.Extensions;
 using Shared.Infrastructure.Constants;
@@ -12,16 +11,18 @@ using Shared.Infrastructure.Constants;
 namespace Product.Core.Cqrs.Category.Queries;
 public record GetPageCategoryListDtoQuery(int PageNumber) : IRequest<PageDto<CategoryListDto>>;
 
-internal class GetPageCategoryListDtoQueryHandler : BaseRequestHandler<ProductContext, GetPageCategoryListDtoQuery, PageDto<CategoryListDto>>
+internal class GetPageCategoryListDtoQueryHandler : IRequestHandler<GetPageCategoryListDtoQuery, PageDto<CategoryListDto>>
 {
+    private readonly ProductPostgreSqlContext _context;
     private readonly IHeaderService _headerService;
 
-    public GetPageCategoryListDtoQueryHandler(IHeaderService headerService, ProductContext context) : base(context)
+    public GetPageCategoryListDtoQueryHandler(IHeaderService headerService, ProductPostgreSqlContext context)
     {
         _headerService = headerService;
+        _context = context;
     }
 
-    public override async Task<PageDto<CategoryListDto>> Handle(GetPageCategoryListDtoQuery request, CancellationToken cancellationToken)
+    public async Task<PageDto<CategoryListDto>> Handle(GetPageCategoryListDtoQuery request, CancellationToken cancellationToken)
         => await _context.Set<CategoryEntity>()
             .AsNoTracking()
             .Include(x => x.SubCategories)

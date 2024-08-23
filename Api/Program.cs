@@ -3,7 +3,9 @@ using Api.Modules.Authorization;
 using Api.Modules.Product;
 using Authorization.Inrfrastructure;
 using Product.Infrastructure;
+using Quartz.AspNetCore;
 using Shared.Api.Middlewares;
+using System.Reflection;
 
 namespace Api;
 
@@ -19,6 +21,7 @@ public class Program
 
         services.AddAppsettings(config);
         services.AddJwtAuthentication(config);
+        services.AddQuartzServer(config => config.WaitForJobsToComplete = true);
 
         services.AddScoped<ErrorHandlingMiddleware>();
 
@@ -29,7 +32,12 @@ public class Program
         services.AddHttpContextAccessor();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
+        services.AddSwaggerGen(config =>
+        {
+            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+            config.IncludeXmlComments(xmlPath);
+        });
 
         var app = builder.Build();
 
@@ -37,12 +45,16 @@ public class Program
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(config =>
+            {
+                config.DefaultModelsExpandDepth(-1);
+            });
         }
 
         app.UseMiddleware<ErrorHandlingMiddleware>();
-        app.UseMiddleware<DbTransactionMiddleware<AuthContext>>();
-        app.UseMiddleware<DbTransactionMiddleware<ProductContext>>();
+        app.UseMiddleware<PostgreSqlDbTransactionMiddleware<AuthContext>>();
+        app.UseMiddleware<PostgreSqlDbTransactionMiddleware<ProductPostgreSqlContext>>();
+        app.UseMiddleware<MongoDbTransactionMiddleware<ProductMongoDbContext>>();
 
         app.UseHttpsRedirection();
         app.UseRouting();

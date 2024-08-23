@@ -26,7 +26,7 @@ public class CategoryFormDto
 
     public List<CategoryTranslationFormDto> Translations { get; set; }
 
-    public CategoryEntity ToEntity(ProductContext context) => new()
+    public CategoryEntity ToEntity(ProductPostgreSqlContext context) => new()
     {
         Name = Name,
         ParentCategoryId = ParentCategoryId,

@@ -2,18 +2,20 @@
 using Product.Core.Dtos.Category;
 using Product.Domain.Entities;
 using Product.Infrastructure;
-using Shared.Core.Bases;
 
 namespace Product.Core.Cqrs.Category.Commands;
 public record CreateCategoryFormDtoCommand(CategoryFormDto Dto) : IRequest<CategoryFormDto>;
 
-internal class CreateCategoryFormDtoCommandHandler : BaseRequestHandler<ProductContext, CreateCategoryFormDtoCommand, CategoryFormDto>
+internal class CreateCategoryFormDtoCommandHandler : IRequestHandler<CreateCategoryFormDtoCommand, CategoryFormDto>
 {
-    public CreateCategoryFormDtoCommandHandler(ProductContext context) : base(context)
+    private readonly ProductPostgreSqlContext _context;
+
+    public CreateCategoryFormDtoCommandHandler(ProductPostgreSqlContext context)
     {
+        _context = context;
     }
 
-    public override async Task<CategoryFormDto> Handle(CreateCategoryFormDtoCommand request, CancellationToken cancellationToken)
+    public async Task<CategoryFormDto> Handle(CreateCategoryFormDtoCommand request, CancellationToken cancellationToken)
     {
         var result = await _context.Set<CategoryEntity>().AddAsync(request.Dto.ToEntity(_context), cancellationToken);
 

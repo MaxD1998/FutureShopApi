@@ -4,22 +4,23 @@ using Product.Core.Dtos;
 using Product.Core.Interfaces.Services;
 using Product.Domain.Entities;
 using Product.Infrastructure;
-using Shared.Core.Bases;
 
 namespace Product.Core.Cqrs.Category.Queries;
 
-public record GetsCategoryIdNameDtoAvailableToBeParentCategoryQuery(Guid? Id, IEnumerable<Guid> ChildIds) : IRequest<IEnumerable<IdNameDto>>;
+public record GetListCategoryIdNameDtoAvailableToBeParentCategoryQuery(Guid? Id, IEnumerable<Guid> ChildIds) : IRequest<IEnumerable<IdNameDto>>;
 
-internal class GetsCategoryIdNameDtoAvailableToBeParentCategoryQueryHandler : BaseRequestHandler<ProductContext, GetsCategoryIdNameDtoAvailableToBeParentCategoryQuery, IEnumerable<IdNameDto>>
+internal class GetsCategoryIdNameDtoAvailableToBeParentCategoryQueryHandler : IRequestHandler<GetListCategoryIdNameDtoAvailableToBeParentCategoryQuery, IEnumerable<IdNameDto>>
 {
+    private readonly ProductPostgreSqlContext _context;
     private readonly IHeaderService _headerService;
 
-    public GetsCategoryIdNameDtoAvailableToBeParentCategoryQueryHandler(IHeaderService headerService, ProductContext context) : base(context)
+    public GetsCategoryIdNameDtoAvailableToBeParentCategoryQueryHandler(IHeaderService headerService, ProductPostgreSqlContext context)
     {
         _headerService = headerService;
+        _context = context;
     }
 
-    public override async Task<IEnumerable<IdNameDto>> Handle(GetsCategoryIdNameDtoAvailableToBeParentCategoryQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<IdNameDto>> Handle(GetListCategoryIdNameDtoAvailableToBeParentCategoryQuery request, CancellationToken cancellationToken)
     {
         var query = _context.Set<CategoryEntity>()
             .AsNoTracking()

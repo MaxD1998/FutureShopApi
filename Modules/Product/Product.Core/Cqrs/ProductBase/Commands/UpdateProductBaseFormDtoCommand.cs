@@ -3,19 +3,21 @@ using Microsoft.EntityFrameworkCore;
 using Product.Core.Dtos.ProductBase;
 using Product.Domain.Entities;
 using Product.Infrastructure;
-using Shared.Core.Bases;
 
 namespace Product.Core.Cqrs.ProductBase.Commands;
 
 public record UpdateProductBaseFormDtoCommand(Guid Id, ProductBaseFormDto Dto) : IRequest<ProductBaseFormDto>;
 
-internal class UpdateProductBaseFormDtoCommandHandler : BaseRequestHandler<ProductContext, UpdateProductBaseFormDtoCommand, ProductBaseFormDto>
+internal class UpdateProductBaseFormDtoCommandHandler : IRequestHandler<UpdateProductBaseFormDtoCommand, ProductBaseFormDto>
 {
-    public UpdateProductBaseFormDtoCommandHandler(ProductContext context) : base(context)
+    private readonly ProductPostgreSqlContext _context;
+
+    public UpdateProductBaseFormDtoCommandHandler(ProductPostgreSqlContext context)
     {
+        _context = context;
     }
 
-    public override async Task<ProductBaseFormDto> Handle(UpdateProductBaseFormDtoCommand request, CancellationToken cancellationToken)
+    public async Task<ProductBaseFormDto> Handle(UpdateProductBaseFormDtoCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.Set<ProductBaseEntity>()
             .Include(x => x.ProductParameters)

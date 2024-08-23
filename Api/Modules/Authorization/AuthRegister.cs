@@ -29,7 +29,7 @@ public static class AuthRegister
 
     private static void RegisterMiddlewares(this IServiceCollection services)
     {
-        services.AddScoped<DbTransactionMiddleware<AuthContext>>();
+        services.AddScoped<PostgreSqlDbTransactionMiddleware<AuthContext>>();
     }
 
     private static void RegisterServices(this IServiceCollection services)

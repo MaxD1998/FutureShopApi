@@ -1,8 +1,8 @@
-﻿using Shared.Core.Bases;
-using Shared.Core.Dtos;
+﻿using Shared.Infrastructure.Bases;
+using Shared.Infrastructure.Dtos;
 using System.Net;
 
-namespace Shared.Core.Exceptions;
+namespace Shared.Infrastructure.Exceptions;
 
 public class ServiceUnavailableException : BaseException
 {
