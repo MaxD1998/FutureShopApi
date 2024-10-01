@@ -35,6 +35,12 @@ public class CategoryController : BaseController
     public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
         => await ApiResponseAsync(new GetCategoryFormDtoByIdQuery(id), cancellationToken);
 
+    [HttpGet("IdName/{id:guid}")]
+    [ProducesResponseType(typeof(IdNameDto), StatusCodes.Status200OK)]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetIdNameByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
+        => await ApiResponseAsync(new GetCategoryIdNameDtoByIdQuery(id), cancellationToken);
+
     [HttpGet("AvailableToBeChild")]
     [ProducesResponseType(typeof(IEnumerable<IdNameDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetListAvailableToBeChildAsync([FromQuery] Guid? parentId, [FromQuery] IEnumerable<Guid> childIds, CancellationToken cancellationToken = default)

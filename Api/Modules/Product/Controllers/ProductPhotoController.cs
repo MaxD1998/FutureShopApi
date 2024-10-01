@@ -46,5 +46,5 @@ public class ProductPhotoController : BaseController
     [HttpGet("Info/")]
     [ProducesResponseType(typeof(IEnumerable<ProductPhotoInfoDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetListInfoByIdsAsync([FromQuery] IEnumerable<string> ids, CancellationToken cancellationToken)
-    => await ApiResponseAsync(new GetListProductPhotoInfoDtoByIdsQuery(ids), cancellationToken);
+        => await ApiResponseAsync(new GetListProductPhotoInfoDtoByIdsQuery(ids), cancellationToken);
 }

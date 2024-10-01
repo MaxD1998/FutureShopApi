@@ -86,7 +86,10 @@ public class AuthService : IAuthService
         var refreshToken = await _mediator.Send(new GetRefereshTokenEntityByTokenQuery(token), cancellationToken);
 
         if (refreshToken is null)
+        {
+            _cookieService.RemoveCookie(CookieNameConst.RefreshToken);
             throw new ForbiddenException(CommonExceptionMessage.E001SessionHasExpired);
+        }
 
         var user = refreshToken.User;
 

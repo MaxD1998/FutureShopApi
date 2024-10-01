@@ -1,10 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Core.Dtos;
+using Shared.Core.Interfaces;
 
 namespace Shared.Core.Extensions;
 
 public static class DbQueryExtension
 {
+    public static IQueryable<T> Filter<T>(this IQueryable<T> query, IFilter<T> filter, string lang) where T : class
+        => filter.FilterExecute(query, lang);
+
     public static async Task<PageDto<T>> ToPageAsync<T>(this IQueryable<T> query, int pageNumber, CancellationToken cancellationToken = default) where T : class
     {
         cancellationToken.ThrowIfCancellationRequested();

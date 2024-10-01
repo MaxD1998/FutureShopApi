@@ -20,7 +20,7 @@ internal class GetProductFormDtoByIdQueryHandler : IRequestHandler<GetProductFor
     {
         var result = await _context.Set<ProductEntity>()
             .Include(x => x.ProductParameterValues)
-            .Include(x => x.ProductPhotos)
+            .Include(x => x.ProductPhotos.OrderBy(y => y.Position))
             .Include(x => x.Translations)
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Product.Core.Cqrs.Product.Commands;
 using Product.Core.Cqrs.Product.Queries;
@@ -33,10 +34,22 @@ public class ProductController : BaseController
     public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
         => await ApiResponseAsync(new GetProductFormDtoByIdQuery(id), cancellationToken);
 
+    [HttpGet("Details/{id:guid}")]
+    [ProducesResponseType(typeof(ProductDto), StatusCodes.Status200OK)]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetDetailsByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
+        => await ApiResponseAsync(new GetProductDtoByIdQuery(id), cancellationToken);
+
     [HttpGet("Page/{pageNumber:int}")]
     [ProducesResponseType(typeof(PageDto<ProductListDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetPageAsync([FromRoute] int pageNumber, CancellationToken cancellationToken = default)
         => await ApiResponseAsync(new GetPageProductListDtoQuery(pageNumber), cancellationToken);
+
+    [HttpGet("ShopList/{categoryId:guid}")]
+    [ProducesResponseType(typeof(IEnumerable<ProductShopListDto>), StatusCodes.Status200OK)]
+    [AllowAnonymous]
+    public async Task<IActionResult> GetShopListByCategoryIdAsync([FromRoute] Guid categoryId, [FromQuery] ProductShopListFilterRequestDto request, CancellationToken cancellationToken = default)
+        => await ApiResponseAsync(new GetListProductShopListDtoByCategoryIdQuery(categoryId, request), cancellationToken);
 
     [HttpPut("{id:guid}")]
     [ProducesResponseType(typeof(ProductFormDto), StatusCodes.Status200OK)]
