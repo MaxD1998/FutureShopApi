@@ -20,6 +20,8 @@ public class ProductEntity : BaseTranslatableEntity<ProductTranslationEntity>
 
     public ICollection<ProductPhotoEntity> ProductPhotos { get; set; } = [];
 
+    public ICollection<PurchaseListItemEntity> PurchaseListItems { get; set; } = [];
+
     #endregion Related Data
 
     public void Update(ProductEntity entity)
