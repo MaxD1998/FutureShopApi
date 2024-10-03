@@ -13,7 +13,10 @@ public class PurchaseListConfig : BaseConfig<PurchaseListEntity>
             .HasColumnOrder(100);
 
         builder.Property(x => x.Name)
-            .HasColumnOrder(101)
+            .HasColumnOrder(101);
+
+        builder.Property(x => x.IsFavourite)
+            .HasColumnOrder(102)
             .IsRequired();
 
         builder.HasMany(x => x.PurchaseListItems)

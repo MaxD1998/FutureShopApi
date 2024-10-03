@@ -33,6 +33,21 @@ namespace Product.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    FirstName = table.Column<string>(type: "text", nullable: false),
+                    LastName = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CategoryTranslation",
                 columns: table => new
                 {
@@ -76,6 +91,27 @@ namespace Product.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PurchaseList",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: true),
+                    IsFavourite = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PurchaseList", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PurchaseList_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Product",
                 columns: table => new
                 {
@@ -84,8 +120,8 @@ namespace Product.Infrastructure.Migrations
                     ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ProductBaseId = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    Price = table.Column<decimal>(type: "numeric", nullable: false)
+                    Price = table.Column<decimal>(type: "numeric", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -159,6 +195,33 @@ namespace Product.Infrastructure.Migrations
                         name: "FK_ProductTranslation_Product_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PurchaseListItem",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    PurchaseListId = table.Column<Guid>(type: "uuid", nullable: false),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PurchaseListItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PurchaseListItem_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PurchaseListItem_PurchaseList_PurchaseListId",
+                        column: x => x.PurchaseListId,
+                        principalTable: "PurchaseList",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -272,6 +335,21 @@ namespace Product.Infrastructure.Migrations
                 table: "ProductTranslation",
                 columns: new[] { "ProductId", "Lang" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PurchaseList_UserId",
+                table: "PurchaseList",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PurchaseListItem_ProductId",
+                table: "PurchaseListItem",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PurchaseListItem_PurchaseListId",
+                table: "PurchaseListItem",
+                column: "PurchaseListId");
         }
 
         /// <inheritdoc />
@@ -293,13 +371,22 @@ namespace Product.Infrastructure.Migrations
                 name: "ProductTranslation");
 
             migrationBuilder.DropTable(
+                name: "PurchaseListItem");
+
+            migrationBuilder.DropTable(
                 name: "ProductParameter");
 
             migrationBuilder.DropTable(
                 name: "Product");
 
             migrationBuilder.DropTable(
+                name: "PurchaseList");
+
+            migrationBuilder.DropTable(
                 name: "ProductBase");
+
+            migrationBuilder.DropTable(
+                name: "User");
 
             migrationBuilder.DropTable(
                 name: "Category");
