@@ -17,7 +17,7 @@ public class ProductShopListFilterRequestDto : IFilter<ProductEntity>
     public IQueryable<ProductEntity> FilterExecute(IQueryable<ProductEntity> query, string lang)
     {
         if (Name != null && Name != string.Empty)
-            query = query.Where(x => x.Translations.Any(y => y.Lang == lang && y.Translation.Contains(Name)) || (!x.Translations.Any(y => y.Lang == lang) && x.Name.Contains(Name)));
+            query = query.Where(x => x.Translations.Any(y => y.Lang == lang && y.Translation.ToLower().Contains(Name.ToLower())) || (!x.Translations.Any(y => y.Lang == lang) && x.Name.ToLower().Contains(Name.ToLower())));
 
         if (PriceFrom != null)
             query = query.Where(x => x.Price >= PriceFrom);
