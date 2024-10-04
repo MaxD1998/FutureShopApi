@@ -276,6 +276,11 @@ namespace Product.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "User",
+                columns: new[] { "Id", "CreateTime", "FirstName", "LastName", "ModifyTime" },
+                values: new object[] { new Guid("d6669a68-5afb-432d-858f-3f5181579a90"), new DateTime(2024, 10, 4, 8, 46, 11, 524, DateTimeKind.Utc).AddTicks(69), "Super", "Admin", null });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Category_ParentCategoryId",
                 table: "Category",

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Product.Domain.Entities;
+using Product.Infrastructure.Seeds;
 using Shared.Infrastructure.Bases;
 
 namespace Product.Infrastructure.Configurations;
@@ -20,5 +21,7 @@ public class UserConfig : BaseConfig<UserEntity>
         builder.HasMany(x => x.PurchaseLists)
             .WithOne(x => x.User)
             .HasForeignKey(x => x.UserId);
+
+        builder.HasData(UserSeed.Seed());
     }
 }

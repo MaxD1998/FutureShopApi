@@ -12,7 +12,7 @@ using Product.Infrastructure;
 namespace Product.Infrastructure.Migrations
 {
     [DbContext(typeof(ProductPostgreSqlContext))]
-    [Migration("20241003065446_Init")]
+    [Migration("20241004084611_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace Product.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.7")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -445,6 +445,15 @@ namespace Product.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("d6669a68-5afb-432d-858f-3f5181579a90"),
+                            CreateTime = new DateTime(2024, 10, 4, 8, 46, 11, 524, DateTimeKind.Utc).AddTicks(69),
+                            FirstName = "Super",
+                            LastName = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("Product.Domain.Entities.CategoryEntity", b =>
