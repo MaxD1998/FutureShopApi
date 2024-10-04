@@ -13,4 +13,10 @@ public class UserEntity : BaseEntity
     public ICollection<PurchaseListEntity> PurchaseLists { get; set; }
 
     #endregion Related Data
+
+    public void Update(UserEntity entity)
+    {
+        FirstName = entity.FirstName;
+        LastName = entity.LastName;
+    }
 }

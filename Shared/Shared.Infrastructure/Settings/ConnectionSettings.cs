@@ -7,4 +7,6 @@ public class ConnectionSettings
     public MongoDBSettings MongoDB { get; init; }
 
     public PostgreSQLSettings PostgreSQL { get; init; }
+
+    public RabbitMQSettings RabbitMQ { get; init; }
 }
