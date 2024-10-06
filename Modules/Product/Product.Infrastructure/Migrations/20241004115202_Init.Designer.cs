@@ -12,7 +12,7 @@ using Product.Infrastructure;
 namespace Product.Infrastructure.Migrations
 {
     [DbContext(typeof(ProductPostgreSqlContext))]
-    [Migration("20241004084611_Init")]
+    [Migration("20241004115202_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -380,8 +380,6 @@ namespace Product.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("PurchaseList", (string)null);
                 });
 
@@ -415,45 +413,6 @@ namespace Product.Infrastructure.Migrations
                     b.HasIndex("PurchaseListId");
 
                     b.ToTable("PurchaseListItem", (string)null);
-                });
-
-            modelBuilder.Entity("Product.Domain.Entities.UserEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnOrder(0);
-
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnOrder(1);
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnOrder(100);
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnOrder(101);
-
-                    b.Property<DateTime?>("ModifyTime")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnOrder(2);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("User", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = new Guid("d6669a68-5afb-432d-858f-3f5181579a90"),
-                            CreateTime = new DateTime(2024, 10, 4, 8, 46, 11, 524, DateTimeKind.Utc).AddTicks(69),
-                            FirstName = "Super",
-                            LastName = "Admin"
-                        });
                 });
 
             modelBuilder.Entity("Product.Domain.Entities.CategoryEntity", b =>
@@ -562,15 +521,6 @@ namespace Product.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.PurchaseListEntity", b =>
-                {
-                    b.HasOne("Product.Domain.Entities.UserEntity", "User")
-                        .WithMany("PurchaseLists")
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Product.Domain.Entities.PurchaseListItemEntity", b =>
                 {
                     b.HasOne("Product.Domain.Entities.ProductEntity", "Product")
@@ -625,11 +575,6 @@ namespace Product.Infrastructure.Migrations
             modelBuilder.Entity("Product.Domain.Entities.PurchaseListEntity", b =>
                 {
                     b.Navigation("PurchaseListItems");
-                });
-
-            modelBuilder.Entity("Product.Domain.Entities.UserEntity", b =>
-                {
-                    b.Navigation("PurchaseLists");
                 });
 #pragma warning restore 612, 618
         }

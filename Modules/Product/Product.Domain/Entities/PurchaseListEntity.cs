@@ -14,7 +14,5 @@ public class PurchaseListEntity : BaseEntity
 
     public ICollection<PurchaseListItemEntity> PurchaseListItems { get; set; } = [];
 
-    public UserEntity User { get; set; }
-
     #endregion Related Data
 }

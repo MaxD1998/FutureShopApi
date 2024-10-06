@@ -31,7 +31,6 @@ internal class CreateUserEntityCommandHandler : IRequestHandler<CreateUserEntity
         var result = await _context.Set<UserEntity>().AddAsync(request.Dto.ToEntity(), cancellationToken);
 
         await _context.SaveChangesAsync(cancellationToken);
-        _rabbitMqContext.Sender.SendMessage("Product.User", result.Entity);
 
         return result.Entity;
     }

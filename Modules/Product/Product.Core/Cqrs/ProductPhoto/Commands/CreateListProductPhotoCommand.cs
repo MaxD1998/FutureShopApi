@@ -25,7 +25,7 @@ internal class CreateListProductPhotoCommandHandler : IRequestHandler<CreateList
             return [];
 
         if (request.Files.Any(x => x.Length == 0))
-            throw new BadRequestException(ExceptionMessage.ProductPhoto001OoneOfFilesWasEmpty);
+            throw new BadRequestException(ExceptionMessage.ProductPhoto001OneOfFilesWasEmpty);
 
         var productPhotos = request.Files.Select(x => x.ToProductPhotoDocument()).ToList();
         await _mongoDbContext.AddRangeAsync(productPhotos, cancellationToken);
