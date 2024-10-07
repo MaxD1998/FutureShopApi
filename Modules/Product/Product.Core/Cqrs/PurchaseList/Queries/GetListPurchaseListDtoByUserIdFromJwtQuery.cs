@@ -8,20 +8,20 @@ using Shared.Core.Extensions;
 
 namespace Product.Core.Cqrs.PurchaseList.Queries;
 
-public record GetListPurchaseListDtoByUserIdFromAccessorQuery : IRequest<IEnumerable<PurchaseListDto>>;
+public record GetListPurchaseListDtoByUserIdFromJwtQuery : IRequest<IEnumerable<PurchaseListDto>>;
 
-public class GetListPurchaseListDtoByUserIdFromAccessorQueryHandler : IRequestHandler<GetListPurchaseListDtoByUserIdFromAccessorQuery, IEnumerable<PurchaseListDto>>
+internal class GetListPurchaseListDtoByUserIdFromJwtQueryHandler : IRequestHandler<GetListPurchaseListDtoByUserIdFromJwtQuery, IEnumerable<PurchaseListDto>>
 {
     private readonly ProductPostgreSqlContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public GetListPurchaseListDtoByUserIdFromAccessorQueryHandler(ProductPostgreSqlContext context, IHttpContextAccessor httpContextAccessor)
+    public GetListPurchaseListDtoByUserIdFromJwtQueryHandler(ProductPostgreSqlContext context, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<IEnumerable<PurchaseListDto>> Handle(GetListPurchaseListDtoByUserIdFromAccessorQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<PurchaseListDto>> Handle(GetListPurchaseListDtoByUserIdFromJwtQuery request, CancellationToken cancellationToken)
     {
         var userId = _httpContextAccessor.GetUserId();
 

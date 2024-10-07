@@ -22,6 +22,6 @@ internal class CreateProductBaseFormDtoCommandHanlder : IRequestHandler<CreatePr
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return new ProductBaseFormDto(entity.Entity);
+        return new(entity.Entity);
     }
 }

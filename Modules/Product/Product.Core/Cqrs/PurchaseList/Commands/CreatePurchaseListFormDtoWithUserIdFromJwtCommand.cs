@@ -9,20 +9,20 @@ using Shared.Core.Exceptions;
 using Shared.Core.Extensions;
 
 namespace Product.Core.Cqrs.PurchaseList.Commands;
-public record CreatePurchaseListFormDtoCommand(PurchaseListFormDto Dto) : IRequest<PurchaseListFormDto>;
+public record CreatePurchaseListFormDtoWithUserIdFromJwtCommand(PurchaseListFormDto Dto) : IRequest<PurchaseListFormDto>;
 
-internal class CreatePurchaseListFormDtoCommandHandler : IRequestHandler<CreatePurchaseListFormDtoCommand, PurchaseListFormDto>
+internal class CreatePurchaseListFormDtoWithUserIdFromJwtCommandHandler : IRequestHandler<CreatePurchaseListFormDtoWithUserIdFromJwtCommand, PurchaseListFormDto>
 {
     private readonly ProductPostgreSqlContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public CreatePurchaseListFormDtoCommandHandler(ProductPostgreSqlContext context, IHttpContextAccessor httpContextAccessor)
+    public CreatePurchaseListFormDtoWithUserIdFromJwtCommandHandler(ProductPostgreSqlContext context, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<PurchaseListFormDto> Handle(CreatePurchaseListFormDtoCommand request, CancellationToken cancellationToken)
+    public async Task<PurchaseListFormDto> Handle(CreatePurchaseListFormDtoWithUserIdFromJwtCommand request, CancellationToken cancellationToken)
     {
         var userId = _httpContextAccessor.GetUserId();
         var dto = request.Dto;

@@ -21,6 +21,6 @@ internal class CreateCategoryFormDtoCommandHandler : IRequestHandler<CreateCateg
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return new CategoryFormDto(result.Entity);
+        return new(result.Entity);
     }
 }

@@ -15,4 +15,10 @@ public class PurchaseListItemEntity : BaseEntity
     public PurchaseListEntity PurchaseList { get; set; }
 
     #endregion Related Data
+
+    public void Update(PurchaseListItemEntity entity)
+    {
+        ProductId = entity.ProductId;
+        PurchaseListId = entity.PurchaseListId;
+    }
 }
