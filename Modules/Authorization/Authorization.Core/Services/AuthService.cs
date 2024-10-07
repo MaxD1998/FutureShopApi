@@ -50,7 +50,7 @@ public class AuthService : IAuthService
         var user = await _mediator.Send(new GetUserEntityByEmailQuery(dto.Email), cancellationToken);
 
         if (user is null)
-            throw new ForbiddenException(CommonExceptionMessage.E004WrongEmailOrPassword);
+            throw new ForbiddenException(CommonExceptionMessage.C004WrongEmailOrPassword);
 
         var refreshToken = await AddOrUpdateRefreshTokenAsync(user.Id, cancellationToken);
         var result = new AuthorizeDto(user, GenerateJwt(user));
@@ -66,7 +66,7 @@ public class AuthService : IAuthService
         var nullableUserId = _httpContext.User.Claims.FirstOrDefault(x => x.Type == JwtClaimNameConst.Id)?.Value;
 
         if (!Guid.TryParse(nullableUserId, out var userId))
-            throw new BadRequestException(CommonExceptionMessage.E005BadGuidFormat);
+            throw new BadRequestException(CommonExceptionMessage.C005BadGuidFormat);
 
         await _mediator.Send(new DeleteRefreshTokenByUserIdCommand(userId), cancellationToken);
 
@@ -81,14 +81,14 @@ public class AuthService : IAuthService
             return null;
 
         if (!Guid.TryParse(userRefreshToken, out var token))
-            throw new ForbiddenException(CommonExceptionMessage.E003WrongRefreshTokenFormat);
+            throw new ForbiddenException(CommonExceptionMessage.C003WrongRefreshTokenFormat);
 
         var refreshToken = await _mediator.Send(new GetRefereshTokenEntityByTokenQuery(token), cancellationToken);
 
         if (refreshToken is null)
         {
             _cookieService.RemoveCookie(CookieNameConst.RefreshToken);
-            throw new ForbiddenException(CommonExceptionMessage.E001SessionHasExpired);
+            throw new ForbiddenException(CommonExceptionMessage.C001SessionHasExpired);
         }
 
         var user = refreshToken.User;

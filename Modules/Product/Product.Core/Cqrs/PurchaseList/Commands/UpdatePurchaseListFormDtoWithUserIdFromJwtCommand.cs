@@ -40,8 +40,6 @@ internal class UpdatePurchaseListFormDtoWithUserIdFromJwtCommandHandler : IReque
         if (hasFavourite)
             throw new BadRequestException(ExceptionMessage.PurchaseList001UserHasFavouireList);
 
-        entity
-
         //var dto = request.Dto;
 
         //if (userId.HasValue && dto.IsFavourite)

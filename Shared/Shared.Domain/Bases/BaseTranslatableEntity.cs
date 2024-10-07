@@ -8,7 +8,7 @@ public abstract class BaseTranslatableEntity<T> : BaseEntity where T : BaseTrans
     {
         foreach (var translation in entities)
         {
-            var result = Translations.FirstOrDefault(x => x.Lang == translation.Lang);
+            var result = Translations.FirstOrDefault(x => x.Id == translation.Id);
             if (result is null)
             {
                 Translations.Add(translation);
@@ -20,7 +20,7 @@ public abstract class BaseTranslatableEntity<T> : BaseEntity where T : BaseTrans
 
         foreach (var translation in Translations.ToList())
         {
-            if (!entities.Any(x => x.Lang == translation.Lang))
+            if (!entities.Any(x => x.Id == translation.Id))
                 Translations.Remove(translation);
         }
     }

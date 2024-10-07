@@ -11,9 +11,12 @@ public class ProductParameterFormDto
 
     public ProductParameterFormDto(ProductParameterEntity entity)
     {
+        Id = entity.Id;
         Name = entity.Name;
         Translations = entity.Translations.Select(x => new ProgramParameterTranslationFormDto(x)).ToList();
     }
+
+    public Guid Id { get; set; }
 
     public string Name { get; set; }
 
