@@ -1,8 +1,9 @@
 ﻿using Shared.Domain.Bases;
+using Shared.Domain.Interfaces;
 
 namespace Product.Domain.Entities;
 
-public class PurchaseListItemEntity : BaseEntity
+public class PurchaseListItemEntity : BaseEntity, IUpdate<PurchaseListItemEntity>
 {
     public Guid ProductId { get; set; }
 

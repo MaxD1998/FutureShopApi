@@ -1,8 +1,9 @@
 ﻿using Shared.Domain.Bases;
+using Shared.Domain.Interfaces;
 
 namespace Product.Domain.Entities;
 
-public class ProductParameterValueEntity : BaseEntity
+public class ProductParameterValueEntity : BaseEntity, IUpdate<ProductParameterValueEntity>
 {
     public Guid ProductId { get; set; }
 

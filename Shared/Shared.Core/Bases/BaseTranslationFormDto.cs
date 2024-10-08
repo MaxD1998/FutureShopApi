@@ -2,7 +2,7 @@
 
 namespace Shared.Core.Bases;
 
-public abstract class BaseTranslationFormDto<TEntity> where TEntity : BaseTranslationEntity, new()
+public abstract class BaseTranslationFormDto<TEntity> where TEntity : BaseTranslationEntity<TEntity>, new()
 {
     public BaseTranslationFormDto()
     {

@@ -1,12 +1,14 @@
-﻿namespace Shared.Domain.Bases;
+﻿using Shared.Domain.Interfaces;
 
-public abstract class BaseTranslationEntity : BaseEntity
+namespace Shared.Domain.Bases;
+
+public abstract class BaseTranslationEntity<TEntity> : BaseEntity, IUpdate<TEntity> where TEntity : BaseTranslationEntity<TEntity>
 {
     public string Lang { get; set; }
 
     public string Translation { get; set; }
 
-    public void Update(BaseTranslationEntity entity)
+    public void Update(TEntity entity)
     {
         Translation = entity.Translation;
     }

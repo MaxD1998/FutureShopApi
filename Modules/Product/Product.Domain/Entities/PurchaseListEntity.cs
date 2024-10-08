@@ -1,8 +1,10 @@
 ﻿using Shared.Domain.Bases;
+using Shared.Domain.Extensions;
+using Shared.Domain.Interfaces;
 
 namespace Product.Domain.Entities;
 
-public class PurchaseListEntity : BaseEntity
+public class PurchaseListEntity : BaseEntity, IUpdate<PurchaseListEntity>
 {
     public bool IsFavourite { get; set; }
 
@@ -21,21 +23,6 @@ public class PurchaseListEntity : BaseEntity
         IsFavourite = entity.IsFavourite;
         Name = entity.Name;
         UserId = entity.UserId;
-    }
-
-    private void UpdatePurchaseListItems(ICollection<PurchaseListItemEntity> purchaseListItems)
-    {
-        var ids = purchaseListItems.Where(x => x.Id != Guid.Empty).Select(x => x.Id).ToList();
-        PurchaseListItems = PurchaseListItems.Where(x => ids.Contains(x.Id)).ToList();
-
-        foreach (var entity in PurchaseListItems)
-        {
-            var purchaseListItem = purchaseListItems.First(x => x.Id == entity.Id);
-            entity.Update(purchaseListItem);
-        }
-
-        foreach (var purchaseListItem in purchaseListItems.Where(x => x.Id == Guid.Empty))
-        {
-        }
+        PurchaseListItems.UpdateEntities(entity.PurchaseListItems);
     }
 }

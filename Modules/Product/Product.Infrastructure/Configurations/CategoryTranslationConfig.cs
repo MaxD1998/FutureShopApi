@@ -13,7 +13,6 @@ public class CategoryTranslationConfig : BaseTranslationConfig<CategoryTranslati
 
         builder.Property(x => x.CategoryId)
             .HasColumnOrder(100)
-            .ValueGeneratedOnAdd()
             .IsRequired();
 
         builder.HasIndex(x => new { x.CategoryId, x.Lang })
