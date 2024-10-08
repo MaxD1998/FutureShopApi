@@ -23,6 +23,7 @@ internal class UpdateProductBaseFormDtoCommandHandler : IRequestHandler<UpdatePr
     {
         var entity = await _context.Set<ProductBaseEntity>()
             .Include(x => x.ProductParameters)
+                .ThenInclude(x => x.Translations)
             .Include(x => x.Products)
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 

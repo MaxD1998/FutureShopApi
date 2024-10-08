@@ -16,7 +16,7 @@ public class ProductParameterFormDto
         Translations = entity.Translations.Select(x => new ProgramParameterTranslationFormDto(x)).ToList();
     }
 
-    public Guid Id { get; set; }
+    public Guid? Id { get; set; }
 
     public string Name { get; set; }
 
@@ -24,6 +24,7 @@ public class ProductParameterFormDto
 
     public ProductParameterEntity ToEntity() => new()
     {
+        Id = Id ?? Guid.Empty,
         Name = Name,
         Translations = Translations.Select(x => x.ToEntity()).ToList()
     };
