@@ -19,6 +19,11 @@ public class PurchaseListController : BaseController
     public async Task<IActionResult> CreateAsync([FromBody] PurchaseListFormDto dto, CancellationToken cancellation = default)
         => await ApiResponseAsync(dto, new CreatePurchaseListFormDtoWithUserIdFromJwtCommand(dto), cancellation);
 
+    [HttpDelete("{id:guid}")]
+    [ProducesResponseType(typeof(IEnumerable<PurchaseListDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> DeleteByIdAsync([FromRoute] Guid id, CancellationToken cancellation = default)
+        => await ApiResponseAsync(new DeletePurchaseListByIdCommand(id), cancellation);
+
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<PurchaseListDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetByUserIdFromJwtAsync(CancellationToken cancellation = default)
