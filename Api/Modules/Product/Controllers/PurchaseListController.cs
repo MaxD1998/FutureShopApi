@@ -16,11 +16,16 @@ public class PurchaseListController : BaseController
 
     [HttpPost]
     [ProducesResponseType(typeof(PurchaseListFormDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> CreateAsync([FromBody] PurchaseListFormDto dto)
-        => await ApiResponseAsync(dto, new CreatePurchaseListFormDtoWithUserIdFromJwtCommand(dto));
+    public async Task<IActionResult> CreateAsync([FromBody] PurchaseListFormDto dto, CancellationToken cancellation = default)
+        => await ApiResponseAsync(dto, new CreatePurchaseListFormDtoWithUserIdFromJwtCommand(dto), cancellation);
 
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<PurchaseListDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetByUserIdFromJwt()
-        => await ApiResponseAsync(new GetListPurchaseListDtoByUserIdFromJwtQuery());
+    public async Task<IActionResult> GetByUserIdFromJwtAsync(CancellationToken cancellation = default)
+        => await ApiResponseAsync(new GetListPurchaseListDtoByUserIdFromJwtQuery(), cancellation);
+
+    [HttpPut("{id:guid}")]
+    [ProducesResponseType(typeof(PurchaseListFormDto), StatusCodes.Status200OK)]
+    public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] PurchaseListFormDto dto, CancellationToken cancellation = default)
+        => await ApiResponseAsync(dto, new UpdatePurchaseListFormDtoWithUserIdFromJwtCommand(id, dto), cancellation);
 }

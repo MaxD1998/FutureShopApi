@@ -39,7 +39,7 @@ internal class CreatePurchaseListFormDtoWithUserIdFromJwtCommandHandler : IReque
         entity.UserId = userId;
 
         var result = await _context.Set<PurchaseListEntity>().AddAsync(entity, cancellationToken);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(cancellationToken);
 
         return new(result.Entity);
     }
