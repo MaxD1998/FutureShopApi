@@ -26,7 +26,7 @@ public class PurchaseListController : BaseController
 
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<PurchaseListDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetByUserIdFromJwtAsync(CancellationToken cancellation = default)
+    public async Task<IActionResult> GetListByUserIdFromJwtAsync(CancellationToken cancellation = default)
         => await ApiResponseAsync(new GetListPurchaseListDtoByUserIdFromJwtQuery(), cancellation);
 
     [HttpPut("{id:guid}")]
