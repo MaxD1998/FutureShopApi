@@ -21,7 +21,7 @@ internal class GetPurchaseListDtoByIdQueryHandler : IRequestHandler<GetPurchaseL
             .AsNoTracking()
             .Include(x => x.PurchaseListItems)
                 .ThenInclude(x => x.Product)
-                    .ThenInclude(x => x.ProductPhotos.FirstOrDefault())
+                    .ThenInclude(x => x.ProductPhotos.OrderBy(y => y.Position).Take(1))
             .Where(x => x.Id == request.Id)
             .Select(x => new PurchaseListDto(x))
             .FirstOrDefaultAsync(cancellationToken);

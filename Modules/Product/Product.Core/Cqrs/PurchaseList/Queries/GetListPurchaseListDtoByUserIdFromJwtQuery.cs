@@ -29,7 +29,7 @@ internal class GetListPurchaseListDtoByUserIdFromJwtQueryHandler : IRequestHandl
             .AsNoTracking()
             .Include(x => x.PurchaseListItems)
                 .ThenInclude(x => x.Product)
-                    .ThenInclude(x => x.ProductPhotos.FirstOrDefault())
+                    .ThenInclude(x => x.ProductPhotos.OrderBy(y => y.Position).Take(1))
             .Where(x => x.UserId != null && x.UserId == userId)
             .Select(x => new PurchaseListDto(x))
             .ToListAsync(cancellationToken);
