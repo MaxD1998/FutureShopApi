@@ -8,12 +8,15 @@ public class PurchaseListDto
     public PurchaseListDto(PurchaseListEntity entity)
     {
         Id = entity.Id;
+        IsFavourite = entity.IsFavourite;
         Name = entity.Name;
         PurchaseListItems = entity.PurchaseListItems.Select(x => new PurchaseListItemDto(x));
         UserId = entity.UserId;
     }
 
     public Guid Id { get; set; }
+
+    public bool IsFavourite { get; set; }
 
     public string Name { get; set; }
 
