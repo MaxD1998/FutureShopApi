@@ -1,4 +1,5 @@
 ﻿using Product.Core.Dtos.ProductParameterValue;
+using Product.Core.Dtos.ProductPhoto;
 using Product.Core.Dtos.ProductTranslation;
 using Product.Domain.Entities;
 
@@ -17,7 +18,7 @@ public class ProductFormDto
         Price = entity.Price;
         ProductBaseId = entity.ProductBaseId;
         ProductParameterValues = entity.ProductParameterValues.Select(x => new ProductParameterValueFormDto(x)).ToList();
-        ProductPhotos = entity.ProductPhotos.Select(x => x.FileId).ToList();
+        ProductPhotos = entity.ProductPhotos.Select(x => new ProductPhotoFormDto(x)).ToList();
         Translations = entity.Translations.Select(x => new ProductTranslationFormDto(x)).ToList();
     }
 
@@ -31,7 +32,7 @@ public class ProductFormDto
 
     public List<ProductParameterValueFormDto> ProductParameterValues { get; set; }
 
-    public List<string> ProductPhotos { get; set; }
+    public List<ProductPhotoFormDto> ProductPhotos { get; set; }
 
     public List<ProductTranslationFormDto> Translations { get; set; }
 
@@ -42,13 +43,7 @@ public class ProductFormDto
         Price = Price,
         ProductBaseId = ProductBaseId,
         ProductParameterValues = ProductParameterValues.Select(x => x.ToEntity()).ToList(),
-        ProductPhotos = ProductPhotos.Select(ToProductPhotoEntity).ToList(),
+        ProductPhotos = ProductPhotos.Select((x, index) => x.ToEntity(index)).ToList(),
         Translations = Translations.Select(x => x.ToEntity()).ToList(),
-    };
-
-    private static ProductPhotoEntity ToProductPhotoEntity(string fileId, int position) => new()
-    {
-        FileId = fileId,
-        Position = position,
     };
 }

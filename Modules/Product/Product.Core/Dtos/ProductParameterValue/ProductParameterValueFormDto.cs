@@ -10,9 +10,12 @@ public class ProductParameterValueFormDto
 
     public ProductParameterValueFormDto(ProductParameterValueEntity entity)
     {
+        Id = entity.Id;
         ProductParameterId = entity.ProductParameterId;
         Value = entity.Value;
     }
+
+    public Guid? Id { get; set; }
 
     public Guid ProductParameterId { get; set; }
 
@@ -20,6 +23,7 @@ public class ProductParameterValueFormDto
 
     public ProductParameterValueEntity ToEntity() => new()
     {
+        Id = Id ?? Guid.Empty,
         ProductParameterId = ProductParameterId,
         Value = Value,
     };
