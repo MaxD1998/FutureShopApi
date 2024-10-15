@@ -20,7 +20,7 @@ public static class CollectionExtension
 
         foreach (var entity in entities.ToList())
         {
-            if (!entities.Any(x => x.Id == entity.Id))
+            if (!updateEntities.Any(x => x.Id == entity.Id))
                 entities.Remove(entity);
         }
     }
