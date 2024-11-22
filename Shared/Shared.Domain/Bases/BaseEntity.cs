@@ -1,6 +1,8 @@
-﻿namespace Shared.Domain.Bases;
+﻿using Shared.Domain.Interfaces;
 
-public abstract class BaseEntity
+namespace Shared.Domain.Bases;
+
+public abstract class BaseEntity : IEntity
 {
     public DateTime CreateTime { get; set; }
 

@@ -12,7 +12,7 @@ using Product.Infrastructure;
 namespace Product.Infrastructure.Migrations
 {
     [DbContext(typeof(ProductPostgreSqlContext))]
-    [Migration("20240803165435_Init")]
+    [Migration("20241004115202_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace Product.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.7")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -139,7 +139,7 @@ namespace Product.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .HasColumnType("text")
-                        .HasColumnOrder(102);
+                        .HasColumnOrder(103);
 
                     b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("timestamp with time zone")
@@ -152,7 +152,8 @@ namespace Product.Infrastructure.Migrations
                         .HasColumnOrder(101);
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("numeric");
+                        .HasColumnType("numeric")
+                        .HasColumnOrder(102);
 
                     b.Property<Guid>("ProductBaseId")
                         .HasColumnType("uuid")
@@ -350,6 +351,70 @@ namespace Product.Infrastructure.Migrations
                     b.ToTable("ProductTranslation", (string)null);
                 });
 
+            modelBuilder.Entity("Product.Domain.Entities.PurchaseListEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(1);
+
+                    b.Property<bool>("IsFavourite")
+                        .HasColumnType("boolean")
+                        .HasColumnOrder(102);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text")
+                        .HasColumnOrder(101);
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(100);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PurchaseList", (string)null);
+                });
+
+            modelBuilder.Entity("Product.Domain.Entities.PurchaseListItemEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(1);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(101);
+
+                    b.Property<Guid>("PurchaseListId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("PurchaseListId");
+
+                    b.ToTable("PurchaseListItem", (string)null);
+                });
+
             modelBuilder.Entity("Product.Domain.Entities.CategoryEntity", b =>
                 {
                     b.HasOne("Product.Domain.Entities.CategoryEntity", "ParentCategory")
@@ -456,6 +521,25 @@ namespace Product.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Product.Domain.Entities.PurchaseListItemEntity", b =>
+                {
+                    b.HasOne("Product.Domain.Entities.ProductEntity", "Product")
+                        .WithMany("PurchaseListItems")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Product.Domain.Entities.PurchaseListEntity", "PurchaseList")
+                        .WithMany("PurchaseListItems")
+                        .HasForeignKey("PurchaseListId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("PurchaseList");
+                });
+
             modelBuilder.Entity("Product.Domain.Entities.CategoryEntity", b =>
                 {
                     b.Navigation("ProductBases");
@@ -478,12 +562,19 @@ namespace Product.Infrastructure.Migrations
 
                     b.Navigation("ProductPhotos");
 
+                    b.Navigation("PurchaseListItems");
+
                     b.Navigation("Translations");
                 });
 
             modelBuilder.Entity("Product.Domain.Entities.ProductParameterEntity", b =>
                 {
                     b.Navigation("Translations");
+                });
+
+            modelBuilder.Entity("Product.Domain.Entities.PurchaseListEntity", b =>
+                {
+                    b.Navigation("PurchaseListItems");
                 });
 #pragma warning restore 612, 618
         }

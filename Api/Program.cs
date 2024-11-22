@@ -5,6 +5,7 @@ using Authorization.Inrfrastructure;
 using Product.Infrastructure;
 using Quartz.AspNetCore;
 using Shared.Api.Middlewares;
+using Shared.Infrastructure;
 using System.Reflection;
 
 namespace Api;
@@ -22,6 +23,7 @@ public class Program
         services.AddAppsettings(config);
         services.AddJwtAuthentication(config);
         services.AddQuartzServer(config => config.WaitForJobsToComplete = true);
+        services.AddSingleton<RabbitMqContext>();
 
         services.AddScoped<ErrorHandlingMiddleware>();
 

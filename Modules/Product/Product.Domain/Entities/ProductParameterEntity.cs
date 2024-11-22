@@ -1,8 +1,10 @@
 ﻿using Shared.Domain.Bases;
+using Shared.Domain.Extensions;
+using Shared.Domain.Interfaces;
 
 namespace Product.Domain.Entities;
 
-public class ProductParameterEntity : BaseTranslatableEntity<ProductParameterTranslationEntity>
+public class ProductParameterEntity : BaseEntity, IUpdate<ProductParameterEntity>
 {
     public string Name { get; set; }
 
@@ -12,11 +14,13 @@ public class ProductParameterEntity : BaseTranslatableEntity<ProductParameterTra
 
     public ProductBaseEntity ProductBase { get; set; }
 
+    public ICollection<ProductParameterTranslationEntity> Translations { get; set; } = [];
+
     #endregion Related Data
 
     public void Update(ProductParameterEntity entity)
     {
         Name = entity.Name;
-        UpdateTranslations(entity.Translations);
+        Translations.UpdateEntities(entity.Translations);
     }
 }

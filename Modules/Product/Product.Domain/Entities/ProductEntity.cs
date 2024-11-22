@@ -1,8 +1,9 @@
 ﻿using Shared.Domain.Bases;
+using Shared.Domain.Extensions;
 
 namespace Product.Domain.Entities;
 
-public class ProductEntity : BaseTranslatableEntity<ProductTranslationEntity>
+public class ProductEntity : BaseEntity
 {
     public string Description { get; set; }
 
@@ -20,6 +21,10 @@ public class ProductEntity : BaseTranslatableEntity<ProductTranslationEntity>
 
     public ICollection<ProductPhotoEntity> ProductPhotos { get; set; } = [];
 
+    public ICollection<PurchaseListItemEntity> PurchaseListItems { get; set; } = [];
+
+    public ICollection<ProductTranslationEntity> Translations { get; set; } = [];
+
     #endregion Related Data
 
     public void Update(ProductEntity entity)
@@ -27,29 +32,8 @@ public class ProductEntity : BaseTranslatableEntity<ProductTranslationEntity>
         Description = entity.Description;
         Name = entity.Name;
         Price = entity.Price;
-        ProductPhotos = entity.ProductPhotos;
-        UpdateProductParameterValues(entity.ProductParameterValues);
-        UpdateTranslations(entity.Translations);
-    }
-
-    private void UpdateProductParameterValues(IEnumerable<ProductParameterValueEntity> entities)
-    {
-        foreach (var productParameterValue in entities)
-        {
-            var result = ProductParameterValues.FirstOrDefault(x => x.ProductParameterId == productParameterValue.ProductParameterId);
-            if (result is null)
-            {
-                ProductParameterValues.Add(productParameterValue);
-                continue;
-            }
-
-            result.Update(productParameterValue);
-        }
-
-        foreach (var productParameterValue in ProductParameterValues.ToList())
-        {
-            if (!entities.Any(x => x.ProductParameterId == productParameterValue.ProductParameterId))
-                ProductParameterValues.Remove(productParameterValue);
-        }
+        ProductPhotos.UpdateEntities(entity.ProductPhotos);
+        ProductParameterValues.UpdateEntities(entity.ProductParameterValues);
+        Translations.UpdateEntities(entity.Translations);
     }
 }

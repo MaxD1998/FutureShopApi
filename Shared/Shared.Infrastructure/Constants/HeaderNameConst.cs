@@ -1,6 +1,6 @@
 ﻿namespace Shared.Infrastructure.Constants;
 
-public readonly struct HeaderNameConst
+public static class HeaderNameConst
 {
     public const string Lang = "lang";
 }

@@ -5,7 +5,7 @@ using Shared.Infrastructure.Constants;
 
 namespace Shared.Infrastructure.Bases;
 
-public abstract class BaseTranslationConfig<TEntity> : BaseConfig<TEntity> where TEntity : BaseTranslationEntity
+public abstract class BaseTranslationConfig<TEntity> : BaseConfig<TEntity> where TEntity : BaseTranslationEntity<TEntity>
 {
     protected override void ConfigureEntity(EntityTypeBuilder<TEntity> builder)
     {

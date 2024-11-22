@@ -1,4 +1,5 @@
 ﻿using Shared.Domain.Bases;
+using Shared.Domain.Extensions;
 
 namespace Product.Domain.Entities;
 
@@ -22,6 +23,6 @@ public class ProductBaseEntity : BaseEntity
     {
         CategoryId = entity.CategoryId;
         Name = entity.Name;
-        ProductParameters = entity.ProductParameters;
+        ProductParameters.UpdateEntities(entity.ProductParameters);
     }
 }

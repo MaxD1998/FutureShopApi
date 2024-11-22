@@ -2,7 +2,7 @@
 
 namespace Product.Domain.Entities;
 
-public class ProductTranslationEntity : BaseTranslationEntity
+public class ProductTranslationEntity : BaseTranslationEntity<ProductTranslationEntity>
 {
     public Guid ProductId { get; set; }
 

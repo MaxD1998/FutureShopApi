@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Product.Core.Dtos.Product;
 using Product.Core.Interfaces.Services;
@@ -8,26 +9,30 @@ using Shared.Core.Extensions;
 using Shared.Infrastructure.Constants;
 
 namespace Product.Core.Cqrs.Product.Queries;
-public record GetListProductShopListDtoByCategoryIdQuery(Guid CategoryId, ProductShopListFilterRequestDto Filter) : IRequest<IEnumerable<ProductShopListDto>>;
+public record GetListProductShopListDtoByCategoryIdQuery(Guid CategoryId, ProductShopListFilterRequestDto Filter, Guid? FavouriteId) : IRequest<IEnumerable<ProductShopListDto>>;
 
 internal class GetListProductShopListDtoByCategoryIdQueryHandler : IRequestHandler<GetListProductShopListDtoByCategoryIdQuery, IEnumerable<ProductShopListDto>>
 {
     private readonly ProductPostgreSqlContext _context;
     private readonly IHeaderService _headerService;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public GetListProductShopListDtoByCategoryIdQueryHandler(IHeaderService headerService, ProductPostgreSqlContext context)
+    public GetListProductShopListDtoByCategoryIdQueryHandler(IHeaderService headerService, IHttpContextAccessor httpContextAccessor, ProductPostgreSqlContext context)
     {
         _headerService = headerService;
+        _httpContextAccessor = httpContextAccessor;
         _context = context;
     }
 
     public async Task<IEnumerable<ProductShopListDto>> Handle(GetListProductShopListDtoByCategoryIdQuery request, CancellationToken cancellationToken)
     {
         var categoryIds = await GetCategoryIds([request.CategoryId], cancellationToken);
+        var userId = _httpContextAccessor.GetUserId();
 
         return await _context.Set<ProductEntity>()
             .AsNoTracking()
             .Include(x => x.ProductPhotos.OrderBy(y => y.Position))
+            .Include(x => x.PurchaseListItems.Where(y => (y.PurchaseList.UserId != null && y.PurchaseList.UserId == userId) || y.PurchaseListId == request.FavouriteId))
             .Include(x => x.Translations.Where(x => x.Lang == _headerService.GetHeader(HeaderNameConst.Lang)))
             .Where(x => categoryIds.Contains(x.ProductBase.CategoryId))
             .Filter(request.Filter, _headerService.GetHeader(HeaderNameConst.Lang))

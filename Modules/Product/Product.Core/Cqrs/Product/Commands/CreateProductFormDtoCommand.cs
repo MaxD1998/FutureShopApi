@@ -21,6 +21,6 @@ internal class CreateProductFormDtoCommandHandler : IRequestHandler<CreateProduc
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return new ProductFormDto(result.Entity);
+        return new(result.Entity);
     }
 }

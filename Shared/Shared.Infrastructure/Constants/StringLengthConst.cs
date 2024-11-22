@@ -1,6 +1,6 @@
 ﻿namespace Shared.Infrastructure.Constants;
 
-public readonly struct StringLengthConst
+public static class StringLengthConst
 {
     public const int LangString = 5;
     public const int LongString = 100;

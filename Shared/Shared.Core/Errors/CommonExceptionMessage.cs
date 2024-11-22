@@ -4,15 +4,17 @@ namespace Shared.Core.Errors;
 
 public static class CommonExceptionMessage
 {
-    public static ErrorMessageDto E001SessionHasExpired => new("E001", "Session has expired");
+    public static ErrorMessageDto C001SessionHasExpired => new("C001", "Session has expired");
 
-    public static ErrorMessageDto E002ValidatorNotExist => new("E002", "Validator not exist");
+    public static ErrorMessageDto C002ValidatorNotExist => new("C002", "Validator not exist");
 
-    public static ErrorMessageDto E003WrongRefreshTokenFormat => new("E003", "Wrong refresh token format");
+    public static ErrorMessageDto C003WrongRefreshTokenFormat => new("C003", "Wrong refresh token format");
 
-    public static ErrorMessageDto E004WrongEmailOrPassword => new("E004", "Wrong email or password");
+    public static ErrorMessageDto C004WrongEmailOrPassword => new("C004", "Wrong email or password");
 
-    public static ErrorMessageDto E005BadGuidFormat => new("E005", "Bad Guid format");
+    public static ErrorMessageDto C005BadGuidFormat => new("C005", "Bad Guid format");
 
-    public static ErrorMessageDto E006RecordAlreadyExists => new("E006", "Record already exists");
+    public static ErrorMessageDto C006RecordAlreadyExists => new("C006", "Record already exists");
+
+    public static ErrorMessageDto C007RecordWasNotFound => new("C007", "Record was not found");
 }

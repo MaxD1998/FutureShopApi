@@ -36,6 +36,7 @@ public abstract class BasePostgreSqlContext : DbContext
 
                 case EntityState.Modified:
                     entity.Entity.ModifyTime = DateTime.UtcNow;
+                    entity.Property(x => x.CreateTime).IsModified = false;
                     break;
 
                 default:

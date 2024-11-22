@@ -1,6 +1,6 @@
 ﻿namespace Shared.Infrastructure.Constants;
 
-public readonly struct JwtClaimNameConst
+public static class JwtClaimNameConst
 {
     public const string Id = "id";
     public const string Role = "role";

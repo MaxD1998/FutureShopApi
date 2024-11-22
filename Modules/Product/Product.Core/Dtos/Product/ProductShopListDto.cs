@@ -8,6 +8,7 @@ public class ProductShopListDto
     {
         FileId = entity.ProductPhotos.FirstOrDefault()?.FileId;
         Id = entity.Id;
+        IsInPurchaseList = entity.PurchaseListItems.Any();
         Name = entity.Translations?.FirstOrDefault()?.Translation ?? entity.Name;
         Price = entity.Price;
     }
@@ -15,6 +16,8 @@ public class ProductShopListDto
     public string FileId { get; set; }
 
     public Guid Id { get; set; }
+
+    public bool IsInPurchaseList { get; set; }
 
     public string Name { get; set; }
 

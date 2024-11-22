@@ -22,9 +22,9 @@ public class CategoryFormDto
 
     public Guid? ParentCategoryId { get; set; }
 
-    public List<IdNameDto> SubCategories { get; set; }
+    public List<IdNameDto> SubCategories { get; set; } = [];
 
-    public List<CategoryTranslationFormDto> Translations { get; set; }
+    public List<CategoryTranslationFormDto> Translations { get; set; } = [];
 
     public CategoryEntity ToEntity(ProductPostgreSqlContext context) => new()
     {

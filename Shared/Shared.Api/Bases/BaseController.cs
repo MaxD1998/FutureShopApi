@@ -89,7 +89,7 @@ public class BaseController : ControllerBase
         var validator = _fluentValidatorFactory.GetValidator<TInput>();
 
         if (validator is null)
-            throw new NoValidatorException(CommonExceptionMessage.E002ValidatorNotExist);
+            throw new NoValidatorException(CommonExceptionMessage.C002ValidatorNotExist);
 
         var validation = validator.Validate(param);
         var isValid = validation.IsValid;
