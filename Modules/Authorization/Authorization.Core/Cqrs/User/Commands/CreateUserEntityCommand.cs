@@ -5,7 +5,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Shared.Core.Errors;
 using Shared.Core.Exceptions;
-using Shared.Infrastructure;
 
 namespace Authorization.Core.Cqrs.User.Commands;
 public record CreateUserEntityCommand(UserFormDto Dto) : IRequest<UserEntity>;
@@ -13,12 +12,10 @@ public record CreateUserEntityCommand(UserFormDto Dto) : IRequest<UserEntity>;
 internal class CreateUserEntityCommandHandler : IRequestHandler<CreateUserEntityCommand, UserEntity>
 {
     private readonly AuthContext _context;
-    private readonly RabbitMqContext _rabbitMqContext;
 
-    public CreateUserEntityCommandHandler(AuthContext context, RabbitMqContext rabbitMqContext)
+    public CreateUserEntityCommandHandler(AuthContext context)
     {
         _context = context;
-        _rabbitMqContext = rabbitMqContext;
     }
 
     public async Task<UserEntity> Handle(CreateUserEntityCommand request, CancellationToken cancellationToken)

@@ -77,7 +77,7 @@ public class AuthService : IAuthService
     {
         var userRefreshToken = _cookieService.GetCookieValue(CookieNameConst.RefreshToken);
 
-        if (userRefreshToken.IsNullOrEmpty())
+        if (string.IsNullOrEmpty(userRefreshToken))
             return null;
 
         if (!Guid.TryParse(userRefreshToken, out var token))
