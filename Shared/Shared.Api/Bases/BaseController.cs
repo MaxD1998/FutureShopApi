@@ -52,9 +52,11 @@ public class BaseController : ControllerBase
         return Ok(await _mediator.Send(request, cancellationToken));
     }
 
-    protected async Task<IActionResult> ApiResponseAsync<TParam, TRespone>(TParam param, Func<Task<TRespone>> action)
+    protected async Task<IActionResult> ApiResponseAsync<TParam, TRespone>(TParam param, Func<Task<TRespone>> action, CancellationToken cancellationToken = default)
         where TParam : class
     {
+        cancellationToken.ThrowIfCancellationRequested();
+
         if (!IsValid(param, out var errors))
             return BadRequest(errors);
 

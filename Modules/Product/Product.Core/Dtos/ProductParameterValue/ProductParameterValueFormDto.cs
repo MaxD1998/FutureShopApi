@@ -1,4 +1,5 @@
-﻿using Product.Domain.Entities;
+﻿using FluentValidation;
+using Product.Domain.Entities;
 
 namespace Product.Core.Dtos.ProductParameterValue;
 
@@ -27,4 +28,8 @@ public class ProductParameterValueFormDto
         ProductParameterId = ProductParameterId,
         Value = Value,
     };
+}
+
+public class ProductParameterValueFormValidator : AbstractValidator<ProductParameterValueFormDto>
+{
 }

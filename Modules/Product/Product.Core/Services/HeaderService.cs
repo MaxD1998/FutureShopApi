@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Product.Core.Interfaces.Services;
 
 namespace Product.Core.Services;
+
+public interface IHeaderService
+{
+    string GetHeader(string name);
+}
 
 public class HeaderService : IHeaderService
 {

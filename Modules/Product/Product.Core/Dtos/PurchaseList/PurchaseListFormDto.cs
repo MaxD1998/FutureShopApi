@@ -1,4 +1,5 @@
-﻿using Product.Core.Dtos.PurchaseListItem;
+﻿using FluentValidation;
+using Product.Core.Dtos.PurchaseListItem;
 using Product.Domain.Entities;
 
 namespace Product.Core.Dtos.PurchaseList;
@@ -31,4 +32,8 @@ public class PurchaseListFormDto
         Name = Name,
         PurchaseListItems = PurchaseListItems.Select(x => x.ToEntity()).ToList()
     };
+}
+
+public class PurchaseListFormValidator : AbstractValidator<PurchaseListFormDto>
+{
 }

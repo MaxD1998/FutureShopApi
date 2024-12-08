@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Product.Core.Dtos;
-using Product.Core.Interfaces.Services;
 using Product.Domain.Entities;
 using Product.Infrastructure;
 
@@ -12,11 +11,9 @@ public record GetListCategoryIdNameDtoAvailableToBeParentCategoryQuery(Guid? Id,
 internal class GetsCategoryIdNameDtoAvailableToBeParentCategoryQueryHandler : IRequestHandler<GetListCategoryIdNameDtoAvailableToBeParentCategoryQuery, IEnumerable<IdNameDto>>
 {
     private readonly ProductPostgreSqlContext _context;
-    private readonly IHeaderService _headerService;
 
-    public GetsCategoryIdNameDtoAvailableToBeParentCategoryQueryHandler(IHeaderService headerService, ProductPostgreSqlContext context)
+    public GetsCategoryIdNameDtoAvailableToBeParentCategoryQueryHandler(ProductPostgreSqlContext context)
     {
-        _headerService = headerService;
         _context = context;
     }
 

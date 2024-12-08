@@ -1,7 +1,6 @@
 ﻿using Api.Extensions;
 using FluentValidation;
 using Product.Core;
-using Product.Core.Interfaces.Services;
 using Product.Core.Jobs;
 using Product.Core.Services;
 using Product.Infrastructure;
@@ -47,6 +46,8 @@ public static class ProductRegister
 
     private static void RegisterServices(this IServiceCollection services)
     {
+        services.AddScoped<IBasketSerivce, BasketService>();
         services.AddScoped<IHeaderService, HeaderService>();
+        services.AddScoped<IPurchaseListService, PurchaseListService>();
     }
 }

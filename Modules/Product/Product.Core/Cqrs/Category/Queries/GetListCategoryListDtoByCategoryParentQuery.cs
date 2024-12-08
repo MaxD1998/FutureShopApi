@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Product.Core.Dtos.Category;
-using Product.Core.Interfaces.Services;
+using Product.Core.Services;
 using Product.Domain.Entities;
 using Product.Infrastructure;
 using Shared.Infrastructure.Constants;

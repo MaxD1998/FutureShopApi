@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Shared.Domain.Bases;
 using Shared.Infrastructure.Errors;
 using Shared.Infrastructure.Exceptions;
 using Shared.Infrastructure.Settings;
+using System.Diagnostics;
 
 namespace Shared.Infrastructure.Bases;
 
@@ -49,7 +51,9 @@ public abstract class BasePostgreSqlContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseNpgsql(ConnectionString);
+        optionsBuilder
+            .UseNpgsql(ConnectionString)
+            .LogTo(message => Debug.WriteLine(message), LogLevel.Information);
     }
 
     protected abstract override void OnModelCreating(ModelBuilder modelBuilder);

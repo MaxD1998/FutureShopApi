@@ -1,6 +1,9 @@
-﻿using Product.Core.Dtos.CategoryTranslation;
+﻿using FluentValidation;
+using Product.Core.Dtos.CategoryTranslation;
 using Product.Domain.Entities;
 using Product.Infrastructure;
+using Shared.Core.Errors;
+using Shared.Core.Extensions;
 
 namespace Product.Core.Dtos.Category;
 
@@ -33,4 +36,14 @@ public class CategoryFormDto
         SubCategories = SubCategories != null ? context.Set<CategoryEntity>().Where(x => SubCategories.Select(x => x.Id).Contains(x.Id)).ToList() : null,
         Translations = Translations.Select(x => x.ToEntity()).ToList(),
     };
+}
+
+public class CategoryFormValidator : AbstractValidator<CategoryFormDto>
+{
+    public CategoryFormValidator()
+    {
+        RuleFor(x => x.Name)
+            .NotEmpty()
+                .ErrorResponse(ErrorMessage.ValueWasEmpty);
+    }
 }

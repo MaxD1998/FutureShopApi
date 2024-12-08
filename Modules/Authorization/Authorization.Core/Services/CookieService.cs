@@ -1,7 +1,15 @@
-﻿using Authorization.Core.Interfaces.Services;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace Authorization.Core.Services;
+
+public interface ICookieService
+{
+    void AddCookie(string name, string value, int expire);
+
+    string GetCookieValue(string name);
+
+    void RemoveCookie(string name);
+}
 
 public class CookieService : ICookieService
 {

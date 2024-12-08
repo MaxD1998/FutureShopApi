@@ -1,4 +1,5 @@
-﻿using Product.Core.Dtos.ProductParameterTranslation;
+﻿using FluentValidation;
+using Product.Core.Dtos.ProductParameterTranslation;
 using Product.Domain.Entities;
 
 namespace Product.Core.Dtos.ProductParameter;
@@ -28,4 +29,11 @@ public class ProductParameterFormDto
         Name = Name,
         Translations = Translations.Select(x => x.ToEntity()).ToList()
     };
+}
+
+public class ProductParameterFormValidator : AbstractValidator<ProductParameterFormDto>
+{
+    public ProductParameterFormValidator()
+    {
+    }
 }

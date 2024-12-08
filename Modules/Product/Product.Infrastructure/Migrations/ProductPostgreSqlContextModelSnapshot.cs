@@ -17,10 +17,74 @@ namespace Product.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.8")
+                .HasAnnotation("ProductVersion", "9.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("Product.Domain.Entities.BasketEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(1);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("Basket", (string)null);
+                });
+
+            modelBuilder.Entity("Product.Domain.Entities.BasketItemEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
+
+                    b.Property<Guid>("BasketId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(100);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(1);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(101);
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("BasketId", "ProductId")
+                        .IsUnique();
+
+                    b.ToTable("BasketItem", (string)null);
+                });
 
             modelBuilder.Entity("Product.Domain.Entities.CategoryEntity", b =>
                 {
@@ -412,6 +476,25 @@ namespace Product.Infrastructure.Migrations
                     b.ToTable("PurchaseListItem", (string)null);
                 });
 
+            modelBuilder.Entity("Product.Domain.Entities.BasketItemEntity", b =>
+                {
+                    b.HasOne("Product.Domain.Entities.BasketEntity", "Basket")
+                        .WithMany("BasketItems")
+                        .HasForeignKey("BasketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Product.Domain.Entities.ProductEntity", "Product")
+                        .WithMany("BasketItems")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Basket");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Product.Domain.Entities.CategoryEntity", b =>
                 {
                     b.HasOne("Product.Domain.Entities.CategoryEntity", "ParentCategory")
@@ -537,6 +620,11 @@ namespace Product.Infrastructure.Migrations
                     b.Navigation("PurchaseList");
                 });
 
+            modelBuilder.Entity("Product.Domain.Entities.BasketEntity", b =>
+                {
+                    b.Navigation("BasketItems");
+                });
+
             modelBuilder.Entity("Product.Domain.Entities.CategoryEntity", b =>
                 {
                     b.Navigation("ProductBases");
@@ -555,6 +643,8 @@ namespace Product.Infrastructure.Migrations
 
             modelBuilder.Entity("Product.Domain.Entities.ProductEntity", b =>
                 {
+                    b.Navigation("BasketItems");
+
                     b.Navigation("ProductParameterValues");
 
                     b.Navigation("ProductPhotos");

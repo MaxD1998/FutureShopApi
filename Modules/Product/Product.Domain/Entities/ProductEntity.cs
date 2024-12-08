@@ -15,6 +15,8 @@ public class ProductEntity : BaseEntity
 
     #region Related Data
 
+    public ICollection<BasketItemEntity> BasketItems { get; set; } = [];
+
     public ProductBaseEntity ProductBase { get; set; }
 
     public ICollection<ProductParameterValueEntity> ProductParameterValues { get; set; } = [];

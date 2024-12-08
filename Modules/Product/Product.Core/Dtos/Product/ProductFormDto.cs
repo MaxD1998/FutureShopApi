@@ -1,4 +1,5 @@
-﻿using Product.Core.Dtos.ProductParameterValue;
+﻿using FluentValidation;
+using Product.Core.Dtos.ProductParameterValue;
 using Product.Core.Dtos.ProductPhoto;
 using Product.Core.Dtos.ProductTranslation;
 using Product.Domain.Entities;
@@ -46,4 +47,8 @@ public class ProductFormDto
         ProductPhotos = ProductPhotos.Select((x, index) => x.ToEntity(index)).ToList(),
         Translations = Translations.Select(x => x.ToEntity()).ToList(),
     };
+}
+
+public class ProductFormValidator : AbstractValidator<ProductFormDto>
+{
 }

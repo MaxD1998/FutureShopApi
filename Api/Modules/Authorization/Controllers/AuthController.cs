@@ -1,7 +1,7 @@
 ﻿using Authorization.Core.Dtos;
 using Authorization.Core.Dtos.Login;
 using Authorization.Core.Dtos.User;
-using Authorization.Core.Interfaces.Services;
+using Authorization.Core.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -10,9 +10,9 @@ using Shared.Core.Exceptions;
 using Shared.Core.Extensions;
 
 namespace Product.Core.Cqrs.PurchaseList.Commands;
-public record UpdatePurchaseListFormDtoWithUserIdFromJwtCommand(Guid Id, PurchaseListFormDto Dto) : IRequest<PurchaseListFormDto>;
+public record UpdatePurchaseListFormDtoCommand(Guid Id, PurchaseListFormDto Dto) : IRequest<PurchaseListFormDto>;
 
-internal class UpdatePurchaseListFormDtoWithUserIdFromJwtCommandHandler : IRequestHandler<UpdatePurchaseListFormDtoWithUserIdFromJwtCommand, PurchaseListFormDto>
+internal class UpdatePurchaseListFormDtoWithUserIdFromJwtCommandHandler : IRequestHandler<UpdatePurchaseListFormDtoCommand, PurchaseListFormDto>
 {
     private readonly ProductPostgreSqlContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -23,7 +23,7 @@ internal class UpdatePurchaseListFormDtoWithUserIdFromJwtCommandHandler : IReque
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<PurchaseListFormDto> Handle(UpdatePurchaseListFormDtoWithUserIdFromJwtCommand request, CancellationToken cancellationToken)
+    public async Task<PurchaseListFormDto> Handle(UpdatePurchaseListFormDtoCommand request, CancellationToken cancellationToken)
     {
         var userId = _httpContextAccessor.GetUserId();
         var entity = await _context.Set<PurchaseListEntity>()
