@@ -86,7 +86,7 @@ public class BaseController : ControllerBase
         return NoContent();
     }
 
-    protected bool IsValid<TInput>(TInput param, out IEnumerable<ErrorDto> errors) where TInput : class
+    private bool IsValid<TInput>(TInput param, out IEnumerable<ErrorDto> errors) where TInput : class
     {
         var validator = _fluentValidatorFactory.GetValidator<TInput>();
 
