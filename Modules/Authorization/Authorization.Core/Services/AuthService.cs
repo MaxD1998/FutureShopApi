@@ -11,6 +11,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Shared.Core.Bases;
 using Shared.Core.Errors;
 using Shared.Core.Exceptions;
 using Shared.Domain.Enums;
@@ -33,7 +34,7 @@ public interface IAuthService
     Task<AuthorizeDto> RegisterAsync(UserFormDto dto, CancellationToken cancellationToken = default);
 }
 
-public class AuthService : IAuthService
+public class AuthService : BaseService, IAuthService
 {
     private readonly ICookieService _cookieService;
     private readonly HttpContext _httpContext;
