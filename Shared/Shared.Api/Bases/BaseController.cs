@@ -1,10 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Api.Results;
+using Shared.Core.Dtos;
 using Shared.Core.Errors;
-using Shared.Core.Exceptions;
 using Shared.Core.Factories.FluentValidator;
 using Shared.Domain.Bases;
 using Shared.Infrastructure.Dtos;
+using System.Net;
 
 namespace Shared.Api.Bases;
 
@@ -28,7 +30,7 @@ public class BaseController : ControllerBase
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        var file = await _mediator.Send(request);
+        var file = await _mediator.Send(request, cancellationToken);
 
         return file != null
             ? File(file.Data, file.ContentType, file.Name)
@@ -39,9 +41,17 @@ public class BaseController : ControllerBase
         where TParam : class
     {
         cancellationToken.ThrowIfCancellationRequested();
+        var validationResult = IsValid(param, out var errors);
 
-        if (!IsValid(param, out var errors))
-            return BadRequest(errors);
+        if (validationResult.IsSuccess)
+        {
+            if (!validationResult.Result)
+                return BadRequest(errors);
+        }
+        else
+        {
+            return ApiResponse(validationResult);
+        }
 
         if (request is IRequest)
         {
@@ -86,18 +96,42 @@ public class BaseController : ControllerBase
         return NoContent();
     }
 
-    private bool IsValid<TInput>(TInput param, out IEnumerable<ErrorDto> errors) where TInput : class
+    private IActionResult ApiResponse(ResultDto result)
+        => result is ResultDto<ErrorDto> error ? ApiResponse(error) : NoContent();
+
+    private IActionResult ApiResponse<TResult>(ResultDto<TResult> result)
+    {
+        if (!result.IsSuccess)
+        {
+            return result.HttpCode switch
+            {
+                HttpStatusCode.Conflict => Conflict(result.Result),
+                HttpStatusCode.Forbidden => new ForbiddenObjectResult(result.Result),
+                HttpStatusCode.NotFound => NotFound(result.Result),
+                HttpStatusCode.NotImplemented => new NotImplementedObjectResult(result.Result),
+                HttpStatusCode.Unauthorized => Unauthorized(result.Result),
+                _ => BadRequest(result.Result)
+            };
+        }
+
+        return Ok(result.Result);
+    }
+
+    private ResultDto<bool> IsValid<TInput>(TInput param, out IEnumerable<ErrorDto> errors) where TInput : class
     {
         var validator = _fluentValidatorFactory.GetValidator<TInput>();
 
         if (validator is null)
-            throw new NoValidatorException(CommonExceptionMessage.C002ValidatorNotExist);
+        {
+            errors = [];
+            return ResultDto.Error<bool>(HttpStatusCode.NotImplemented, CommonExceptionMessage.C002ValidatorNotExist); ;
+        }
 
         var validation = validator.Validate(param);
         var isValid = validation.IsValid;
 
         errors = isValid ? null : validation.Errors.Select(x => new ErrorDto(x));
 
-        return isValid;
+        return ResultDto.Success(isValid);
     }
 }
