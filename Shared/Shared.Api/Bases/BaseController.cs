@@ -37,64 +37,71 @@ public class BaseController : ControllerBase
             : NoContent();
     }
 
-    protected async Task<IActionResult> ApiResponseAsync<TParam>(TParam param, IBaseRequest request, CancellationToken cancellationToken = default)
+    protected async Task<IActionResult> ApiResponseAsync<TParam, TResult>(TParam param, IRequest<ResultDto<TResult>> request, CancellationToken cancellationToken = default)
         where TParam : class
     {
         cancellationToken.ThrowIfCancellationRequested();
         var validationResult = IsValid(param, out var errors);
 
         if (validationResult.IsSuccess)
-        {
             if (!validationResult.Result)
                 return BadRequest(errors);
-        }
-        else
-        {
-            return ApiResponse(validationResult);
-        }
+            else
+                return ApiResponse(validationResult);
 
-        if (request is IRequest)
-        {
-            await _mediator.Send(request, cancellationToken);
-            return NoContent();
-        }
-
-        return Ok(await _mediator.Send(request, cancellationToken));
+        return ApiResponse(await _mediator.Send(request, cancellationToken));
     }
 
-    protected async Task<IActionResult> ApiResponseAsync<TParam, TRespone>(TParam param, Func<Task<TRespone>> action, CancellationToken cancellationToken = default)
+    protected async Task<IActionResult> ApiResponseAsync<TParam>(TParam param, IRequest<ResultDto> request, CancellationToken cancellationToken = default)
+        where TParam : class
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        var validationResult = IsValid(param, out var errors);
+
+        if (validationResult.IsSuccess)
+            if (!validationResult.Result)
+                return BadRequest(errors);
+            else
+                return ApiResponse(validationResult);
+
+        return ApiResponse(await _mediator.Send(request, cancellationToken));
+    }
+
+    protected async Task<IActionResult> ApiResponseAsync(IRequest<ResultDto> request, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        return ApiResponse(await _mediator.Send(request, cancellationToken));
+    }
+
+    protected async Task<IActionResult> ApiResponseAsync<TResult>(IRequest<ResultDto<TResult>> request, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        return ApiResponse(await _mediator.Send(request, cancellationToken));
+    }
+
+    protected async Task<IActionResult> ApiResponseAsync<TParam, TRespone>(TParam param, Func<Task<ResultDto<TRespone>>> action, CancellationToken cancellationToken = default)
         where TParam : class
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (!IsValid(param, out var errors))
-            return BadRequest(errors);
+        var validationResult = IsValid(param, out var errors);
 
-        return Ok(await action());
+        if (validationResult.IsSuccess)
+            if (!validationResult.Result)
+                return BadRequest(errors);
+            else
+                return ApiResponse(validationResult);
+
+        return ApiResponse(await action());
     }
 
-    protected async Task<IActionResult> ApiResponseAsync(IBaseRequest request, CancellationToken cancellationToken = default)
-    {
-        cancellationToken.ThrowIfCancellationRequested();
+    protected async Task<IActionResult> ApiResponseAsync<T>(Func<Task<ResultDto<T>>> action)
+        => ApiResponse(await action());
 
-        if (request is IRequest)
-        {
-            await _mediator.Send(request, cancellationToken);
-            return NoContent();
-        }
-
-        return Ok(await _mediator.Send(request, cancellationToken));
-    }
-
-    protected async Task<IActionResult> ApiResponseAsync<T>(Func<Task<T>> action)
-        => Ok(await action());
-
-    protected async Task<IActionResult> ApiResponseAsync(Func<Task> action)
-    {
-        await action();
-
-        return NoContent();
-    }
+    protected async Task<IActionResult> ApiResponseAsync(Func<Task<ResultDto>> action)
+        => ApiResponse(await action());
 
     private IActionResult ApiResponse(ResultDto result)
         => result is ResultDto<ErrorDto> error ? ApiResponse(error) : NoContent();
