@@ -5,13 +5,15 @@ using Product.Core.Dtos.PurchaseList;
 using Product.Core.Errors;
 using Product.Domain.Entities;
 using Product.Infrastructure;
-using Shared.Core.Exceptions;
+using Shared.Core.Bases;
+using Shared.Core.Dtos;
 using Shared.Core.Extensions;
+using System.Net;
 
 namespace Product.Core.Cqrs.PurchaseList.Commands;
-public record CreatePurchaseListFormDtoCommand(PurchaseListFormDto Dto) : IRequest<PurchaseListFormDto>;
+public record CreatePurchaseListFormDtoCommand(PurchaseListFormDto Dto) : IRequest<ResultDto<PurchaseListFormDto>>;
 
-internal class CreatePurchaseListFormDtoCommandHandler : IRequestHandler<CreatePurchaseListFormDtoCommand, PurchaseListFormDto>
+internal class CreatePurchaseListFormDtoCommandHandler : BaseService, IRequestHandler<CreatePurchaseListFormDtoCommand, ResultDto<PurchaseListFormDto>>
 {
     private readonly ProductPostgreSqlContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -22,7 +24,7 @@ internal class CreatePurchaseListFormDtoCommandHandler : IRequestHandler<CreateP
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<PurchaseListFormDto> Handle(CreatePurchaseListFormDtoCommand request, CancellationToken cancellationToken)
+    public async Task<ResultDto<PurchaseListFormDto>> Handle(CreatePurchaseListFormDtoCommand request, CancellationToken cancellationToken)
     {
         var userId = _httpContextAccessor.GetUserId();
         var dto = request.Dto;
@@ -32,7 +34,7 @@ internal class CreatePurchaseListFormDtoCommandHandler : IRequestHandler<CreateP
             var hasFavourite = await _context.Set<PurchaseListEntity>().AnyAsync(x => x.UserId == userId && x.IsFavourite, cancellationToken);
 
             if (hasFavourite)
-                throw new BadRequestException(ExceptionMessage.PurchaseList001UserHasFavouireList);
+                return Error<PurchaseListFormDto>(HttpStatusCode.BadRequest, ExceptionMessage.PurchaseList001UserHasFavouireList);
         }
 
         var entity = dto.ToEntity();
@@ -43,6 +45,6 @@ internal class CreatePurchaseListFormDtoCommandHandler : IRequestHandler<CreateP
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return new(result.Entity);
+        return Success(await _context.Set<PurchaseListEntity>().AsNoTracking().Where(x => x.Id == result.Entity.Id).Select(PurchaseListFormDto.Map()).FirstOrDefaultAsync(cancellationToken));
     }
 }

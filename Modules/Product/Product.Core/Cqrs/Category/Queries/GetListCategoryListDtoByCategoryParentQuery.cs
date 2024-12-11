@@ -4,12 +4,14 @@ using Product.Core.Dtos.Category;
 using Product.Core.Services;
 using Product.Domain.Entities;
 using Product.Infrastructure;
+using Shared.Core.Bases;
+using Shared.Core.Dtos;
 using Shared.Infrastructure.Constants;
 
 namespace Product.Core.Cqrs.Category.Queries;
-public record GetListCategoryListDtoByCategoryParentQuery(Guid? CategoryParentId = null) : IRequest<IEnumerable<CategoryListDto>>;
+public record GetListCategoryListDtoByCategoryParentQuery(Guid? CategoryParentId = null) : IRequest<ResultDto<IEnumerable<CategoryListDto>>>;
 
-internal class GetsCategoryDtoByCategoryParentQueryHandler : IRequestHandler<GetListCategoryListDtoByCategoryParentQuery, IEnumerable<CategoryListDto>>
+internal class GetsCategoryDtoByCategoryParentQueryHandler : BaseService, IRequestHandler<GetListCategoryListDtoByCategoryParentQuery, ResultDto<IEnumerable<CategoryListDto>>>
 {
     private readonly ProductPostgreSqlContext _context;
     private readonly IHeaderService _headerService;
@@ -20,12 +22,14 @@ internal class GetsCategoryDtoByCategoryParentQueryHandler : IRequestHandler<Get
         _context = context;
     }
 
-    public async Task<IEnumerable<CategoryListDto>> Handle(GetListCategoryListDtoByCategoryParentQuery request, CancellationToken cancellationToken)
-        => await _context.Set<CategoryEntity>()
+    public async Task<ResultDto<IEnumerable<CategoryListDto>>> Handle(GetListCategoryListDtoByCategoryParentQuery request, CancellationToken cancellationToken)
+    {
+        var results = await _context.Set<CategoryEntity>()
             .AsNoTracking()
-            .Include(x => x.SubCategories)
-            .Include(x => x.Translations.Where(x => x.Lang == _headerService.GetHeader(HeaderNameConst.Lang)))
             .Where(x => x.ParentCategoryId == request.CategoryParentId)
-            .Select(x => new CategoryListDto(x))
+            .Select(CategoryListDto.Map(_headerService.GetHeader(HeaderNameConst.Lang)))
             .ToListAsync(cancellationToken);
+
+        return Success<IEnumerable<CategoryListDto>>(results);
+    }
 }

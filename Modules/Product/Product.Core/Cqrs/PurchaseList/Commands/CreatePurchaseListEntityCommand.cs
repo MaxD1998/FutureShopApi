@@ -4,13 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using Product.Core.Errors;
 using Product.Domain.Entities;
 using Product.Infrastructure;
-using Shared.Core.Exceptions;
+using Shared.Core.Bases;
+using Shared.Core.Dtos;
 using Shared.Core.Extensions;
+using System.Net;
 
 namespace Product.Core.Cqrs.PurchaseList.Commands;
-public record CreatePurchaseListEntityCommand(PurchaseListEntity Entity) : IRequest<PurchaseListEntity>;
+public record CreatePurchaseListEntityCommand(PurchaseListEntity Entity) : IRequest<ResultDto<PurchaseListEntity>>;
 
-public class CreatePurchaseListEntityCommandHandler : IRequestHandler<CreatePurchaseListEntityCommand, PurchaseListEntity>
+public class CreatePurchaseListEntityCommandHandler : BaseService, IRequestHandler<CreatePurchaseListEntityCommand, ResultDto<PurchaseListEntity>>
 {
     private readonly ProductPostgreSqlContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -21,7 +23,7 @@ public class CreatePurchaseListEntityCommandHandler : IRequestHandler<CreatePurc
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<PurchaseListEntity> Handle(CreatePurchaseListEntityCommand request, CancellationToken cancellationToken)
+    public async Task<ResultDto<PurchaseListEntity>> Handle(CreatePurchaseListEntityCommand request, CancellationToken cancellationToken)
     {
         var userId = _httpContextAccessor.GetUserId();
         var entity = request.Entity;
@@ -31,7 +33,7 @@ public class CreatePurchaseListEntityCommandHandler : IRequestHandler<CreatePurc
             var hasFavourite = await _context.Set<PurchaseListEntity>().AnyAsync(x => x.UserId == userId && x.IsFavourite, cancellationToken);
 
             if (hasFavourite)
-                throw new BadRequestException(ExceptionMessage.PurchaseList001UserHasFavouireList);
+                return Error<PurchaseListEntity>(HttpStatusCode.BadRequest, ExceptionMessage.PurchaseList001UserHasFavouireList);
         }
 
         entity.UserId = userId;
@@ -40,6 +42,6 @@ public class CreatePurchaseListEntityCommandHandler : IRequestHandler<CreatePurc
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return result.Entity;
+        return Success(result.Entity);
     }
 }

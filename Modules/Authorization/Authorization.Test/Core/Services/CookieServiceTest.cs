@@ -1,5 +1,4 @@
-﻿using Authorization.Core.Interfaces.Services;
-using Authorization.Core.Services;
+﻿using Authorization.Core.Services;
 using Microsoft.AspNetCore.Http;
 using Moq;
 
@@ -66,7 +65,7 @@ public class CookieServiceTest
         var result = _cookieService.GetCookieValue(name);
 
         // Assert
-        Assert.Empty(result);
+        Assert.Empty(result.Result);
     }
 
     [Fact]
@@ -80,7 +79,7 @@ public class CookieServiceTest
         var result = _cookieService.GetCookieValue(name);
 
         // Assert
-        Assert.NotEmpty(result);
-        Assert.Equal(value, result);
+        Assert.NotEmpty(result.Result);
+        Assert.Equal(value, result.Result);
     }
 }

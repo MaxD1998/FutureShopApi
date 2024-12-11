@@ -1,18 +1,10 @@
 ﻿using Product.Domain.Entities;
+using System.Linq.Expressions;
 
 namespace Product.Core.Dtos.PurchaseListItem;
 
 public class PurchaseListItemDto
 {
-    public PurchaseListItemDto(PurchaseListItemEntity entity)
-    {
-        Id = entity.Id;
-        ProductFileId = entity.Product?.ProductPhotos.FirstOrDefault()?.FileId;
-        ProductId = entity.ProductId;
-        ProductName = entity.Product?.Name;
-        PurchaseListId = entity.PurchaseListId;
-    }
-
     public Guid Id { get; set; }
 
     public string ProductFileId { get; set; }
@@ -22,4 +14,13 @@ public class PurchaseListItemDto
     public string ProductName { get; set; }
 
     public Guid PurchaseListId { get; set; }
+
+    public static Expression<Func<PurchaseListItemEntity, PurchaseListItemDto>> Map() => entity => new()
+    {
+        Id = entity.Id,
+        ProductFileId = entity.Product.ProductPhotos.AsQueryable().OrderBy(x => x.Position).Select(x => x.FileId).FirstOrDefault(),
+        ProductId = entity.ProductId,
+        ProductName = entity.Product.Name,
+        PurchaseListId = entity.PurchaseListId,
+    };
 }

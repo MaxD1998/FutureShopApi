@@ -3,11 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Product.Core.Dtos.Category;
 using Product.Domain.Entities;
 using Product.Infrastructure;
+using Shared.Core.Bases;
+using Shared.Core.Dtos;
 
 namespace Product.Core.Cqrs.Category.Queries;
-public record GetCategoryFormDtoByIdQuery(Guid Id) : IRequest<CategoryFormDto>;
+public record GetCategoryFormDtoByIdQuery(Guid Id) : IRequest<ResultDto<CategoryFormDto>>;
 
-internal class GetCategoryFormDtoByIdQueryHandler : IRequestHandler<GetCategoryFormDtoByIdQuery, CategoryFormDto>
+internal class GetCategoryFormDtoByIdQueryHandler : BaseService, IRequestHandler<GetCategoryFormDtoByIdQuery, ResultDto<CategoryFormDto>>
 {
     private readonly ProductPostgreSqlContext _context;
 
@@ -16,14 +18,14 @@ internal class GetCategoryFormDtoByIdQueryHandler : IRequestHandler<GetCategoryF
         _context = context;
     }
 
-    public async Task<CategoryFormDto> Handle(GetCategoryFormDtoByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ResultDto<CategoryFormDto>> Handle(GetCategoryFormDtoByIdQuery request, CancellationToken cancellationToken)
     {
         var result = await _context.Set<CategoryEntity>()
             .AsNoTracking()
-            .Include(x => x.SubCategories)
-            .Include(x => x.Translations)
-            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            .Where(x => x.Id == request.Id)
+            .Select(CategoryFormDto.Map())
+            .FirstOrDefaultAsync(cancellationToken);
 
-        return result is null ? null : new CategoryFormDto(result);
+        return Success(result);
     }
 }

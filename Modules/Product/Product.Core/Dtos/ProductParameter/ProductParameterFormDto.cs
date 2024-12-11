@@ -1,27 +1,26 @@
 ﻿using FluentValidation;
 using Product.Core.Dtos.ProductParameterTranslation;
 using Product.Domain.Entities;
+using Shared.Core.Errors;
+using Shared.Core.Extensions;
+using System.Linq.Expressions;
 
 namespace Product.Core.Dtos.ProductParameter;
 
 public class ProductParameterFormDto
 {
-    public ProductParameterFormDto()
-    {
-    }
-
-    public ProductParameterFormDto(ProductParameterEntity entity)
-    {
-        Id = entity.Id;
-        Name = entity.Name;
-        Translations = entity.Translations.Select(x => new ProgramParameterTranslationFormDto(x)).ToList();
-    }
-
     public Guid? Id { get; set; }
 
     public string Name { get; set; }
 
     public List<ProgramParameterTranslationFormDto> Translations { get; set; }
+
+    public static Expression<Func<ProductParameterEntity, ProductParameterFormDto>> Map() => entity => new()
+    {
+        Id = entity.Id,
+        Name = entity.Name,
+        Translations = entity.Translations.AsQueryable().Select(ProgramParameterTranslationFormDto.Map()).ToList(),
+    };
 
     public ProductParameterEntity ToEntity() => new()
     {
@@ -35,5 +34,8 @@ public class ProductParameterFormValidator : AbstractValidator<ProductParameterF
 {
     public ProductParameterFormValidator()
     {
+        RuleFor(x => x.Name)
+            .NotEmpty()
+                .ErrorResponse(ErrorMessage.ValueWasEmpty);
     }
 }

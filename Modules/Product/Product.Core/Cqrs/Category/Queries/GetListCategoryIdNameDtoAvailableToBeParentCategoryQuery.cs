@@ -3,12 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using Product.Core.Dtos;
 using Product.Domain.Entities;
 using Product.Infrastructure;
+using Shared.Core.Bases;
+using Shared.Core.Dtos;
 
 namespace Product.Core.Cqrs.Category.Queries;
 
-public record GetListCategoryIdNameDtoAvailableToBeParentCategoryQuery(Guid? Id, IEnumerable<Guid> ChildIds) : IRequest<IEnumerable<IdNameDto>>;
+public record GetListCategoryIdNameDtoAvailableToBeParentCategoryQuery(Guid? Id, IEnumerable<Guid> ChildIds) : IRequest<ResultDto<IEnumerable<IdNameDto>>>;
 
-internal class GetsCategoryIdNameDtoAvailableToBeParentCategoryQueryHandler : IRequestHandler<GetListCategoryIdNameDtoAvailableToBeParentCategoryQuery, IEnumerable<IdNameDto>>
+internal class GetsCategoryIdNameDtoAvailableToBeParentCategoryQueryHandler : BaseService, IRequestHandler<GetListCategoryIdNameDtoAvailableToBeParentCategoryQuery, ResultDto<IEnumerable<IdNameDto>>>
 {
     private readonly ProductPostgreSqlContext _context;
 
@@ -17,11 +19,10 @@ internal class GetsCategoryIdNameDtoAvailableToBeParentCategoryQueryHandler : IR
         _context = context;
     }
 
-    public async Task<IEnumerable<IdNameDto>> Handle(GetListCategoryIdNameDtoAvailableToBeParentCategoryQuery request, CancellationToken cancellationToken)
+    public async Task<ResultDto<IEnumerable<IdNameDto>>> Handle(GetListCategoryIdNameDtoAvailableToBeParentCategoryQuery request, CancellationToken cancellationToken)
     {
         var query = _context.Set<CategoryEntity>()
             .AsNoTracking()
-            .Include(x => x.SubCategories)
             .AsQueryable();
 
         if (request.Id.HasValue)
@@ -34,16 +35,15 @@ internal class GetsCategoryIdNameDtoAvailableToBeParentCategoryQueryHandler : IR
         }
 
         var results = await query
-            .Select(x => new IdNameDto(x))
+            .Select(IdNameDto.MapFromCategory())
             .ToListAsync(cancellationToken);
 
-        return results;
+        return Success<IEnumerable<IdNameDto>>(results);
     }
 
     private async Task<IEnumerable<Guid>> ExceptionIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken = default)
     {
         var results = await _context.Set<CategoryEntity>()
-            .Include(x => x.SubCategories)
             .Where(x => ids.Contains(x.Id))
             .SelectMany(x => x.SubCategories.Select(x => x.Id))
             .ToListAsync(cancellationToken);

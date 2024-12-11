@@ -1,15 +1,18 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Product.Core.Dtos.Basket;
 using Product.Domain.Entities;
 using Product.Infrastructure;
+using Shared.Core.Bases;
+using Shared.Core.Dtos;
 using Shared.Core.Extensions;
 
 namespace Product.Core.Cqrs.Basket.Commands;
 
-public record CreateBasketFormDtoCommand(BasketFormDto Dto) : IRequest<BasketFormDto>;
+public record CreateBasketFormDtoCommand(BasketFormDto Dto) : IRequest<ResultDto<BasketFormDto>>;
 
-internal class CreateBasketFormDtoCommandHandler : IRequestHandler<CreateBasketFormDtoCommand, BasketFormDto>
+internal class CreateBasketFormDtoCommandHandler : BaseService, IRequestHandler<CreateBasketFormDtoCommand, ResultDto<BasketFormDto>>
 {
     private readonly ProductPostgreSqlContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -20,7 +23,7 @@ internal class CreateBasketFormDtoCommandHandler : IRequestHandler<CreateBasketF
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<BasketFormDto> Handle(CreateBasketFormDtoCommand request, CancellationToken cancellationToken)
+    public async Task<ResultDto<BasketFormDto>> Handle(CreateBasketFormDtoCommand request, CancellationToken cancellationToken)
     {
         var userId = _httpContextAccessor.GetUserId();
         var entity = request.Dto.ToEntity();
@@ -31,6 +34,6 @@ internal class CreateBasketFormDtoCommandHandler : IRequestHandler<CreateBasketF
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return new(result.Entity);
+        return Success(await _context.Set<BasketEntity>().AsNoTracking().Where(x => x.Id == result.Entity.Id).Select(BasketFormDto.Map()).FirstOrDefaultAsync(cancellationToken));
     }
 }

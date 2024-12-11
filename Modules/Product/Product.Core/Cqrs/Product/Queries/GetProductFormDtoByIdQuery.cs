@@ -3,11 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Product.Core.Dtos.Product;
 using Product.Domain.Entities;
 using Product.Infrastructure;
+using Shared.Core.Bases;
+using Shared.Core.Dtos;
 
 namespace Product.Core.Cqrs.Product.Queries;
-public record GetProductFormDtoByIdQuery(Guid Id) : IRequest<ProductFormDto>;
+public record GetProductFormDtoByIdQuery(Guid Id) : IRequest<ResultDto<ProductFormDto>>;
 
-internal class GetProductFormDtoByIdQueryHandler : IRequestHandler<GetProductFormDtoByIdQuery, ProductFormDto>
+internal class GetProductFormDtoByIdQueryHandler : BaseService, IRequestHandler<GetProductFormDtoByIdQuery, ResultDto<ProductFormDto>>
 {
     private readonly ProductPostgreSqlContext _context;
 
@@ -16,14 +18,13 @@ internal class GetProductFormDtoByIdQueryHandler : IRequestHandler<GetProductFor
         _context = context;
     }
 
-    public async Task<ProductFormDto> Handle(GetProductFormDtoByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ResultDto<ProductFormDto>> Handle(GetProductFormDtoByIdQuery request, CancellationToken cancellationToken)
     {
         var result = await _context.Set<ProductEntity>()
-            .Include(x => x.ProductParameterValues)
-            .Include(x => x.ProductPhotos.OrderBy(y => y.Position))
-            .Include(x => x.Translations)
-            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            .Where(x => x.Id == request.Id)
+            .Select(ProductFormDto.Map())
+            .FirstOrDefaultAsync(cancellationToken);
 
-        return result != null ? new ProductFormDto(result) : null;
+        return Success(result);
     }
 }

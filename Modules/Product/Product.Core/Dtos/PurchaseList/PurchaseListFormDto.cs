@@ -1,22 +1,12 @@
 ﻿using FluentValidation;
 using Product.Core.Dtos.PurchaseListItem;
 using Product.Domain.Entities;
+using System.Linq.Expressions;
 
 namespace Product.Core.Dtos.PurchaseList;
 
 public class PurchaseListFormDto
 {
-    public PurchaseListFormDto()
-    {
-    }
-
-    public PurchaseListFormDto(PurchaseListEntity entity)
-    {
-        Id = entity.Id;
-        IsFavourite = entity.IsFavourite;
-        Name = entity.Name;
-    }
-
     public Guid? Id { get; private set; }
 
     public bool IsFavourite { get; set; }
@@ -24,6 +14,13 @@ public class PurchaseListFormDto
     public string Name { get; set; }
 
     public List<PurchaseListItemFormDto> PurchaseListItems { get; set; } = [];
+
+    public static Expression<Func<PurchaseListEntity, PurchaseListFormDto>> Map() => entity => new()
+    {
+        Id = entity.Id,
+        IsFavourite = entity.IsFavourite,
+        Name = entity.Name,
+    };
 
     public PurchaseListEntity ToEntity() => new()
     {

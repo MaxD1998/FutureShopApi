@@ -1,10 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Api.Results;
+using Shared.Core.Dtos;
 using Shared.Core.Errors;
-using Shared.Core.Exceptions;
 using Shared.Core.Factories.FluentValidator;
 using Shared.Domain.Bases;
 using Shared.Infrastructure.Dtos;
+using System.Net;
 
 namespace Shared.Api.Bases;
 
@@ -24,80 +26,124 @@ public class BaseController : ControllerBase
         _mediator = mediator;
     }
 
-    protected async Task<IActionResult> ApiFileResponseAsync<TFile>(IRequest<TFile> request, CancellationToken cancellationToken = default) where TFile : BaseFileDocument
+    protected async Task<IActionResult> ApiFileResponseAsync<TFile>(IRequest<ResultDto<TFile>> request, CancellationToken cancellationToken = default) where TFile : BaseFileDocument
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        var file = await _mediator.Send(request);
+        var fileResult = await _mediator.Send(request, cancellationToken);
+        var file = fileResult.Result;
 
         return file != null
             ? File(file.Data, file.ContentType, file.Name)
             : NoContent();
     }
 
-    protected async Task<IActionResult> ApiResponseAsync<TParam>(TParam param, IBaseRequest request, CancellationToken cancellationToken = default)
+    protected async Task<IActionResult> ApiResponseAsync<TParam, TResult>(TParam param, IRequest<ResultDto<TResult>> request, CancellationToken cancellationToken = default)
+        where TParam : class
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        var validationResult = IsValid(param, out var errors);
+
+        if (validationResult.IsSuccess)
+        {
+            if (!validationResult.Result)
+                return BadRequest(errors);
+        }
+        else
+            return ApiResponse(validationResult);
+
+        return ApiResponse(await _mediator.Send(request, cancellationToken));
+    }
+
+    protected async Task<IActionResult> ApiResponseAsync<TParam>(TParam param, IRequest<ResultDto> request, CancellationToken cancellationToken = default)
+        where TParam : class
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+        var validationResult = IsValid(param, out var errors);
+
+        if (validationResult.IsSuccess)
+        {
+            if (!validationResult.Result)
+                return BadRequest(errors);
+        }
+        else
+            return ApiResponse(validationResult);
+
+        return ApiResponse(await _mediator.Send(request, cancellationToken));
+    }
+
+    protected async Task<IActionResult> ApiResponseAsync(IRequest<ResultDto> request, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        return ApiResponse(await _mediator.Send(request, cancellationToken));
+    }
+
+    protected async Task<IActionResult> ApiResponseAsync<TResult>(IRequest<ResultDto<TResult>> request, CancellationToken cancellationToken = default)
+    {
+        cancellationToken.ThrowIfCancellationRequested();
+
+        return ApiResponse(await _mediator.Send(request, cancellationToken));
+    }
+
+    protected async Task<IActionResult> ApiResponseAsync<TParam, TRespone>(TParam param, Func<Task<ResultDto<TRespone>>> action, CancellationToken cancellationToken = default)
         where TParam : class
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        if (!IsValid(param, out var errors))
-            return BadRequest(errors);
+        var validationResult = IsValid(param, out var errors);
 
-        if (request is IRequest)
+        if (validationResult.IsSuccess)
         {
-            await _mediator.Send(request, cancellationToken);
-            return NoContent();
+            if (!validationResult.Result)
+                return BadRequest(errors);
         }
+        else
+            return ApiResponse(validationResult);
 
-        return Ok(await _mediator.Send(request, cancellationToken));
+        return ApiResponse(await action());
     }
 
-    protected async Task<IActionResult> ApiResponseAsync<TParam, TRespone>(TParam param, Func<Task<TRespone>> action, CancellationToken cancellationToken = default)
-        where TParam : class
+    protected async Task<IActionResult> ApiResponseAsync<T>(Func<Task<ResultDto<T>>> action)
+        => ApiResponse(await action());
+
+    protected async Task<IActionResult> ApiResponseAsync(Func<Task<ResultDto>> action)
+        => ApiResponse(await action());
+
+    private IActionResult ApiResponse(ResultDto result)
+        => result is ResultDto<ErrorDto> error ? ApiResponse(error) : NoContent();
+
+    private IActionResult ApiResponse<TResult>(ResultDto<TResult> result)
     {
-        cancellationToken.ThrowIfCancellationRequested();
+        if (!result.IsSuccess)
+            return result.HttpCode switch
+            {
+                HttpStatusCode.Conflict => Conflict(result.Result),
+                HttpStatusCode.Forbidden => new ForbiddenObjectResult(result.Result),
+                HttpStatusCode.NotFound => NotFound(result.Result),
+                HttpStatusCode.NotImplemented => new NotImplementedObjectResult(result.Result),
+                HttpStatusCode.Unauthorized => Unauthorized(result.Result),
+                _ => BadRequest(result.Result)
+            };
 
-        if (!IsValid(param, out var errors))
-            return BadRequest(errors);
-
-        return Ok(await action());
+        return Ok(result.Result);
     }
 
-    protected async Task<IActionResult> ApiResponseAsync(IBaseRequest request, CancellationToken cancellationToken = default)
-    {
-        cancellationToken.ThrowIfCancellationRequested();
-
-        if (request is IRequest)
-        {
-            await _mediator.Send(request, cancellationToken);
-            return NoContent();
-        }
-
-        return Ok(await _mediator.Send(request, cancellationToken));
-    }
-
-    protected async Task<IActionResult> ApiResponseAsync<T>(Func<Task<T>> action)
-        => Ok(await action());
-
-    protected async Task<IActionResult> ApiResponseAsync(Func<Task> action)
-    {
-        await action();
-
-        return NoContent();
-    }
-
-    protected bool IsValid<TInput>(TInput param, out IEnumerable<ErrorDto> errors) where TInput : class
+    private ResultDto<bool> IsValid<TInput>(TInput param, out IEnumerable<ErrorDto> errors) where TInput : class
     {
         var validator = _fluentValidatorFactory.GetValidator<TInput>();
 
         if (validator is null)
-            throw new NoValidatorException(CommonExceptionMessage.C002ValidatorNotExist);
+        {
+            errors = [];
+            return ResultDto.Error<bool>(HttpStatusCode.NotImplemented, CommonExceptionMessage.C002ValidatorNotExist);
+        }
 
         var validation = validator.Validate(param);
         var isValid = validation.IsValid;
 
         errors = isValid ? null : validation.Errors.Select(x => new ErrorDto(x));
 
-        return isValid;
+        return ResultDto.Success(isValid);
     }
 }

@@ -2,11 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using Product.Domain.Entities;
 using Product.Infrastructure;
+using Shared.Core.Bases;
+using Shared.Core.Dtos;
 
 namespace Product.Core.Cqrs.Category.Commands;
-public record DeleteCategoryByIdCommand(Guid Id) : IRequest;
+public record DeleteCategoryByIdCommand(Guid Id) : IRequest<ResultDto>;
 
-internal class DeleteCategoryByIdCommandHandler : IRequestHandler<DeleteCategoryByIdCommand>
+internal class DeleteCategoryByIdCommandHandler : BaseService, IRequestHandler<DeleteCategoryByIdCommand, ResultDto>
 {
     private readonly ProductPostgreSqlContext _context;
 
@@ -15,6 +17,10 @@ internal class DeleteCategoryByIdCommandHandler : IRequestHandler<DeleteCategory
         _context = context;
     }
 
-    public async Task Handle(DeleteCategoryByIdCommand request, CancellationToken cancellationToken)
-        => await _context.Set<CategoryEntity>().Where(x => x.Id == request.Id).ExecuteDeleteAsync(cancellationToken);
+    public async Task<ResultDto> Handle(DeleteCategoryByIdCommand request, CancellationToken cancellationToken)
+    {
+        await _context.Set<CategoryEntity>().Where(x => x.Id == request.Id).ExecuteDeleteAsync(cancellationToken);
+
+        return Success();
+    }
 }

@@ -3,21 +3,23 @@ using Product.Core.Cqrs.Basket.Commands;
 using Product.Core.Cqrs.Basket.Queries;
 using Product.Core.Cqrs.PurchaseList.Queries;
 using Product.Core.Dtos.Basket;
+using Shared.Core.Bases;
+using Shared.Core.Dtos;
 using Shared.Core.Errors;
-using Shared.Core.Exceptions;
+using System.Net;
 
 namespace Product.Core.Services;
 
 public interface IBasketSerivce
 {
-    public Task<BasketDto> ImportPurchaseListAsync(ImportPurchaseListToBasketDto dto, CancellationToken cancellationToken = default);
+    public Task<ResultDto<BasketDto>> ImportPurchaseListAsync(ImportPurchaseListToBasketDto dto, CancellationToken cancellationToken = default);
 }
 
-public class BasketService(IMediator mediator) : IBasketSerivce
+public class BasketService(IMediator mediator) : BaseService, IBasketSerivce
 {
     private readonly IMediator _mediator = mediator;
 
-    public async Task<BasketDto> ImportPurchaseListAsync(ImportPurchaseListToBasketDto dto, CancellationToken cancellationToken = default)
+    public async Task<ResultDto<BasketDto>> ImportPurchaseListAsync(ImportPurchaseListToBasketDto dto, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
@@ -30,7 +32,7 @@ public class BasketService(IMediator mediator) : IBasketSerivce
         var purchaseList = purchaseListTask.Result;
 
         if (basket is null || purchaseList is null)
-            throw new NotFoundException(CommonExceptionMessage.C007RecordWasNotFound);
+            return Error<BasketDto>(HttpStatusCode.NotFound, CommonExceptionMessage.C007RecordWasNotFound);
 
         foreach (var purchaseListItem in purchaseList.PurchaseListItems)
         {
@@ -40,8 +42,11 @@ public class BasketService(IMediator mediator) : IBasketSerivce
             });
         }
 
-        var entity = await _mediator.Send(new UpdateBasketEntityCommand(basket.Id, basket), cancellationToken);
+        var entityResult = await _mediator.Send(new UpdateBasketEntityCommand(basket.Id, basket), cancellationToken);
 
-        return await _mediator.Send(new GetBasketDtoByIdQuery(entity.Id, dto.PurchaseListId), cancellationToken);
+        if (!entityResult.IsSuccess)
+            return Error<BasketDto>(entityResult.HttpCode, entityResult.ErrorMessage);
+
+        return await _mediator.Send(new GetBasketDtoByIdQuery(entityResult.Result.Id, dto.PurchaseListId), cancellationToken);
     }
 }

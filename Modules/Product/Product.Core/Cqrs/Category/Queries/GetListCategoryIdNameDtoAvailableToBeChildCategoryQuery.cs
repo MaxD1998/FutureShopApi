@@ -4,11 +4,13 @@ using Product.Core.Dtos;
 using Product.Core.Services;
 using Product.Domain.Entities;
 using Product.Infrastructure;
+using Shared.Core.Bases;
+using Shared.Core.Dtos;
 
 namespace Product.Core.Cqrs.Category.Queries;
-public record GetListCategoryIdNameDtoAvailableToBeChildCategoryQuery(Guid? Id, Guid? ParentId, IEnumerable<Guid> ChildIds) : IRequest<IEnumerable<IdNameDto>>;
+public record GetListCategoryIdNameDtoAvailableToBeChildCategoryQuery(Guid? Id, Guid? ParentId, IEnumerable<Guid> ChildIds) : IRequest<ResultDto<IEnumerable<IdNameDto>>>;
 
-internal class GetsCategoryIdNameDtoAvailableToBeChildCategoryQueryHandler : IRequestHandler<GetListCategoryIdNameDtoAvailableToBeChildCategoryQuery, IEnumerable<IdNameDto>>
+internal class GetsCategoryIdNameDtoAvailableToBeChildCategoryQueryHandler : BaseService, IRequestHandler<GetListCategoryIdNameDtoAvailableToBeChildCategoryQuery, ResultDto<IEnumerable<IdNameDto>>>
 {
     private readonly ProductPostgreSqlContext _context;
     private readonly IHeaderService _headerService;
@@ -19,7 +21,7 @@ internal class GetsCategoryIdNameDtoAvailableToBeChildCategoryQueryHandler : IRe
         _context = context;
     }
 
-    public async Task<IEnumerable<IdNameDto>> Handle(GetListCategoryIdNameDtoAvailableToBeChildCategoryQuery request, CancellationToken cancellationToken)
+    public async Task<ResultDto<IEnumerable<IdNameDto>>> Handle(GetListCategoryIdNameDtoAvailableToBeChildCategoryQuery request, CancellationToken cancellationToken)
     {
         var query = _context.Set<CategoryEntity>()
             .AsNoTracking()
@@ -39,10 +41,10 @@ internal class GetsCategoryIdNameDtoAvailableToBeChildCategoryQueryHandler : IRe
             query = query.Where(x => !request.ChildIds.Contains(x.Id));
 
         var results = await query
-            .Select(x => new IdNameDto(x))
+            .Select(IdNameDto.MapFromCategory())
             .ToListAsync(cancellationToken);
 
-        return results;
+        return Success<IEnumerable<IdNameDto>>(results);
     }
 
     private async Task<IEnumerable<Guid>> GetExceptionIdAsync(Guid parentId, CancellationToken cancellationToken = default)

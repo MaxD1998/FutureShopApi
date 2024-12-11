@@ -2,27 +2,24 @@
 using Product.Domain.Entities;
 using Shared.Core.Errors;
 using Shared.Core.Extensions;
+using System.Linq.Expressions;
 
 namespace Product.Core.Dtos.BasketItem;
 
 public class BasketItemFormDto
 {
-    public BasketItemFormDto()
-    {
-    }
-
-    public BasketItemFormDto(BasketItemEntity entity)
-    {
-        Id = entity.Id;
-        ProductId = entity.ProductId;
-        Quantity = entity.Quantity;
-    }
-
     public Guid? Id { get; set; }
 
     public Guid ProductId { get; set; }
 
     public int Quantity { get; set; }
+
+    public static Expression<Func<BasketItemEntity, BasketItemFormDto>> Map() => entity => new()
+    {
+        Id = entity.Id,
+        ProductId = entity.ProductId,
+        Quantity = entity.Quantity,
+    };
 
     public BasketItemEntity ToEntity() => new()
     {

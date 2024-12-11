@@ -2,11 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using Product.Domain.Entities;
 using Product.Infrastructure;
+using Shared.Core.Bases;
+using Shared.Core.Dtos;
 
 namespace Product.Core.Cqrs.ProductBase.Commands;
-public record DeleteProductBaseCommand(Guid Id) : IRequest;
+public record DeleteProductBaseCommand(Guid Id) : IRequest<ResultDto>;
 
-internal class DeleteProductBaseCommandHandler : IRequestHandler<DeleteProductBaseCommand>
+internal class DeleteProductBaseCommandHandler : BaseService, IRequestHandler<DeleteProductBaseCommand, ResultDto>
 {
     private readonly ProductPostgreSqlContext _context;
 
@@ -15,6 +17,9 @@ internal class DeleteProductBaseCommandHandler : IRequestHandler<DeleteProductBa
         _context = context;
     }
 
-    public async Task Handle(DeleteProductBaseCommand request, CancellationToken cancellationToken)
-        => await _context.Set<ProductBaseEntity>().Where(x => x.Id == request.Id).ExecuteDeleteAsync(cancellationToken);
+    public async Task<ResultDto> Handle(DeleteProductBaseCommand request, CancellationToken cancellationToken)
+    {
+        await _context.Set<ProductBaseEntity>().Where(x => x.Id == request.Id).ExecuteDeleteAsync(cancellationToken);
+        return Success();
+    }
 }

@@ -1,26 +1,23 @@
 ﻿using FluentValidation;
 using Product.Domain.Entities;
+using System.Linq.Expressions;
 
 namespace Product.Core.Dtos.ProductParameterValue;
 
 public class ProductParameterValueFormDto
 {
-    public ProductParameterValueFormDto()
-    {
-    }
-
-    public ProductParameterValueFormDto(ProductParameterValueEntity entity)
-    {
-        Id = entity.Id;
-        ProductParameterId = entity.ProductParameterId;
-        Value = entity.Value;
-    }
-
     public Guid? Id { get; set; }
 
     public Guid ProductParameterId { get; set; }
 
     public string Value { get; set; }
+
+    public static Expression<Func<ProductParameterValueEntity, ProductParameterValueFormDto>> Map() => entity => new()
+    {
+        Id = entity.Id,
+        ProductParameterId = entity.ProductParameterId,
+        Value = entity.Value,
+    };
 
     public ProductParameterValueEntity ToEntity() => new()
     {

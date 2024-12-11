@@ -3,11 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Product.Core.Dtos.ProductBase;
 using Product.Domain.Entities;
 using Product.Infrastructure;
+using Shared.Core.Bases;
+using Shared.Core.Dtos;
 
 namespace Product.Core.Cqrs.ProductBase.Queries;
-public record GetProductBaseFormDtoByIdQuery(Guid Id) : IRequest<ProductBaseFormDto>;
+public record GetProductBaseFormDtoByIdQuery(Guid Id) : IRequest<ResultDto<ProductBaseFormDto>>;
 
-internal class GetProductBaseFormDtoByIdQueryHandler : IRequestHandler<GetProductBaseFormDtoByIdQuery, ProductBaseFormDto>
+internal class GetProductBaseFormDtoByIdQueryHandler : BaseService, IRequestHandler<GetProductBaseFormDtoByIdQuery, ResultDto<ProductBaseFormDto>>
 {
     private readonly ProductPostgreSqlContext _context;
 
@@ -16,14 +18,13 @@ internal class GetProductBaseFormDtoByIdQueryHandler : IRequestHandler<GetProduc
         _context = context;
     }
 
-    public async Task<ProductBaseFormDto> Handle(GetProductBaseFormDtoByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ResultDto<ProductBaseFormDto>> Handle(GetProductBaseFormDtoByIdQuery request, CancellationToken cancellationToken)
     {
         var result = await _context.Set<ProductBaseEntity>()
-            .Include(x => x.Products)
-            .Include(x => x.ProductParameters)
-                .ThenInclude(x => x.Translations)
-            .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
+            .Where(x => x.Id == request.Id)
+            .Select(ProductBaseFormDto.Map())
+            .FirstOrDefaultAsync(cancellationToken);
 
-        return result is null ? null : new ProductBaseFormDto(result);
+        return Success(result);
     }
 }

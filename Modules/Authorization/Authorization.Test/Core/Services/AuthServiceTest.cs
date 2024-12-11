@@ -4,17 +4,17 @@ using Authorization.Core.Cqrs.User.Commands;
 using Authorization.Core.Cqrs.User.Queries;
 using Authorization.Core.Dtos.Login;
 using Authorization.Core.Dtos.User;
-using Authorization.Core.Interfaces.Services;
 using Authorization.Core.Services;
 using Authorization.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Moq;
-using Shared.Core.Exceptions;
+using Shared.Core.Dtos;
 using Shared.Domain.Enums;
 using Shared.Infrastructure.Constants;
 using Shared.Infrastructure.Settings;
+using System.Net;
 using System.Security.Claims;
 
 namespace Authorization.Test.Core.Services;
@@ -48,16 +48,17 @@ public class AuthServiceTest
     }
 
     [Fact]
-    public async Task LoginAsync_LoginFail_ThrowForbiddenException()
+    public async Task LoginAsync_LoginFail_ReturnForbiddenError()
     {
         // Arrange
         _mediatorMock.Setup(x => x.Send(It.IsAny<GetUserEntityByEmailQuery>(), default)).ReturnsAsync((UserEntity)null);
 
         // Act
-        var result = () => _authService.LoginAsync(new LoginFormDto(), default);
+        var result = await _authService.LoginAsync(new LoginFormDto(), default);
 
         //Assert
-        await Assert.ThrowsAsync<ForbiddenException>(result);
+        Assert.False(result.IsSuccess);
+        Assert.Equal(HttpStatusCode.Forbidden, result.HttpCode);
     }
 
     [Fact]
@@ -99,13 +100,13 @@ public class AuthServiceTest
         , Times.Once);
 
         Assert.NotNull(result);
-        Assert.Equal(userEntity.Id, result.Id);
-        Assert.Equal($"{userEntity.FirstName} {userEntity.LastName}", result.Username);
-        Assert.NotEmpty(result.Token);
+        Assert.Equal(userEntity.Id, result.Result.Id);
+        Assert.Equal($"{userEntity.FirstName} {userEntity.LastName}", result.Result.Username);
+        Assert.NotEmpty(result.Result.Token);
     }
 
     [Fact]
-    public async Task LogoutAsync_LogoutSuccess_ThrowForbiddenException()
+    public async Task LogoutAsync_LogoutFaild_ReturnBadRequestError()
     {
         // Arrange
         var claimsPrincipalMock = new Mock<ClaimsPrincipal>();
@@ -119,17 +120,18 @@ public class AuthServiceTest
         var authService = new AuthService(_cookieServiceMock.Object, accessorMock.Object, _mediatorMock.Object, _jwtSettingsMock.Object, _refreshTokenSettingsMock.Object);
 
         // Act
-        var result = () => authService.LogoutAsync(default);
+        var result = await authService.LogoutAsync(default);
 
         //Assert
-        await Assert.ThrowsAsync<BadRequestException>(result);
+        Assert.False(result.IsSuccess);
+        Assert.Equal(HttpStatusCode.BadRequest, result.HttpCode);
     }
 
     [Fact]
     public async Task RefreshTokenAsync_CookieValueIsEmpty_ReturnNull()
     {
         // Arrange
-        _cookieServiceMock.Setup(x => x.GetCookieValue(CookieNameConst.RefreshToken)).Returns(string.Empty);
+        _cookieServiceMock.Setup(x => x.GetCookieValue(CookieNameConst.RefreshToken)).Returns(ResultDto.Success(string.Empty));
 
         // Act
         var result = await _authService.RefreshTokenAsync();
@@ -162,7 +164,7 @@ public class AuthServiceTest
             Token = Guid.NewGuid(),
         };
 
-        _cookieServiceMock.Setup(x => x.GetCookieValue(CookieNameConst.RefreshToken)).Returns(Guid.NewGuid().ToString());
+        _cookieServiceMock.Setup(x => x.GetCookieValue(CookieNameConst.RefreshToken)).Returns(ResultDto.Success(Guid.NewGuid().ToString()));
         _mediatorMock.Setup(x => x.Send(It.IsAny<GetRefereshTokenEntityByTokenQuery>(), default)).ReturnsAsync(refreshTokenEntity);
 
         // Act
@@ -170,37 +172,39 @@ public class AuthServiceTest
 
         //Assert
         Assert.NotNull(result);
-        Assert.Equal(userEntity.Id, result.Id);
-        Assert.Equal($"{userEntity.FirstName} {userEntity.LastName}", result.Username);
-        Assert.NotEmpty(result.Token);
-        Assert.Equal(userEntity.Type.GetUserPrivileges(), result.Roles);
+        Assert.Equal(userEntity.Id, result.Result.Id);
+        Assert.Equal($"{userEntity.FirstName} {userEntity.LastName}", result.Result.Username);
+        Assert.NotEmpty(result.Result.Token);
+        Assert.Equal(userEntity.Type.GetUserPrivileges(), result.Result.Roles);
     }
 
     [Fact]
     public async Task RefreshTokenAsync_RefreshTokenWasNull_ThrowForbiddenException()
     {
         // Arrange
-        _cookieServiceMock.Setup(x => x.GetCookieValue(CookieNameConst.RefreshToken)).Returns(Guid.NewGuid().ToString());
+        _cookieServiceMock.Setup(x => x.GetCookieValue(CookieNameConst.RefreshToken)).Returns(ResultDto.Success(Guid.NewGuid().ToString()));
         _mediatorMock.Setup(x => x.Send(It.IsAny<GetRefereshTokenEntityByTokenQuery>(), default)).ReturnsAsync((RefreshTokenEntity)null);
 
         // Act
-        var result = () => _authService.RefreshTokenAsync();
+        var result = await _authService.RefreshTokenAsync();
 
         //Assert
-        await Assert.ThrowsAsync<ForbiddenException>(result);
+        Assert.False(result.IsSuccess);
+        Assert.Equal(HttpStatusCode.Forbidden, result.HttpCode);
     }
 
     [Fact]
     public async Task RefreshTokenAsync_WrongRefreshTokenFormat_ThrowForbiddenException()
     {
         // Arrange
-        _cookieServiceMock.Setup(x => x.GetCookieValue(CookieNameConst.RefreshToken)).Returns("Random string");
+        _cookieServiceMock.Setup(x => x.GetCookieValue(CookieNameConst.RefreshToken)).Returns(ResultDto.Success("Random string"));
 
         // Act
-        var result = () => _authService.RefreshTokenAsync();
+        var result = await _authService.RefreshTokenAsync();
 
         //Assert
-        await Assert.ThrowsAsync<ForbiddenException>(result);
+        Assert.False(result.IsSuccess);
+        Assert.Equal(HttpStatusCode.Forbidden, result.HttpCode);
     }
 
     [Fact]
@@ -226,7 +230,7 @@ public class AuthServiceTest
             Token = Guid.NewGuid()
         };
 
-        _mediatorMock.Setup(x => x.Send(It.IsAny<CreateUserEntityCommand>(), default)).ReturnsAsync(userEntity);
+        _mediatorMock.Setup(x => x.Send(It.IsAny<CreateUserEntityCommand>(), default)).ReturnsAsync(ResultDto.Success(userEntity));
         _mediatorMock.Setup(x => x.Send(It.IsAny<CreateOrUpdateRefreshTokenEntityByUserIdCommand>(), default)).ReturnsAsync(refreshTokenEntity);
 
         // Act
@@ -242,8 +246,8 @@ public class AuthServiceTest
         , Times.Once);
 
         Assert.NotNull(result);
-        Assert.Equal(userEntity.Id, result.Id);
-        Assert.Equal($"{userEntity.FirstName} {userEntity.LastName}", result.Username);
-        Assert.NotEmpty(result.Token);
+        Assert.Equal(userEntity.Id, result.Result.Id);
+        Assert.Equal($"{userEntity.FirstName} {userEntity.LastName}", result.Result.Username);
+        Assert.NotEmpty(result.Result.Token);
     }
 }

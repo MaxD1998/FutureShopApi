@@ -4,23 +4,12 @@ using Product.Domain.Entities;
 using Product.Infrastructure;
 using Shared.Core.Errors;
 using Shared.Core.Extensions;
+using System.Linq.Expressions;
 
 namespace Product.Core.Dtos.Category;
 
 public class CategoryFormDto
 {
-    public CategoryFormDto()
-    {
-    }
-
-    public CategoryFormDto(CategoryEntity entity)
-    {
-        Name = entity.Name;
-        ParentCategoryId = entity.ParentCategoryId;
-        SubCategories = entity.SubCategories.Select(x => new IdNameDto(x)).ToList();
-        Translations = entity.Translations.Select(x => new CategoryTranslationFormDto(x)).ToList();
-    }
-
     public string Name { get; set; }
 
     public Guid? ParentCategoryId { get; set; }
@@ -28,6 +17,14 @@ public class CategoryFormDto
     public List<IdNameDto> SubCategories { get; set; } = [];
 
     public List<CategoryTranslationFormDto> Translations { get; set; } = [];
+
+    public static Expression<Func<CategoryEntity, CategoryFormDto>> Map() => entity => new CategoryFormDto
+    {
+        Name = entity.Name,
+        ParentCategoryId = entity.ParentCategoryId,
+        SubCategories = entity.SubCategories.AsQueryable().Select(IdNameDto.MapFromCategory()).ToList(),
+        Translations = entity.Translations.AsQueryable().Select(CategoryTranslationFormDto.Map()).ToList(),
+    };
 
     public CategoryEntity ToEntity(ProductPostgreSqlContext context) => new()
     {

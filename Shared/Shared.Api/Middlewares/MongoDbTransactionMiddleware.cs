@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Shared.Infrastructure.Bases;
+using System.Net;
 
 namespace Shared.Api.Middlewares;
 
@@ -21,7 +22,11 @@ public class MongoDbTransactionMiddleware<TContext> : IMiddleware where TContext
             try
             {
                 await next.Invoke(context);
-                await session.CommitTransactionAsync();
+
+                if (context.Response.StatusCode is (int)HttpStatusCode.OK or (int)HttpStatusCode.NoContent)
+                    await session.CommitTransactionAsync();
+                else
+                    await session.AbortTransactionAsync();
             }
             catch
             {

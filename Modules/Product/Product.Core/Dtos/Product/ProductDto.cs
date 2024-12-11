@@ -1,19 +1,10 @@
 ﻿using Product.Domain.Entities;
+using System.Linq.Expressions;
 
 namespace Product.Core.Dtos.Product;
 
 public class ProductDto
 {
-    public ProductDto(ProductEntity entity)
-    {
-        FileIds = entity.ProductPhotos.Select(x => x.FileId);
-        Id = entity.Id;
-        IsInPurchaseList = entity.PurchaseListItems.Any();
-        Name = entity.Translations?.FirstOrDefault()?.Translation ?? entity.Name;
-        Price = entity.Price;
-        ProductParameters = entity.ProductParameterValues.Select(x => new IdNameValueDto(x));
-    }
-
     public IEnumerable<string> FileIds { get; set; }
 
     public Guid Id { get; set; }
@@ -25,4 +16,14 @@ public class ProductDto
     public decimal Price { get; set; }
 
     public IEnumerable<IdNameValueDto> ProductParameters { get; set; }
+
+    public static Expression<Func<ProductEntity, ProductDto>> Map(string lang, Guid? userId, Guid? favouriteId) => entity => new()
+    {
+        FileIds = entity.ProductPhotos.AsQueryable().OrderBy(x => x.Position).Select(x => x.FileId).ToList(),
+        Id = entity.Id,
+        IsInPurchaseList = entity.PurchaseListItems.Any(x => (x.PurchaseList.UserId != null && x.PurchaseList.UserId == userId) || x.PurchaseListId == favouriteId),
+        Name = entity.Translations.AsQueryable().Where(x => x.Lang == lang).Select(x => x.Translation).FirstOrDefault() ?? entity.Name,
+        Price = entity.Price,
+        ProductParameters = entity.ProductParameterValues.AsQueryable().Select(IdNameValueDto.MapFromProductParameterValue(lang)).ToList(),
+    };
 }

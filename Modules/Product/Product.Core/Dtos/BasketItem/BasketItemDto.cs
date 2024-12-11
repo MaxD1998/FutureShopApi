@@ -1,20 +1,10 @@
 ﻿using Product.Domain.Entities;
+using System.Linq.Expressions;
 
 namespace Product.Core.Dtos.BasketItem;
 
 public class BasketItemDto
 {
-    public BasketItemDto(BasketItemEntity entity)
-    {
-        Id = entity.Id;
-        ProductFileId = entity.Product.ProductPhotos.FirstOrDefault()?.FileId;
-        ProductId = entity.ProductId;
-        ProductIsInPurchaseList = entity.Product.PurchaseListItems.Any();
-        ProductName = entity.Product.Name;
-        ProductPrice = entity.Product.Price;
-        Quantity = entity.Quantity;
-    }
-
     public Guid Id { get; set; }
 
     public string ProductFileId { get; set; }
@@ -28,4 +18,15 @@ public class BasketItemDto
     public decimal ProductPrice { get; set; }
 
     public int Quantity { get; set; }
+
+    public static Expression<Func<BasketItemEntity, BasketItemDto>> Map(Expression<Func<PurchaseListItemEntity, bool>> isInPurchaseListPredicate) => entity => new()
+    {
+        Id = entity.Id,
+        ProductFileId = entity.Product.ProductPhotos.AsQueryable().Select(x => x.FileId).FirstOrDefault(),
+        ProductId = entity.ProductId,
+        ProductIsInPurchaseList = entity.Product.PurchaseListItems.AsQueryable().Any(isInPurchaseListPredicate),
+        ProductName = entity.Product.Name,
+        ProductPrice = entity.Product.Price,
+        Quantity = entity.Quantity,
+    };
 }

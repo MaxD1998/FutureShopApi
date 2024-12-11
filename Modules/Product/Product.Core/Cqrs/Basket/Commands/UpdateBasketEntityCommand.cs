@@ -2,13 +2,15 @@
 using Microsoft.EntityFrameworkCore;
 using Product.Domain.Entities;
 using Product.Infrastructure;
+using Shared.Core.Bases;
+using Shared.Core.Dtos;
 using Shared.Core.Errors;
-using Shared.Core.Exceptions;
+using System.Net;
 
 namespace Product.Core.Cqrs.Basket.Commands;
-public record UpdateBasketEntityCommand(Guid Id, BasketEntity Entity) : IRequest<BasketEntity>;
+public record UpdateBasketEntityCommand(Guid Id, BasketEntity Entity) : IRequest<ResultDto<BasketEntity>>;
 
-internal class UpdateBasketEntityCommandHandler : IRequestHandler<UpdateBasketEntityCommand, BasketEntity>
+internal class UpdateBasketEntityCommandHandler : BaseService, IRequestHandler<UpdateBasketEntityCommand, ResultDto<BasketEntity>>
 {
     private readonly ProductPostgreSqlContext _context;
 
@@ -17,19 +19,19 @@ internal class UpdateBasketEntityCommandHandler : IRequestHandler<UpdateBasketEn
         _context = context;
     }
 
-    public async Task<BasketEntity> Handle(UpdateBasketEntityCommand request, CancellationToken cancellationToken)
+    public async Task<ResultDto<BasketEntity>> Handle(UpdateBasketEntityCommand request, CancellationToken cancellationToken)
     {
         var entity = await _context.Set<BasketEntity>()
             .Include(x => x.BasketItems)
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
         if (entity == null)
-            throw new NotFoundException(CommonExceptionMessage.C007RecordWasNotFound);
+            return Error<BasketEntity>(HttpStatusCode.NotFound, CommonExceptionMessage.C007RecordWasNotFound);
 
         entity.Update(request.Entity);
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        return entity;
+        return Success(entity);
     }
 }

@@ -5,13 +5,15 @@ using Product.Core.Dtos.Product;
 using Product.Core.Services;
 using Product.Domain.Entities;
 using Product.Infrastructure;
+using Shared.Core.Bases;
+using Shared.Core.Dtos;
 using Shared.Core.Extensions;
 using Shared.Infrastructure.Constants;
 
 namespace Product.Core.Cqrs.Product.Queries;
-public record GetListProductShopListDtoByCategoryIdQuery(Guid CategoryId, ProductShopListFilterRequestDto Filter, Guid? FavouriteId) : IRequest<IEnumerable<ProductShopListDto>>;
+public record GetListProductShopListDtoByCategoryIdQuery(Guid CategoryId, ProductShopListFilterRequestDto Filter, Guid? FavouriteId) : IRequest<ResultDto<IEnumerable<ProductShopListDto>>>;
 
-internal class GetListProductShopListDtoByCategoryIdQueryHandler : IRequestHandler<GetListProductShopListDtoByCategoryIdQuery, IEnumerable<ProductShopListDto>>
+internal class GetListProductShopListDtoByCategoryIdQueryHandler : BaseService, IRequestHandler<GetListProductShopListDtoByCategoryIdQuery, ResultDto<IEnumerable<ProductShopListDto>>>
 {
     private readonly ProductPostgreSqlContext _context;
     private readonly IHeaderService _headerService;
@@ -24,20 +26,18 @@ internal class GetListProductShopListDtoByCategoryIdQueryHandler : IRequestHandl
         _context = context;
     }
 
-    public async Task<IEnumerable<ProductShopListDto>> Handle(GetListProductShopListDtoByCategoryIdQuery request, CancellationToken cancellationToken)
+    public async Task<ResultDto<IEnumerable<ProductShopListDto>>> Handle(GetListProductShopListDtoByCategoryIdQuery request, CancellationToken cancellationToken)
     {
         var categoryIds = await GetCategoryIds([request.CategoryId], cancellationToken);
         var userId = _httpContextAccessor.GetUserId();
-
-        return await _context.Set<ProductEntity>()
+        var results = await _context.Set<ProductEntity>()
             .AsNoTracking()
-            .Include(x => x.ProductPhotos.OrderBy(y => y.Position))
-            .Include(x => x.PurchaseListItems.Where(y => (y.PurchaseList.UserId != null && y.PurchaseList.UserId == userId) || y.PurchaseListId == request.FavouriteId))
-            .Include(x => x.Translations.Where(x => x.Lang == _headerService.GetHeader(HeaderNameConst.Lang)))
             .Where(x => categoryIds.Contains(x.ProductBase.CategoryId))
             .Filter(request.Filter, _headerService.GetHeader(HeaderNameConst.Lang))
-            .Select(x => new ProductShopListDto(x))
+            .Select(ProductShopListDto.Map(_headerService.GetHeader(HeaderNameConst.Lang), userId, request.FavouriteId))
             .ToListAsync(cancellationToken);
+
+        return Success<IEnumerable<ProductShopListDto>>(results);
     }
 
     private async Task<IEnumerable<Guid>> GetCategoryIds(IEnumerable<Guid> categoryIds, CancellationToken cancellationToken)

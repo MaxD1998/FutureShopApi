@@ -4,13 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using Product.Core.Dtos.PurchaseList;
 using Product.Domain.Entities;
 using Product.Infrastructure;
+using Shared.Core.Bases;
+using Shared.Core.Dtos;
 using Shared.Core.Extensions;
 
 namespace Product.Core.Cqrs.PurchaseList.Queries;
 
-public record GetListPurchaseListDtoByUserIdFromJwtQuery : IRequest<IEnumerable<PurchaseListDto>>;
+public record GetListPurchaseListDtoByUserIdFromJwtQuery : IRequest<ResultDto<IEnumerable<PurchaseListDto>>>;
 
-internal class GetListPurchaseListDtoByUserIdFromJwtQueryHandler : IRequestHandler<GetListPurchaseListDtoByUserIdFromJwtQuery, IEnumerable<PurchaseListDto>>
+internal class GetListPurchaseListDtoByUserIdFromJwtQueryHandler : BaseService, IRequestHandler<GetListPurchaseListDtoByUserIdFromJwtQuery, ResultDto<IEnumerable<PurchaseListDto>>>
 {
     private readonly ProductPostgreSqlContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -21,19 +23,17 @@ internal class GetListPurchaseListDtoByUserIdFromJwtQueryHandler : IRequestHandl
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<IEnumerable<PurchaseListDto>> Handle(GetListPurchaseListDtoByUserIdFromJwtQuery request, CancellationToken cancellationToken)
+    public async Task<ResultDto<IEnumerable<PurchaseListDto>>> Handle(GetListPurchaseListDtoByUserIdFromJwtQuery request, CancellationToken cancellationToken)
     {
         var userId = _httpContextAccessor.GetUserId();
-
-        return await _context.Set<PurchaseListEntity>()
+        var results = await _context.Set<PurchaseListEntity>()
             .AsNoTracking()
-            .Include(x => x.PurchaseListItems)
-                .ThenInclude(x => x.Product)
-                    .ThenInclude(x => x.ProductPhotos.OrderBy(y => y.Position).Take(1))
             .Where(x => x.UserId != null && x.UserId == userId)
             .OrderByDescending(x => x.IsFavourite)
                 .ThenBy(x => x.Name)
-            .Select(x => new PurchaseListDto(x))
+            .Select(PurchaseListDto.Map())
             .ToListAsync(cancellationToken);
+
+        return Success<IEnumerable<PurchaseListDto>>(results);
     }
 }

@@ -3,12 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using Product.Core.Dtos;
 using Product.Domain.Entities;
 using Product.Infrastructure;
+using Shared.Core.Bases;
+using Shared.Core.Dtos;
 
 namespace Product.Core.Cqrs.ProductBase.Queries;
 
-public record GetListProductBaseIdNameDtoQuery : IRequest<IEnumerable<IdNameDto>>;
+public record GetListProductBaseIdNameDtoQuery : IRequest<ResultDto<IEnumerable<IdNameDto>>>;
 
-internal class GetsProductBaseIdNameDtoQueryHandler : IRequestHandler<GetListProductBaseIdNameDtoQuery, IEnumerable<IdNameDto>>
+internal class GetsProductBaseIdNameDtoQueryHandler : BaseService, IRequestHandler<GetListProductBaseIdNameDtoQuery, ResultDto<IEnumerable<IdNameDto>>>
 {
     private readonly ProductPostgreSqlContext _context;
 
@@ -17,9 +19,13 @@ internal class GetsProductBaseIdNameDtoQueryHandler : IRequestHandler<GetListPro
         _context = context;
     }
 
-    public async Task<IEnumerable<IdNameDto>> Handle(GetListProductBaseIdNameDtoQuery request, CancellationToken cancellationToken)
-        => await _context.Set<ProductBaseEntity>()
+    public async Task<ResultDto<IEnumerable<IdNameDto>>> Handle(GetListProductBaseIdNameDtoQuery request, CancellationToken cancellationToken)
+    {
+        var results = await _context.Set<ProductBaseEntity>()
             .AsNoTracking()
-            .Select(x => new IdNameDto(x))
+            .Select(IdNameDto.MapFromProductBase())
             .ToListAsync(cancellationToken);
+
+        return Success<IEnumerable<IdNameDto>>(results);
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Shared.Infrastructure.Bases;
+using System.Net;
 
 namespace Shared.Api.Middlewares;
 
@@ -18,7 +19,11 @@ public class PostgreSqlDbTransactionMiddleware<TContext> : IMiddleware where TCo
         try
         {
             await next.Invoke(context);
-            await transaction.CommitAsync();
+
+            if (context.Response.StatusCode is (int)HttpStatusCode.OK or (int)HttpStatusCode.NoContent)
+                await transaction.CommitAsync();
+            else
+                await transaction.RollbackAsync();
         }
         catch
         {

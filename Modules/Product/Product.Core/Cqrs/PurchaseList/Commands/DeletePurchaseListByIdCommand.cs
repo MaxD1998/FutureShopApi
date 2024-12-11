@@ -2,11 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using Product.Domain.Entities;
 using Product.Infrastructure;
+using Shared.Core.Bases;
+using Shared.Core.Dtos;
 
 namespace Product.Core.Cqrs.PurchaseList.Commands;
-public record DeletePurchaseListByIdCommand(Guid Id) : IRequest;
+public record DeletePurchaseListByIdCommand(Guid Id) : IRequest<ResultDto>;
 
-internal class DeletePurchaseListByIdCommandHandler : IRequestHandler<DeletePurchaseListByIdCommand>
+internal class DeletePurchaseListByIdCommandHandler : BaseService, IRequestHandler<DeletePurchaseListByIdCommand, ResultDto>
 {
     private readonly ProductPostgreSqlContext _context;
 
@@ -15,6 +17,9 @@ internal class DeletePurchaseListByIdCommandHandler : IRequestHandler<DeletePurc
         _context = context;
     }
 
-    public async Task Handle(DeletePurchaseListByIdCommand request, CancellationToken cancellationToken)
-        => await _context.Set<PurchaseListEntity>().Where(x => x.Id == request.Id).ExecuteDeleteAsync(cancellationToken);
+    public async Task<ResultDto> Handle(DeletePurchaseListByIdCommand request, CancellationToken cancellationToken)
+    {
+        await _context.Set<PurchaseListEntity>().Where(x => x.Id == request.Id).ExecuteDeleteAsync(cancellationToken);
+        return Success();
+    }
 }

@@ -3,11 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Product.Core.Dtos.PurchaseList;
 using Product.Domain.Entities;
 using Product.Infrastructure;
+using Shared.Core.Bases;
+using Shared.Core.Dtos;
 
 namespace Product.Core.Cqrs.PurchaseList.Queries;
-public record GetPurchaseListDtoByIdQuery(Guid Id) : IRequest<PurchaseListDto>;
+public record GetPurchaseListDtoByIdQuery(Guid Id) : IRequest<ResultDto<PurchaseListDto>>;
 
-internal class GetPurchaseListDtoByIdQueryHandler : IRequestHandler<GetPurchaseListDtoByIdQuery, PurchaseListDto>
+internal class GetPurchaseListDtoByIdQueryHandler : BaseService, IRequestHandler<GetPurchaseListDtoByIdQuery, ResultDto<PurchaseListDto>>
 {
     private readonly ProductPostgreSqlContext _context;
 
@@ -16,13 +18,14 @@ internal class GetPurchaseListDtoByIdQueryHandler : IRequestHandler<GetPurchaseL
         _context = context;
     }
 
-    public async Task<PurchaseListDto> Handle(GetPurchaseListDtoByIdQuery request, CancellationToken cancellationToken)
-        => await _context.Set<PurchaseListEntity>()
+    public async Task<ResultDto<PurchaseListDto>> Handle(GetPurchaseListDtoByIdQuery request, CancellationToken cancellationToken)
+    {
+        var result = await _context.Set<PurchaseListEntity>()
             .AsNoTracking()
-            .Include(x => x.PurchaseListItems)
-                .ThenInclude(x => x.Product)
-                    .ThenInclude(x => x.ProductPhotos.OrderBy(y => y.Position).Take(1))
             .Where(x => x.Id == request.Id)
-            .Select(x => new PurchaseListDto(x))
+            .Select(PurchaseListDto.Map())
             .FirstOrDefaultAsync(cancellationToken);
+
+        return Success(result);
+    }
 }

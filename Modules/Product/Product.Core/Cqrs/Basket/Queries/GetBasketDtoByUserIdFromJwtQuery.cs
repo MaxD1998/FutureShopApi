@@ -4,12 +4,14 @@ using Microsoft.EntityFrameworkCore;
 using Product.Core.Dtos.Basket;
 using Product.Domain.Entities;
 using Product.Infrastructure;
+using Shared.Core.Bases;
+using Shared.Core.Dtos;
 using Shared.Core.Extensions;
 
 namespace Product.Core.Cqrs.Basket.Queries;
-public record GetBasketDtoByUserIdFromJwtQuery : IRequest<BasketDto>;
+public record GetBasketDtoByUserIdFromJwtQuery : IRequest<ResultDto<BasketDto>>;
 
-internal class GetBasketDtoByUserIdFromJwtQueryHandler : IRequestHandler<GetBasketDtoByUserIdFromJwtQuery, BasketDto>
+internal class GetBasketDtoByUserIdFromJwtQueryHandler : BaseService, IRequestHandler<GetBasketDtoByUserIdFromJwtQuery, ResultDto<BasketDto>>
 {
     private readonly ProductPostgreSqlContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -20,20 +22,15 @@ internal class GetBasketDtoByUserIdFromJwtQueryHandler : IRequestHandler<GetBask
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<BasketDto> Handle(GetBasketDtoByUserIdFromJwtQuery request, CancellationToken cancellationToken)
+    public async Task<ResultDto<BasketDto>> Handle(GetBasketDtoByUserIdFromJwtQuery request, CancellationToken cancellationToken)
     {
         var userId = _httpContextAccessor.GetUserId();
-
-        return await _context.Set<BasketEntity>()
+        var result = await _context.Set<BasketEntity>()
             .AsNoTracking()
-            .Include(x => x.BasketItems)
-                .ThenInclude(x => x.Product)
-                    .ThenInclude(x => x.ProductPhotos.Take(1))
-            .Include(x => x.BasketItems)
-                .ThenInclude(x => x.Product)
-                    .ThenInclude(x => x.PurchaseListItems.Where(y => y.PurchaseList.UserId != null && y.PurchaseList.UserId == userId))
             .Where(x => x.UserId != null && x.UserId == userId)
-            .Select(x => new BasketDto(x))
+            .Select(BasketDto.Map(x => x.PurchaseList.UserId != null && x.PurchaseList.UserId == userId))
             .FirstOrDefaultAsync(cancellationToken);
+
+        return Success(result);
     }
 }

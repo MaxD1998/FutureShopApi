@@ -4,15 +4,8 @@ using Shared.Core.Bases;
 
 namespace Product.Core.Dtos.CategoryTranslation;
 
-public class CategoryTranslationFormDto : BaseTranslationFormDto<CategoryTranslationEntity>
+public class CategoryTranslationFormDto : BaseTranslationFormDto<CategoryTranslationEntity, CategoryTranslationFormDto>
 {
-    public CategoryTranslationFormDto()
-    {
-    }
-
-    public CategoryTranslationFormDto(CategoryTranslationEntity entity) : base(entity)
-    {
-    }
 }
 
 public class CategoryTranslationFormValidator : AbstractValidator<CategoryTranslationFormDto>

@@ -4,12 +4,14 @@ using Product.Core.Dtos;
 using Product.Core.Services;
 using Product.Domain.Entities;
 using Product.Infrastructure;
+using Shared.Core.Bases;
+using Shared.Core.Dtos;
 using Shared.Infrastructure.Constants;
 
 namespace Product.Core.Cqrs.Category.Queries;
-public record GetListCategoryIdNameDtoQuery : IRequest<IEnumerable<IdNameDto>>;
+public record GetListCategoryIdNameDtoQuery : IRequest<ResultDto<IEnumerable<IdNameDto>>>;
 
-internal class GetsCategoryIdNameDtoQueryHandler : IRequestHandler<GetListCategoryIdNameDtoQuery, IEnumerable<IdNameDto>>
+internal class GetsCategoryIdNameDtoQueryHandler : BaseService, IRequestHandler<GetListCategoryIdNameDtoQuery, ResultDto<IEnumerable<IdNameDto>>>
 {
     private readonly ProductPostgreSqlContext _context;
     private IHeaderService _headerService;
@@ -20,10 +22,13 @@ internal class GetsCategoryIdNameDtoQueryHandler : IRequestHandler<GetListCatego
         _context = context;
     }
 
-    public async Task<IEnumerable<IdNameDto>> Handle(GetListCategoryIdNameDtoQuery request, CancellationToken cancellationToken)
-        => await _context.Set<CategoryEntity>()
+    public async Task<ResultDto<IEnumerable<IdNameDto>>> Handle(GetListCategoryIdNameDtoQuery request, CancellationToken cancellationToken)
+    {
+        var results = await _context.Set<CategoryEntity>()
             .AsNoTracking()
-            .Include(x => x.Translations.Where(x => x.Lang == _headerService.GetHeader(HeaderNameConst.Lang)))
-            .Select(x => new IdNameDto(x))
+            .Select(IdNameDto.MapFromCategory(_headerService.GetHeader(HeaderNameConst.Lang)))
             .ToListAsync(cancellationToken);
+
+        return Success<IEnumerable<IdNameDto>>(results);
+    }
 }

@@ -3,33 +3,33 @@ using Microsoft.AspNetCore.Http;
 using Product.Core.Errors;
 using Product.Core.Extensions;
 using Product.Infrastructure;
-using Shared.Core.Exceptions;
+using Shared.Core.Bases;
+using Shared.Core.Dtos;
+using System.Net;
 
 namespace Product.Core.Cqrs.ProductPhoto.Commands;
-public record CreateListProductPhotoCommand(IFormFileCollection Files) : IRequest<IEnumerable<string>>;
+public record CreateListProductPhotoCommand(IFormFileCollection Files) : IRequest<ResultDto<IEnumerable<string>>>;
 
-internal class CreateListProductPhotoCommandHandler : IRequestHandler<CreateListProductPhotoCommand, IEnumerable<string>>
+internal class CreateListProductPhotoCommandHandler : BaseService, IRequestHandler<CreateListProductPhotoCommand, ResultDto<IEnumerable<string>>>
 {
     private readonly ProductMongoDbContext _mongoDbContext;
-    private readonly ProductPostgreSqlContext _productPostgreSqlContext;
 
-    public CreateListProductPhotoCommandHandler(ProductMongoDbContext mongoDbContext, ProductPostgreSqlContext productPostgreSqlContext)
+    public CreateListProductPhotoCommandHandler(ProductMongoDbContext mongoDbContext)
     {
         _mongoDbContext = mongoDbContext;
-        _productPostgreSqlContext = productPostgreSqlContext;
     }
 
-    public async Task<IEnumerable<string>> Handle(CreateListProductPhotoCommand request, CancellationToken cancellationToken)
+    public async Task<ResultDto<IEnumerable<string>>> Handle(CreateListProductPhotoCommand request, CancellationToken cancellationToken)
     {
         if (!request.Files.Any())
-            return [];
+            return Success<IEnumerable<string>>([]);
 
         if (request.Files.Any(x => x.Length == 0))
-            throw new BadRequestException(ExceptionMessage.ProductPhoto001OneOfFilesWasEmpty);
+            return Error<IEnumerable<string>>(HttpStatusCode.BadRequest, ExceptionMessage.ProductPhoto001OneOfFilesWasEmpty);
 
         var productPhotos = request.Files.Select(x => x.ToProductPhotoDocument()).ToList();
         await _mongoDbContext.AddRangeAsync(productPhotos, cancellationToken);
 
-        return productPhotos.Select(x => x.Id);
+        return Success(productPhotos.Select(x => x.Id));
     }
 }
