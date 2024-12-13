@@ -2,12 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Product.Core.Dtos.Product;
-using Product.Core.Services;
 using Product.Domain.Entities;
 using Product.Infrastructure;
 using Shared.Core.Bases;
 using Shared.Core.Dtos;
 using Shared.Core.Extensions;
+using Shared.Core.Services;
 using Shared.Infrastructure.Constants;
 
 namespace Product.Core.Cqrs.Product.Queries;

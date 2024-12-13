@@ -1,0 +1,31 @@
+﻿using Shared.Domain.Bases;
+using Shared.Domain.Extensions;
+
+namespace Warehouse.Domain.Entities;
+
+public class ProductEntity : BaseEntity
+{
+    public string Description { get; set; }
+
+    public string Name { get; set; }
+
+    public decimal Price { get; set; }
+
+    public Guid ProductBaseId { get; set; }
+
+    #region Related Data
+
+    public ProductBaseEntity ProductBase { get; set; }
+
+    public ICollection<ProductParameterValueEntity> ProductParameterValues { get; set; } = [];
+
+    #endregion Related Data
+
+    public void Update(ProductEntity entity)
+    {
+        Description = entity.Description;
+        Name = entity.Name;
+        Price = entity.Price;
+        ProductParameterValues.UpdateEntities(entity.ProductParameterValues);
+    }
+}

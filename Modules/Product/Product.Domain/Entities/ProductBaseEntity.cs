@@ -1,9 +1,10 @@
 ﻿using Shared.Domain.Bases;
 using Shared.Domain.Extensions;
+using Shared.Domain.Interfaces;
 
 namespace Product.Domain.Entities;
 
-public class ProductBaseEntity : BaseEntity
+public class ProductBaseEntity : BaseEntity, IUpdate<ProductBaseEntity>
 {
     public Guid CategoryId { get; set; }
 

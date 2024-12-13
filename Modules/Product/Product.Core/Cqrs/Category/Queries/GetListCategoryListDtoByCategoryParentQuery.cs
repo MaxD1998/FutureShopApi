@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Product.Core.Dtos.Category;
-using Product.Core.Services;
 using Product.Domain.Entities;
 using Product.Infrastructure;
 using Shared.Core.Bases;
 using Shared.Core.Dtos;
+using Shared.Core.Services;
 using Shared.Infrastructure.Constants;
 
 namespace Product.Core.Cqrs.Category.Queries;

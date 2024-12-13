@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace Product.Core.Services;
+namespace Shared.Core.Services;
 
 public interface IHeaderService
 {

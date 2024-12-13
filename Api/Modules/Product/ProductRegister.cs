@@ -6,6 +6,7 @@ using Product.Core.Services;
 using Product.Infrastructure;
 using Quartz;
 using Shared.Api.Middlewares;
+using Shared.Core.Services;
 
 namespace Api.Modules.Product;
 
