@@ -8,7 +8,9 @@ using Authorization.Inrfrastructure;
 using Product.Infrastructure;
 using Quartz.AspNetCore;
 using Shared.Api.Middlewares;
+using Shop.Infrastructure;
 using System.Reflection;
+using Warehouse.Infrastructure;
 
 namespace Api;
 
@@ -61,6 +63,8 @@ public class Program
         app.UseMiddleware<ErrorHandlingMiddleware>();
         app.UseMiddleware<PostgreSqlDbTransactionMiddleware<AuthContext>>();
         app.UseMiddleware<PostgreSqlDbTransactionMiddleware<ProductPostgreSqlContext>>();
+        app.UseMiddleware<PostgreSqlDbTransactionMiddleware<ShopContext>>();
+        app.UseMiddleware<PostgreSqlDbTransactionMiddleware<WarehouseContext>>();
         app.UseMiddleware<MongoDbTransactionMiddleware<ProductMongoDbContext>>();
 
         app.UseHttpsRedirection();
