@@ -11,7 +11,7 @@ using System.Net;
 namespace Shared.Api.Bases;
 
 [ApiController]
-public class BaseController : ControllerBase
+public abstract class BaseController : ControllerBase
 {
     private readonly IFluentValidatorFactory _fluentValidatorFactory;
 

@@ -43,6 +43,7 @@ public class Program
             var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
             config.IncludeXmlComments(xmlPath);
+            config.CustomSchemaIds(type => type.ToString());
         });
 
         var app = builder.Build();
