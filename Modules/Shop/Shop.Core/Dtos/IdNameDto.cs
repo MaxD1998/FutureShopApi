@@ -15,16 +15,4 @@ public class IdNameDto : BaseIdNameDto
             ? entity.Name
             : entity.Translations.AsQueryable().Where(x => x.Lang == lang).Select(x => x.Translation).FirstOrDefault() ?? entity.Name,
     };
-
-    public static Expression<Func<ProductBaseEntity, IdNameDto>> MapFromProductBase() => entity => new IdNameDto
-    {
-        Id = entity.Id,
-        Name = entity.Name,
-    };
-
-    public static Expression<Func<ProductParameterEntity, IdNameDto>> MapFromProductParameter(string lang) => entity => new IdNameDto
-    {
-        Id = entity.Id,
-        Name = entity.Translations.AsQueryable().Where(x => x.Lang == lang).Select(x => x.Translation).FirstOrDefault() ?? entity.Name,
-    };
 }
