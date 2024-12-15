@@ -12,9 +12,9 @@ public record GetListCategoryIdNameDtoAvailableToBeParentCategoryQuery(Guid? Id,
 
 internal class GetsCategoryIdNameDtoAvailableToBeParentCategoryQueryHandler : BaseService, IRequestHandler<GetListCategoryIdNameDtoAvailableToBeParentCategoryQuery, ResultDto<IEnumerable<IdNameDto>>>
 {
-    private readonly ProductPostgreSqlContext _context;
+    private readonly ShopContext _context;
 
-    public GetsCategoryIdNameDtoAvailableToBeParentCategoryQueryHandler(ProductPostgreSqlContext context)
+    public GetsCategoryIdNameDtoAvailableToBeParentCategoryQueryHandler(ShopContext context)
     {
         _context = context;
     }

@@ -15,11 +15,11 @@ public record GetListProductShopListDtoByCategoryIdQuery(Guid CategoryId, Produc
 
 internal class GetListProductShopListDtoByCategoryIdQueryHandler : BaseService, IRequestHandler<GetListProductShopListDtoByCategoryIdQuery, ResultDto<IEnumerable<ProductShopListDto>>>
 {
-    private readonly ProductPostgreSqlContext _context;
+    private readonly ShopContext _context;
     private readonly IHeaderService _headerService;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public GetListProductShopListDtoByCategoryIdQueryHandler(IHeaderService headerService, IHttpContextAccessor httpContextAccessor, ProductPostgreSqlContext context)
+    public GetListProductShopListDtoByCategoryIdQueryHandler(IHeaderService headerService, IHttpContextAccessor httpContextAccessor, ShopContext context)
     {
         _headerService = headerService;
         _httpContextAccessor = httpContextAccessor;

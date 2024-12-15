@@ -6,9 +6,9 @@ using System.Reflection;
 
 namespace Shop.Infrastructure;
 
-public class ProductPostgreSqlContext : BasePostgreSqlContext
+public class ShopContext : BasePostgreSqlContext
 {
-    public ProductPostgreSqlContext(IOptions<ConnectionSettings> connectionSettings) : base(connectionSettings)
+    public ShopContext(IOptions<ConnectionSettings> connectionSettings) : base(connectionSettings)
     {
     }
 

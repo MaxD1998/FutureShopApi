@@ -15,11 +15,11 @@ public record GetProductDtoByIdQuery(Guid Id, Guid? FavouriteId) : IRequest<Resu
 
 internal class GetProductDtoByIdQueryHandler : BaseService, IRequestHandler<GetProductDtoByIdQuery, ResultDto<ProductDto>>
 {
-    private readonly ProductPostgreSqlContext _context;
+    private readonly ShopContext _context;
     private readonly IHeaderService _headerService;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public GetProductDtoByIdQueryHandler(IHeaderService headerService, IHttpContextAccessor httpContextAccessor, ProductPostgreSqlContext context)
+    public GetProductDtoByIdQueryHandler(IHeaderService headerService, IHttpContextAccessor httpContextAccessor, ShopContext context)
     {
         _headerService = headerService;
         _httpContextAccessor = httpContextAccessor;

@@ -5,12 +5,11 @@ using Authorization.Core.Services;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Api.Bases;
 using Shared.Core.Factories.FluentValidator;
 
 namespace Api.Modules.Authorization.Controllers;
 
-public class AuthController : BaseController
+public class AuthController : AuthModuleBaseController
 {
     private readonly IAuthService _authService;
 

@@ -8,9 +8,9 @@ public record GetBasketEntityByIdQuery(Guid Id) : IRequest<BasketEntity>;
 
 internal class GetBasketEntityByIdQueryHandler : IRequestHandler<GetBasketEntityByIdQuery, BasketEntity>
 {
-    private readonly ProductPostgreSqlContext _context;
+    private readonly ShopContext _context;
 
-    public GetBasketEntityByIdQueryHandler(ProductPostgreSqlContext context)
+    public GetBasketEntityByIdQueryHandler(ShopContext context)
     {
         _context = context;
     }

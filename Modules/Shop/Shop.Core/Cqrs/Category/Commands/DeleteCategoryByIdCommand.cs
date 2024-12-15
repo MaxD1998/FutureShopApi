@@ -10,9 +10,9 @@ public record DeleteCategoryByIdCommand(Guid Id) : IRequest<ResultDto>;
 
 internal class DeleteCategoryByIdCommandHandler : BaseService, IRequestHandler<DeleteCategoryByIdCommand, ResultDto>
 {
-    private readonly ProductPostgreSqlContext _context;
+    private readonly ShopContext _context;
 
-    public DeleteCategoryByIdCommandHandler(ProductPostgreSqlContext context)
+    public DeleteCategoryByIdCommandHandler(ShopContext context)
     {
         _context = context;
     }

@@ -1,18 +1,18 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Product.Core.Cqrs.Product.Commands;
-using Product.Core.Cqrs.Product.Queries;
-using Product.Core.Dtos.Product;
 using Shared.Api.Attributes;
 using Shared.Core.Dtos;
 using Shared.Core.Factories.FluentValidator;
 using Shared.Domain.Enums;
+using Shop.Core.Cqrs.Product.Commands;
+using Shop.Core.Cqrs.Product.Queries;
+using Shop.Core.Dtos.Product;
 
-namespace Api.Modules.Product.Controllers;
+namespace Api.Modules.Shop.Controllers;
 
 [Role(UserType.Manager)]
-public class ProductController : ProductModuleBaseController
+public class ProductController : ShopModuleBaseController
 {
     public ProductController(IFluentValidatorFactory fluentValidatorFactory, IMediator mediator) : base(fluentValidatorFactory, mediator)
     {

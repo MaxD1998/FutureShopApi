@@ -16,10 +16,10 @@ public record UpdatePurchaseListFormDtoCommand(Guid Id, PurchaseListFormDto Dto)
 
 internal class UpdatePurchaseListFormDtoWithUserIdFromJwtCommandHandler : BaseService, IRequestHandler<UpdatePurchaseListFormDtoCommand, ResultDto<PurchaseListFormDto>>
 {
-    private readonly ProductPostgreSqlContext _context;
+    private readonly ShopContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public UpdatePurchaseListFormDtoWithUserIdFromJwtCommandHandler(ProductPostgreSqlContext context, IHttpContextAccessor httpContextAccessor)
+    public UpdatePurchaseListFormDtoWithUserIdFromJwtCommandHandler(ShopContext context, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
         _httpContextAccessor = httpContextAccessor;

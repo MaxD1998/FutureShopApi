@@ -19,6 +19,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Modules\Authorization\Authorization.Core\Authorization.Core.csproj" />
     <ProjectReference Include="..\Modules\Product\Product.Core\Product.Core.csproj" />
+    <ProjectReference Include="..\Modules\Shop\Shop.Core\Shop.Core.csproj" />
+    <ProjectReference Include="..\Modules\Warehouse\Warehouse.Core\Warehouse.Core.csproj" />
     <ProjectReference Include="..\Shared\Shared.Api\Shared.Api.csproj" />
   </ItemGroup>
 

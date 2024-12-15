@@ -1,17 +1,16 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Product.Core.Cqrs.PurchaseList.Commands;
-using Product.Core.Cqrs.PurchaseList.Queries;
-using Product.Core.Dtos.Basket;
-using Product.Core.Dtos.PurchaseList;
-using Product.Core.Services;
-using Shared.Api.Bases;
 using Shared.Core.Factories.FluentValidator;
+using Shop.Core.Cqrs.PurchaseList.Commands;
+using Shop.Core.Cqrs.PurchaseList.Queries;
+using Shop.Core.Dtos.Basket;
+using Shop.Core.Dtos.PurchaseList;
+using Shop.Core.Services;
 
-namespace Api.Modules.Product.Controllers;
+namespace Api.Modules.Shop.Controllers;
 
-public class PurchaseListController : BaseController
+public class PurchaseListController : ShopModuleBaseController
 {
     private readonly IPurchaseListService _purchaseListService;
 

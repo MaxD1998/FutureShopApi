@@ -13,10 +13,10 @@ public record GetBasketDtoByUserIdFromJwtQuery : IRequest<ResultDto<BasketDto>>;
 
 internal class GetBasketDtoByUserIdFromJwtQueryHandler : BaseService, IRequestHandler<GetBasketDtoByUserIdFromJwtQuery, ResultDto<BasketDto>>
 {
-    private readonly ProductPostgreSqlContext _context;
+    private readonly ShopContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public GetBasketDtoByUserIdFromJwtQueryHandler(ProductPostgreSqlContext context, IHttpContextAccessor httpContextAccessor)
+    public GetBasketDtoByUserIdFromJwtQueryHandler(ShopContext context, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
         _httpContextAccessor = httpContextAccessor;

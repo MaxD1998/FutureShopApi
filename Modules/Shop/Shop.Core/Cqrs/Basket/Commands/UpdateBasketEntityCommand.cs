@@ -12,9 +12,9 @@ public record UpdateBasketEntityCommand(Guid Id, BasketEntity Entity) : IRequest
 
 internal class UpdateBasketEntityCommandHandler : BaseService, IRequestHandler<UpdateBasketEntityCommand, ResultDto<BasketEntity>>
 {
-    private readonly ProductPostgreSqlContext _context;
+    private readonly ShopContext _context;
 
-    public UpdateBasketEntityCommandHandler(ProductPostgreSqlContext context)
+    public UpdateBasketEntityCommandHandler(ShopContext context)
     {
         _context = context;
     }

@@ -1,16 +1,15 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Product.Core.Cqrs.Basket.Commands;
-using Product.Core.Cqrs.Basket.Queries;
-using Product.Core.Dtos.Basket;
-using Product.Core.Services;
-using Shared.Api.Bases;
 using Shared.Core.Factories.FluentValidator;
+using Shop.Core.Cqrs.Basket.Commands;
+using Shop.Core.Cqrs.Basket.Queries;
+using Shop.Core.Dtos.Basket;
+using Shop.Core.Services;
 
-namespace Api.Modules.Product.Controllers;
+namespace Api.Modules.Shop.Controllers;
 
-public class BasketController : BaseController
+public class BasketController : ShopModuleBaseController
 {
     private readonly IBasketSerivce _basketSerivce;
 

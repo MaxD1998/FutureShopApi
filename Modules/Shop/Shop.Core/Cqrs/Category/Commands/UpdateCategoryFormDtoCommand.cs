@@ -14,10 +14,10 @@ public record UpdateCategoryFormDtoCommand(Guid Id, CategoryFormDto Dto) : IRequ
 
 internal class UpdateCategoryFormDtoCommandHandler : BaseService, IRequestHandler<UpdateCategoryFormDtoCommand, ResultDto<CategoryFormDto>>
 {
-    private readonly ProductPostgreSqlContext _context;
+    private readonly ShopContext _context;
     private readonly IMediator _mediator;
 
-    public UpdateCategoryFormDtoCommandHandler(ProductPostgreSqlContext context, IMediator mediator)
+    public UpdateCategoryFormDtoCommandHandler(ShopContext context, IMediator mediator)
     {
         _context = context;
         _mediator = mediator;

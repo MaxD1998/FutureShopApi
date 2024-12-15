@@ -27,7 +27,7 @@ public class CategoryFormDto
         Translations = entity.Translations.AsQueryable().Select(CategoryTranslationFormDto.Map()).ToList(),
     };
 
-    public CategoryEntity ToEntity(ProductPostgreSqlContext context) => new()
+    public CategoryEntity ToEntity(ShopContext context) => new()
     {
         Name = Name,
         ParentCategoryId = ParentCategoryId,

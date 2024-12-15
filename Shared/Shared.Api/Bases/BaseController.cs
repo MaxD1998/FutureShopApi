@@ -11,7 +11,6 @@ using System.Net;
 namespace Shared.Api.Bases;
 
 [ApiController]
-[Route("[controller]")]
 public class BaseController : ControllerBase
 {
     private readonly IFluentValidatorFactory _fluentValidatorFactory;

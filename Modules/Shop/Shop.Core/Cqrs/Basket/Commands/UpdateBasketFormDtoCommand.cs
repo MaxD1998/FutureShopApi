@@ -11,9 +11,9 @@ public record UpdateBasketFormDtoCommand(Guid Id, BasketFormDto Dto) : IRequest<
 
 public class UpdateBasketFormDtoCommandHandler : BaseService, IRequestHandler<UpdateBasketFormDtoCommand, ResultDto<BasketFormDto>>
 {
-    private readonly ProductPostgreSqlContext _context;
+    private readonly ShopContext _context;
 
-    public UpdateBasketFormDtoCommandHandler(ProductPostgreSqlContext context)
+    public UpdateBasketFormDtoCommandHandler(ShopContext context)
     {
         _context = context;
     }

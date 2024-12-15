@@ -11,10 +11,10 @@ public record CreateProductBaseFormDtoCommand(ProductBaseFormDto Dto) : IRequest
 
 internal class CreateProductBaseFormDtoCommandHanlder : IRequestHandler<CreateProductBaseFormDtoCommand, ResultDto<ProductBaseFormDto>>
 {
-    private readonly ProductPostgreSqlContext _context;
+    private readonly ShopContext _context;
     private readonly IMediator _mediator;
 
-    public CreateProductBaseFormDtoCommandHanlder(ProductPostgreSqlContext context, IMediator mediator)
+    public CreateProductBaseFormDtoCommandHanlder(ShopContext context, IMediator mediator)
     {
         _context = context;
         _mediator = mediator;

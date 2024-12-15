@@ -15,10 +15,10 @@ public record UpdateProductBaseFormDtoCommand(Guid Id, ProductBaseFormDto Dto) :
 
 internal class UpdateProductBaseFormDtoCommandHandler : BaseService, IRequestHandler<UpdateProductBaseFormDtoCommand, ResultDto<ProductBaseFormDto>>
 {
-    private readonly ProductPostgreSqlContext _context;
+    private readonly ShopContext _context;
     private readonly IMediator _mediator;
 
-    public UpdateProductBaseFormDtoCommandHandler(ProductPostgreSqlContext context, IMediator mediator)
+    public UpdateProductBaseFormDtoCommandHandler(ShopContext context, IMediator mediator)
     {
         _context = context;
         _mediator = mediator;

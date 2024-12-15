@@ -12,10 +12,10 @@ public record GetCategoryIdNameDtoByIdQuery(Guid Id) : IRequest<ResultDto<IdName
 
 internal class GetCategoryIdNameDtoByIdQueryHandler : BaseService, IRequestHandler<GetCategoryIdNameDtoByIdQuery, ResultDto<IdNameDto>>
 {
-    private readonly ProductPostgreSqlContext _context;
+    private readonly ShopContext _context;
     private readonly IHeaderService _headerService;
 
-    public GetCategoryIdNameDtoByIdQueryHandler(IHeaderService headerService, ProductPostgreSqlContext context)
+    public GetCategoryIdNameDtoByIdQueryHandler(IHeaderService headerService, ShopContext context)
     {
         _headerService = headerService;
         _context = context;

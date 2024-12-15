@@ -1,6 +1,9 @@
 using Api.Extensions;
+using Api.Modules;
 using Api.Modules.Authorization;
 using Api.Modules.Product;
+using Api.Modules.Shop;
+using Api.Modules.Warehouse;
 using Authorization.Inrfrastructure;
 using Product.Infrastructure;
 using Quartz.AspNetCore;
@@ -25,8 +28,11 @@ public class Program
 
         services.AddScoped<ErrorHandlingMiddleware>();
 
+        services.RegisterSharedModule();
         services.RegisterAuthModule();
         services.RegisterProductModule();
+        services.RegisterShopModule();
+        services.RegisterWarehouseModule();
 
         services.AddControllers();
         services.AddHttpContextAccessor();
