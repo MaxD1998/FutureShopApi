@@ -12,20 +12,6 @@ namespace Product.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Basket",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Basket", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Category",
                 columns: table => new
                 {
@@ -44,22 +30,6 @@ namespace Product.Infrastructure.Migrations
                         principalTable: "Category",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PurchaseList",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    IsFavourite = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PurchaseList", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -150,34 +120,6 @@ namespace Product.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BasketItem",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    BasketId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ProductId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Quantity = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BasketItem", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_BasketItem_Basket_BasketId",
-                        column: x => x.BasketId,
-                        principalTable: "Basket",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BasketItem_Product_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Product",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "ProductPhoto",
                 columns: table => new
                 {
@@ -217,33 +159,6 @@ namespace Product.Infrastructure.Migrations
                         name: "FK_ProductTranslation_Product_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Product",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PurchaseListItem",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    PurchaseListId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ProductId = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PurchaseListItem", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PurchaseListItem_Product_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Product",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_PurchaseListItem_PurchaseList_PurchaseListId",
-                        column: x => x.PurchaseListId,
-                        principalTable: "PurchaseList",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -297,23 +212,6 @@ namespace Product.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Basket_UserId",
-                table: "Basket",
-                column: "UserId",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BasketItem_BasketId_ProductId",
-                table: "BasketItem",
-                columns: new[] { "BasketId", "ProductId" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BasketItem_ProductId",
-                table: "BasketItem",
-                column: "ProductId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Category_ParentCategoryId",
@@ -374,24 +272,11 @@ namespace Product.Infrastructure.Migrations
                 table: "ProductTranslation",
                 columns: new[] { "ProductId", "Lang" },
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PurchaseListItem_ProductId",
-                table: "PurchaseListItem",
-                column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PurchaseListItem_PurchaseListId",
-                table: "PurchaseListItem",
-                column: "PurchaseListId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "BasketItem");
-
             migrationBuilder.DropTable(
                 name: "CategoryTranslation");
 
@@ -408,19 +293,10 @@ namespace Product.Infrastructure.Migrations
                 name: "ProductTranslation");
 
             migrationBuilder.DropTable(
-                name: "PurchaseListItem");
-
-            migrationBuilder.DropTable(
-                name: "Basket");
-
-            migrationBuilder.DropTable(
                 name: "ProductParameter");
 
             migrationBuilder.DropTable(
                 name: "Product");
-
-            migrationBuilder.DropTable(
-                name: "PurchaseList");
 
             migrationBuilder.DropTable(
                 name: "ProductBase");

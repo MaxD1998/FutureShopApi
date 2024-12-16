@@ -9,10 +9,10 @@ using Shop.Infrastructure;
 
 #nullable disable
 
-namespace Product.Infrastructure.Migrations
+namespace Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20241127160644_Init")]
+    [Migration("20241216143936_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace Product.Infrastructure.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Product.Domain.Entities.BasketEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.BasketEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -52,7 +52,7 @@ namespace Product.Infrastructure.Migrations
                     b.ToTable("Basket", (string)null);
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.BasketItemEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.BasketItemEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -89,7 +89,7 @@ namespace Product.Infrastructure.Migrations
                     b.ToTable("BasketItem", (string)null);
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.CategoryEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.CategoryEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -120,7 +120,7 @@ namespace Product.Infrastructure.Migrations
                     b.ToTable("Category", (string)null);
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.CategoryTranslationEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.CategoryTranslationEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -158,7 +158,7 @@ namespace Product.Infrastructure.Migrations
                     b.ToTable("CategoryTranslation", (string)null);
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.ProductBaseEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.ProductBaseEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -177,12 +177,6 @@ namespace Product.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(2);
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnOrder(101);
-
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
@@ -190,7 +184,7 @@ namespace Product.Infrastructure.Migrations
                     b.ToTable("ProductBase", (string)null);
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.ProductEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.ProductEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -230,7 +224,7 @@ namespace Product.Infrastructure.Migrations
                     b.ToTable("Product", (string)null);
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.ProductParameterEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.ProductParameterEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -262,7 +256,7 @@ namespace Product.Infrastructure.Migrations
                     b.ToTable("ProductParameter", (string)null);
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.ProductParameterTranslationEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.ProductParameterTranslationEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -300,7 +294,7 @@ namespace Product.Infrastructure.Migrations
                     b.ToTable("ProductParameterTranslation", (string)null);
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.ProductParameterValueEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.ProductParameterValueEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -338,7 +332,7 @@ namespace Product.Infrastructure.Migrations
                     b.ToTable("ProductParameterValue", (string)null);
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.ProductPhotoEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.ProductPhotoEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -377,7 +371,7 @@ namespace Product.Infrastructure.Migrations
                     b.ToTable("ProductPhoto", (string)null);
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.ProductTranslationEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.ProductTranslationEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -415,7 +409,7 @@ namespace Product.Infrastructure.Migrations
                     b.ToTable("ProductTranslation", (string)null);
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.PurchaseListEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.PurchaseListEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -447,7 +441,7 @@ namespace Product.Infrastructure.Migrations
                     b.ToTable("PurchaseList", (string)null);
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.PurchaseListItemEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.PurchaseListItemEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -479,15 +473,15 @@ namespace Product.Infrastructure.Migrations
                     b.ToTable("PurchaseListItem", (string)null);
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.BasketItemEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.BasketItemEntity", b =>
                 {
-                    b.HasOne("Product.Domain.Entities.BasketEntity", "Basket")
+                    b.HasOne("Shop.Domain.Entities.BasketEntity", "Basket")
                         .WithMany("BasketItems")
                         .HasForeignKey("BasketId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Product.Domain.Entities.ProductEntity", "Product")
+                    b.HasOne("Shop.Domain.Entities.ProductEntity", "Product")
                         .WithMany("BasketItems")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -498,9 +492,9 @@ namespace Product.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.CategoryEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.CategoryEntity", b =>
                 {
-                    b.HasOne("Product.Domain.Entities.CategoryEntity", "ParentCategory")
+                    b.HasOne("Shop.Domain.Entities.CategoryEntity", "ParentCategory")
                         .WithMany("SubCategories")
                         .HasForeignKey("ParentCategoryId")
                         .OnDelete(DeleteBehavior.SetNull);
@@ -508,9 +502,9 @@ namespace Product.Infrastructure.Migrations
                     b.Navigation("ParentCategory");
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.CategoryTranslationEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.CategoryTranslationEntity", b =>
                 {
-                    b.HasOne("Product.Domain.Entities.CategoryEntity", "Category")
+                    b.HasOne("Shop.Domain.Entities.CategoryEntity", "Category")
                         .WithMany("Translations")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -519,9 +513,9 @@ namespace Product.Infrastructure.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.ProductBaseEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.ProductBaseEntity", b =>
                 {
-                    b.HasOne("Product.Domain.Entities.CategoryEntity", "Category")
+                    b.HasOne("Shop.Domain.Entities.CategoryEntity", "Category")
                         .WithMany("ProductBases")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -530,9 +524,9 @@ namespace Product.Infrastructure.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.ProductEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.ProductEntity", b =>
                 {
-                    b.HasOne("Product.Domain.Entities.ProductBaseEntity", "ProductBase")
+                    b.HasOne("Shop.Domain.Entities.ProductBaseEntity", "ProductBase")
                         .WithMany("Products")
                         .HasForeignKey("ProductBaseId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -541,9 +535,9 @@ namespace Product.Infrastructure.Migrations
                     b.Navigation("ProductBase");
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.ProductParameterEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.ProductParameterEntity", b =>
                 {
-                    b.HasOne("Product.Domain.Entities.ProductBaseEntity", "ProductBase")
+                    b.HasOne("Shop.Domain.Entities.ProductBaseEntity", "ProductBase")
                         .WithMany("ProductParameters")
                         .HasForeignKey("ProductBaseId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -552,9 +546,9 @@ namespace Product.Infrastructure.Migrations
                     b.Navigation("ProductBase");
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.ProductParameterTranslationEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.ProductParameterTranslationEntity", b =>
                 {
-                    b.HasOne("Product.Domain.Entities.ProductParameterEntity", "ProductParameter")
+                    b.HasOne("Shop.Domain.Entities.ProductParameterEntity", "ProductParameter")
                         .WithMany("Translations")
                         .HasForeignKey("ProductParameterId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -563,15 +557,15 @@ namespace Product.Infrastructure.Migrations
                     b.Navigation("ProductParameter");
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.ProductParameterValueEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.ProductParameterValueEntity", b =>
                 {
-                    b.HasOne("Product.Domain.Entities.ProductEntity", "Product")
+                    b.HasOne("Shop.Domain.Entities.ProductEntity", "Product")
                         .WithMany("ProductParameterValues")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Product.Domain.Entities.ProductParameterEntity", "ProductParameter")
+                    b.HasOne("Shop.Domain.Entities.ProductParameterEntity", "ProductParameter")
                         .WithMany()
                         .HasForeignKey("ProductParameterId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -582,9 +576,9 @@ namespace Product.Infrastructure.Migrations
                     b.Navigation("ProductParameter");
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.ProductPhotoEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.ProductPhotoEntity", b =>
                 {
-                    b.HasOne("Product.Domain.Entities.ProductEntity", "Product")
+                    b.HasOne("Shop.Domain.Entities.ProductEntity", "Product")
                         .WithMany("ProductPhotos")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -593,9 +587,9 @@ namespace Product.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.ProductTranslationEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.ProductTranslationEntity", b =>
                 {
-                    b.HasOne("Product.Domain.Entities.ProductEntity", "Product")
+                    b.HasOne("Shop.Domain.Entities.ProductEntity", "Product")
                         .WithMany("Translations")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -604,15 +598,15 @@ namespace Product.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.PurchaseListItemEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.PurchaseListItemEntity", b =>
                 {
-                    b.HasOne("Product.Domain.Entities.ProductEntity", "Product")
+                    b.HasOne("Shop.Domain.Entities.ProductEntity", "Product")
                         .WithMany("PurchaseListItems")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Product.Domain.Entities.PurchaseListEntity", "PurchaseList")
+                    b.HasOne("Shop.Domain.Entities.PurchaseListEntity", "PurchaseList")
                         .WithMany("PurchaseListItems")
                         .HasForeignKey("PurchaseListId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -623,12 +617,12 @@ namespace Product.Infrastructure.Migrations
                     b.Navigation("PurchaseList");
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.BasketEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.BasketEntity", b =>
                 {
                     b.Navigation("BasketItems");
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.CategoryEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.CategoryEntity", b =>
                 {
                     b.Navigation("ProductBases");
 
@@ -637,14 +631,14 @@ namespace Product.Infrastructure.Migrations
                     b.Navigation("Translations");
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.ProductBaseEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.ProductBaseEntity", b =>
                 {
                     b.Navigation("ProductParameters");
 
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.ProductEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.ProductEntity", b =>
                 {
                     b.Navigation("BasketItems");
 
@@ -657,12 +651,12 @@ namespace Product.Infrastructure.Migrations
                     b.Navigation("Translations");
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.ProductParameterEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.ProductParameterEntity", b =>
                 {
                     b.Navigation("Translations");
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.PurchaseListEntity", b =>
+            modelBuilder.Entity("Shop.Domain.Entities.PurchaseListEntity", b =>
                 {
                     b.Navigation("PurchaseListItems");
                 });

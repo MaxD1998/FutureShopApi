@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Shared.Infrastructure.Settings;
+﻿namespace Shared.Infrastructure.Settings;
 
 public class PostgreSQLSettings
 {
     public string AuthorizationDbCs { get; init; }
 
     public string ProductDbCs { get; init; }
+
+    public string ShopDbCs { get; init; }
+
+    public string WarehouseDbCs { get; init; }
 }

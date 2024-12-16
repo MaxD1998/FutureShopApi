@@ -12,7 +12,7 @@ public class ShopContext : BasePostgreSqlContext
     {
     }
 
-    protected override string ConnectionString => _connectionSettings.PostgreSQL.ProductDbCs;
+    protected override string ConnectionString => _connectionSettings.PostgreSQL.ShopDbCs;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -8,8 +8,6 @@ public class ProductBaseEntity : BaseEntity, IUpdate<ProductBaseEntity>
 {
     public Guid CategoryId { get; set; }
 
-    public string Name { get; set; }
-
     #region Related Data
 
     public CategoryEntity Category { get; set; }
@@ -23,7 +21,6 @@ public class ProductBaseEntity : BaseEntity, IUpdate<ProductBaseEntity>
     public void Update(ProductBaseEntity entity)
     {
         CategoryId = entity.CategoryId;
-        Name = entity.Name;
         ProductParameters.UpdateEntities(entity.ProductParameters);
     }
 }

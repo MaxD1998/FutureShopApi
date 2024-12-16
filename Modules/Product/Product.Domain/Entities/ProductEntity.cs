@@ -15,15 +15,11 @@ public class ProductEntity : BaseEntity
 
     #region Related Data
 
-    public ICollection<BasketItemEntity> BasketItems { get; set; } = [];
-
     public ProductBaseEntity ProductBase { get; set; }
 
     public ICollection<ProductParameterValueEntity> ProductParameterValues { get; set; } = [];
 
     public ICollection<ProductPhotoEntity> ProductPhotos { get; set; } = [];
-
-    public ICollection<PurchaseListItemEntity> PurchaseListItems { get; set; } = [];
 
     public ICollection<ProductTranslationEntity> Translations { get; set; } = [];
 

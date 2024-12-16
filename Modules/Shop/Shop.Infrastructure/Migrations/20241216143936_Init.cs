@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Product.Infrastructure.Migrations
+namespace Shop.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class Init : Migration
@@ -91,8 +91,7 @@ namespace Product.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    CategoryId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false)
+                    CategoryId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
