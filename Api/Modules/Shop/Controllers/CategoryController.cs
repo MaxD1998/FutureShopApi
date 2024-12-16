@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Api.Bases;
 using Shared.Core.Factories.FluentValidator;
 using Shop.Core.Cqrs.Category.Queries;
 using Shop.Core.Dtos;
@@ -8,7 +9,7 @@ using Shop.Core.Dtos.Category;
 
 namespace Api.Modules.Shop.Controllers;
 
-public class CategoryController : ShopModuleBaseController
+public class CategoryController : BaseController
 {
     public CategoryController(IFluentValidatorFactory fluentValidatorFactory, IMediator mediator) : base(fluentValidatorFactory, mediator)
     {

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Api.Bases;
 using Shared.Core.Factories.FluentValidator;
 using Shop.Core.Cqrs.Basket.Commands;
 using Shop.Core.Cqrs.Basket.Queries;
@@ -9,7 +10,7 @@ using Shop.Core.Services;
 
 namespace Api.Modules.Shop.Controllers;
 
-public class BasketController : ShopModuleBaseController
+public class BasketController : BaseController
 {
     private readonly IBasketSerivce _basketSerivce;
 

@@ -4,6 +4,7 @@ using Product.Core.Cqrs.Product.Commands;
 using Product.Core.Cqrs.Product.Queries;
 using Product.Core.Dtos.Product;
 using Shared.Api.Attributes;
+using Shared.Api.Bases;
 using Shared.Core.Dtos;
 using Shared.Core.Factories.FluentValidator;
 using Shared.Domain.Enums;
@@ -11,7 +12,7 @@ using Shared.Domain.Enums;
 namespace Api.Modules.Product.Controllers;
 
 [Role(UserType.Manager)]
-public class ProductController : ProductModuleBaseController
+public class ProductController : BaseController
 {
     public ProductController(IFluentValidatorFactory fluentValidatorFactory, IMediator mediator) : base(fluentValidatorFactory, mediator)
     {

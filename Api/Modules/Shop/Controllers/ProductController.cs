@@ -1,12 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Api.Bases;
 using Shared.Core.Factories.FluentValidator;
 using Shop.Core.Cqrs.Product.Queries;
 using Shop.Core.Dtos.Product;
 
 namespace Api.Modules.Shop.Controllers;
 
-public class ProductController : ShopModuleBaseController
+public class ProductController : BaseController
 {
     public ProductController(IFluentValidatorFactory fluentValidatorFactory, IMediator mediator) : base(fluentValidatorFactory, mediator)
     {

@@ -5,13 +5,14 @@ using Product.Core.Cqrs.ProductPhoto.Commands;
 using Product.Core.Cqrs.ProductPhoto.Queries;
 using Product.Core.Dtos.ProductPhoto;
 using Shared.Api.Attributes;
+using Shared.Api.Bases;
 using Shared.Core.Factories.FluentValidator;
 using Shared.Domain.Enums;
 
 namespace Api.Modules.Product.Controllers;
 
 [Role(UserType.Manager)]
-public class ProductPhotoController : ProductModuleBaseController
+public class ProductPhotoController : BaseController
 {
     public ProductPhotoController(IFluentValidatorFactory fluentValidatorFactory, IMediator mediator) : base(fluentValidatorFactory, mediator)
     {

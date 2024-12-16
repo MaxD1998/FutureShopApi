@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Api.Bases;
 using Shared.Core.Factories.FluentValidator;
 using Shop.Core.Cqrs.PurchaseList.Commands;
 using Shop.Core.Cqrs.PurchaseList.Queries;
@@ -10,7 +11,7 @@ using Shop.Core.Services;
 
 namespace Api.Modules.Shop.Controllers;
 
-public class PurchaseListController : ShopModuleBaseController
+public class PurchaseListController : BaseController
 {
     private readonly IPurchaseListService _purchaseListService;
 
