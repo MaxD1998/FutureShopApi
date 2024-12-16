@@ -92,7 +92,7 @@ public class AuthService : BaseService, IAuthService
         var userRefreshToken = _cookieService.GetCookieValue(CookieNameConst.RefreshToken).Result;
 
         if (string.IsNullOrEmpty(userRefreshToken))
-            return null;
+            return Success<AuthorizeDto>(null);
 
         if (!Guid.TryParse(userRefreshToken, out var token))
             return Error<AuthorizeDto>(HttpStatusCode.Forbidden, CommonExceptionMessage.C003WrongRefreshTokenFormat);
