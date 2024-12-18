@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
+using Shared.Api.Extensions;
 using Shared.Api.Middlewares;
 using Shop.Core;
+using Shop.Core.EventHandlers;
 using Shop.Core.Services;
 using Shop.Infrastructure;
 
@@ -13,6 +15,11 @@ public static class ShopRegister
         services.ConfigureServices();
         services.RegisterServices();
         services.RegisterMiddlewares();
+
+        services.AddRabbitReceiver(x =>
+        {
+            x.AddEventHandler<TestEventHandler>();
+        });
     }
 
     private static void ConfigureServices(this IServiceCollection services)

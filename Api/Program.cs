@@ -7,9 +7,9 @@ using Authorization.Inrfrastructure;
 using Product.Infrastructure;
 using Quartz.AspNetCore;
 using Shared.Api.Middlewares;
+using Shared.Infrastructure;
 using Shop.Infrastructure;
 using System.Reflection;
-using Warehouse.Infrastructure;
 
 namespace Api;
 
@@ -28,6 +28,7 @@ public class Program
         services.AddQuartzServer(config => config.WaitForJobsToComplete = true);
 
         services.AddScoped<ErrorHandlingMiddleware>();
+        services.AddSingleton<RabbitMqContext>();
 
         services.RegisterSharedModule();
         services.RegisterAuthModule();
