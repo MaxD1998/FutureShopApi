@@ -1,19 +1,21 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Shared.Core.Interfaces;
-using Shared.Infrastructure;
+using Shared.Infrastructure.RabbitMq;
+using Shared.Infrastructure.Settings;
 
 namespace Shared.Api.RabbitMq;
 
 public class RabbitMqEventHandler : BackgroundService
 {
-    private readonly RabbitMqContext _rabbitMqContext;
+    private readonly RabbitMqReceiverClient _receiver;
     private readonly IServiceProvider _serviceProvider;
 
-    public RabbitMqEventHandler(IServiceProvider serviceProvider, RabbitMqContext rabbitMqContext)
+    public RabbitMqEventHandler(IServiceProvider serviceProvider, IOptions<ConnectionSettings> connectionSettings)
     {
         _serviceProvider = serviceProvider;
-        _rabbitMqContext = rabbitMqContext;
+        _receiver = new RabbitMqReceiverClient(connectionSettings.Value.RabbitMQ.HostName);
     }
 
     public delegate void MessageEventHandler();
@@ -37,7 +39,7 @@ public class RabbitMqEventHandler : BackgroundService
                 .ToArray();
 
             var eventHandler = constructor.Invoke(parameterInstances) as IMessageEventHandler;
-            await _rabbitMqContext.Receiver.RecieveMessageAsync(eventHandler.QueueName, eventHandler.ExecuteAsync, stoppingToken);
+            await _receiver.RecieveMessageAsync(eventHandler.QueueName, eventHandler.ExecuteAsync, stoppingToken);
         }
     }
 }

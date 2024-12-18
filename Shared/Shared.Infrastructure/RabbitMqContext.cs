@@ -1,20 +1,37 @@
 ﻿using Microsoft.Extensions.Options;
-using Shared.Infrastructure.RabbitMq;
+using RabbitMQ.Client;
 using Shared.Infrastructure.Settings;
+using System.Text;
+using System.Text.Json;
 
 namespace Shared.Infrastructure;
 
 public class RabbitMqContext
 {
+    private readonly string _hostName;
+
     public RabbitMqContext(IOptions<ConnectionSettings> connectionSettings)
     {
-        var hostName = connectionSettings.Value.RabbitMQ.HostName;
-
-        Receiver = new RabbitMqReceiverClient(hostName);
-        Sender = new RabbitMqSenderClient(hostName);
+        _hostName = connectionSettings.Value.RabbitMQ.HostName;
     }
 
-    public RabbitMqReceiverClient Receiver { get; init; }
+    public async Task SendMessageAsync(string queueName, object body)
+    {
+        var factory = new ConnectionFactory()
+        {
+            HostName = _hostName,
+        };
 
-    public RabbitMqSenderClient Sender { get; init; }
+        using (var connection = await factory.CreateConnectionAsync())
+        {
+            using (var channel = await connection.CreateChannelAsync())
+            {
+                await channel.QueueDeclareAsync(queueName, true, false, false);
+
+                var bodyString = JsonSerializer.Serialize(body);
+
+                await channel.BasicPublishAsync(string.Empty, queueName, Encoding.UTF8.GetBytes(bodyString));
+            }
+        }
+    }
 }

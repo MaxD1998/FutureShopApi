@@ -22,7 +22,7 @@ public class RabbitMqReceiverClient
 
         var connection = await factory.CreateConnectionAsync();
         var channel = await connection.CreateChannelAsync();
-        await channel.QueueDeclareAsync(queueName, true, false, false);
+        await channel.QueueDeclareAsync(queueName, true, false, true);
 
         var consumer = new AsyncEventingBasicConsumer(channel);
 

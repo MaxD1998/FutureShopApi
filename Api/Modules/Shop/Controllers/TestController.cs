@@ -18,6 +18,6 @@ public class TestController : BaseController
     [HttpPost]
     public void Test()
     {
-        _ = _rabbitMq.Sender.SendMessageAsync("Test", "Murzyb");
+        _ = _rabbitMq.SendMessageAsync("Test", "Murzyb");
     }
 }
