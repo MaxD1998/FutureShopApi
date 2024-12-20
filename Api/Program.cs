@@ -1,10 +1,14 @@
 using Api.Extensions;
+using Api.Modules;
 using Api.Modules.Authorization;
 using Api.Modules.Product;
+using Api.Modules.Shop;
 using Authorization.Inrfrastructure;
 using Product.Infrastructure;
 using Quartz.AspNetCore;
 using Shared.Api.Middlewares;
+using Shared.Infrastructure;
+using Shop.Infrastructure;
 using System.Reflection;
 
 namespace Api;
@@ -24,9 +28,13 @@ public class Program
         services.AddQuartzServer(config => config.WaitForJobsToComplete = true);
 
         services.AddScoped<ErrorHandlingMiddleware>();
+        services.AddSingleton<RabbitMqContext>();
 
+        services.RegisterSharedModule();
         services.RegisterAuthModule();
         services.RegisterProductModule();
+        services.RegisterShopModule();
+        //services.RegisterWarehouseModule();
 
         services.AddControllers();
         services.AddHttpContextAccessor();
@@ -37,6 +45,7 @@ public class Program
             var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
             var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
             config.IncludeXmlComments(xmlPath);
+            config.CustomSchemaIds(type => type.ToString());
         });
 
         var app = builder.Build();
@@ -54,6 +63,8 @@ public class Program
         app.UseMiddleware<ErrorHandlingMiddleware>();
         app.UseMiddleware<PostgreSqlDbTransactionMiddleware<AuthContext>>();
         app.UseMiddleware<PostgreSqlDbTransactionMiddleware<ProductPostgreSqlContext>>();
+        app.UseMiddleware<PostgreSqlDbTransactionMiddleware<ShopContext>>();
+        //app.UseMiddleware<PostgreSqlDbTransactionMiddleware<WarehouseContext>>();
         app.UseMiddleware<MongoDbTransactionMiddleware<ProductMongoDbContext>>();
 
         app.UseHttpsRedirection();

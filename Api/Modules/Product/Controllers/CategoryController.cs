@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Product.Core.Cqrs.Category.Commands;
 using Product.Core.Cqrs.Category.Queries;
@@ -35,12 +34,6 @@ public class CategoryController : BaseController
     public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
         => await ApiResponseAsync(new GetCategoryFormDtoByIdQuery(id), cancellationToken);
 
-    [HttpGet("IdName/{id:guid}")]
-    [ProducesResponseType(typeof(IdNameDto), StatusCodes.Status200OK)]
-    [AllowAnonymous]
-    public async Task<IActionResult> GetIdNameByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(new GetCategoryIdNameDtoByIdQuery(id), cancellationToken);
-
     [HttpGet("AvailableToBeChild")]
     [ProducesResponseType(typeof(IEnumerable<IdNameDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetListAvailableToBeChildAsync([FromQuery] Guid? parentId, [FromQuery] IEnumerable<Guid> childIds, CancellationToken cancellationToken = default)
@@ -60,18 +53,6 @@ public class CategoryController : BaseController
     [ProducesResponseType(typeof(IEnumerable<IdNameDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetListAvailableToBeParentAsync([FromRoute] Guid id, [FromQuery] IEnumerable<Guid> childIds, CancellationToken cancellationToken = default)
         => await ApiResponseAsync(new GetListCategoryIdNameDtoAvailableToBeParentCategoryQuery(id, childIds), cancellationToken);
-
-    [HttpGet("CategoryParentId")]
-    [ProducesResponseType(typeof(IEnumerable<CategoryListDto>), StatusCodes.Status200OK)]
-    [AllowAnonymous]
-    public async Task<IActionResult> GetListByCategoryParentIdAsync(CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(new GetListCategoryListDtoByCategoryParentQuery(), cancellationToken);
-
-    [HttpGet("CategoryParentId/{categoryParentId:guid}")]
-    [ProducesResponseType(typeof(IEnumerable<CategoryListDto>), StatusCodes.Status200OK)]
-    [AllowAnonymous]
-    public async Task<IActionResult> GetListByCategoryParentIdAsync([FromRoute] Guid categoryParentId, CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(new GetListCategoryListDtoByCategoryParentQuery(categoryParentId), cancellationToken);
 
     [HttpGet("All")]
     [ProducesResponseType(typeof(IEnumerable<IdNameDto>), StatusCodes.Status200OK)]

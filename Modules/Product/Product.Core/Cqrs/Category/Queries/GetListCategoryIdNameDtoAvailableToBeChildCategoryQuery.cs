@@ -1,11 +1,11 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Product.Core.Dtos;
-using Product.Core.Services;
 using Product.Domain.Entities;
 using Product.Infrastructure;
 using Shared.Core.Bases;
 using Shared.Core.Dtos;
+using Shared.Core.Services;
 
 namespace Product.Core.Cqrs.Category.Queries;
 public record GetListCategoryIdNameDtoAvailableToBeChildCategoryQuery(Guid? Id, Guid? ParentId, IEnumerable<Guid> ChildIds) : IRequest<ResultDto<IEnumerable<IdNameDto>>>;

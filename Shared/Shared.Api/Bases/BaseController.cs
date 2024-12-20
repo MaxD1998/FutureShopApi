@@ -12,7 +12,7 @@ namespace Shared.Api.Bases;
 
 [ApiController]
 [Route("[controller]")]
-public class BaseController : ControllerBase
+public abstract class BaseController : ControllerBase
 {
     private readonly IFluentValidatorFactory _fluentValidatorFactory;
 

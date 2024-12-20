@@ -5,8 +5,11 @@ using Product.Core.Dtos.Category;
 using Product.Domain.Entities;
 using Product.Infrastructure;
 using Shared.Core.Bases;
+using Shared.Core.Constans;
 using Shared.Core.Dtos;
+using Shared.Core.Enums;
 using Shared.Core.Errors;
+using Shared.Infrastructure;
 using System.Net;
 
 namespace Product.Core.Cqrs.Category.Commands;
@@ -16,11 +19,13 @@ internal class UpdateCategoryFormDtoCommandHandler : BaseService, IRequestHandle
 {
     private readonly ProductPostgreSqlContext _context;
     private readonly IMediator _mediator;
+    private readonly RabbitMqContext _rabbitMqContext;
 
-    public UpdateCategoryFormDtoCommandHandler(ProductPostgreSqlContext context, IMediator mediator)
+    public UpdateCategoryFormDtoCommandHandler(ProductPostgreSqlContext context, IMediator mediator, RabbitMqContext rabbitMqContext)
     {
         _context = context;
         _mediator = mediator;
+        _rabbitMqContext = rabbitMqContext;
     }
 
     public async Task<ResultDto<CategoryFormDto>> Handle(UpdateCategoryFormDtoCommand request, CancellationToken cancellationToken)
@@ -36,6 +41,7 @@ internal class UpdateCategoryFormDtoCommandHandler : BaseService, IRequestHandle
         entity.Update(request.Dto.ToEntity(_context));
 
         await _context.SaveChangesAsync(cancellationToken);
+        await _rabbitMqContext.SendMessageAsync(RabbitMqExchangeConst.ProductModuleCategory, EventMessageDto.Create(entity, MessageType.AddOrUpdate));
 
         return await _mediator.Send(new GetCategoryFormDtoByIdQuery(request.Id));
     }
