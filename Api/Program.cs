@@ -3,6 +3,7 @@ using Api.Modules;
 using Api.Modules.Authorization;
 using Api.Modules.Product;
 using Api.Modules.Shop;
+using Api.Modules.Warehouse;
 using Authorization.Inrfrastructure;
 using Product.Infrastructure;
 using Quartz.AspNetCore;
@@ -10,6 +11,7 @@ using Shared.Api.Middlewares;
 using Shared.Infrastructure;
 using Shop.Infrastructure;
 using System.Reflection;
+using Warehouse.Infrastructure;
 
 namespace Api;
 
@@ -34,7 +36,7 @@ public class Program
         services.RegisterAuthModule();
         services.RegisterProductModule();
         services.RegisterShopModule();
-        //services.RegisterWarehouseModule();
+        services.RegisterWarehouseModule();
 
         services.AddControllers();
         services.AddHttpContextAccessor();
@@ -64,7 +66,7 @@ public class Program
         app.UseMiddleware<PostgreSqlDbTransactionMiddleware<AuthContext>>();
         app.UseMiddleware<PostgreSqlDbTransactionMiddleware<ProductPostgreSqlContext>>();
         app.UseMiddleware<PostgreSqlDbTransactionMiddleware<ShopContext>>();
-        //app.UseMiddleware<PostgreSqlDbTransactionMiddleware<WarehouseContext>>();
+        app.UseMiddleware<PostgreSqlDbTransactionMiddleware<WarehouseContext>>();
         app.UseMiddleware<MongoDbTransactionMiddleware<ProductMongoDbContext>>();
 
         app.UseHttpsRedirection();
