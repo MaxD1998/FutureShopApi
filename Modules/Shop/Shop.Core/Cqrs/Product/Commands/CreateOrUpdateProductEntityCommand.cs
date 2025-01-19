@@ -28,7 +28,7 @@ internal class CreateOrUpdateProductEntityCommandHandler : BaseService, IRequest
                 .FirstOrDefaultAsync(x => x.Id == request.Entity.Id, cancellationToken);
 
             if (entity is null)
-                await _context.Set<ProductEntity>().AddAsync(entity, cancellationToken);
+                await _context.Set<ProductEntity>().AddAsync(request.Entity, cancellationToken);
             else
                 entity.Update(request.Entity);
 
