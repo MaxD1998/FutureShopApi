@@ -3,6 +3,7 @@ using RabbitMQ.Client;
 using Shared.Infrastructure.Settings;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Shared.Infrastructure;
 
@@ -28,7 +29,13 @@ public class RabbitMqContext
             {
                 await channel.ExchangeDeclareAsync(exchange, "fanout", true, true);
 
-                var bodyString = JsonSerializer.Serialize(body);
+                var options = new JsonSerializerOptions
+                {
+                    ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                    WriteIndented = true
+                };
+
+                var bodyString = JsonSerializer.Serialize(body, options);
 
                 await channel.BasicPublishAsync(exchange, string.Empty, Encoding.UTF8.GetBytes(bodyString));
             }
