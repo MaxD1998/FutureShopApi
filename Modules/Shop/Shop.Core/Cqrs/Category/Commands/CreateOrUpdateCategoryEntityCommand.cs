@@ -28,7 +28,7 @@ internal class CreateOrUpdateCategoryEntityCommandHandler : BaseService, IReques
         entity.Update(request.Entity);
 
         if (entity.Id == Guid.Empty)
-            await _context.Set<CategoryEntity>().AddAsync(request.Entity, cancellationToken);
+            await _context.Set<CategoryEntity>().AddAsync(entity, cancellationToken);
 
         await _context.SaveChangesAsync(cancellationToken);
 
