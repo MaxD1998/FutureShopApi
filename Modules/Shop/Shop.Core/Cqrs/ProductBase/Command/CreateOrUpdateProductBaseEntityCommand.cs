@@ -22,13 +22,13 @@ internal class CreateOrUpdateProductBaseEntityCommandHandler : BaseService, IReq
     {
         var entity = await _context.Set<ProductBaseEntity>()
             .Include(x => x.ProductParameters)
+                .ThenInclude(x => x.Translations)
             .FirstOrDefaultAsync(x => x.Id == request.Entity.Id, cancellationToken);
 
-        entity ??= new ProductBaseEntity();
-        entity.Update(request.Entity);
-
-        if (entity.Id == Guid.Empty)
-            await _context.Set<ProductBaseEntity>().AddAsync(entity, cancellationToken);
+        if (entity is null)
+            await _context.Set<ProductBaseEntity>().AddAsync(request.Entity, cancellationToken);
+        else
+            entity.Update(request.Entity);
 
         await _context.SaveChangesAsync(cancellationToken);
 

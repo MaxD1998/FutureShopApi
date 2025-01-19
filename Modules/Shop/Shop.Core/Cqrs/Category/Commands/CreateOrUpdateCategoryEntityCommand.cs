@@ -24,11 +24,10 @@ internal class CreateOrUpdateCategoryEntityCommandHandler : BaseService, IReques
             .Include(x => x.Translations)
             .FirstOrDefaultAsync(x => x.Id == request.Entity.Id, cancellationToken);
 
-        entity ??= new CategoryEntity();
-        entity.Update(request.Entity);
-
-        if (entity.Id == Guid.Empty)
+        if (entity is null)
             await _context.Set<CategoryEntity>().AddAsync(entity, cancellationToken);
+        else
+            entity.Update(request.Entity);
 
         await _context.SaveChangesAsync(cancellationToken);
 

@@ -19,20 +19,26 @@ internal class CreateOrUpdateProductEntityCommandHandler : BaseService, IRequest
 
     public async Task<ResultDto> Handle(CreateOrUpdateProductEntityCommand request, CancellationToken cancellationToken)
     {
-        var entity = await _context.Set<ProductEntity>()
-            .Include(x => x.ProductParameterValues)
-            .Include(x => x.ProductPhotos)
-            .Include(x => x.Translations)
-            .FirstOrDefaultAsync(x => x.Id == request.Entity.Id, cancellationToken);
+        try
+        {
+            var entity = await _context.Set<ProductEntity>()
+                .Include(x => x.ProductParameterValues)
+                .Include(x => x.ProductPhotos)
+                .Include(x => x.Translations)
+                .FirstOrDefaultAsync(x => x.Id == request.Entity.Id, cancellationToken);
 
-        entity ??= new ProductEntity();
-        entity.Update(request.Entity);
+            if (entity is null)
+                await _context.Set<ProductEntity>().AddAsync(entity, cancellationToken);
+            else
+                entity.Update(request.Entity);
 
-        if (entity.Id == Guid.Empty)
-            await _context.Set<ProductEntity>().AddAsync(entity, cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
 
-        await _context.SaveChangesAsync(cancellationToken);
-
-        return Success();
+            return Success();
+        }
+        catch (Exception e)
+        {
+            throw;
+        }
     }
 }
