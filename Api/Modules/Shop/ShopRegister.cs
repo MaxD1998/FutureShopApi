@@ -2,7 +2,7 @@
 using Shared.Api.Extensions;
 using Shared.Api.Middlewares;
 using Shop.Core;
-using Shop.Core.EventHandlers.Category;
+using Shop.Core.EventHandlers;
 using Shop.Core.Services;
 using Shop.Infrastructure;
 
@@ -19,6 +19,8 @@ public static class ShopRegister
         services.AddRabbitReceiver(x =>
         {
             x.AddEventHandler<CategoryEventHandler>();
+            x.AddEventHandler<ProductBaseEventHandler>();
+            x.AddEventHandler<ProductEventHandler>();
         });
     }
 

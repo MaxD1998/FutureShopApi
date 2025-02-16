@@ -14,6 +14,8 @@ public class ProductParameterEntity : BaseEntity, IUpdate<ProductParameterEntity
 
     public ProductBaseEntity ProductBase { get; set; }
 
+    public ICollection<ProductParameterValueEntity> ProductParameterValues { get; set; } = [];
+
     public ICollection<ProductParameterTranslationEntity> Translations { get; set; } = [];
 
     #endregion Related Data

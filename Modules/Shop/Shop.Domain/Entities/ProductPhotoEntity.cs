@@ -3,7 +3,7 @@ using Shared.Domain.Interfaces;
 
 namespace Shop.Domain.Entities;
 
-public class ProductPhotoEntity : BaseEntity, IUpdate<ProductPhotoEntity>
+public class ProductPhotoEntity : BaseExternalEntity, IUpdateEvent<ProductPhotoEntity>
 {
     public string FileId { get; set; }
 
@@ -17,7 +17,7 @@ public class ProductPhotoEntity : BaseEntity, IUpdate<ProductPhotoEntity>
 
     #endregion Related Data
 
-    public void Update(ProductPhotoEntity entity)
+    public void UpdateEvent(ProductPhotoEntity entity)
     {
         Position = entity.Position;
     }

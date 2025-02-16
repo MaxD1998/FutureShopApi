@@ -6,7 +6,7 @@ using Shop.Domain.Entities;
 
 namespace Shop.Infrastructure.Configurations;
 
-public class CategoryConfig : BaseConfig<CategoryEntity>
+public class CategoryConfig : BaseExternalConfig<CategoryEntity>
 {
     protected override void ConfigureEntity(EntityTypeBuilder<CategoryEntity> builder)
     {

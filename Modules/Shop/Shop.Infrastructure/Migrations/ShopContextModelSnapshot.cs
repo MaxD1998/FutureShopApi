@@ -95,11 +95,15 @@ namespace Shop.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<Guid>("ExternalId")
+                        .HasColumnType("uuid")
                         .HasColumnOrder(1);
 
                     b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnOrder(2);
+                        .HasColumnOrder(3);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -168,11 +172,21 @@ namespace Shop.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<Guid>("ExternalId")
+                        .HasColumnType("uuid")
                         .HasColumnOrder(1);
 
                     b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnOrder(2);
+                        .HasColumnOrder(3);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnOrder(101);
 
                     b.HasKey("Id");
 
@@ -190,15 +204,15 @@ namespace Shop.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnOrder(1);
+                        .HasColumnOrder(2);
 
-                    b.Property<string>("Description")
-                        .HasColumnType("text")
-                        .HasColumnOrder(103);
+                    b.Property<Guid>("ExternalId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(1);
 
                     b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnOrder(2);
+                        .HasColumnOrder(3);
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -338,6 +352,10 @@ namespace Shop.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<Guid>("ExternalId")
+                        .HasColumnType("uuid")
                         .HasColumnOrder(1);
 
                     b.Property<string>("FileId")
@@ -347,7 +365,7 @@ namespace Shop.Infrastructure.Migrations
 
                     b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("timestamp with time zone")
-                        .HasColumnOrder(2);
+                        .HasColumnOrder(3);
 
                     b.Property<int>("Position")
                         .HasColumnType("integer")
@@ -563,7 +581,7 @@ namespace Shop.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("Shop.Domain.Entities.ProductParameterEntity", "ProductParameter")
-                        .WithMany()
+                        .WithMany("ProductParameterValues")
                         .HasForeignKey("ProductParameterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -650,6 +668,8 @@ namespace Shop.Infrastructure.Migrations
 
             modelBuilder.Entity("Shop.Domain.Entities.ProductParameterEntity", b =>
                 {
+                    b.Navigation("ProductParameterValues");
+
                     b.Navigation("Translations");
                 });
 

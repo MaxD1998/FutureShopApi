@@ -23,9 +23,5 @@ public class CategoryConfig : BaseConfig<CategoryEntity>
         builder.HasMany(x => x.ProductBases)
             .WithOne(x => x.Category)
             .HasForeignKey(x => x.CategoryId);
-
-        builder.HasMany(x => x.Translations)
-            .WithOne(x => x.Category)
-            .HasForeignKey(x => x.CategoryId);
     }
 }

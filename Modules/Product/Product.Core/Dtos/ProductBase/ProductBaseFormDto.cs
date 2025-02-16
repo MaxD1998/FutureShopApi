@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using Product.Core.Dtos.ProductParameter;
 using Product.Domain.Entities;
 using Shared.Core.Errors;
 using Shared.Core.Extensions;
@@ -13,20 +12,16 @@ public class ProductBaseFormDto
 
     public string Name { get; set; }
 
-    public List<ProductParameterFormDto> ProductParameters { get; set; }
-
     public static Expression<Func<ProductBaseEntity, ProductBaseFormDto>> Map() => entity => new()
     {
         CategoryId = entity.CategoryId,
         Name = entity.Name,
-        ProductParameters = entity.ProductParameters.AsQueryable().Select(ProductParameterFormDto.Map()).ToList(),
     };
 
     public ProductBaseEntity ToEntity() => new()
     {
         CategoryId = CategoryId,
         Name = Name,
-        ProductParameters = ProductParameters.Select(x => x.ToEntity()).ToList(),
     };
 }
 

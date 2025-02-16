@@ -6,21 +6,18 @@ public enum UserType
 
     LocalAdmin = 1,
 
-    Manager = 2,
+    User = 2,
 
-    Employee = 3,
-
-    Client = 4
+    Client = 3
 }
 
 public static class UserTypeExtension
 {
     private static Dictionary<UserType, IEnumerable<UserType>> UserPrivilegesDictionary => new()
     {
-        { UserType.SuperAdmin, new[] { UserType.SuperAdmin, UserType.LocalAdmin, UserType.Manager, UserType.Employee, UserType.Client } },
-        { UserType.LocalAdmin, new[] { UserType.LocalAdmin, UserType.Manager, UserType.Employee, UserType.Client } },
-        { UserType.Manager, new[] { UserType.Manager, UserType.Employee, UserType.Client} },
-        { UserType.Employee, new[] { UserType.Employee, UserType.Client} },
+        { UserType.SuperAdmin, new[] { UserType.SuperAdmin, UserType.LocalAdmin, UserType.User,  UserType.Client } },
+        { UserType.LocalAdmin, new[] { UserType.LocalAdmin, UserType.User,  UserType.Client } },
+        { UserType.User, new[] { UserType.User, UserType.Client} },
         { UserType.Client, new[] { UserType.Client} }
     };
 

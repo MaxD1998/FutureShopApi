@@ -5,7 +5,7 @@ using Shop.Domain.Entities;
 
 namespace Shop.Infrastructure.Configurations;
 
-public class ProductPhotoConfig : BaseConfig<ProductPhotoEntity>
+public class ProductPhotoConfig : BaseExternalConfig<ProductPhotoEntity>
 {
     protected override void ConfigureEntity(EntityTypeBuilder<ProductPhotoEntity> builder)
     {

@@ -1,5 +1,4 @@
-﻿using Shop.Core.Dtos;
-using Shop.Domain.Entities;
+﻿using Shop.Domain.Entities;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.Product;

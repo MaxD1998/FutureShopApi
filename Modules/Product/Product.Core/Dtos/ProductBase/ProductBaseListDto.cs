@@ -21,6 +21,5 @@ public class ProductBaseListDto
         Id = entity.Id,
         Name = entity.Name,
         ProductCount = entity.Products.Count(),
-        ProductParameterCount = entity.ProductParameters.Count(),
     };
 }

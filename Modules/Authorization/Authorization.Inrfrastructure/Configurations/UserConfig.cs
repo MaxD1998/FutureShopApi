@@ -49,6 +49,10 @@ public class UserConfig : BaseConfig<UserEntity>
             .WithOne(x => x.User)
             .HasForeignKey<RefreshTokenEntity>(x => x.UserId);
 
+        builder.HasMany(x => x.UserModules)
+            .WithOne(x => x.User)
+            .HasForeignKey(x => x.UserId);
+
         builder.HasData(UserSeed.Seed());
     }
 }

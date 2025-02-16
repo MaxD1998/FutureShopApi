@@ -32,7 +32,6 @@ internal class UpdateCategoryFormDtoCommandHandler : BaseService, IRequestHandle
     {
         var entity = await _context.Set<CategoryEntity>()
             .Include(x => x.SubCategories)
-            .Include(x => x.Translations)
             .FirstOrDefaultAsync(x => x.Id == request.Id, cancellationToken);
 
         if (entity == null)
@@ -43,6 +42,6 @@ internal class UpdateCategoryFormDtoCommandHandler : BaseService, IRequestHandle
         await _context.SaveChangesAsync(cancellationToken);
         await _rabbitMqContext.SendMessageAsync(RabbitMqExchangeConst.ProductModuleCategory, EventMessageDto.Create(entity, MessageType.AddOrUpdate));
 
-        return await _mediator.Send(new GetCategoryFormDtoByIdQuery(request.Id));
+        return await _mediator.Send(new GetCategoryFormDtoByIdQuery(request.Id), cancellationToken);
     }
 }

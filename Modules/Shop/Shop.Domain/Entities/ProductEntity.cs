@@ -1,12 +1,11 @@
 ﻿using Shared.Domain.Bases;
 using Shared.Domain.Extensions;
+using Shared.Domain.Interfaces;
 
 namespace Shop.Domain.Entities;
 
-public class ProductEntity : BaseEntity
+public class ProductEntity : BaseExternalEntity, IUpdate<ProductEntity>, IUpdateEvent<ProductEntity>
 {
-    public string Description { get; set; }
-
     public string Name { get; set; }
 
     public decimal Price { get; set; }
@@ -31,11 +30,15 @@ public class ProductEntity : BaseEntity
 
     public void Update(ProductEntity entity)
     {
-        Description = entity.Description;
         Name = entity.Name;
         Price = entity.Price;
-        ProductPhotos.UpdateEntities(entity.ProductPhotos);
         ProductParameterValues.UpdateEntities(entity.ProductParameterValues);
         Translations.UpdateEntities(entity.Translations);
+    }
+
+    public void UpdateEvent(ProductEntity entity)
+    {
+        Name = entity.Name;
+        ProductPhotos.UpdateEventEntities(entity.ProductPhotos);
     }
 }

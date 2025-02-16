@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using Product.Core.Dtos.CategoryTranslation;
 using Product.Domain.Entities;
 using Product.Infrastructure;
 using Shared.Core.Errors;
@@ -16,14 +15,11 @@ public class CategoryFormDto
 
     public List<IdNameDto> SubCategories { get; set; } = [];
 
-    public List<CategoryTranslationFormDto> Translations { get; set; } = [];
-
     public static Expression<Func<CategoryEntity, CategoryFormDto>> Map() => entity => new CategoryFormDto
     {
         Name = entity.Name,
         ParentCategoryId = entity.ParentCategoryId,
         SubCategories = entity.SubCategories.AsQueryable().Select(IdNameDto.MapFromCategory()).ToList(),
-        Translations = entity.Translations.AsQueryable().Select(CategoryTranslationFormDto.Map()).ToList(),
     };
 
     public CategoryEntity ToEntity(ProductPostgreSqlContext context) => new()
@@ -31,7 +27,6 @@ public class CategoryFormDto
         Name = Name,
         ParentCategoryId = ParentCategoryId,
         SubCategories = SubCategories != null ? context.Set<CategoryEntity>().Where(x => SubCategories.Select(x => x.Id).Contains(x.Id)).ToList() : null,
-        Translations = Translations.Select(x => x.ToEntity()).ToList(),
     };
 }
 

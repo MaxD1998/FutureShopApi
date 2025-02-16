@@ -20,8 +20,6 @@ public class RabbitMqEventHandler : BackgroundService
 
     public delegate void MessageEventHandler();
 
-    public event MessageEventHandler Recieved;
-
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         var scopedServiceProvider = _serviceProvider.CreateScope();

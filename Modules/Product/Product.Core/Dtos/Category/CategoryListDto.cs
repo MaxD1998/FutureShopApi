@@ -14,11 +14,11 @@ public class CategoryListDto : IDto
 
     public Guid? ParentCategoryId { get; private set; }
 
-    public static Expression<Func<CategoryEntity, CategoryListDto>> Map(string lang) => entity => new CategoryListDto
+    public static Expression<Func<CategoryEntity, CategoryListDto>> Map() => entity => new CategoryListDto
     {
         HasSubCategories = entity.SubCategories.Count != 0,
         Id = entity.Id,
-        Name = entity.Translations.Where(x => x.Lang == lang).Select(x => x.Translation).FirstOrDefault() ?? entity.Name,
+        Name = entity.Name,
         ParentCategoryId = entity.ParentCategoryId,
     };
 }

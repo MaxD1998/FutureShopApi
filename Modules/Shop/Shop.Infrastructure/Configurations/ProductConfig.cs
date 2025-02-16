@@ -6,7 +6,7 @@ using Shop.Domain.Entities;
 
 namespace Shop.Infrastructure.Configurations;
 
-public class ProductConfig : BaseConfig<ProductEntity>
+public class ProductConfig : BaseExternalConfig<ProductEntity>
 {
     protected override void ConfigureEntity(EntityTypeBuilder<ProductEntity> builder)
     {
@@ -22,9 +22,6 @@ public class ProductConfig : BaseConfig<ProductEntity>
         builder.Property(x => x.Price)
             .HasColumnOrder(102)
             .IsRequired();
-
-        builder.Property(x => x.Description)
-            .HasColumnOrder(103);
 
         builder.HasMany(x => x.BasketItems)
             .WithOne(x => x.Product)

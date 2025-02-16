@@ -23,5 +23,7 @@ public class UserEntity : BaseEntity
 
     public RefreshTokenEntity RefreshToken { get; set; }
 
+    public ICollection<UserModuleEntity> UserModules { get; set; } = [];
+
     #endregion Related Data
 }

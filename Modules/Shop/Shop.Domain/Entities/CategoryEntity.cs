@@ -4,7 +4,7 @@ using Shared.Domain.Interfaces;
 
 namespace Shop.Domain.Entities;
 
-public class CategoryEntity : BaseEntity, IUpdate<CategoryEntity>
+public class CategoryEntity : BaseExternalEntity, IUpdate<CategoryEntity>, IUpdateEvent<CategoryEntity>
 {
     public string Name { get; set; }
 
@@ -24,9 +24,13 @@ public class CategoryEntity : BaseEntity, IUpdate<CategoryEntity>
 
     public void Update(CategoryEntity entity)
     {
-        Name = entity.Name;
-        ParentCategoryId = entity.ParentCategoryId;
-        SubCategories = entity.SubCategories;
         Translations.UpdateEntities(entity.Translations);
+    }
+
+    public void UpdateEvent(CategoryEntity entity)
+    {
+        Name = entity.Name;
+        ParentCategory = entity.ParentCategory;
+        SubCategories = entity.SubCategories;
     }
 }
