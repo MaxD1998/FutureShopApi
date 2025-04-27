@@ -8,6 +8,8 @@ namespace Shop.Core.Dtos.Product;
 
 public class ProductFormDto
 {
+    public bool IsActive { get; set; }
+
     public string Name { get; set; }
 
     public decimal Price { get; set; }
@@ -20,6 +22,7 @@ public class ProductFormDto
 
     public static Expression<Func<ProductEntity, ProductFormDto>> Map() => entity => new()
     {
+        IsActive = entity.IsActive,
         Name = entity.Name,
         Price = entity.Price,
         ProductBaseId = entity.ProductBaseId,
@@ -29,6 +32,7 @@ public class ProductFormDto
 
     public ProductEntity ToEntity() => new()
     {
+        IsActive = IsActive,
         Name = Name,
         Price = Price,
         ProductBaseId = ProductBaseId,

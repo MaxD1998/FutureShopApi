@@ -12,6 +12,23 @@ namespace Shop.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "AdCampaign",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Start = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    End = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AdCampaign", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Basket",
                 columns: table => new
                 {
@@ -33,8 +50,9 @@ namespace Shop.Infrastructure.Migrations
                     ExternalId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    ParentCategoryId = table.Column<Guid>(type: "uuid", nullable: true),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    ParentCategoryId = table.Column<Guid>(type: "uuid", nullable: true)
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -61,6 +79,29 @@ namespace Shop.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PurchaseList", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AdCampaignItem",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    AdCampaignId = table.Column<Guid>(type: "uuid", nullable: false),
+                    FileId = table.Column<string>(type: "text", nullable: false),
+                    Position = table.Column<int>(type: "integer", nullable: false),
+                    Lang = table.Column<string>(type: "text", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AdCampaignItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AdCampaignItem_AdCampaign_AdCampaignId",
+                        column: x => x.AdCampaignId,
+                        principalTable: "AdCampaign",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -117,7 +158,8 @@ namespace Shop.Infrastructure.Migrations
                     ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ProductBaseId = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    Price = table.Column<decimal>(type: "numeric", nullable: false)
+                    Price = table.Column<decimal>(type: "numeric", nullable: false),
+                    IsActive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -302,6 +344,18 @@ namespace Shop.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_AdCampaignItem_AdCampaignId_Position_Lang",
+                table: "AdCampaignItem",
+                columns: new[] { "AdCampaignId", "Position", "Lang" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AdCampaignItem_FileId",
+                table: "AdCampaignItem",
+                column: "FileId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Basket_UserId",
                 table: "Basket",
                 column: "UserId",
@@ -393,6 +447,9 @@ namespace Shop.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "AdCampaignItem");
+
+            migrationBuilder.DropTable(
                 name: "BasketItem");
 
             migrationBuilder.DropTable(
@@ -412,6 +469,9 @@ namespace Shop.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "PurchaseListItem");
+
+            migrationBuilder.DropTable(
+                name: "AdCampaign");
 
             migrationBuilder.DropTable(
                 name: "Basket");

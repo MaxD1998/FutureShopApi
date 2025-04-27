@@ -9,7 +9,7 @@ public static class CollectionExtension
     {
         foreach (var updateEntity in updateEntities)
         {
-            var result = entities.FirstOrDefault(x => x.Id == updateEntity.Id);
+            var result = entities.FirstOrDefault(x => x.Id == updateEntity.Id && x.Id != Guid.Empty);
             if (result is null)
             {
                 entities.Add(updateEntity);

@@ -4,13 +4,14 @@ using Api.Modules.Authorization;
 using Api.Modules.Product;
 using Api.Modules.Shop;
 using Api.Modules.Warehouse;
+using Api.OpenApi;
 using Authorization.Inrfrastructure;
 using Product.Infrastructure;
 using Quartz.AspNetCore;
+using Scalar.AspNetCore;
 using Shared.Api.Middlewares;
 using Shared.Infrastructure;
 using Shop.Infrastructure;
-using System.Reflection;
 using Warehouse.Infrastructure;
 
 namespace Api;
@@ -42,30 +43,31 @@ public class Program
         services.AddHttpContextAccessor();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(config =>
-        {
-            var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-            config.IncludeXmlComments(xmlPath);
-            config.CustomSchemaIds(type => type.ToString());
-        });
+        services.AddOpenApi("v1", options => { options.AddDocumentTransformer<BearerSecuritySchemeTransformer>(); });
 
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
-            app.UseSwagger();
-            app.UseSwaggerUI(config =>
+            app.MapOpenApi();
+            app.MapScalarApiReference(opt =>
             {
-                config.DefaultModelsExpandDepth(-1);
+                opt.Theme = ScalarTheme.DeepSpace;
+                opt.DefaultHttpClient = new(ScalarTarget.CSharp, ScalarClient.HttpClient);
+                opt.ShowSidebar = true;
+                opt.WithPreferredScheme("Bearer")
+                .WithHttpBearerAuthentication(bearer =>
+                {
+                    bearer.Token = "my-token";
+                });
             });
         }
 
         app.UseMiddleware<ErrorHandlingMiddleware>();
         app.UseMiddleware<PostgreSqlDbTransactionMiddleware<AuthContext>>();
         app.UseMiddleware<PostgreSqlDbTransactionMiddleware<ProductPostgreSqlContext>>();
-        app.UseMiddleware<PostgreSqlDbTransactionMiddleware<ShopContext>>();
+        app.UseMiddleware<PostgreSqlDbTransactionMiddleware<ShopPostgreSqlContext>>();
         app.UseMiddleware<PostgreSqlDbTransactionMiddleware<WarehouseContext>>();
         app.UseMiddleware<MongoDbTransactionMiddleware<ProductMongoDbContext>>();
 

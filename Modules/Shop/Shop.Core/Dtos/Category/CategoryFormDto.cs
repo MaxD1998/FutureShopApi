@@ -9,6 +9,8 @@ namespace Shop.Core.Dtos.Category;
 
 public class CategoryFormDto
 {
+    public bool IsActive { get; set; }
+
     public string Name { get; set; }
 
     public Guid? ParentCategoryId { get; set; }
@@ -19,6 +21,7 @@ public class CategoryFormDto
 
     public static Expression<Func<CategoryEntity, CategoryFormDto>> Map() => entity => new CategoryFormDto
     {
+        IsActive = entity.IsActive,
         Name = entity.Name,
         ParentCategoryId = entity.ParentCategoryId,
         SubCategories = entity.SubCategories.AsQueryable().Select(IdNameDto.MapFromCategory()).ToList(),
@@ -27,6 +30,7 @@ public class CategoryFormDto
 
     public CategoryEntity ToEntity() => new()
     {
+        IsActive = IsActive,
         Translations = Translations.Select(x => x.ToEntity()).ToList(),
     };
 }

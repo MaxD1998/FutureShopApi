@@ -6,19 +6,19 @@ namespace Product.Core.Dtos.Category;
 
 public class CategoryListDto : IDto
 {
-    public bool HasSubCategories { get; private set; }
-
     public Guid Id { get; private set; }
+
+    public bool IsSubCategory { get; private set; }
 
     public string Name { get; private set; }
 
-    public Guid? ParentCategoryId { get; private set; }
+    public int SubCategoryQuantity { get; private set; }
 
     public static Expression<Func<CategoryEntity, CategoryListDto>> Map() => entity => new CategoryListDto
     {
-        HasSubCategories = entity.SubCategories.Count != 0,
+        SubCategoryQuantity = entity.SubCategories.Count,
         Id = entity.Id,
         Name = entity.Name,
-        ParentCategoryId = entity.ParentCategoryId,
+        IsSubCategory = entity.ParentCategoryId.HasValue,
     };
 }

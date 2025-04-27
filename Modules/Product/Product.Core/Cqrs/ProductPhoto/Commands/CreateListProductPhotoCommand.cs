@@ -12,11 +12,11 @@ public record CreateListProductPhotoCommand(IFormFileCollection Files) : IReques
 
 internal class CreateListProductPhotoCommandHandler : BaseService, IRequestHandler<CreateListProductPhotoCommand, ResultDto<IEnumerable<string>>>
 {
-    private readonly ProductMongoDbContext _mongoDbContext;
+    private readonly ProductMongoDbContext _context;
 
-    public CreateListProductPhotoCommandHandler(ProductMongoDbContext mongoDbContext)
+    public CreateListProductPhotoCommandHandler(ProductMongoDbContext context)
     {
-        _mongoDbContext = mongoDbContext;
+        _context = context;
     }
 
     public async Task<ResultDto<IEnumerable<string>>> Handle(CreateListProductPhotoCommand request, CancellationToken cancellationToken)
@@ -28,7 +28,7 @@ internal class CreateListProductPhotoCommandHandler : BaseService, IRequestHandl
             return Error<IEnumerable<string>>(HttpStatusCode.BadRequest, ExceptionMessage.ProductPhoto001OneOfFilesWasEmpty);
 
         var productPhotos = request.Files.Select(x => x.ToProductPhotoDocument()).ToList();
-        await _mongoDbContext.AddRangeAsync(productPhotos, cancellationToken);
+        await _context.AddRangeAsync(productPhotos, cancellationToken);
 
         return Success(productPhotos.Select(x => x.Id));
     }

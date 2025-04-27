@@ -6,6 +6,8 @@ namespace Shop.Domain.Entities;
 
 public class ProductEntity : BaseExternalEntity, IUpdate<ProductEntity>, IUpdateEvent<ProductEntity>
 {
+    public bool IsActive { get; set; }
+
     public string Name { get; set; }
 
     public decimal Price { get; set; }
@@ -30,6 +32,7 @@ public class ProductEntity : BaseExternalEntity, IUpdate<ProductEntity>, IUpdate
 
     public void Update(ProductEntity entity)
     {
+        IsActive = entity.IsActive;
         Name = entity.Name;
         Price = entity.Price;
         ProductParameterValues.UpdateEntities(entity.ProductParameterValues);

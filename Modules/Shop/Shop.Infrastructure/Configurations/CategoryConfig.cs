@@ -10,10 +10,18 @@ public class CategoryConfig : BaseExternalConfig<CategoryEntity>
 {
     protected override void ConfigureEntity(EntityTypeBuilder<CategoryEntity> builder)
     {
+        builder.Property(x => x.ParentCategoryId)
+            .HasColumnOrder(100);
+
         builder.Property(x => x.Name)
             .HasMaxLength(StringLengthConst.LongString)
-            .HasColumnOrder(100)
+            .HasColumnOrder(101)
             .IsRequired();
+
+        builder.Property(x => x.IsActive)
+            .HasColumnOrder(102)
+            .IsRequired()
+            .HasDefaultValue(false);
 
         builder.HasMany(x => x.SubCategories)
             .WithOne(x => x.ParentCategory)

@@ -12,9 +12,9 @@ public record GetPageProductBaseListDtoQuery(int PageNumber) : IRequest<ResultDt
 
 internal class GetPageProductBaseListDtoQueryHandler : BaseService, IRequestHandler<GetPageProductBaseListDtoQuery, ResultDto<PageDto<ProductBaseListDto>>>
 {
-    private readonly ShopContext _context;
+    private readonly ShopPostgreSqlContext _context;
 
-    public GetPageProductBaseListDtoQueryHandler(ShopContext context)
+    public GetPageProductBaseListDtoQueryHandler(ShopPostgreSqlContext context)
     {
         _context = context;
     }

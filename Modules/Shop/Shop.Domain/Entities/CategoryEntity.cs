@@ -6,6 +6,8 @@ namespace Shop.Domain.Entities;
 
 public class CategoryEntity : BaseExternalEntity, IUpdate<CategoryEntity>, IUpdateEvent<CategoryEntity>
 {
+    public bool IsActive { get; set; }
+
     public string Name { get; set; }
 
     public Guid? ParentCategoryId { get; set; }
@@ -24,6 +26,7 @@ public class CategoryEntity : BaseExternalEntity, IUpdate<CategoryEntity>, IUpda
 
     public void Update(CategoryEntity entity)
     {
+        IsActive = entity.IsActive;
         Translations.UpdateEntities(entity.Translations);
     }
 

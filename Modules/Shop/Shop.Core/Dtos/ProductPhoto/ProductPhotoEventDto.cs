@@ -13,7 +13,7 @@ public class ProductPhotoEventDto
 
     public Guid ProductId { get; set; }
 
-    public ProductPhotoEntity Map(ShopContext context) => new()
+    public ProductPhotoEntity Map(ShopPostgreSqlContext context) => new()
     {
         ExternalId = Id,
         FileId = FileId,

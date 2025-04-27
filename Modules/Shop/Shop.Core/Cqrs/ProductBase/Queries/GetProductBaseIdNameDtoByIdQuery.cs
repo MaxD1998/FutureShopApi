@@ -9,9 +9,9 @@ using Shop.Infrastructure;
 namespace Shop.Core.Cqrs.ProductBase.Queries;
 public record GetProductBaseIdNameDtoByIdQuery(Guid Id) : IRequest<ResultDto<IdNameDto>>;
 
-internal class GetProductBaseIdNameDtoByIdQueryHandler(ShopContext context) : BaseService, IRequestHandler<GetProductBaseIdNameDtoByIdQuery, ResultDto<IdNameDto>>
+internal class GetProductBaseIdNameDtoByIdQueryHandler(ShopPostgreSqlContext context) : BaseService, IRequestHandler<GetProductBaseIdNameDtoByIdQuery, ResultDto<IdNameDto>>
 {
-    private readonly ShopContext _context = context;
+    private readonly ShopPostgreSqlContext _context = context;
 
     public async Task<ResultDto<IdNameDto>> Handle(GetProductBaseIdNameDtoByIdQuery request, CancellationToken cancellationToken)
     {

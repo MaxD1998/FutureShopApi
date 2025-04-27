@@ -11,9 +11,9 @@ public record GetBasketDtoByIdQuery(Guid Id, Guid? FavouriteId) : IRequest<Resul
 
 internal class GetBasketDtoByIdQueryHandler : BaseService, IRequestHandler<GetBasketDtoByIdQuery, ResultDto<BasketDto>>
 {
-    private readonly ShopContext _context;
+    private readonly ShopPostgreSqlContext _context;
 
-    public GetBasketDtoByIdQueryHandler(ShopContext context)
+    public GetBasketDtoByIdQueryHandler(ShopPostgreSqlContext context)
     {
         _context = context;
     }

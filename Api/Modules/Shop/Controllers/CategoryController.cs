@@ -27,22 +27,16 @@ public class CategoryController : ShopModuleBaseController
     public async Task<IActionResult> GetIdNameByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
         => await ApiResponseAsync(new GetCategoryIdNameDtoByIdQuery(id), cancellationToken);
 
-    [HttpGet("CategoryParentId")]
+    [HttpGet("List")]
     [ProducesResponseType(typeof(IEnumerable<CategoryListDto>), StatusCodes.Status200OK)]
     [AllowAnonymous]
     public async Task<IActionResult> GetListByCategoryParentIdAsync(CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(new GetListCategoryListDtoByCategoryParentQuery(), cancellationToken);
-
-    [HttpGet("CategoryParentId/{categoryParentId:guid}")]
-    [ProducesResponseType(typeof(IEnumerable<CategoryListDto>), StatusCodes.Status200OK)]
-    [AllowAnonymous]
-    public async Task<IActionResult> GetListByCategoryParentIdAsync([FromRoute] Guid categoryParentId, CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(new GetListCategoryListDtoByCategoryParentQuery(categoryParentId), cancellationToken);
+        => await ApiResponseAsync(new GetListCategoryListDtoQuery(), cancellationToken);
 
     [HttpGet("Page/{pageNumber:int}")]
-    [ProducesResponseType(typeof(PageDto<CategoryListDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(PageDto<CategoryPageListDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetPageAsync([FromRoute] int pageNumber, CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(new GetPageCategoryListDtoQuery(pageNumber), cancellationToken);
+        => await ApiResponseAsync(new GetPageCategoryPageListDtoQuery(pageNumber), cancellationToken);
 
     [HttpPut("{id:guid}")]
     [ProducesResponseType(typeof(CategoryFormDto), StatusCodes.Status200OK)]

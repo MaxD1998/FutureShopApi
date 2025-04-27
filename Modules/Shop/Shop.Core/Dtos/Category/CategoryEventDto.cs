@@ -9,15 +9,15 @@ public class CategoryEventDto
 
     public string Name { get; set; }
 
-    public Guid ParentId { get; set; }
+    public Guid? ParentCategoryId { get; set; }
 
     public List<CategoryEventDto> SubCategories { get; set; } = [];
 
-    public CategoryEntity Map(ShopContext context) => new()
+    public CategoryEntity Map(ShopPostgreSqlContext context) => new()
     {
         ExternalId = Id,
         Name = Name,
-        ParentCategoryId = context.Set<CategoryEntity>().Where(x => x.ExternalId == ParentId).Select(x => (Guid?)x.Id).FirstOrDefault(),
+        ParentCategoryId = context.Set<CategoryEntity>().Where(x => x.ExternalId == ParentCategoryId).Select(x => (Guid?)x.Id).FirstOrDefault(),
         SubCategories = context.Set<CategoryEntity>().Where(x => SubCategories.Select(y => y.Id).Contains(x.ExternalId)).ToList()
     };
 }

@@ -8,9 +8,9 @@ public record GetPurchaseListEntityByIdQuery(Guid Id) : IRequest<PurchaseListEnt
 
 internal class GetPurchaseListEntityByIdQueryHandler : IRequestHandler<GetPurchaseListEntityByIdQuery, PurchaseListEntity>
 {
-    private readonly ShopContext _context;
+    private readonly ShopPostgreSqlContext _context;
 
-    public GetPurchaseListEntityByIdQueryHandler(ShopContext context)
+    public GetPurchaseListEntityByIdQueryHandler(ShopPostgreSqlContext context)
     {
         _context = context;
     }

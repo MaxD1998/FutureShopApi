@@ -23,6 +23,11 @@ public class ProductConfig : BaseExternalConfig<ProductEntity>
             .HasColumnOrder(102)
             .IsRequired();
 
+        builder.Property(x => x.IsActive)
+            .HasColumnOrder(103)
+            .IsRequired()
+            .HasDefaultValue(false);
+
         builder.HasMany(x => x.BasketItems)
             .WithOne(x => x.Product)
             .HasForeignKey(x => x.ProductId);

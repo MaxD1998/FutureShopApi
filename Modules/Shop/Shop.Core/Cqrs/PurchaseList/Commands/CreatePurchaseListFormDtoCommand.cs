@@ -15,10 +15,10 @@ public record CreatePurchaseListFormDtoCommand(PurchaseListFormDto Dto) : IReque
 
 internal class CreatePurchaseListFormDtoCommandHandler : BaseService, IRequestHandler<CreatePurchaseListFormDtoCommand, ResultDto<PurchaseListFormDto>>
 {
-    private readonly ShopContext _context;
+    private readonly ShopPostgreSqlContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public CreatePurchaseListFormDtoCommandHandler(ShopContext context, IHttpContextAccessor httpContextAccessor)
+    public CreatePurchaseListFormDtoCommandHandler(ShopPostgreSqlContext context, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
         _httpContextAccessor = httpContextAccessor;

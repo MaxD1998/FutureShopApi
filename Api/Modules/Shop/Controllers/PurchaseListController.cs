@@ -25,7 +25,7 @@ public class PurchaseListController : ShopModuleBaseController
         => await ApiResponseAsync(dto, new CreatePurchaseListFormDtoCommand(dto), cancellation);
 
     [HttpDelete("{id:guid}")]
-    [ProducesResponseType(typeof(IEnumerable<PurchaseListDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> DeleteByIdAsync([FromRoute] Guid id, CancellationToken cancellation = default)
         => await ApiResponseAsync(new DeletePurchaseListByIdCommand(id), cancellation);
 

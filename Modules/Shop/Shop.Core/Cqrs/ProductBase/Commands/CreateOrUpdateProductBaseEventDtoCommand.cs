@@ -10,9 +10,9 @@ namespace Shop.Core.Cqrs.ProductBase.Commands;
 
 public record CreateOrUpdateProductBaseEventDtoCommand(ProductBaseEventDto Dto) : IRequest<ResultDto>;
 
-internal class CreateOrUpdateProductBaseEventDtoCommandHandler(ShopContext context) : BaseService, IRequestHandler<CreateOrUpdateProductBaseEventDtoCommand, ResultDto>
+internal class CreateOrUpdateProductBaseEventDtoCommandHandler(ShopPostgreSqlContext context) : BaseService, IRequestHandler<CreateOrUpdateProductBaseEventDtoCommand, ResultDto>
 {
-    private readonly ShopContext _context = context;
+    private readonly ShopPostgreSqlContext _context = context;
 
     public async Task<ResultDto> Handle(CreateOrUpdateProductBaseEventDtoCommand request, CancellationToken cancellationToken)
     {

@@ -15,11 +15,11 @@ public record GetListProductShopListDtoByCategoryIdQuery(Guid CategoryId, Produc
 
 internal class GetListProductShopListDtoByCategoryIdQueryHandler : BaseService, IRequestHandler<GetListProductShopListDtoByCategoryIdQuery, ResultDto<IEnumerable<ProductShopListDto>>>
 {
-    private readonly ShopContext _context;
+    private readonly ShopPostgreSqlContext _context;
     private readonly IHeaderService _headerService;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public GetListProductShopListDtoByCategoryIdQueryHandler(IHeaderService headerService, IHttpContextAccessor httpContextAccessor, ShopContext context)
+    public GetListProductShopListDtoByCategoryIdQueryHandler(IHeaderService headerService, IHttpContextAccessor httpContextAccessor, ShopPostgreSqlContext context)
     {
         _headerService = headerService;
         _httpContextAccessor = httpContextAccessor;
@@ -32,7 +32,7 @@ internal class GetListProductShopListDtoByCategoryIdQueryHandler : BaseService, 
         var userId = _httpContextAccessor.GetUserId();
         var results = await _context.Set<ProductEntity>()
             .AsNoTracking()
-            .Where(x => categoryIds.Contains(x.ProductBase.CategoryId))
+            .Where(x => categoryIds.Contains(x.ProductBase.CategoryId) && x.IsActive)
             .Filter(request.Filter, _headerService.GetHeader(HeaderNameConst.Lang))
             .Select(ProductShopListDto.Map(_headerService.GetHeader(HeaderNameConst.Lang), userId, request.FavouriteId))
             .ToListAsync(cancellationToken);

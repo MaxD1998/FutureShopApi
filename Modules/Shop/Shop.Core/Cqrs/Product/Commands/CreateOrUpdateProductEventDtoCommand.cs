@@ -11,9 +11,9 @@ public record CreateOrUpdateProductEventDtoCommand(ProductEventDto Dto) : IReque
 
 internal class CreateOrUpdateProductEventDtoCommandHandler : BaseService, IRequestHandler<CreateOrUpdateProductEventDtoCommand, ResultDto>
 {
-    private readonly ShopContext _context;
+    private readonly ShopPostgreSqlContext _context;
 
-    public CreateOrUpdateProductEventDtoCommandHandler(ShopContext context)
+    public CreateOrUpdateProductEventDtoCommandHandler(ShopPostgreSqlContext context)
     {
         _context = context;
     }

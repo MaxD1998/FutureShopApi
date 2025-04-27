@@ -3,4 +3,6 @@
 public class MongoDBSettings
 {
     public MongoDBDetailSettings Product { get; set; }
+
+    public MongoDBDetailSettings Shop { get; set; }
 }

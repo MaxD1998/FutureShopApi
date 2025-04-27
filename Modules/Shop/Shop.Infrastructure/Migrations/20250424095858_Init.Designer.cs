@@ -11,8 +11,8 @@ using Shop.Infrastructure;
 
 namespace Shop.Infrastructure.Migrations
 {
-    [DbContext(typeof(ShopContext))]
-    [Migration("20250216150858_Init")]
+    [DbContext(typeof(ShopPostgreSqlContext))]
+    [Migration("20250424095858_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -20,10 +20,92 @@ namespace Shop.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "9.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("Shop.Domain.Entities.AdCampaignEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(1);
+
+                    b.Property<DateTime>("End")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(102);
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnOrder(103);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnOrder(100);
+
+                    b.Property<DateTime>("Start")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(101);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AdCampaign", (string)null);
+                });
+
+            modelBuilder.Entity("Shop.Domain.Entities.AdCampaignItemEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
+
+                    b.Property<Guid>("AdCampaignId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(100);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("FileId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnOrder(101);
+
+                    b.Property<string>("Lang")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnOrder(103);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<int>("Position")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FileId")
+                        .IsUnique();
+
+                    b.HasIndex("AdCampaignId", "Position", "Lang")
+                        .IsUnique();
+
+                    b.ToTable("AdCampaignItem", (string)null);
+                });
 
             modelBuilder.Entity("Shop.Domain.Entities.BasketEntity", b =>
                 {
@@ -104,6 +186,12 @@ namespace Shop.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnOrder(1);
 
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnOrder(102);
+
                     b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(3);
@@ -112,10 +200,11 @@ namespace Shop.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
-                        .HasColumnOrder(100);
+                        .HasColumnOrder(101);
 
                     b.Property<Guid?>("ParentCategoryId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(100);
 
                     b.HasKey("Id");
 
@@ -212,6 +301,12 @@ namespace Shop.Infrastructure.Migrations
                     b.Property<Guid>("ExternalId")
                         .HasColumnType("uuid")
                         .HasColumnOrder(1);
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(false)
+                        .HasColumnOrder(103);
 
                     b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("timestamp with time zone")
@@ -491,6 +586,17 @@ namespace Shop.Infrastructure.Migrations
                     b.ToTable("PurchaseListItem", (string)null);
                 });
 
+            modelBuilder.Entity("Shop.Domain.Entities.AdCampaignItemEntity", b =>
+                {
+                    b.HasOne("Shop.Domain.Entities.AdCampaignEntity", "AdCampaign")
+                        .WithMany("AdCampaignItems")
+                        .HasForeignKey("AdCampaignId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AdCampaign");
+                });
+
             modelBuilder.Entity("Shop.Domain.Entities.BasketItemEntity", b =>
                 {
                     b.HasOne("Shop.Domain.Entities.BasketEntity", "Basket")
@@ -633,6 +739,11 @@ namespace Shop.Infrastructure.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("PurchaseList");
+                });
+
+            modelBuilder.Entity("Shop.Domain.Entities.AdCampaignEntity", b =>
+                {
+                    b.Navigation("AdCampaignItems");
                 });
 
             modelBuilder.Entity("Shop.Domain.Entities.BasketEntity", b =>

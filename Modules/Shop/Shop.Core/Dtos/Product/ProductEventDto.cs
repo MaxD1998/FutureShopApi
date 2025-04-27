@@ -14,7 +14,7 @@ public class ProductEventDto
 
     public List<ProductPhotoEventDto> ProductPhotos { get; set; }
 
-    public ProductEntity Map(ShopContext context) => new()
+    public ProductEntity Map(ShopPostgreSqlContext context) => new()
     {
         ExternalId = Id,
         Name = Name,

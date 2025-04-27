@@ -14,10 +14,10 @@ public record CreateBasketFormDtoCommand(BasketFormDto Dto) : IRequest<ResultDto
 
 internal class CreateBasketFormDtoCommandHandler : BaseService, IRequestHandler<CreateBasketFormDtoCommand, ResultDto<BasketFormDto>>
 {
-    private readonly ShopContext _context;
+    private readonly ShopPostgreSqlContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public CreateBasketFormDtoCommandHandler(ShopContext context, IHttpContextAccessor httpContextAccessor)
+    public CreateBasketFormDtoCommandHandler(ShopPostgreSqlContext context, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
         _httpContextAccessor = httpContextAccessor;

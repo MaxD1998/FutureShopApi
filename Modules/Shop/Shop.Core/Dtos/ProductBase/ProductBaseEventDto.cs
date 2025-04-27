@@ -11,7 +11,7 @@ public class ProductBaseEventDto
 
     public string Name { get; set; }
 
-    public ProductBaseEntity Map(ShopContext context) => new()
+    public ProductBaseEntity Map(ShopPostgreSqlContext context) => new()
     {
         CategoryId = context.Set<CategoryEntity>().Where(x => x.ExternalId == CategoryId).Select(x => x.Id).FirstOrDefault(),
         ExternalId = Id,

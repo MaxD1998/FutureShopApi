@@ -14,10 +14,10 @@ public record CreatePurchaseListEntityCommand(PurchaseListEntity Entity) : IRequ
 
 public class CreatePurchaseListEntityCommandHandler : BaseService, IRequestHandler<CreatePurchaseListEntityCommand, ResultDto<PurchaseListEntity>>
 {
-    private readonly ShopContext _context;
+    private readonly ShopPostgreSqlContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public CreatePurchaseListEntityCommandHandler(ShopContext context, IHttpContextAccessor httpContextAccessor)
+    public CreatePurchaseListEntityCommandHandler(ShopPostgreSqlContext context, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
         _httpContextAccessor = httpContextAccessor;

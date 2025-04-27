@@ -14,10 +14,10 @@ public record GetListPurchaseListDtoByUserIdFromJwtQuery : IRequest<ResultDto<IE
 
 internal class GetListPurchaseListDtoByUserIdFromJwtQueryHandler : BaseService, IRequestHandler<GetListPurchaseListDtoByUserIdFromJwtQuery, ResultDto<IEnumerable<PurchaseListDto>>>
 {
-    private readonly ShopContext _context;
+    private readonly ShopPostgreSqlContext _context;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public GetListPurchaseListDtoByUserIdFromJwtQueryHandler(ShopContext context, IHttpContextAccessor httpContextAccessor)
+    public GetListPurchaseListDtoByUserIdFromJwtQueryHandler(ShopPostgreSqlContext context, IHttpContextAccessor httpContextAccessor)
     {
         _context = context;
         _httpContextAccessor = httpContextAccessor;

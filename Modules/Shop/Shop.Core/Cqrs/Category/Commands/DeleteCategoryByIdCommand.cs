@@ -10,16 +10,16 @@ public record DeleteCategoryByIdCommand(Guid Id) : IRequest<ResultDto>;
 
 internal class DeleteCategoryByIdCommandHandler : BaseService, IRequestHandler<DeleteCategoryByIdCommand, ResultDto>
 {
-    private readonly ShopContext _context;
+    private readonly ShopPostgreSqlContext _context;
 
-    public DeleteCategoryByIdCommandHandler(ShopContext context)
+    public DeleteCategoryByIdCommandHandler(ShopPostgreSqlContext context)
     {
         _context = context;
     }
 
     public async Task<ResultDto> Handle(DeleteCategoryByIdCommand request, CancellationToken cancellationToken)
     {
-        await _context.Set<CategoryEntity>().Where(x => x.Id == request.Id).ExecuteDeleteAsync(cancellationToken);
+        await _context.Set<CategoryEntity>().Where(x => x.ExternalId == request.Id).ExecuteDeleteAsync(cancellationToken);
 
         return Success();
     }

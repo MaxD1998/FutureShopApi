@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Product.Core.Helpers;
 using Product.Domain.Documents;
+using Shared.Core.Helpers;
 
 namespace Product.Core.Extensions;
 

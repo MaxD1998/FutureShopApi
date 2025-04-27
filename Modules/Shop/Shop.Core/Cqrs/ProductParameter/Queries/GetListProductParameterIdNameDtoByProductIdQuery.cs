@@ -10,9 +10,9 @@ namespace Shop.Core.Cqrs.ProductParameter.Queries;
 
 public record GetListProductParameterIdNameDtoByProductIdQuery(Guid Id) : IRequest<ResultDto<IEnumerable<ProductParameterFlatDto>>>;
 
-internal class GetListProductParameterIdNameDtoByProductIdQueryHandler(ShopContext context) : BaseService, IRequestHandler<GetListProductParameterIdNameDtoByProductIdQuery, ResultDto<IEnumerable<ProductParameterFlatDto>>>
+internal class GetListProductParameterIdNameDtoByProductIdQueryHandler(ShopPostgreSqlContext context) : BaseService, IRequestHandler<GetListProductParameterIdNameDtoByProductIdQuery, ResultDto<IEnumerable<ProductParameterFlatDto>>>
 {
-    private readonly ShopContext _context = context;
+    private readonly ShopPostgreSqlContext _context = context;
 
     public async Task<ResultDto<IEnumerable<ProductParameterFlatDto>>> Handle(GetListProductParameterIdNameDtoByProductIdQuery request, CancellationToken cancellationToken)
     {

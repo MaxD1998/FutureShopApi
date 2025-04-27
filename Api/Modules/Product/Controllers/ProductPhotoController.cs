@@ -18,19 +18,9 @@ public class ProductPhotoController : ProductModuleBaseController
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<string>), StatusCodes.Status200OK)]
     public async Task<IActionResult> CreateListAsync([FromForm] IFormFileCollection files, CancellationToken cancellationToken = default)
         => await ApiResponseAsync(new CreateListProductPhotoCommand(files), cancellationToken);
-
-    [HttpDelete("{id}")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> DeleteAsync([FromRoute] string id, CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(new DeleteProductPhotoByIdCommand(id), cancellationToken);
-
-    [HttpDelete]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> DeleteListAsync([FromQuery] IEnumerable<string> ids, CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(new DeleteListProductPhotoByIdCommand(ids), cancellationToken);
 
     /// <summary>
     /// It returns a file by his unique id
