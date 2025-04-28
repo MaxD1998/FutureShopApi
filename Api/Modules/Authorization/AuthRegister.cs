@@ -1,6 +1,7 @@
 ﻿using Authorization.Core;
 using Authorization.Core.Services;
 using Authorization.Inrfrastructure;
+using Authorization.Inrfrastructure.Repositories;
 using FluentValidation;
 using Shared.Api.Middlewares;
 using Shared.Core.Factories.FluentValidator;
@@ -12,6 +13,7 @@ public static class AuthRegister
     public static void RegisterAuthModule(this IServiceCollection services)
     {
         services.ConfigureServices();
+        services.RegisterRepositories();
         services.RegisterServices();
         services.RegisterMiddlewares();
     }
@@ -29,6 +31,12 @@ public static class AuthRegister
     private static void RegisterMiddlewares(this IServiceCollection services)
     {
         services.AddScoped<PostgreSqlDbTransactionMiddleware<AuthContext>>();
+    }
+
+    private static void RegisterRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
     }
 
     private static void RegisterServices(this IServiceCollection services)
