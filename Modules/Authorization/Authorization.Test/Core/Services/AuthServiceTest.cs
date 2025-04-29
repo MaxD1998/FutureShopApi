@@ -87,8 +87,8 @@ public class AuthServiceTest
             Password = "password",
         };
 
-        _userRepositoryMock.Setup(x => x.GetByEmailAsync(userEntity.Email, default)).ReturnsAsync(userEntity);
-        _refreshTokenRepositoryMock.Setup(x => x.CreateOrUpdateByUserIdAsync(refreshTokenEntity, default)).ReturnsAsync(refreshTokenEntity);
+        _userRepositoryMock.Setup(x => x.GetByEmailAsync(It.IsAny<string>(), default)).ReturnsAsync(userEntity);
+        _refreshTokenRepositoryMock.Setup(x => x.CreateOrUpdateByUserIdAsync(It.IsAny<RefreshTokenEntity>(), default)).ReturnsAsync(refreshTokenEntity);
 
         // Act
         var result = await _authService.LoginAsync(login, default);
@@ -140,7 +140,7 @@ public class AuthServiceTest
         var result = await _authService.RefreshTokenAsync();
 
         //Assert
-        Assert.Null(result);
+        Assert.Null(result.Result);
     }
 
     [Fact]
@@ -158,7 +158,7 @@ public class AuthServiceTest
         };
 
         _cookieServiceMock.Setup(x => x.GetCookieValue(CookieNameConst.RefreshToken)).Returns(ResultDto.Success(Guid.NewGuid().ToString()));
-        _userRepositoryMock.Setup(x => x.GetByTokenAsync(Guid.NewGuid(), default)).ReturnsAsync(userEntity);
+        _userRepositoryMock.Setup(x => x.GetByTokenAsync(It.IsAny<Guid>(), default)).ReturnsAsync(userEntity);
 
         // Act
         var result = await _authService.RefreshTokenAsync();
@@ -223,11 +223,19 @@ public class AuthServiceTest
             Token = Guid.NewGuid()
         };
 
-        _userRepositoryMock.Setup(x => x.CreateAsync(userEntity, default)).ReturnsAsync(userEntity);
-        _refreshTokenRepositoryMock.Setup(x => x.CreateOrUpdateByUserIdAsync(refreshTokenEntity, default)).ReturnsAsync(refreshTokenEntity);
+        var login = new UserFormDto()
+        {
+            Email = "test@futureshop.pl",
+            Password = "HashedPassword",
+            FirstName = "Test",
+            LastName = "User",
+        };
+
+        _userRepositoryMock.Setup(x => x.CreateAsync(It.IsAny<UserEntity>(), default)).ReturnsAsync(userEntity);
+        _refreshTokenRepositoryMock.Setup(x => x.CreateOrUpdateByUserIdAsync(It.IsAny<RefreshTokenEntity>(), default)).ReturnsAsync(refreshTokenEntity);
 
         // Act
-        var result = await _authService.RegisterAsync(new UserFormDto(), default);
+        var result = await _authService.RegisterAsync(login, default);
 
         //Assert
         _cookieServiceMock.Verify(x
