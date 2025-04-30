@@ -5,9 +5,9 @@ using Product.Core.Cqrs.ProductBase.Queries;
 using Product.Core.Dtos;
 using Product.Core.Dtos.ProductBase;
 using Shared.Api.Attributes;
-using Shared.Core.Dtos;
 using Shared.Core.Factories.FluentValidator;
 using Shared.Domain.Enums;
+using Shared.Infrastructure.Extensions;
 
 namespace Api.Modules.Product.Controllers;
 

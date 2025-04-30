@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Core.Dtos;
 using Shared.Core.Factories.FluentValidator;
+using Shared.Infrastructure.Extensions;
 using Shop.Core.Cqrs.Category.Commands;
 using Shop.Core.Cqrs.Category.Queries;
 using Shop.Core.Dtos;

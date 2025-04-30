@@ -1,6 +1,6 @@
-﻿namespace Shared.Core.Dtos;
+﻿namespace Shared.Infrastructure.Extensions;
 
-public class PageDto<T> where T : class
+public class PageDto<T>
 {
     public PageDto(int currentPage, IEnumerable<T> items, int totalPages)
     {

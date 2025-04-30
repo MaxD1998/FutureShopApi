@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Shared.Core.Bases;
 using Shared.Core.Dtos;
-using Shared.Core.Extensions;
+using Shared.Infrastructure.Extensions;
 using Shop.Core.Dtos.ProductBase;
 using Shop.Domain.Entities;
 using Shop.Infrastructure;

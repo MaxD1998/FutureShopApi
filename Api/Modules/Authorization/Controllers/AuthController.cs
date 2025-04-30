@@ -23,22 +23,22 @@ public class AuthController : AuthModuleBaseController
 
     [HttpGet("RefreshToken")]
     [ProducesResponseType(typeof(AuthorizeDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GenerateTokenAsync(CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(() => _authService.RefreshTokenAsync(cancellationToken));
+    public Task<IActionResult> GenerateTokenAsync(CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_authService.RefreshTokenAsync, cancellationToken);
 
     [HttpPost("Login")]
     [ProducesResponseType(typeof(AuthorizeDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> LoginAsync([FromBody] LoginFormDto dto, CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(dto, () => _authService.LoginAsync(dto, cancellationToken));
+    public Task<IActionResult> LoginAsync([FromBody] LoginFormDto dto, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_authService.LoginAsync, dto, cancellationToken);
 
     [HttpGet("Logout")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [Authorize]
-    public async Task<IActionResult> Logout(CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(() => _authService.LogoutAsync(cancellationToken));
+    public Task<IActionResult> Logout(CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_authService.LogoutAsync, cancellationToken);
 
     [HttpPost("Register")]
     [ProducesResponseType(typeof(AuthorizeDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> RegisterAsync([FromBody] UserFormDto dto, CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(dto, () => _authService.RegisterAsync(dto, cancellationToken));
+    public Task<IActionResult> RegisterAsync([FromBody] UserFormDto dto, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_authService.RegisterAsync, dto, cancellationToken);
 }

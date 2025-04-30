@@ -1,4 +1,4 @@
-﻿using Shared.Core.Interfaces;
+﻿using Shared.Infrastructure.Interfaces;
 using Shop.Core.Enums;
 using Shop.Domain.Entities;
 

@@ -1,15 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shared.Core.Dtos;
-using Shared.Core.Interfaces;
+using Shared.Infrastructure.Interfaces;
 
-namespace Shared.Core.Extensions;
+namespace Shared.Infrastructure.Extensions;
 
 public static class DbQueryExtension
 {
     public static IQueryable<T> Filter<T>(this IQueryable<T> query, IFilter<T> filter, string lang) where T : class
         => filter.FilterExecute(query, lang);
 
-    public static async Task<PageDto<T>> ToPageAsync<T>(this IQueryable<T> query, int pageNumber, CancellationToken cancellationToken = default) where T : class
+    public static async Task<PageDto<T>> ToPageAsync<T>(this IQueryable<T> query, int pageNumber, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(pageNumber);
@@ -21,7 +20,7 @@ public static class DbQueryExtension
             .ToListAsync(cancellationToken);
 
         var recordsCount = await query.CountAsync(cancellationToken);
-        var totalPages = (recordsCount / itemsCount) + 1;
+        var totalPages = recordsCount / itemsCount + 1;
 
         return new PageDto<T>(pageNumber, items, totalPages);
     }

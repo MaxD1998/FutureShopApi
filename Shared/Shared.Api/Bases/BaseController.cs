@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Shared.Api.Results;
 using Shared.Core.Dtos;
-using Shared.Core.Errors;
 using Shared.Core.Factories.FluentValidator;
 using Shared.Domain.Bases;
 using Shared.Infrastructure.Dtos;
@@ -37,77 +36,23 @@ public abstract class BaseController : ControllerBase
             : NoContent();
     }
 
-    protected async Task<IActionResult> ApiResponseAsync<TParam, TResult>(TParam param, IRequest<ResultDto<TResult>> request, CancellationToken cancellationToken = default)
-        where TParam : class
-    {
-        cancellationToken.ThrowIfCancellationRequested();
-        var validationResult = IsValid(param, out var errors);
+    protected async Task<IActionResult> ApiResponseAsync<TRespone>(Func<CancellationToken, Task<ResultDto<TRespone>>> executeAsync, CancellationToken cancellationToken)
+        => ApiResponse(await executeAsync(cancellationToken));
 
-        if (validationResult.IsSuccess)
-        {
-            if (!validationResult.Result)
-                return BadRequest(errors);
-        }
-        else
-            return ApiResponse(validationResult);
+    protected async Task<IActionResult> ApiResponseAsync<TParam, TRespone>(Func<TParam, CancellationToken, Task<ResultDto<TRespone>>> executeAsync, TParam param, CancellationToken cancellationToken)
+        => ApiResponse(await executeAsync(param, cancellationToken));
 
-        return ApiResponse(await _mediator.Send(request, cancellationToken));
-    }
+    protected async Task<IActionResult> ApiResponseAsync<T1, T2, TRespone>(Func<T1, T2, CancellationToken, Task<ResultDto<TRespone>>> executeAsync, T1 param1, T2 param2, CancellationToken cancellationToken)
+        => ApiResponse(await executeAsync(param1, param2, cancellationToken));
 
-    protected async Task<IActionResult> ApiResponseAsync<TParam>(TParam param, IRequest<ResultDto> request, CancellationToken cancellationToken = default)
-        where TParam : class
-    {
-        cancellationToken.ThrowIfCancellationRequested();
-        var validationResult = IsValid(param, out var errors);
+    protected async Task<IActionResult> ApiResponseAsync<T1, T2, T3, TRespone>(Func<T1, T2, T3, CancellationToken, Task<ResultDto<TRespone>>> executeAsync, T1 param1, T2 param2, T3 param3, CancellationToken cancellationToken)
+        => ApiResponse(await executeAsync(param1, param2, param3, cancellationToken));
 
-        if (validationResult.IsSuccess)
-        {
-            if (!validationResult.Result)
-                return BadRequest(errors);
-        }
-        else
-            return ApiResponse(validationResult);
+    protected async Task<IActionResult> ApiResponseAsync(Func<CancellationToken, Task<ResultDto>> executeAsync, CancellationToken cancellationToken)
+        => ApiResponse(await executeAsync(cancellationToken));
 
-        return ApiResponse(await _mediator.Send(request, cancellationToken));
-    }
-
-    protected async Task<IActionResult> ApiResponseAsync(IRequest<ResultDto> request, CancellationToken cancellationToken = default)
-    {
-        cancellationToken.ThrowIfCancellationRequested();
-
-        return ApiResponse(await _mediator.Send(request, cancellationToken));
-    }
-
-    protected async Task<IActionResult> ApiResponseAsync<TResult>(IRequest<ResultDto<TResult>> request, CancellationToken cancellationToken = default)
-    {
-        cancellationToken.ThrowIfCancellationRequested();
-
-        return ApiResponse(await _mediator.Send(request, cancellationToken));
-    }
-
-    protected async Task<IActionResult> ApiResponseAsync<TParam, TRespone>(TParam param, Func<Task<ResultDto<TRespone>>> action, CancellationToken cancellationToken = default)
-        where TParam : class
-    {
-        cancellationToken.ThrowIfCancellationRequested();
-
-        var validationResult = IsValid(param, out var errors);
-
-        if (validationResult.IsSuccess)
-        {
-            if (!validationResult.Result)
-                return BadRequest(errors);
-        }
-        else
-            return ApiResponse(validationResult);
-
-        return ApiResponse(await action());
-    }
-
-    protected async Task<IActionResult> ApiResponseAsync<T>(Func<Task<ResultDto<T>>> action)
-        => ApiResponse(await action());
-
-    protected async Task<IActionResult> ApiResponseAsync(Func<Task<ResultDto>> action)
-        => ApiResponse(await action());
+    protected async Task<IActionResult> ApiResponseAsync<TParam>(Func<TParam, CancellationToken, Task<ResultDto>> executeAsync, TParam param, CancellationToken cancellationToken)
+        => ApiResponse(await executeAsync(param, cancellationToken));
 
     private IActionResult ApiResponse(ResultDto result)
         => result is ResultDto<ErrorDto> error ? ApiResponse(error) : NoContent();
@@ -126,23 +71,5 @@ public abstract class BaseController : ControllerBase
             };
 
         return Ok(result.Result);
-    }
-
-    private ResultDto<bool> IsValid<TInput>(TInput param, out IEnumerable<ErrorDto> errors) where TInput : class
-    {
-        var validator = _fluentValidatorFactory.GetValidator<TInput>();
-
-        if (validator is null)
-        {
-            errors = [];
-            return ResultDto.Error<bool>(HttpStatusCode.NotImplemented, CommonExceptionMessage.C002ValidatorNotExist);
-        }
-
-        var validation = validator.Validate(param);
-        var isValid = validation.IsValid;
-
-        errors = isValid ? null : validation.Errors.Select(x => new ErrorDto(x));
-
-        return ResultDto.Success(isValid);
     }
 }

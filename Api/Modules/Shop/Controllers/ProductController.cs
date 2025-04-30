@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Core.Dtos;
 using Shared.Core.Factories.FluentValidator;
+using Shared.Infrastructure.Extensions;
 using Shop.Core.Cqrs.Product.Commands;
 using Shop.Core.Cqrs.Product.Queries;
 using Shop.Core.Dtos.Product;

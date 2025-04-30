@@ -4,7 +4,7 @@ using Product.Domain.Entities;
 using Product.Infrastructure;
 using Shared.Core.Bases;
 using Shared.Core.Dtos;
-using Shared.Core.Extensions;
+using Shared.Infrastructure.Extensions;
 
 namespace Product.Core.Cqrs.ProductBase.Queries;
 

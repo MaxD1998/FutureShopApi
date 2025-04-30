@@ -20,7 +20,7 @@ public class UserRepository(AuthContext context) : BaseRepository<AuthContext>(c
         => AnyAsync<UserEntity>(x => x.Email == email, cancellationToken);
 
     public Task<UserEntity> CreateAsync(UserEntity entity, CancellationToken cancellationToken)
-        => AddAsync(entity, cancellationToken);
+        => base.CreateAsync(entity, cancellationToken);
 
     public Task<UserEntity> GetByEmailAsync(string email, CancellationToken cancellationToken)
         => GetByAsync<UserEntity>(x => x.Email == email, cancellationToken);

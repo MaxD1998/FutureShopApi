@@ -6,6 +6,7 @@ using Shared.Core.Dtos;
 using Shared.Core.Extensions;
 using Shared.Core.Services;
 using Shared.Infrastructure.Constants;
+using Shared.Infrastructure.Extensions;
 using Shop.Core.Dtos.Product;
 using Shop.Domain.Entities;
 using Shop.Infrastructure;
