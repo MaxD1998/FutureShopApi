@@ -1,6 +1,5 @@
 ﻿using Product.Core.Dtos;
 using Product.Core.Dtos.Category;
-using Product.Domain.Entities;
 using Product.Infrastructure;
 using Product.Infrastructure.Repositories;
 using Shared.Core.Bases;
@@ -43,7 +42,7 @@ public class CategoryService(ICategoryRepository categoryRepository, ProductPost
 
     public async Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        await _categoryRepository.DeleteByIdAsync<CategoryEntity>(id, cancellationToken);
+        await _categoryRepository.DeleteByIdAsync(id, cancellationToken);
         return Success();
     }
 

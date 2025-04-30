@@ -5,14 +5,14 @@ using System.Linq.Expressions;
 
 namespace Product.Infrastructure.Repositories;
 
-public interface ICategoryRepository : IBaseRepository
+public interface ICategoryRepository : IBaseRepository<CategoryEntity>
 {
     Task<List<TResult>> GetListPotentialParentCategories<TResult>(Guid? id, List<Guid> childIds, Expression<Func<CategoryEntity, TResult>> map, CancellationToken cancellationToken);
 
     Task<List<TResult>> GetListPotentialSubcategoriesAsync<TResult>(Guid? id, Guid? parentId, List<Guid> childIds, Expression<Func<CategoryEntity, TResult>> map, CancellationToken cancellationToken);
 }
 
-public class CategoryRepository(ProductPostgreSqlContext context) : BaseRepository<ProductPostgreSqlContext>(context), ICategoryRepository
+public class CategoryRepository(ProductPostgreSqlContext context) : BaseRepository<ProductPostgreSqlContext, CategoryEntity>(context), ICategoryRepository
 {
     public async Task<List<TResult>> GetListPotentialParentCategories<TResult>(Guid? id, List<Guid> childIds, Expression<Func<CategoryEntity, TResult>> map, CancellationToken cancellationToken)
     {

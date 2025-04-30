@@ -2,7 +2,9 @@
 using FluentValidation;
 using Product.Core;
 using Product.Core.Jobs;
+using Product.Core.Services;
 using Product.Infrastructure;
+using Product.Infrastructure.Repositories;
 using Quartz;
 using Shared.Api.Middlewares;
 
@@ -13,6 +15,8 @@ public static class ProductRegister
     public static void RegisterProductModule(this IServiceCollection services)
     {
         services.ConfigureServices();
+        services.RegisterRepositories();
+        services.RegisterServices();
         services.RegisterQuartzJobs();
         services.RegisterMiddlewares();
     }
@@ -40,5 +44,17 @@ public static class ProductRegister
         {
             q.AddJobAndTrigger<DeleteNotAssignedPhotoJob>();
         });
+    }
+
+    private static void RegisterRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IProductBaseRepository, ProductBaseRepository>();
+    }
+
+    private static void RegisterServices(this IServiceCollection services)
+    {
+        services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<IProductBaseService, ProductBaseService>();
     }
 }

@@ -4,14 +4,14 @@ using Shared.Infrastructure.Bases;
 
 namespace Authorization.Inrfrastructure.Repositories;
 
-public interface IRefreshTokenRepository
+public interface IRefreshTokenRepository : IBaseRepository<RefreshTokenEntity>
 {
     Task<RefreshTokenEntity> CreateOrUpdateByUserIdAsync(RefreshTokenEntity entityToUpdate, CancellationToken cancellationToken);
 
     Task DeleteByUserId(Guid userId, CancellationToken cancellationToken);
 }
 
-public class RefreshTokenRepository(AuthContext context) : BaseRepository<AuthContext>(context), IRefreshTokenRepository
+public class RefreshTokenRepository(AuthContext context) : BaseRepository<AuthContext, RefreshTokenEntity>(context), IRefreshTokenRepository
 {
     public async Task<RefreshTokenEntity> CreateOrUpdateByUserIdAsync(RefreshTokenEntity entityToUpdate, CancellationToken cancellationToken)
     {
@@ -29,5 +29,5 @@ public class RefreshTokenRepository(AuthContext context) : BaseRepository<AuthCo
     }
 
     public Task DeleteByUserId(Guid userId, CancellationToken cancellationToken)
-        => DeleteByIdAsync<RefreshTokenEntity>(x => x.UserId == userId, cancellationToken);
+        => DeleteByAsync(x => x.UserId == userId, cancellationToken);
 }
