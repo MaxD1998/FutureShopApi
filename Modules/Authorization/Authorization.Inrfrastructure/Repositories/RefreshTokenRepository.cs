@@ -29,5 +29,5 @@ public class RefreshTokenRepository(AuthContext context) : BaseRepository<AuthCo
     }
 
     public Task DeleteByUserId(Guid userId, CancellationToken cancellationToken)
-        => DeleteByAsync<RefreshTokenEntity>(x => x.UserId == userId, cancellationToken);
+        => DeleteByIdAsync<RefreshTokenEntity>(x => x.UserId == userId, cancellationToken);
 }

@@ -8,30 +8,24 @@ namespace Shared.Infrastructure.Bases;
 
 public interface IBaseRepository
 {
+    Task<T> CreateAsync<T>(T entity, CancellationToken cancellationToken) where T : BaseEntity;
+
+    Task DeleteByIdAsync<T>(Guid id, CancellationToken cancellationToken) where T : BaseEntity;
+
     Task<TResult> GetByIdAsync<TEntity, TResult>(Guid id, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken) where TEntity : BaseEntity;
 
     Task<List<TResult>> GetListAsync<TEntity, TResult>(Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken) where TEntity : BaseEntity;
 
     Task<PageDto<TResult>> GetPageAsync<TEntity, TResult>(int pageNumber, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken) where TEntity : BaseEntity;
+
+    Task<T> UpdateAsync<T>(Guid id, T entity, CancellationToken cancellationToken) where T : BaseEntity, IUpdate<T>;
 }
 
 public abstract class BaseRepository<TContext>(TContext context) : IBaseRepository where TContext : BasePostgreSqlContext
 {
     protected readonly TContext _context = context;
 
-    public Task<TResult> GetByIdAsync<TEntity, TResult>(Guid id, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken) where TEntity : BaseEntity
-        => _context.Set<TEntity>().Where(x => x.Id == id).Select(map).FirstOrDefaultAsync();
-
-    public Task<List<TResult>> GetListAsync<TEntity, TResult>(Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken) where TEntity : BaseEntity
-        => _context.Set<TEntity>().Select(map).ToListAsync();
-
-    public Task<PageDto<TResult>> GetPageAsync<TEntity, TResult>(int pageNumber, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken) where TEntity : BaseEntity
-        => _context.Set<TEntity>().Select(map).ToPageAsync(pageNumber, cancellationToken);
-
-    protected Task<bool> AnyAsync<T>(Expression<Func<T, bool>> condition, CancellationToken cancellationToken) where T : BaseEntity
-        => _context.Set<T>().AnyAsync(condition, cancellationToken);
-
-    protected async Task<T> CreateAsync<T>(T entity, CancellationToken cancellationToken) where T : BaseEntity
+    public virtual async Task<T> CreateAsync<T>(T entity, CancellationToken cancellationToken) where T : BaseEntity
     {
         await _context.Set<T>().AddAsync(entity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
@@ -39,13 +33,19 @@ public abstract class BaseRepository<TContext>(TContext context) : IBaseReposito
         return entity;
     }
 
-    protected Task DeleteByAsync<T>(Expression<Func<T, bool>> condition, CancellationToken cancellationToken) where T : BaseEntity
-        => _context.Set<T>().Where(condition).ExecuteDeleteAsync(cancellationToken);
+    public Task DeleteByIdAsync<T>(Guid id, CancellationToken cancellationToken) where T : BaseEntity
+        => _context.Set<T>().Where(x => x.Id == id).ExecuteDeleteAsync(cancellationToken);
 
-    protected Task<T> GetByAsync<T>(Expression<Func<T, bool>> condition, CancellationToken cancellationToken) where T : BaseEntity
-        => _context.Set<T>().AsNoTracking().Where(condition).FirstOrDefaultAsync(cancellationToken);
+    public Task<TResult> GetByIdAsync<TEntity, TResult>(Guid id, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken) where TEntity : BaseEntity
+                => _context.Set<TEntity>().Where(x => x.Id == id).Select(map).FirstOrDefaultAsync();
 
-    protected async Task<T> UpdateAsync<T>(Guid id, T entity, CancellationToken cancellationToken) where T : BaseEntity, IUpdate<T>
+    public Task<List<TResult>> GetListAsync<TEntity, TResult>(Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken) where TEntity : BaseEntity
+        => _context.Set<TEntity>().Select(map).ToListAsync();
+
+    public Task<PageDto<TResult>> GetPageAsync<TEntity, TResult>(int pageNumber, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken) where TEntity : BaseEntity
+        => _context.Set<TEntity>().Select(map).ToPageAsync(pageNumber, cancellationToken);
+
+    public virtual async Task<T> UpdateAsync<T>(Guid id, T entity, CancellationToken cancellationToken) where T : BaseEntity, IUpdate<T>
     {
         var entityToUpdate = await _context.Set<T>().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
@@ -55,4 +55,10 @@ public abstract class BaseRepository<TContext>(TContext context) : IBaseReposito
 
         return entityToUpdate;
     }
+
+    protected Task<bool> AnyAsync<T>(Expression<Func<T, bool>> condition, CancellationToken cancellationToken) where T : BaseEntity
+        => _context.Set<T>().AnyAsync(condition, cancellationToken);
+
+    protected Task<T> GetByAsync<T>(Expression<Func<T, bool>> condition, CancellationToken cancellationToken) where T : BaseEntity
+        => _context.Set<T>().AsNoTracking().Where(condition).FirstOrDefaultAsync(cancellationToken);
 }

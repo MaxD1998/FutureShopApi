@@ -1,11 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Product.Core.Dtos.ProductBase;
+using Shared.Core.Bases;
+using Shared.Core.Dtos;
 
 namespace Product.Core.Services;
-public class ProductBaseService
-{
 
+public interface IProductBaseService
+{
+}
+
+public class ProductBaseService : BaseService, IProductBaseService
+{
+    public async Task<ResultDto<ProductBaseFormDto>> CreateAsync()
+    {
+    }
 }
