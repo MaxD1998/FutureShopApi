@@ -50,11 +50,13 @@ public static class ProductRegister
     {
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IProductBaseRepository, ProductBaseRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>();
     }
 
     private static void RegisterServices(this IServiceCollection services)
     {
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IProductBaseService, ProductBaseService>();
+        services.AddScoped<IProductService, ProductService>();
     }
 }
