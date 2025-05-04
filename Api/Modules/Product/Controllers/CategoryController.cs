@@ -1,17 +1,15 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Product.Core.Dtos;
 using Product.Core.Dtos.Category;
 using Product.Core.Services;
 using Shared.Api.Attributes;
-using Shared.Core.Factories.FluentValidator;
 using Shared.Domain.Enums;
 using Shared.Infrastructure.Extensions;
 
 namespace Api.Modules.Product.Controllers;
 
 [Role(UserType.User)]
-public class CategoryController(IFluentValidatorFactory fluentValidatorFactory, IMediator mediator, ICategoryService categoryService) : ProductModuleBaseController(fluentValidatorFactory, mediator)
+public class CategoryController(ICategoryService categoryService) : ProductModuleBaseController
 {
     private readonly ICategoryService _categoryService = categoryService;
 

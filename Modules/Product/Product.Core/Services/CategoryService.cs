@@ -1,6 +1,6 @@
 ﻿using Product.Core.Dtos;
 using Product.Core.Dtos.Category;
-using Product.Infrastructure;
+using Product.Domain.Entities;
 using Product.Infrastructure.Repositories;
 using Shared.Core.Bases;
 using Shared.Core.Dtos;
@@ -27,14 +27,14 @@ public interface ICategoryService
     Task<ResultDto<CategoryFormDto>> UpdateAsync(Guid id, CategoryFormDto dto, CancellationToken cancellationToken);
 }
 
-public class CategoryService(ICategoryRepository categoryRepository, ProductPostgreSqlContext context) : BaseService, ICategoryService
+public class CategoryService(ICategoryRepository categoryRepository) : BaseService, ICategoryService
 {
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
-    private readonly ProductPostgreSqlContext _context = context;
 
     public async Task<ResultDto<CategoryFormDto>> CreateAsync(CategoryFormDto dto, CancellationToken cancellationToken)
     {
-        var entity = await _categoryRepository.CreateAsync(dto.ToEntity(_context), cancellationToken);
+        var entity = await MapToEntity(dto, cancellationToken);
+        entity = await _categoryRepository.CreateAsync(entity, cancellationToken);
         var result = await _categoryRepository.GetByIdAsync(entity.Id, CategoryFormDto.Map(), cancellationToken);
 
         return Success(result);
@@ -79,9 +79,20 @@ public class CategoryService(ICategoryRepository categoryRepository, ProductPost
 
     public async Task<ResultDto<CategoryFormDto>> UpdateAsync(Guid id, CategoryFormDto dto, CancellationToken cancellationToken)
     {
-        var entity = await _categoryRepository.UpdateAsync(id, dto.ToEntity(_context), cancellationToken);
+        var entity = await MapToEntity(dto, cancellationToken);
+        entity = await _categoryRepository.UpdateAsync(id, entity, cancellationToken);
         var result = await _categoryRepository.GetByIdAsync(entity.Id, CategoryFormDto.Map(), cancellationToken);
 
         return Success(result);
+    }
+
+    private async Task<CategoryEntity> MapToEntity(CategoryFormDto dto, CancellationToken cancellationToken)
+    {
+        var entity = dto.ToEntity();
+        var subcategoryIds = entity.SubCategories.Select(x => x.Id).ToList();
+
+        entity.SubCategories = await _categoryRepository.GetListByIds(subcategoryIds, cancellationToken);
+
+        return entity;
     }
 }

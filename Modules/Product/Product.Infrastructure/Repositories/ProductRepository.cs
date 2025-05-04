@@ -7,6 +7,6 @@ public interface IProductRepository : IBaseRepository<ProductEntity>
 {
 }
 
-public class ProductRepository(ProductPostgreSqlContext context) : BaseRepository<ProductPostgreSqlContext, ProductEntity>(context), IProductRepository
+public class ProductRepository(ProductContext context) : BaseRepository<ProductContext, ProductEntity>(context), IProductRepository
 {
 }

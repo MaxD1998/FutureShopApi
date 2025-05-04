@@ -1,8 +1,6 @@
-﻿using Authorization.Core;
-using Authorization.Core.Services;
+﻿using Authorization.Core.Services;
 using Authorization.Inrfrastructure;
 using Authorization.Inrfrastructure.Repositories;
-using FluentValidation;
 using Shared.Api.Middlewares;
 using Shared.Core.Factories.FluentValidator;
 
@@ -21,11 +19,6 @@ public static class AuthRegister
     private static void ConfigureServices(this IServiceCollection services)
     {
         services.AddDbContext<AuthContext>();
-        services.AddMediatR(cfg =>
-        {
-            cfg.RegisterServicesFromAssembly(typeof(CoreAssembly).Assembly);
-        });
-        services.AddValidatorsFromAssembly(typeof(CoreAssembly).Assembly);
     }
 
     private static void RegisterMiddlewares(this IServiceCollection services)

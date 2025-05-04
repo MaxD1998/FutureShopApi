@@ -1,16 +1,14 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Product.Core.Dtos.Product;
 using Product.Core.Services;
 using Shared.Api.Attributes;
-using Shared.Core.Factories.FluentValidator;
 using Shared.Domain.Enums;
 using Shared.Infrastructure.Extensions;
 
 namespace Api.Modules.Product.Controllers;
 
 [Role(UserType.User)]
-public class ProductController(IFluentValidatorFactory fluentValidatorFactory, IMediator mediator, IProductService productService) : ProductModuleBaseController(fluentValidatorFactory, mediator)
+public class ProductController(IProductService productService) : ProductModuleBaseController
 {
     private readonly IProductService _productService = productService;
 

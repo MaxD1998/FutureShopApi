@@ -2,24 +2,14 @@
 using Authorization.Core.Dtos.Login;
 using Authorization.Core.Dtos.User;
 using Authorization.Core.Services;
-using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Core.Factories.FluentValidator;
 
 namespace Api.Modules.Authorization.Controllers;
 
-public class AuthController : AuthModuleBaseController
+public class AuthController(IAuthService authService) : AuthModuleBaseController
 {
-    private readonly IAuthService _authService;
-
-    public AuthController(
-        IAuthService authService,
-        IFluentValidatorFactory fluentValidatorFactory,
-        IMediator mediator) : base(fluentValidatorFactory, mediator)
-    {
-        _authService = authService;
-    }
+    private readonly IAuthService _authService = authService;
 
     [HttpGet("RefreshToken")]
     [ProducesResponseType(typeof(AuthorizeDto), StatusCodes.Status200OK)]

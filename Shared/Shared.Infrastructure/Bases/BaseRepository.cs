@@ -15,20 +15,24 @@ public interface IBaseRepository<TEntity> : IBaseRepository where TEntity : Base
 {
     Task<TEntity> CreateAsync(TEntity entity, CancellationToken cancellationToken);
 
+    Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+
     Task<TResult> GetByIdAsync<TResult>(Guid id, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken);
 
     Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken);
+
+    Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TEntity, bool>> condition, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken);
 
     Task<PageDto<TResult>> GetPageAsync<TResult>(int pageNumber, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken);
 
     Task<TEntity> UpdateAsync(Guid id, TEntity entity, CancellationToken cancellationToken);
 }
 
-public abstract class BaseRepository<TContext, TEntity>(TContext context) : IBaseRepository<TEntity> where TContext : BasePostgreSqlContext where TEntity : BaseEntity, IUpdate<TEntity>
+public abstract class BaseRepository<TContext, TEntity>(TContext context) : IBaseRepository<TEntity> where TContext : BaseContext where TEntity : BaseEntity, IUpdate<TEntity>
 {
     protected readonly TContext _context = context;
 
-    public async Task<TEntity> CreateAsync(TEntity entity, CancellationToken cancellationToken)
+    public virtual async Task<TEntity> CreateAsync(TEntity entity, CancellationToken cancellationToken)
     {
         await _context.Set<TEntity>().AddAsync(entity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
@@ -39,14 +43,20 @@ public abstract class BaseRepository<TContext, TEntity>(TContext context) : IBas
     public Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
         => _context.Set<TEntity>().Where(x => x.Id == id).ExecuteDeleteAsync(cancellationToken);
 
+    public Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        => _context.Set<TEntity>().AsNoTracking().Where(x => x.Id == id).FirstOrDefaultAsync();
+
     public Task<TResult> GetByIdAsync<TResult>(Guid id, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken)
-                => _context.Set<TEntity>().Where(x => x.Id == id).Select(map).FirstOrDefaultAsync();
+        => _context.Set<TEntity>().AsNoTracking().Where(x => x.Id == id).Select(map).FirstOrDefaultAsync();
 
     public Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken)
-        => _context.Set<TEntity>().Select(map).ToListAsync();
+        => _context.Set<TEntity>().AsNoTracking().Select(map).ToListAsync();
+
+    public Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TEntity, bool>> condition, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken)
+        => _context.Set<TEntity>().AsNoTracking().Where(condition).Select(map).ToListAsync();
 
     public Task<PageDto<TResult>> GetPageAsync<TResult>(int pageNumber, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken)
-        => _context.Set<TEntity>().Select(map).ToPageAsync(pageNumber, cancellationToken);
+        => _context.Set<TEntity>().AsNoTracking().Select(map).ToPageAsync(pageNumber, cancellationToken);
 
     public async Task<TEntity> UpdateAsync(Guid id, TEntity entity, CancellationToken cancellationToken)
     {

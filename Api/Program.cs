@@ -66,8 +66,8 @@ public class Program
 
         app.UseMiddleware<ErrorHandlingMiddleware>();
         app.UseMiddleware<PostgreSqlDbTransactionMiddleware<AuthContext>>();
-        app.UseMiddleware<PostgreSqlDbTransactionMiddleware<ProductPostgreSqlContext>>();
-        app.UseMiddleware<PostgreSqlDbTransactionMiddleware<ShopPostgreSqlContext>>();
+        app.UseMiddleware<PostgreSqlDbTransactionMiddleware<ProductContext>>();
+        app.UseMiddleware<PostgreSqlDbTransactionMiddleware<ShopContext>>();
         app.UseMiddleware<PostgreSqlDbTransactionMiddleware<WarehouseContext>>();
         app.UseMiddleware<MongoDbTransactionMiddleware<ProductMongoDbContext>>();
 

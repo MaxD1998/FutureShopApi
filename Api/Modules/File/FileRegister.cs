@@ -1,0 +1,37 @@
+﻿using File.Core.Services;
+using File.Infrastructure;
+using File.Infrastructure.Repositories;
+using Shared.Api.Middlewares;
+
+namespace Api.Modules.File;
+
+public static class FileRegister
+{
+    public static void RegisterProductModule(this IServiceCollection services)
+    {
+        services.ConfigureServices();
+        services.RegisterRepositories();
+        services.RegisterServices();
+        services.RegisterMiddlewares();
+    }
+
+    private static void ConfigureServices(this IServiceCollection services)
+    {
+        services.AddScoped<FileContext>();
+    }
+
+    private static void RegisterMiddlewares(this IServiceCollection services)
+    {
+        services.AddScoped<MongoDbTransactionMiddleware<FileContext>>();
+    }
+
+    private static void RegisterRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<IFileService, FileService>();
+    }
+
+    private static void RegisterServices(this IServiceCollection services)
+    {
+        services.AddScoped<IFileRepository, FileRepository>();
+    }
+}

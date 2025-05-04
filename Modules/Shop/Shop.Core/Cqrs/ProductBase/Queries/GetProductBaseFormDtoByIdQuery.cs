@@ -11,9 +11,9 @@ public record GetProductBaseFormDtoByIdQuery(Guid Id) : IRequest<ResultDto<Produ
 
 internal class GetProductBaseFormDtoByIdQueryHandler : BaseService, IRequestHandler<GetProductBaseFormDtoByIdQuery, ResultDto<ProductBaseFormDto>>
 {
-    private readonly ShopPostgreSqlContext _context;
+    private readonly ShopContext _context;
 
-    public GetProductBaseFormDtoByIdQueryHandler(ShopPostgreSqlContext context)
+    public GetProductBaseFormDtoByIdQueryHandler(ShopContext context)
     {
         _context = context;
     }

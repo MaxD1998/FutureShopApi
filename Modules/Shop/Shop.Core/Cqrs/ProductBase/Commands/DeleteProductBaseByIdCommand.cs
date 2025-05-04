@@ -11,9 +11,9 @@ public record DeleteProductBaseByIdCommand(Guid Id) : IRequest<ResultDto>;
 
 internal class DeleteProductBaseByIdCommandHandler : BaseService, IRequestHandler<DeleteProductBaseByIdCommand, ResultDto>
 {
-    private readonly ShopPostgreSqlContext _context;
+    private readonly ShopContext _context;
 
-    public DeleteProductBaseByIdCommandHandler(ShopPostgreSqlContext context)
+    public DeleteProductBaseByIdCommandHandler(ShopContext context)
     {
         _context = context;
     }

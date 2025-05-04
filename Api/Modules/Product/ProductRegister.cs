@@ -23,7 +23,7 @@ public static class ProductRegister
 
     private static void ConfigureServices(this IServiceCollection services)
     {
-        services.AddDbContext<ProductPostgreSqlContext>();
+        services.AddDbContext<ProductContext>();
         services.AddScoped<ProductMongoDbContext>();
         services.AddMediatR(cfg =>
         {
@@ -34,8 +34,7 @@ public static class ProductRegister
 
     private static void RegisterMiddlewares(this IServiceCollection services)
     {
-        services.AddScoped<PostgreSqlDbTransactionMiddleware<ProductPostgreSqlContext>>();
-        services.AddScoped<MongoDbTransactionMiddleware<ProductMongoDbContext>>();
+        services.AddScoped<PostgreSqlDbTransactionMiddleware<ProductContext>>();
     }
 
     private static void RegisterQuartzJobs(this IServiceCollection services)

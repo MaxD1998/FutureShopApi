@@ -11,9 +11,9 @@ public record GetPurchaseListDtoByIdQuery(Guid Id) : IRequest<ResultDto<Purchase
 
 internal class GetPurchaseListDtoByIdQueryHandler : BaseService, IRequestHandler<GetPurchaseListDtoByIdQuery, ResultDto<PurchaseListDto>>
 {
-    private readonly ShopPostgreSqlContext _context;
+    private readonly ShopContext _context;
 
-    public GetPurchaseListDtoByIdQueryHandler(ShopPostgreSqlContext context)
+    public GetPurchaseListDtoByIdQueryHandler(ShopContext context)
     {
         _context = context;
     }

@@ -11,10 +11,6 @@ namespace Api.Modules.Shop.Controllers;
 
 public class ProductBaseController : ShopModuleBaseController
 {
-    public ProductBaseController(IFluentValidatorFactory fluentValidatorFactory, IMediator mediator) : base(fluentValidatorFactory, mediator)
-    {
-    }
-
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(ProductBaseFormDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)

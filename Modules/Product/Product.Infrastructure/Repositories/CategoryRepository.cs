@@ -7,13 +7,18 @@ namespace Product.Infrastructure.Repositories;
 
 public interface ICategoryRepository : IBaseRepository<CategoryEntity>
 {
+    Task<List<CategoryEntity>> GetListByIds(List<Guid> ids, CancellationToken cancellationToken);
+
     Task<List<TResult>> GetListPotentialParentCategories<TResult>(Guid? id, List<Guid> childIds, Expression<Func<CategoryEntity, TResult>> map, CancellationToken cancellationToken);
 
     Task<List<TResult>> GetListPotentialSubcategoriesAsync<TResult>(Guid? id, Guid? parentId, List<Guid> childIds, Expression<Func<CategoryEntity, TResult>> map, CancellationToken cancellationToken);
 }
 
-public class CategoryRepository(ProductPostgreSqlContext context) : BaseRepository<ProductPostgreSqlContext, CategoryEntity>(context), ICategoryRepository
+public class CategoryRepository(ProductContext context) : BaseRepository<ProductContext, CategoryEntity>(context), ICategoryRepository
 {
+    public Task<List<CategoryEntity>> GetListByIds(List<Guid> ids, CancellationToken cancellationToken)
+        => _context.Set<CategoryEntity>().Where(x => ids.Contains(x.Id)).ToListAsync(cancellationToken);
+
     public async Task<List<TResult>> GetListPotentialParentCategories<TResult>(Guid? id, List<Guid> childIds, Expression<Func<CategoryEntity, TResult>> map, CancellationToken cancellationToken)
     {
         var query = _context.Set<CategoryEntity>()

@@ -4,7 +4,7 @@ using System.Net;
 
 namespace Shared.Api.Middlewares;
 
-public class PostgreSqlDbTransactionMiddleware<TContext> : IMiddleware where TContext : BasePostgreSqlContext
+public class PostgreSqlDbTransactionMiddleware<TContext> : IMiddleware where TContext : BaseContext
 {
     private readonly TContext _context;
 

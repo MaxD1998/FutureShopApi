@@ -1,8 +1,6 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Shared.Api.Results;
 using Shared.Core.Dtos;
-using Shared.Core.Factories.FluentValidator;
 using Shared.Domain.Bases;
 using Shared.Infrastructure.Dtos;
 using System.Net;
@@ -12,23 +10,11 @@ namespace Shared.Api.Bases;
 [ApiController]
 public abstract class BaseController : ControllerBase
 {
-    private readonly IFluentValidatorFactory _fluentValidatorFactory;
-
-    private readonly IMediator _mediator;
-
-    public BaseController(
-    IFluentValidatorFactory fluentValidatorFactory,
-    IMediator mediator)
-    {
-        _fluentValidatorFactory = fluentValidatorFactory;
-        _mediator = mediator;
-    }
-
-    protected async Task<IActionResult> ApiFileResponseAsync<TFile>(IRequest<ResultDto<TFile>> request, CancellationToken cancellationToken = default) where TFile : BaseFileDocument
+    protected async Task<IActionResult> ApiFileResponseAsync<TParam, TFile>(Func<TParam, CancellationToken, Task<ResultDto<TFile>>> executeAsync, TParam param, CancellationToken cancellationToken = default) where TFile : BaseFileDocument
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        var fileResult = await _mediator.Send(request, cancellationToken);
+        var fileResult = await executeAsync(param, cancellationToken);
         var file = fileResult.Result;
 
         return file != null

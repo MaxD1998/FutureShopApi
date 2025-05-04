@@ -14,11 +14,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Scalar.AspNetCore" Version="2.1.11" />
+    <PackageReference Include="Scalar.AspNetCore" Version="2.2.5" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Modules\Authorization\Authorization.Core\Authorization.Core.csproj" />
+    <ProjectReference Include="..\Modules\File\File.Core\File.Core.csproj" />
     <ProjectReference Include="..\Modules\Product\Product.Core\Product.Core.csproj" />
     <ProjectReference Include="..\Modules\Shop\Shop.Core\Shop.Core.csproj" />
     <ProjectReference Include="..\Modules\Warehouse\Warehouse.Core\Warehouse.Core.csproj" />
