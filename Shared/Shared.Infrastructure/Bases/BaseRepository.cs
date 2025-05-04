@@ -58,17 +58,6 @@ public abstract class BaseRepository<TContext, TEntity>(TContext context) : IBas
     public Task<PageDto<TResult>> GetPageAsync<TResult>(int pageNumber, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken)
         => _context.Set<TEntity>().AsNoTracking().Select(map).ToPageAsync(pageNumber, cancellationToken);
 
-    public async Task<TEntity> UpdateAsync(Guid id, TEntity entity, CancellationToken cancellationToken)
-    {
-        var entityToUpdate = await _context.Set<TEntity>().FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
-
-        entityToUpdate.Update(entity);
-
-        await _context.SaveChangesAsync(cancellationToken);
-
-        return entityToUpdate;
-    }
-
     protected Task<bool> AnyAsync(Expression<Func<TEntity, bool>> condition, CancellationToken cancellationToken)
         => _context.Set<TEntity>().AnyAsync(condition, cancellationToken);
 

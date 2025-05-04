@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Product.Domain.Entities;
 using Shared.Infrastructure.Bases;
+using Shared.Infrastructure.Interfaces;
 using System.Linq.Expressions;
 
 namespace Product.Infrastructure.Repositories;
 
-public interface ICategoryRepository : IBaseRepository<CategoryEntity>
+public interface ICategoryRepository : IBaseRepository<CategoryEntity>, IUpdateRepository<CategoryEntity>
 {
     Task<List<CategoryEntity>> GetListByIds(List<Guid> ids, CancellationToken cancellationToken);
 
@@ -65,6 +66,23 @@ public class CategoryRepository(ProductContext context) : BaseRepository<Product
             .ToListAsync(cancellationToken);
 
         return results;
+    }
+
+    public async Task<CategoryEntity> UpdateAsync(Guid id, CategoryEntity entity, CancellationToken cancellationToken)
+    {
+        var entityToUpdate = await _context.Set<CategoryEntity>()
+            .Include(x => x.SubCategories)
+            .Where(x => x.Id == id)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        if (entityToUpdate == null)
+            return null;
+
+        entityToUpdate.Update(entity);
+
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return entityToUpdate;
     }
 
     private async Task<IEnumerable<Guid>> ExceptionIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken = default)
