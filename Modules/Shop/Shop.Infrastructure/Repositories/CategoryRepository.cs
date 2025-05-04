@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
+using Shared.Infrastructure.Interfaces;
 using Shop.Domain.Entities;
 
 namespace Shop.Infrastructure.Repositories;
 
-public interface ICategoryRepository : IBaseRepository<CategoryEntity>
+public interface ICategoryRepository : IBaseRepository<CategoryEntity>, IUpdateRepository<CategoryEntity>
 {
     Task CreateOrUpdateForEventAsync(CategoryEntity eventEntity, CancellationToken cancellationToken);
 
@@ -34,4 +35,20 @@ public class CategoryRepository(ShopContext context) : BaseRepository<ShopContex
 
     public Task<List<CategoryEntity>> GetListByExternalIdsAsync(List<Guid> ids, CancellationToken cancellationToken)
         => _context.Set<CategoryEntity>().Where(x => ids.Contains(x.ExternalId)).ToListAsync(cancellationToken);
+
+    public async Task<CategoryEntity> UpdateAsync(Guid id, CategoryEntity entity, CancellationToken cancellationToken)
+    {
+        var entityToUpdate = await _context.Set<CategoryEntity>()
+            .Include(x => x.Translations)
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+        if (entityToUpdate == null)
+            return null;
+
+        entity.Update(entity);
+
+        await _context.SaveChangesAsync(cancellationToken);
+
+        return entityToUpdate;
+    }
 }

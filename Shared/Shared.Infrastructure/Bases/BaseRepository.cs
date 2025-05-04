@@ -24,8 +24,6 @@ public interface IBaseRepository<TEntity> : IBaseRepository where TEntity : Base
     Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TEntity, bool>> condition, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken);
 
     Task<PageDto<TResult>> GetPageAsync<TResult>(int pageNumber, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken);
-
-    Task<TEntity> UpdateAsync(Guid id, TEntity entity, CancellationToken cancellationToken);
 }
 
 public abstract class BaseRepository<TContext, TEntity>(TContext context) : IBaseRepository<TEntity> where TContext : BaseContext where TEntity : BaseEntity, IUpdate<TEntity>
