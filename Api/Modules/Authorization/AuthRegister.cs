@@ -2,7 +2,6 @@
 using Authorization.Inrfrastructure;
 using Authorization.Inrfrastructure.Repositories;
 using Shared.Api.Middlewares;
-using Shared.Core.Factories.FluentValidator;
 
 namespace Api.Modules.Authorization;
 
@@ -34,8 +33,6 @@ public static class AuthRegister
 
     private static void RegisterServices(this IServiceCollection services)
     {
-        services.AddScoped<IFluentValidatorFactory, FluentValidatorFactory>();
-
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ICookieService, CookieService>();
     }

@@ -74,7 +74,7 @@ public class ProductRepository(ShopContext context) : BaseRepository<ShopContext
             .AsNoTracking()
             .Include(x => x.SubCategories)
             .Where(x => categoryIds.Contains(x.Id))
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         if (categories.Count > 0)
         {

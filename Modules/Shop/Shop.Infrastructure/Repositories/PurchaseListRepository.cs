@@ -2,11 +2,13 @@
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Interfaces;
 using Shop.Domain.Entities;
+using System.Linq.Expressions;
 
 namespace Shop.Infrastructure.Repositories;
 
 public interface IPurchaseListRepository : IBaseRepository<PurchaseListEntity>, IUpdateRepository<PurchaseListEntity>
 {
+    Task<List<TResult>> GetByUserIdAsync<TResult>(Guid userId, Expression<Func<PurchaseListEntity, TResult>> map, CancellationToken cancellationToken);
 }
 
 public class PurchaseListRepository(ShopContext context) : BaseRepository<ShopContext, PurchaseListEntity>(context), IPurchaseListRepository
@@ -26,6 +28,15 @@ public class PurchaseListRepository(ShopContext context) : BaseRepository<ShopCo
 
         return entity;
     }
+
+    public Task<List<TResult>> GetByUserIdAsync<TResult>(Guid userId, Expression<Func<PurchaseListEntity, TResult>> map, CancellationToken cancellationToken)
+        => _context.Set<PurchaseListEntity>()
+            .AsNoTracking()
+            .Where(x => x.UserId == userId)
+            .OrderByDescending(x => x.IsFavourite)
+                .ThenBy(x => x.Name)
+            .Select(map)
+            .ToListAsync(cancellationToken);
 
     public async Task<PurchaseListEntity> UpdateAsync(Guid id, PurchaseListEntity entity, CancellationToken cancellationToken)
     {

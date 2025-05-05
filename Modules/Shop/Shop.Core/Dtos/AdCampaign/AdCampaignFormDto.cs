@@ -1,7 +1,4 @@
-﻿using FluentValidation;
-using Shared.Core.Errors;
-using Shared.Core.Extensions;
-using Shop.Core.Dtos.AdCampaignItem;
+﻿using Shop.Core.Dtos.AdCampaignItem;
 using Shop.Domain.Entities;
 using System.Linq.Expressions;
 
@@ -40,14 +37,4 @@ public class AdCampaignFormDto
         Name = Name,
         Start = Start,
     };
-}
-
-public class AdCampaignFormValidator : AbstractValidator<AdCampaignFormDto>
-{
-    public AdCampaignFormValidator()
-    {
-        RuleFor(x => x.Name)
-            .NotEmpty()
-                .ErrorResponse(ErrorMessage.ValueWasEmpty);
-    }
 }

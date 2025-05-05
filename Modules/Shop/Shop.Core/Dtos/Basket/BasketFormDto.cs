@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Shop.Core.Dtos.BasketItem;
+﻿using Shop.Core.Dtos.BasketItem;
 using Shop.Domain.Entities;
 using System.Linq.Expressions;
 
@@ -22,13 +21,4 @@ public class BasketFormDto
         BasketItems = BasketItems.Select(x => x.ToEntity()).ToList(),
         Id = Id ?? Guid.Empty
     };
-}
-
-public class BasketFormValidator : AbstractValidator<BasketFormDto>
-{
-    public BasketFormValidator()
-    {
-        RuleForEach(x => x.BasketItems)
-            .SetValidator(new BasketItemFormValidator());
-    }
 }

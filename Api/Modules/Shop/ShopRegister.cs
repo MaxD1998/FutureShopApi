@@ -1,6 +1,7 @@
 ﻿using Shared.Api.Extensions;
 using Shared.Api.Middlewares;
 using Shop.Core.EventHandlers;
+using Shop.Core.EventServices;
 using Shop.Core.Services;
 using Shop.Infrastructure;
 using Shop.Infrastructure.Repositories;
@@ -13,6 +14,7 @@ public static class ShopRegister
     {
         services.ConfigureServices();
         services.RegisterRepositories();
+        services.RegisterEventServices();
         services.RegisterServices();
         services.RegisterMiddlewares();
 
@@ -27,6 +29,13 @@ public static class ShopRegister
     private static void ConfigureServices(this IServiceCollection services)
     {
         services.AddDbContext<ShopContext>();
+    }
+
+    private static void RegisterEventServices(this IServiceCollection services)
+    {
+        services.AddScoped<ICategoryEventService, CategoryEventService>();
+        services.AddScoped<IProductBaseEventService, ProductBaseEventService>();
+        services.AddScoped<IProductEventService, ProductEventService>();
     }
 
     private static void RegisterMiddlewares(this IServiceCollection services)

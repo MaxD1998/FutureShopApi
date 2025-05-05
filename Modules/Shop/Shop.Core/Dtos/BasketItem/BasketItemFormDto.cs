@@ -1,7 +1,4 @@
-﻿using FluentValidation;
-using Shared.Core.Errors;
-using Shared.Core.Extensions;
-using Shop.Domain.Entities;
+﻿using Shop.Domain.Entities;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.BasketItem;
@@ -27,18 +24,4 @@ public class BasketItemFormDto
         ProductId = ProductId,
         Quantity = Quantity,
     };
-}
-
-public class BasketItemFormValidator : AbstractValidator<BasketItemFormDto>
-{
-    public BasketItemFormValidator()
-    {
-        RuleFor(x => x.ProductId)
-            .NotEqual(Guid.Empty)
-                .ErrorResponse(ErrorMessage.ValueWasEmpty);
-
-        RuleFor(x => x.Quantity)
-            .NotEmpty()
-                .ErrorResponse(ErrorMessage.ValueWasEmpty);
-    }
 }

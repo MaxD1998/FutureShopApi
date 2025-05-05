@@ -1,17 +1,16 @@
-﻿using MediatR;
-using Shared.Core.Constans;
+﻿using Shared.Core.Constans;
 using Shared.Core.Dtos;
 using Shared.Core.Enums;
 using Shared.Core.Interfaces;
-using Shop.Core.Cqrs.ProductBase.Commands;
 using Shop.Core.Dtos.ProductBase;
+using Shop.Core.EventServices;
 using System.Text.Json;
 
 namespace Shop.Core.EventHandlers;
 
-public class ProductBaseEventHandler(IMediator mediator) : IMessageEventHandler
+public class ProductBaseEventHandler(IProductBaseEventService productBaseEventService) : IMessageEventHandler
 {
-    private readonly IMediator _mediator = mediator;
+    private readonly IProductBaseEventService _productBaseEventService = productBaseEventService;
 
     public string Exchange => RabbitMqExchangeConst.ProductModuleProductBase;
 
@@ -27,7 +26,7 @@ public class ProductBaseEventHandler(IMediator mediator) : IMessageEventHandler
             {
                 var productBaseEvent = JsonSerializer.Deserialize<EventMessageDto<ProductBaseEventDto>>(message);
                 if (productBaseEvent?.Message != null)
-                    await _mediator.Send(new CreateOrUpdateProductBaseEventDtoCommand(productBaseEvent.Message), cancellationToken);
+                    await _productBaseEventService.CreateOrUpdateAsync(productBaseEvent.Message, cancellationToken);
 
                 break;
             }
@@ -35,7 +34,7 @@ public class ProductBaseEventHandler(IMediator mediator) : IMessageEventHandler
             {
                 var deleteEvent = JsonSerializer.Deserialize<EventMessageDto<Guid>>(message);
                 if (deleteEvent?.Message != null && deleteEvent.Message != Guid.Empty)
-                    await _mediator.Send(new DeleteProductBaseByIdCommand(deleteEvent.Message), cancellationToken);
+                    await _productBaseEventService.DeleteByIdAsync(deleteEvent.Message, cancellationToken);
 
                 break;
             }

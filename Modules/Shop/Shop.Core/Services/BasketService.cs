@@ -17,7 +17,7 @@ public interface IBasketSerivce
 
     Task<ResultDto<BasketDto>> GetByIdAsync(Guid id, Guid? favouriteId, CancellationToken cancellationToken);
 
-    Task<ResultDto<BasketDto>> ImportPurchaseListAsync(ImportPurchaseListToBasketDto dto, CancellationToken cancellationToken = default);
+    Task<ResultDto<BasketDto>> ImportPurchaseListAsync(ImportPurchaseListToBasketDto dto, CancellationToken cancellationToken);
 
     Task<ResultDto<BasketFormDto>> UpdateAsync(Guid id, BasketFormDto dto, CancellationToken cancellationToken);
 }
@@ -41,7 +41,7 @@ public class BasketService(IBasketRepository basketRepository, IHttpContextAcces
         var userId = _httpContextAccessor.GetUserId();
 
         if (!userId.HasValue)
-            return null;
+            return Success<BasketDto>(null);
 
         var result = await _basketRepository.GetByUserIdAsync(userId.Value, BasketDto.Map(x => x.PurchaseList.UserId == userId), cancellationToken);
 
@@ -55,7 +55,7 @@ public class BasketService(IBasketRepository basketRepository, IHttpContextAcces
         return Success(result);
     }
 
-    public async Task<ResultDto<BasketDto>> ImportPurchaseListAsync(ImportPurchaseListToBasketDto dto, CancellationToken cancellationToken = default)
+    public async Task<ResultDto<BasketDto>> ImportPurchaseListAsync(ImportPurchaseListToBasketDto dto, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 

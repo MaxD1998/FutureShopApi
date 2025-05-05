@@ -7,7 +7,7 @@ namespace Api.Modules.File;
 
 public static class FileRegister
 {
-    public static void RegisterProductModule(this IServiceCollection services)
+    public static void RegisterFileModule(this IServiceCollection services)
     {
         services.ConfigureServices();
         services.RegisterRepositories();

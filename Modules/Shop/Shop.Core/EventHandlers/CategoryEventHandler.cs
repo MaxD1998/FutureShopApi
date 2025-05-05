@@ -1,17 +1,16 @@
-﻿using MediatR;
-using Shared.Core.Constans;
+﻿using Shared.Core.Constans;
 using Shared.Core.Dtos;
 using Shared.Core.Enums;
 using Shared.Core.Interfaces;
-using Shop.Core.Cqrs.Category.Commands;
 using Shop.Core.Dtos.Category;
+using Shop.Core.EventServices;
 using System.Text.Json;
 
 namespace Shop.Core.EventHandlers;
 
-public class CategoryEventHandler(IMediator mediator) : IMessageEventHandler
+public class CategoryEventHandler(ICategoryEventService categoryEventService) : IMessageEventHandler
 {
-    private readonly IMediator _mediator = mediator;
+    private readonly ICategoryEventService _categoryEventService = categoryEventService;
 
     public string Exchange => RabbitMqExchangeConst.ProductModuleCategory;
 
@@ -27,7 +26,7 @@ public class CategoryEventHandler(IMediator mediator) : IMessageEventHandler
             {
                 var categoryEvent = JsonSerializer.Deserialize<EventMessageDto<CategoryEventDto>>(message);
                 if (categoryEvent?.Message != null)
-                    await _mediator.Send(new CreateOrUpdateCategoryEventDtoCommand(categoryEvent.Message), cancellationToken);
+                    await _categoryEventService.CreateOrUpdateAsync(categoryEvent.Message, cancellationToken);
 
                 break;
             }
@@ -35,7 +34,7 @@ public class CategoryEventHandler(IMediator mediator) : IMessageEventHandler
             {
                 var deleteEvent = JsonSerializer.Deserialize<EventMessageDto<Guid>>(message);
                 if (deleteEvent?.Message != null && deleteEvent.Message != Guid.Empty)
-                    await _mediator.Send(new DeleteCategoryByIdCommand(deleteEvent.Message), cancellationToken);
+                    await _categoryEventService.DeleteByIdAsync(deleteEvent.Message, cancellationToken);
 
                 break;
             }

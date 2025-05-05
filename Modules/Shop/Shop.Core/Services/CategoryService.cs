@@ -5,17 +5,12 @@ using Shared.Infrastructure.Constants;
 using Shared.Infrastructure.Extensions;
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.Category;
-using Shop.Domain.Entities;
 using Shop.Infrastructure.Repositories;
 
 namespace Shop.Core.Services;
 
 public interface ICategoryService
 {
-    Task<ResultDto> CreateOrUpdateAsync(CategoryEventDto dto, CancellationToken cancellationToken);
-
-    Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
-
     Task<ResultDto<List<CategoryListDto>>> GetActiveListAsync(CancellationToken cancellationToken);
 
     Task<ResultDto<CategoryFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
@@ -31,21 +26,6 @@ public class CategoryService(ICategoryRepository categoryRepository, IHeaderServ
 {
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
     private readonly IHeaderService _headerService = headerService;
-
-    public async Task<ResultDto> CreateOrUpdateAsync(CategoryEventDto dto, CancellationToken cancellationToken)
-    {
-        var entity = await MapToEntity(dto, cancellationToken);
-        await _categoryRepository.CreateOrUpdateForEventAsync(entity, cancellationToken);
-
-        return Success();
-    }
-
-    public async Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
-    {
-        await _categoryRepository.DeleteByIdAsync(id, cancellationToken);
-
-        return Success();
-    }
 
     public async Task<ResultDto<List<CategoryListDto>>> GetActiveListAsync(CancellationToken cancellationToken)
     {
@@ -81,22 +61,5 @@ public class CategoryService(ICategoryRepository categoryRepository, IHeaderServ
         var result = await _categoryRepository.GetByIdAsync(entity.Id, CategoryFormDto.Map(), cancellationToken);
 
         return Success(result);
-    }
-
-    private async Task<CategoryEntity> MapToEntity(CategoryEventDto eventDto, CancellationToken cancellationToken)
-    {
-        var parentIdTask = eventDto.ParentCategoryId.HasValue
-            ? _categoryRepository.GetIdByExternalIdAsync(eventDto.ParentCategoryId.Value, cancellationToken)
-            : null;
-
-        var subCategoriesTask = _categoryRepository.GetListByExternalIdsAsync(eventDto.SubCategoryIds, cancellationToken);
-
-        await Task.WhenAll(parentIdTask, subCategoriesTask);
-
-        var entity = eventDto.Map();
-        entity.ParentCategoryId = parentIdTask.Result;
-        entity.SubCategories = subCategoriesTask.Result;
-
-        return entity;
     }
 }
