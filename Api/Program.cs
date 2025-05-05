@@ -9,8 +9,6 @@ using Api.OpenApi;
 using Authorization.Inrfrastructure;
 using File.Infrastructure;
 using Product.Infrastructure;
-using Quartz;
-using Quartz.AspNetCore;
 using Scalar.AspNetCore;
 using Shared.Api.Middlewares;
 using Shared.Infrastructure;
@@ -35,7 +33,7 @@ public class Program
         //services.AddQuartz();
 
         services.AddScoped<ErrorHandlingMiddleware>();
-        services.AddSingleton<RabbitMqContext>();
+        services.AddSingleton<IRabbitMqContext, RabbitMqContext>();
 
         services.RegisterSharedModule();
         services.RegisterAuthModule();

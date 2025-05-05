@@ -3,7 +3,10 @@ using Product.Core.Dtos.Category;
 using Product.Domain.Entities;
 using Product.Infrastructure.Repositories;
 using Shared.Core.Bases;
+using Shared.Core.Constans;
 using Shared.Core.Dtos;
+using Shared.Core.Enums;
+using Shared.Infrastructure;
 using Shared.Infrastructure.Extensions;
 
 namespace Product.Core.Services;
@@ -27,14 +30,18 @@ public interface ICategoryService
     Task<ResultDto<CategoryFormDto>> UpdateAsync(Guid id, CategoryFormDto dto, CancellationToken cancellationToken);
 }
 
-public class CategoryService(ICategoryRepository categoryRepository) : BaseService, ICategoryService
+public class CategoryService(ICategoryRepository categoryRepository, IRabbitMqContext rabbitMqContext) : BaseService, ICategoryService
 {
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
+    private readonly IRabbitMqContext _rabbitMqContext = rabbitMqContext;
 
     public async Task<ResultDto<CategoryFormDto>> CreateAsync(CategoryFormDto dto, CancellationToken cancellationToken)
     {
         var entity = await MapToEntity(dto, cancellationToken);
         entity = await _categoryRepository.CreateAsync(entity, cancellationToken);
+
+        await _rabbitMqContext.SendMessageAsync(RabbitMqExchangeConst.ProductModuleCategory, EventMessageDto.Create(entity, MessageType.AddOrUpdate));
+
         var result = await _categoryRepository.GetByIdAsync(entity.Id, CategoryFormDto.Map(), cancellationToken);
 
         return Success(result);
@@ -43,6 +50,8 @@ public class CategoryService(ICategoryRepository categoryRepository) : BaseServi
     public async Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         await _categoryRepository.DeleteByIdAsync(id, cancellationToken);
+        await _rabbitMqContext.SendMessageAsync(RabbitMqExchangeConst.ProductModuleCategory, EventMessageDto.Create(id, MessageType.Delete));
+
         return Success();
     }
 
@@ -81,6 +90,9 @@ public class CategoryService(ICategoryRepository categoryRepository) : BaseServi
     {
         var entity = await MapToEntity(dto, cancellationToken);
         entity = await _categoryRepository.UpdateAsync(id, entity, cancellationToken);
+
+        await _rabbitMqContext.SendMessageAsync(RabbitMqExchangeConst.ProductModuleCategory, EventMessageDto.Create(entity, MessageType.AddOrUpdate));
+
         var result = await _categoryRepository.GetByIdAsync(entity.Id, CategoryFormDto.Map(), cancellationToken);
 
         return Success(result);
