@@ -1,6 +1,7 @@
 ﻿using File.Core.Services;
 using File.Infrastructure;
 using File.Infrastructure.Repositories;
+using Shared.Api.Extensions;
 using Shared.Api.Middlewares;
 
 namespace Api.Modules.File;
@@ -13,6 +14,10 @@ public static class FileRegister
         services.RegisterRepositories();
         services.RegisterServices();
         services.RegisterMiddlewares();
+
+        services.AddRabbitReceiver(x =>
+        {
+        })
     }
 
     private static void ConfigureServices(this IServiceCollection services)

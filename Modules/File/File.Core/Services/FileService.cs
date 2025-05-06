@@ -36,6 +36,9 @@ public class FileService(IFileRepository fileRepository) : BaseService, IFileSer
         return Success(results.Select(x => x.Id).ToList());
     }
 
+    public Task DeleteManyAsync(List<string> ids, CancellationToken cancellationToken)
+        => _fileRepository.DeleteManyByIdsAsync(ids, cancellationToken);
+
     public async Task<ResultDto<FileDocument>> GetByIdAsync(string id, CancellationToken cancellationToken)
     {
         var result = await _fileRepository.GetByIdAsync(id, cancellationToken);

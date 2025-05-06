@@ -9,7 +9,7 @@ public interface IBaseNoSqlRepository<TDocument> where TDocument : BaseDocument
 {
     Task<List<TDocument>> CreateListAsync(List<TDocument> entities, CancellationToken cancellationToken);
 
-    Task DeleteManyByAsync(Expression<Func<TDocument, bool>> filter, CancellationToken cancellationToken);
+    Task DeleteManyByIdsAsync(List<string> ids, CancellationToken cancellationToken);
 
     Task<TDocument> GetByIdAsync(string id, CancellationToken cancellationToken);
 
@@ -27,12 +27,12 @@ public class BaseNoSqlRepository<TContext, TDocument>(TContext context) : IBaseN
         return entities;
     }
 
-    public Task DeleteManyByAsync(Expression<Func<TDocument, bool>> filter, CancellationToken cancellationToken)
-        => _context.Set<TDocument>().DeleteManyAsync(filter, cancellationToken);
+    public Task DeleteManyByIdsAsync(List<string> ids, CancellationToken cancellationToken)
+        => _context.Set<TDocument>().DeleteManyAsync(x => ids.Contains(x.Id), cancellationToken);
 
     public Task<TDocument> GetByIdAsync(string id, CancellationToken cancellationToken)
         => _context.Set<TDocument>().Find(x => x.Id == id).FirstOrDefaultAsync(cancellationToken);
 
     public Task<List<TResult>> GetListByAsync<TResult>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TResult>> map, CancellationToken cancellationToken)
-            => _context.Set<TDocument>().Find(filter).Project(map).ToListAsync(cancellationToken);
+        => _context.Set<TDocument>().Find(filter).Project(map).ToListAsync(cancellationToken);
 }
