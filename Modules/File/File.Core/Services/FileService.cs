@@ -14,6 +14,8 @@ public interface IFileService
 {
     Task<ResultDto<List<string>>> CreateListAsync(IFormFileCollection files, CancellationToken cancellationToken);
 
+    Task DeleteManyAsync(List<string> ids, CancellationToken cancellationToken);
+
     Task<ResultDto<FileDocument>> GetByIdAsync(string id, CancellationToken cancellationToken);
 
     Task<ResultDto<List<ProductPhotoInfoDto>>> GetListInfoByIdsAsync(List<string> ids, CancellationToken cancellationToken);

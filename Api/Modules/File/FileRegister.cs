@@ -1,4 +1,5 @@
-﻿using File.Core.Services;
+﻿using File.Core.EventHandlers;
+using File.Core.Services;
 using File.Infrastructure;
 using File.Infrastructure.Repositories;
 using Shared.Api.Extensions;
@@ -17,7 +18,8 @@ public static class FileRegister
 
         services.AddRabbitReceiver(x =>
         {
-        })
+            x.AddEventHandler<DeleteNotAssignedFilesEventHandler>();
+        });
     }
 
     private static void ConfigureServices(this IServiceCollection services)
