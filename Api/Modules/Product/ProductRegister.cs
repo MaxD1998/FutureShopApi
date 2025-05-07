@@ -1,4 +1,5 @@
-﻿using Product.Core.Services;
+﻿using Product.Core.EventServices;
+using Product.Core.Services;
 using Product.Infrastructure;
 using Product.Infrastructure.Repositories;
 using Shared.Api.Middlewares;
@@ -11,6 +12,7 @@ public static class ProductRegister
     {
         services.ConfigureServices();
         services.RegisterRepositories();
+        services.RegisterEventServices();
         services.RegisterServices();
         services.RegisterMiddlewares();
     }
@@ -18,6 +20,11 @@ public static class ProductRegister
     private static void ConfigureServices(this IServiceCollection services)
     {
         services.AddDbContext<ProductContext>();
+    }
+
+    private static void RegisterEventServices(this IServiceCollection services)
+    {
+        services.AddScoped<IProductPhotoEventService, ProductPhotoEventService>();
     }
 
     private static void RegisterMiddlewares(this IServiceCollection services)
@@ -29,6 +36,7 @@ public static class ProductRegister
     {
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IProductBaseRepository, ProductBaseRepository>();
+        services.AddScoped<IProductPhotoRepository, ProductPhotoRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
     }
 

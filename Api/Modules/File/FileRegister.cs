@@ -18,7 +18,7 @@ public static class FileRegister
 
         services.AddRabbitReceiver(x =>
         {
-            x.AddEventHandler<DeleteNotAssignedFilesEventHandler>();
+            x.AddEventHandler<FilesToDeleteEventHandler>();
         });
     }
 

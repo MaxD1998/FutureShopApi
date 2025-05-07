@@ -16,7 +16,7 @@ public class CategoryEventHandler(ICategoryEventService categoryEventService) : 
 
     public string QueueName => "ShopModule-Category";
 
-    public async Task ExecuteAsync(string message, CancellationToken cancellationToken)
+    public Task ExecuteAsync(string message, CancellationToken cancellationToken)
     {
         var eventMessage = JsonSerializer.Deserialize<EventMessageDto>(message);
 
@@ -26,7 +26,7 @@ public class CategoryEventHandler(ICategoryEventService categoryEventService) : 
             {
                 var categoryEvent = JsonSerializer.Deserialize<EventMessageDto<CategoryEventDto>>(message);
                 if (categoryEvent?.Message != null)
-                    await _categoryEventService.CreateOrUpdateAsync(categoryEvent.Message, cancellationToken);
+                    return _categoryEventService.CreateOrUpdateAsync(categoryEvent.Message, cancellationToken);
 
                 break;
             }
@@ -34,12 +34,14 @@ public class CategoryEventHandler(ICategoryEventService categoryEventService) : 
             {
                 var deleteEvent = JsonSerializer.Deserialize<EventMessageDto<Guid>>(message);
                 if (deleteEvent?.Message != null && deleteEvent.Message != Guid.Empty)
-                    await _categoryEventService.DeleteByIdAsync(deleteEvent.Message, cancellationToken);
+                    return _categoryEventService.DeleteByIdAsync(deleteEvent.Message, cancellationToken);
 
                 break;
             }
             default:
                 throw new NotSupportedException($"Message type {eventMessage.Type} is not supported.");
         }
+
+        return Task.CompletedTask;
     }
 }

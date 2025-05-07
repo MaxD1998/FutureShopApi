@@ -1,5 +1,4 @@
 ﻿using Shared.Core.Bases;
-using Shared.Core.Dtos;
 using Shop.Core.Dtos.ProductBase;
 using Shop.Domain.Entities;
 using Shop.Infrastructure.Repositories;
@@ -8,9 +7,9 @@ namespace Shop.Core.EventServices;
 
 public interface IProductBaseEventService
 {
-    Task<ResultDto> CreateOrUpdateAsync(ProductBaseEventDto dto, CancellationToken cancellationToken);
+    Task CreateOrUpdateAsync(ProductBaseEventDto dto, CancellationToken cancellationToken);
 
-    Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
 }
 
 public class ProductBaseEventService(ICategoryRepository categoryRepository, IProductBaseRepository productBaseRepository) : BaseService, IProductBaseEventService
@@ -18,20 +17,14 @@ public class ProductBaseEventService(ICategoryRepository categoryRepository, IPr
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
     private readonly IProductBaseRepository _productBaseRepository = productBaseRepository;
 
-    public async Task<ResultDto> CreateOrUpdateAsync(ProductBaseEventDto dto, CancellationToken cancellationToken)
+    public async Task CreateOrUpdateAsync(ProductBaseEventDto dto, CancellationToken cancellationToken)
     {
         var entity = await MapToEntity(dto, cancellationToken);
         await _productBaseRepository.CreateOrUpdateAsync(entity, cancellationToken);
-
-        return Success();
     }
 
-    public async Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
-    {
-        await _productBaseRepository.DeleteByIdAsync(id, cancellationToken);
-
-        return Success();
-    }
+    public Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
+        => _productBaseRepository.DeleteByIdAsync(id, cancellationToken);
 
     private async Task<ProductBaseEntity> MapToEntity(ProductBaseEventDto dto, CancellationToken cancellationToken)
     {

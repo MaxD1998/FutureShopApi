@@ -1,5 +1,4 @@
 ﻿using Shared.Core.Bases;
-using Shared.Core.Dtos;
 using Shop.Core.Dtos.Category;
 using Shop.Domain.Entities;
 using Shop.Infrastructure.Repositories;
@@ -8,29 +7,23 @@ namespace Shop.Core.EventServices;
 
 public interface ICategoryEventService
 {
-    Task<ResultDto> CreateOrUpdateAsync(CategoryEventDto dto, CancellationToken cancellationToken);
+    Task CreateOrUpdateAsync(CategoryEventDto dto, CancellationToken cancellationToken);
 
-    Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
 }
 
 public class CategoryEventService(ICategoryRepository categoryRepository) : BaseService, ICategoryEventService
 {
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
 
-    public async Task<ResultDto> CreateOrUpdateAsync(CategoryEventDto dto, CancellationToken cancellationToken)
+    public async Task CreateOrUpdateAsync(CategoryEventDto dto, CancellationToken cancellationToken)
     {
         var entity = await MapToEntity(dto, cancellationToken);
-        await _categoryRepository.CreateOrUpdateForEventAsync(entity, cancellationToken);
-
-        return Success();
+        await _categoryRepository.CreateOrUpdateForEventAsync(entity, cancellationToken); ;
     }
 
-    public async Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
-    {
-        await _categoryRepository.DeleteByIdAsync(id, cancellationToken);
-
-        return Success();
-    }
+    public Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
+        => _categoryRepository.DeleteByIdAsync(id, cancellationToken);
 
     private async Task<CategoryEntity> MapToEntity(CategoryEventDto eventDto, CancellationToken cancellationToken)
     {

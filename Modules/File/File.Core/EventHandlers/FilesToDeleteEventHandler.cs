@@ -7,15 +7,15 @@ using System.Text.Json;
 
 namespace File.Core.EventHandlers;
 
-public class DeleteNotAssignedFilesEventHandler(IFileService fileService) : IMessageEventHandler
+public class FilesToDeleteEventHandler(IFileService fileService) : IMessageEventHandler
 {
     private readonly IFileService _fileService = fileService;
 
-    public string Exchange => RabbitMqExchangeConst.ProductModuleFileToDelete;
+    public string Exchange => RabbitMqExchangeConst.ProductModuleFilesToDelete;
 
-    public string QueueName => "FileModule-DeleteFiles";
+    public string QueueName => "FileModule-FilesToDelete";
 
-    public async Task ExecuteAsync(string message, CancellationToken cancellationToken)
+    public Task ExecuteAsync(string message, CancellationToken cancellationToken)
     {
         var eventMessage = JsonSerializer.Deserialize<EventMessageDto>(message);
 
@@ -25,12 +25,14 @@ public class DeleteNotAssignedFilesEventHandler(IFileService fileService) : IMes
             {
                 var deleteEvent = JsonSerializer.Deserialize<EventMessageDto<List<string>>>(message);
                 if (deleteEvent?.Message != null && deleteEvent.Message.Count > 0)
-                    await _fileService.DeleteManyAsync(deleteEvent.Message, cancellationToken);
+                    _fileService.DeleteManyAsync(deleteEvent.Message, cancellationToken);
 
                 break;
             }
             default:
                 throw new NotSupportedException($"Message type {eventMessage.Type} is not supported.");
         }
+
+        return Task.CompletedTask;
     }
 }

@@ -16,7 +16,7 @@ public class ProductBaseEventHandler(IProductBaseEventService productBaseEventSe
 
     public string QueueName => "ShopModule-ProductBase";
 
-    public async Task ExecuteAsync(string message, CancellationToken cancellationToken)
+    public Task ExecuteAsync(string message, CancellationToken cancellationToken)
     {
         var eventMessage = JsonSerializer.Deserialize<EventMessageDto>(message);
 
@@ -26,7 +26,7 @@ public class ProductBaseEventHandler(IProductBaseEventService productBaseEventSe
             {
                 var productBaseEvent = JsonSerializer.Deserialize<EventMessageDto<ProductBaseEventDto>>(message);
                 if (productBaseEvent?.Message != null)
-                    await _productBaseEventService.CreateOrUpdateAsync(productBaseEvent.Message, cancellationToken);
+                    return _productBaseEventService.CreateOrUpdateAsync(productBaseEvent.Message, cancellationToken);
 
                 break;
             }
@@ -34,12 +34,14 @@ public class ProductBaseEventHandler(IProductBaseEventService productBaseEventSe
             {
                 var deleteEvent = JsonSerializer.Deserialize<EventMessageDto<Guid>>(message);
                 if (deleteEvent?.Message != null && deleteEvent.Message != Guid.Empty)
-                    await _productBaseEventService.DeleteByIdAsync(deleteEvent.Message, cancellationToken);
+                    return _productBaseEventService.DeleteByIdAsync(deleteEvent.Message, cancellationToken);
 
                 break;
             }
             default:
                 throw new NotSupportedException($"Message type {eventMessage.Type} is not supported.");
         }
+
+        return Task.CompletedTask;
     }
 }

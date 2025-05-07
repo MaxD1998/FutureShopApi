@@ -5,4 +5,5 @@ public enum MessageType
     AddOrUpdate,
     Delete,
     DeleteRange,
+    CheckMissingFileIds,
 }
