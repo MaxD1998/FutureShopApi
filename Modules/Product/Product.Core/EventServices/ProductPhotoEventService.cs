@@ -20,6 +20,6 @@ public class ProductPhotoEventService(IProductPhotoRepository productPhotoReposi
     {
         var missingIds = await _productPhotoRepository.GetMissingFileIdsAsync(ids, cancellationToken);
 
-        await _rabbitMqContext.SendMessageAsync(RabbitMqExchangeConst.ProductModuleCategory, EventMessageDto.Create(missingIds, MessageType.DeleteRange));
+        await _rabbitMqContext.SendMessageAsync(RabbitMqExchangeConst.ProductModuleFilesToDelete, EventMessageDto.Create(missingIds, MessageType.DeleteRange));
     }
 }
