@@ -21,7 +21,7 @@ public class DeleteNotAssignedFilesEventHandler(IFileService fileService) : IMes
 
         switch (eventMessage.Type)
         {
-            case MessageType.Delete:
+            case MessageType.DeleteRange:
             {
                 var deleteEvent = JsonSerializer.Deserialize<EventMessageDto<List<string>>>(message);
                 if (deleteEvent?.Message != null && deleteEvent.Message.Count > 0)
