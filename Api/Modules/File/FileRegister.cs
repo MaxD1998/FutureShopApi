@@ -1,7 +1,11 @@
-﻿using File.Core.EventHandlers;
+﻿using Api.Extensions;
+using File.Core.EventHandlers;
+using File.Core.Jobs;
+using File.Core.JobServices;
 using File.Core.Services;
 using File.Infrastructure;
 using File.Infrastructure.Repositories;
+using Quartz;
 using Shared.Api.Extensions;
 using Shared.Api.Middlewares;
 
@@ -20,6 +24,11 @@ public static class FileRegister
         {
             x.AddEventHandler<FilesToDeleteEventHandler>();
         });
+
+        services.AddQuartz(cfg =>
+        {
+            cfg.AddJobAndTrigger<FileToDeleteJob>();
+        });
     }
 
     private static void ConfigureServices(this IServiceCollection services)
@@ -34,11 +43,12 @@ public static class FileRegister
 
     private static void RegisterRepositories(this IServiceCollection services)
     {
-        services.AddScoped<IFileService, FileService>();
+        services.AddScoped<IFileRepository, FileRepository>();
     }
 
     private static void RegisterServices(this IServiceCollection services)
     {
-        services.AddScoped<IFileRepository, FileRepository>();
+        services.AddScoped<IFileJobService, FileJobService>();
+        services.AddScoped<IFileService, FileService>();
     }
 }

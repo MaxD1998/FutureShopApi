@@ -9,6 +9,7 @@ using Api.OpenApi;
 using Authorization.Inrfrastructure;
 using File.Infrastructure;
 using Product.Infrastructure;
+using Quartz.AspNetCore;
 using Scalar.AspNetCore;
 using Shared.Api.Middlewares;
 using Shared.Infrastructure;
@@ -29,8 +30,7 @@ public class Program
 
         services.AddAppsettings(config);
         services.AddJwtAuthentication(config);
-        //services.AddQuartzServer(config => config.WaitForJobsToComplete = true);
-        //services.AddQuartz();
+        services.AddQuartzServer(config => config.WaitForJobsToComplete = true);
 
         services.AddScoped<ErrorHandlingMiddleware>();
         services.AddSingleton<IRabbitMqContext, RabbitMqContext>();
