@@ -12,7 +12,7 @@ public interface IAdCampaignService
 
     Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
 
-    Task<ResultDto<List<AdCampaignDto>>> GetActualAsync(CancellationToken cancellationToken);
+    Task<ResultDto<List<string>>> GetActualAsync(CancellationToken cancellationToken);
 
     Task<ResultDto<AdCampaignFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
@@ -40,10 +40,10 @@ public class AdCampaignService(IAdCampaignRepository adCampaignRepository) : Bas
         return Success();
     }
 
-    public async Task<ResultDto<List<AdCampaignDto>>> GetActualAsync(CancellationToken cancellationToken)
+    public async Task<ResultDto<List<string>>> GetActualAsync(CancellationToken cancellationToken)
     {
-        var results = await _adCampaignRepository.GetActualAsync(AdCampaignDto.Map(), cancellationToken);
-
+        var fileIds = await _adCampaignRepository.GetActualAsync(x => x.AdCampaignItems.AsQueryable().Select(x => x.FileId).ToList(), cancellationToken);
+        var results = fileIds.SelectMany(x => x).ToList();
         return Success(results);
     }
 

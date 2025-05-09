@@ -21,7 +21,7 @@ public class AdCampaignController(IAdCampaignService adCampaignService) : ShopMo
         => ApiResponseAsync(_adCampaignService.DeleteByIdAsync, id, cancellationToken);
 
     [HttpGet("Actual")]
-    [ProducesResponseType(typeof(List<AdCampaignDto>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(List<string>), StatusCodes.Status200OK)]
     [AllowAnonymous]
     public Task<IActionResult> GetActualAsync(CancellationToken cancellationToken = default)
         => ApiResponseAsync(_adCampaignService.GetActualAsync, cancellationToken);
