@@ -17,16 +17,10 @@ public class ResultDto
 
     public bool IsSuccess { get; init; } = false;
 
-    public static ResultDto Error(HttpStatusCode httpCode, ErrorMessageDto dto)
+    public static ResultDto Error(HttpStatusCode httpCode, ErrorDto dto)
         => new(httpCode, false)
         {
-            ErrorMessage = new(dto)
-        };
-
-    public static ResultDto<T> Error<T>(HttpStatusCode httpCode, ErrorMessageDto dto)
-        => new(httpCode)
-        {
-            ErrorMessage = new(dto)
+            ErrorMessage = dto
         };
 
     public static ResultDto<T> Error<T>(HttpStatusCode httpCode, ErrorDto dto)

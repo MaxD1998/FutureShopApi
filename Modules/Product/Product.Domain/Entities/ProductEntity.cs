@@ -1,9 +1,10 @@
 ﻿using Shared.Domain.Bases;
 using Shared.Domain.Extensions;
+using Shared.Domain.Interfaces;
 
 namespace Product.Domain.Entities;
 
-public class ProductEntity : BaseEntity
+public class ProductEntity : BaseEntity, IUpdate<ProductEntity>
 {
     public string Name { get; set; }
 

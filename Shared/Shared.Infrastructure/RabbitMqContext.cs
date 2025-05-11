@@ -7,14 +7,14 @@ using System.Text.Json.Serialization;
 
 namespace Shared.Infrastructure;
 
-public class RabbitMqContext
+public interface IRabbitMqContext
 {
-    private readonly string _hostName;
+    Task SendMessageAsync(string exchange, object body);
+}
 
-    public RabbitMqContext(IOptions<ConnectionSettings> connectionSettings)
-    {
-        _hostName = connectionSettings.Value.RabbitMQ.HostName;
-    }
+public class RabbitMqContext(IOptions<ConnectionSettings> connectionSettings) : IRabbitMqContext
+{
+    private readonly string _hostName = connectionSettings.Value.RabbitMQ.HostName;
 
     public async Task SendMessageAsync(string exchange, object body)
     {

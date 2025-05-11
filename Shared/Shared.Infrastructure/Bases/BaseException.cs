@@ -4,9 +4,9 @@ namespace Shared.Infrastructure.Bases;
 
 public abstract class BaseException : Exception
 {
-    public BaseException(ErrorMessageDto error)
+    public BaseException(ErrorDto error)
     {
-        Error = new ErrorDto(error);
+        Error = error;
     }
 
     public ErrorDto Error { get; }

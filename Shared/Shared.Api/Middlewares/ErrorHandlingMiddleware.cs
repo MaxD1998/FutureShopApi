@@ -22,10 +22,7 @@ public class ErrorHandlingMiddleware : IMiddleware
             else
             {
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                await context.Response.WriteAsJsonAsync(new ErrorDto()
-                {
-                    ErrorMessage = exception.Message
-                });
+                await context.Response.WriteAsJsonAsync(new ErrorDto(exception.Message));
             }
         }
     }

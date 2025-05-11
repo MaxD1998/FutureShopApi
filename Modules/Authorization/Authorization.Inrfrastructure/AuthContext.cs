@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Authorization.Inrfrastructure;
 
-public class AuthContext : BasePostgreSqlContext
+public class AuthContext : BaseContext
 {
     public AuthContext(IOptions<ConnectionSettings> connectionSettings) : base(connectionSettings)
     {

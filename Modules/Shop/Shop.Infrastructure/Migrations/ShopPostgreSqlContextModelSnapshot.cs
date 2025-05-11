@@ -10,7 +10,7 @@ using Shop.Infrastructure;
 
 namespace Shop.Infrastructure.Migrations
 {
-    [DbContext(typeof(ShopPostgreSqlContext))]
+    [DbContext(typeof(ShopContext))]
     partial class ShopPostgreSqlContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

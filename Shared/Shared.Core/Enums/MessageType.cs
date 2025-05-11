@@ -3,5 +3,7 @@
 public enum MessageType
 {
     AddOrUpdate,
-    Delete
+    Delete,
+    DeleteRange,
+    CheckMissingFileIds,
 }

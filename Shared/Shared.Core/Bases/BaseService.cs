@@ -6,13 +6,10 @@ namespace Shared.Core.Bases;
 
 public abstract class BaseService
 {
-    protected ResultDto<T> Error<T>(HttpStatusCode httpCode, ErrorMessageDto dto)
-        => ResultDto.Error<T>(httpCode, dto);
-
     protected ResultDto<T> Error<T>(HttpStatusCode httpCode, ErrorDto dto)
         => ResultDto.Error<T>(httpCode, dto);
 
-    protected ResultDto Error(HttpStatusCode httpCode, ErrorMessageDto dto)
+    protected ResultDto Error(HttpStatusCode httpCode, ErrorDto dto)
         => ResultDto.Error(httpCode, dto);
 
     protected ResultDto Success()

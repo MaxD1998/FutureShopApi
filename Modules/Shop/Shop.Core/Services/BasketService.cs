@@ -1,30 +1,66 @@
-﻿using MediatR;
+﻿using Microsoft.AspNetCore.Http;
 using Shared.Core.Bases;
 using Shared.Core.Dtos;
 using Shared.Core.Errors;
-using Shop.Core.Cqrs.Basket.Commands;
-using Shop.Core.Cqrs.Basket.Queries;
-using Shop.Core.Cqrs.PurchaseList.Queries;
+using Shared.Core.Extensions;
 using Shop.Core.Dtos.Basket;
+using Shop.Infrastructure.Repositories;
 using System.Net;
 
 namespace Shop.Core.Services;
 
 public interface IBasketSerivce
 {
-    public Task<ResultDto<BasketDto>> ImportPurchaseListAsync(ImportPurchaseListToBasketDto dto, CancellationToken cancellationToken = default);
+    Task<ResultDto<BasketFormDto>> CreateAsync(BasketFormDto dto, CancellationToken cancellationToken);
+
+    Task<ResultDto<BasketDto>> GetByAuthorizedUserAsync(CancellationToken cancellationToken);
+
+    Task<ResultDto<BasketDto>> GetByIdAsync(Guid id, Guid? favouriteId, CancellationToken cancellationToken);
+
+    Task<ResultDto<BasketDto>> ImportPurchaseListAsync(ImportPurchaseListToBasketDto dto, CancellationToken cancellationToken);
+
+    Task<ResultDto<BasketFormDto>> UpdateAsync(Guid id, BasketFormDto dto, CancellationToken cancellationToken);
 }
 
-public class BasketService(IMediator mediator) : BaseService, IBasketSerivce
+public class BasketService(IBasketRepository basketRepository, IHttpContextAccessor httpContextAccessor, IPurchaseListRepository purchaseListRepository) : BaseService, IBasketSerivce
 {
-    private readonly IMediator _mediator = mediator;
+    private readonly IBasketRepository _basketRepository = basketRepository;
+    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+    private readonly IPurchaseListRepository _purchaseListRepository = purchaseListRepository;
 
-    public async Task<ResultDto<BasketDto>> ImportPurchaseListAsync(ImportPurchaseListToBasketDto dto, CancellationToken cancellationToken = default)
+    public async Task<ResultDto<BasketFormDto>> CreateAsync(BasketFormDto dto, CancellationToken cancellationToken)
+    {
+        var entity = await _basketRepository.CreateAsync(dto.ToEntity(), cancellationToken);
+        var result = await _basketRepository.GetByIdAsync(entity.Id, BasketFormDto.Map(), cancellationToken);
+
+        return Success(result);
+    }
+
+    public async Task<ResultDto<BasketDto>> GetByAuthorizedUserAsync(CancellationToken cancellationToken)
+    {
+        var userId = _httpContextAccessor.GetUserId();
+
+        if (!userId.HasValue)
+            return Success<BasketDto>(null);
+
+        var result = await _basketRepository.GetByUserIdAsync(userId.Value, BasketDto.Map(x => x.PurchaseList.UserId == userId), cancellationToken);
+
+        return Success(result);
+    }
+
+    public async Task<ResultDto<BasketDto>> GetByIdAsync(Guid id, Guid? favouriteId, CancellationToken cancellationToken)
+    {
+        var result = await _basketRepository.GetByIdAsync(id, BasketDto.Map(x => x.PurchaseListId == favouriteId), cancellationToken);
+
+        return Success(result);
+    }
+
+    public async Task<ResultDto<BasketDto>> ImportPurchaseListAsync(ImportPurchaseListToBasketDto dto, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        var basketTask = _mediator.Send(new GetBasketEntityByIdQuery(dto.BasketId), cancellationToken);
-        var purchaseListTask = _mediator.Send(new GetPurchaseListEntityByIdQuery(dto.PurchaseListId), cancellationToken);
+        var basketTask = _basketRepository.GetByIdAsync(dto.BasketId, cancellationToken);
+        var purchaseListTask = _purchaseListRepository.GetByIdAsync(dto.PurchaseListId, cancellationToken);
 
         await Task.WhenAll(basketTask, purchaseListTask);
 
@@ -42,11 +78,17 @@ public class BasketService(IMediator mediator) : BaseService, IBasketSerivce
             });
         }
 
-        var entityResult = await _mediator.Send(new UpdateBasketEntityCommand(basket.Id, basket), cancellationToken);
+        var entity = await _basketRepository.UpdateAsync(basket.Id, basket, cancellationToken);
+        var result = await _basketRepository.GetByIdAsync(entity.Id, BasketDto.Map(x => x.PurchaseListId == dto.PurchaseListId), cancellationToken);
 
-        if (!entityResult.IsSuccess)
-            return Error<BasketDto>(entityResult.HttpCode, entityResult.ErrorMessage);
+        return Success(result);
+    }
 
-        return await _mediator.Send(new GetBasketDtoByIdQuery(entityResult.Result.Id, dto.PurchaseListId), cancellationToken);
+    public async Task<ResultDto<BasketFormDto>> UpdateAsync(Guid id, BasketFormDto dto, CancellationToken cancellationToken)
+    {
+        var entity = await _basketRepository.UpdateAsync(id, dto.ToEntity(), cancellationToken);
+        var result = await _basketRepository.GetByIdAsync(entity.Id, BasketFormDto.Map(), cancellationToken);
+
+        return Success(result);
     }
 }

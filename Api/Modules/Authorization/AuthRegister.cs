@@ -1,9 +1,7 @@
-﻿using Authorization.Core;
-using Authorization.Core.Services;
+﻿using Authorization.Core.Services;
 using Authorization.Inrfrastructure;
-using FluentValidation;
+using Authorization.Inrfrastructure.Repositories;
 using Shared.Api.Middlewares;
-using Shared.Core.Factories.FluentValidator;
 
 namespace Api.Modules.Authorization;
 
@@ -12,6 +10,7 @@ public static class AuthRegister
     public static void RegisterAuthModule(this IServiceCollection services)
     {
         services.ConfigureServices();
+        services.RegisterRepositories();
         services.RegisterServices();
         services.RegisterMiddlewares();
     }
@@ -19,11 +18,6 @@ public static class AuthRegister
     private static void ConfigureServices(this IServiceCollection services)
     {
         services.AddDbContext<AuthContext>();
-        services.AddMediatR(cfg =>
-        {
-            cfg.RegisterServicesFromAssembly(typeof(CoreAssembly).Assembly);
-        });
-        services.AddValidatorsFromAssembly(typeof(CoreAssembly).Assembly);
     }
 
     private static void RegisterMiddlewares(this IServiceCollection services)
@@ -31,10 +25,14 @@ public static class AuthRegister
         services.AddScoped<PostgreSqlDbTransactionMiddleware<AuthContext>>();
     }
 
+    private static void RegisterRepositories(this IServiceCollection services)
+    {
+        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
+    }
+
     private static void RegisterServices(this IServiceCollection services)
     {
-        services.AddScoped<IFluentValidatorFactory, FluentValidatorFactory>();
-
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ICookieService, CookieService>();
     }

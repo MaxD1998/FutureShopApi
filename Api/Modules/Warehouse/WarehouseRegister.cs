@@ -1,6 +1,4 @@
-﻿using FluentValidation;
-using Shared.Api.Middlewares;
-using Warehouse.Core;
+﻿using Shared.Api.Middlewares;
 using Warehouse.Infrastructure;
 
 namespace Api.Modules.Warehouse;
@@ -17,11 +15,6 @@ public static class WarehouseRegister
     private static void ConfigureServices(this IServiceCollection services)
     {
         services.AddDbContext<WarehouseContext>();
-        services.AddMediatR(cfg =>
-        {
-            cfg.RegisterServicesFromAssembly(typeof(CoreAssembly).Assembly);
-        });
-        services.AddValidatorsFromAssembly(typeof(CoreAssembly).Assembly);
     }
 
     private static void RegisterMiddlewares(this IServiceCollection services)

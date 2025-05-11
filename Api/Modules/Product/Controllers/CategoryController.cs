@@ -1,70 +1,55 @@
-﻿using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Product.Core.Cqrs.Category.Commands;
-using Product.Core.Cqrs.Category.Queries;
+﻿using Microsoft.AspNetCore.Mvc;
 using Product.Core.Dtos;
 using Product.Core.Dtos.Category;
+using Product.Core.Services;
 using Shared.Api.Attributes;
-using Shared.Core.Dtos;
-using Shared.Core.Factories.FluentValidator;
 using Shared.Domain.Enums;
+using Shared.Infrastructure.Extensions;
 
 namespace Api.Modules.Product.Controllers;
 
 [Role(UserType.User)]
-public class CategoryController : ProductModuleBaseController
+public class CategoryController(ICategoryService categoryService) : ProductModuleBaseController
 {
-    public CategoryController(IFluentValidatorFactory fluentValidatorFactory, IMediator mediator) : base(fluentValidatorFactory, mediator)
-    {
-    }
+    private readonly ICategoryService _categoryService = categoryService;
 
     [HttpPost]
     [ProducesResponseType(typeof(CategoryFormDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> CreateAsync([FromBody] CategoryFormDto dto, CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(dto, new CreateCategoryFormDtoCommand(dto), cancellationToken);
+    public Task<IActionResult> CreateAsync([FromBody] CategoryFormDto dto, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_categoryService.CreateAsync, dto, cancellationToken);
 
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<IActionResult> DeleteAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(new DeleteCategoryByIdCommand(id), cancellationToken);
+    public Task<IActionResult> DeleteAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_categoryService.DeleteByIdAsync, id, cancellationToken);
 
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(CategoryFormDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(new GetCategoryFormDtoByIdQuery(id), cancellationToken);
-
-    [HttpGet("AvailableToBeChild")]
-    [ProducesResponseType(typeof(IEnumerable<IdNameDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetListAvailableToBeChildAsync([FromQuery] Guid? parentId, [FromQuery] IEnumerable<Guid> childIds, CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(new GetListCategoryIdNameDtoAvailableToBeChildCategoryQuery(null, parentId, childIds), cancellationToken);
-
-    [HttpGet("AvailableToBeChild/{id:guid}")]
-    [ProducesResponseType(typeof(IEnumerable<IdNameDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetListAvailableToBeChildAsync([FromRoute] Guid id, [FromQuery] Guid? parentId, [FromQuery] IEnumerable<Guid> childIds, CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(new GetListCategoryIdNameDtoAvailableToBeChildCategoryQuery(id, parentId, childIds), cancellationToken);
-
-    [HttpGet("AvailableToBeParent")]
-    [ProducesResponseType(typeof(IEnumerable<IdNameDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetListAvailableToBeParentAsync([FromQuery] IEnumerable<Guid> childIds, CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(new GetListCategoryIdNameDtoAvailableToBeParentCategoryQuery(null, childIds), cancellationToken);
-
-    [HttpGet("AvailableToBeParent/{id:guid}")]
-    [ProducesResponseType(typeof(IEnumerable<IdNameDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetListAvailableToBeParentAsync([FromRoute] Guid id, [FromQuery] IEnumerable<Guid> childIds, CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(new GetListCategoryIdNameDtoAvailableToBeParentCategoryQuery(id, childIds), cancellationToken);
+    public Task<IActionResult> GetByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_categoryService.GetByIdAsync, id, cancellationToken);
 
     [HttpGet("All")]
     [ProducesResponseType(typeof(IEnumerable<IdNameDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetListIdNameAsync(CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(new GetListCategoryIdNameDtoQuery(), cancellationToken);
+    public Task<IActionResult> GetListIdNameAsync(CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_categoryService.GetListIdNameAsync, cancellationToken);
+
+    [HttpGet("PotentialParentCategories/{id:guid?}")]
+    [ProducesResponseType(typeof(IEnumerable<IdNameDto>), StatusCodes.Status200OK)]
+    public Task<IActionResult> GetListPotentialParentCategories([FromRoute] Guid? id, [FromQuery] List<Guid> childIds, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_categoryService.GetListPotentialParentCategories, id, childIds, cancellationToken);
+
+    [HttpGet("PotentialSubcategories/{id:guid?}")]
+    [ProducesResponseType(typeof(IEnumerable<IdNameDto>), StatusCodes.Status200OK)]
+    public Task<IActionResult> GetListPotentialSubcategoriesAsync([FromRoute] Guid? id, [FromQuery] Guid? parentId, [FromQuery] List<Guid> childIds, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_categoryService.GetListPotentialSubcategoriesAsync, id, parentId, childIds, cancellationToken);
 
     [HttpGet("Page/{pageNumber:int}")]
     [ProducesResponseType(typeof(PageDto<CategoryListDto>), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetPageAsync([FromRoute] int pageNumber, CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(new GetPageCategoryListDtoQuery(pageNumber), cancellationToken);
+    public Task<IActionResult> GetPageAsync([FromRoute] int pageNumber, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_categoryService.GetPageListAsync, pageNumber, cancellationToken);
 
     [HttpPut("{id:guid}")]
     [ProducesResponseType(typeof(CategoryFormDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] CategoryFormDto dto, CancellationToken cancellationToken = default)
-        => await ApiResponseAsync(dto, new UpdateCategoryFormDtoCommand(id, dto), cancellationToken);
+    public Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] CategoryFormDto dto, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_categoryService.UpdateAsync, id, dto, cancellationToken);
 }

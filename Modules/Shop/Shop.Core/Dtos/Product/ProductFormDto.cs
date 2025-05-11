@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Shop.Core.Dtos.ProductParameterValue;
+﻿using Shop.Core.Dtos.ProductParameterValue;
 using Shop.Core.Dtos.ProductTranslation;
 using Shop.Domain.Entities;
 using System.Linq.Expressions;
@@ -39,8 +38,4 @@ public class ProductFormDto
         ProductParameterValues = ProductParameterValues.Select(x => x.ToEntity()).ToList(),
         Translations = Translations.Select(x => x.ToEntity()).ToList(),
     };
-}
-
-public class ProductFormValidator : AbstractValidator<ProductFormDto>
-{
 }
