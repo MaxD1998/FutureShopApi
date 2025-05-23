@@ -19,7 +19,7 @@ public static class CollectionExtension
             result.Update(updateEntity);
         }
 
-        foreach (var entity in entities.ToList())
+        foreach (var entity in entities)
         {
             if (!updateEntities.Any(x => x.Id == entity.Id))
                 entities.Remove(entity);
@@ -40,7 +40,7 @@ public static class CollectionExtension
             result.UpdateEvent(updateEntity);
         }
 
-        foreach (var entity in entities.ToList())
+        foreach (var entity in entities)
         {
             if (!updateEntities.Any(x => x.Id == entity.Id))
                 entities.Remove(entity);
