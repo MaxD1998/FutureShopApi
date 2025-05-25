@@ -11,8 +11,6 @@ public class ProductEntity : BaseExternalEntity, IUpdate<ProductEntity>, IUpdate
 
     public string Name { get; set; }
 
-    public decimal Price { get; set; }
-
     public Guid ProductBaseId { get; set; }
 
     public bool WasActive { get; set; }
@@ -39,7 +37,6 @@ public class ProductEntity : BaseExternalEntity, IUpdate<ProductEntity>, IUpdate
     {
         IsActive = entity.IsActive;
         Name = entity.Name;
-        Price = entity.Price;
 
         if (!WasActive && entity.IsActive)
             WasActive = entity.IsActive;
