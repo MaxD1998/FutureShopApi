@@ -13,11 +13,16 @@ public class ProductListDto
 
     public decimal Price { get; set; }
 
-    public static Expression<Func<ProductEntity, ProductListDto>> Map() => entity => new()
+    public static Expression<Func<ProductEntity, ProductListDto>> Map()
     {
-        FilledParameters = $"{entity.ProductParameterValues.Count}/{entity.ProductBase.ProductParameters.Count}",
-        Id = entity.Id,
-        Name = entity.Name,
-        Price = entity.Price,
-    };
+        var utcNow = DateTime.UtcNow;
+
+        return entity => new()
+        {
+            FilledParameters = $"{entity.ProductParameterValues.Count}/{entity.ProductBase.ProductParameters.Count}",
+            Id = entity.Id,
+            Name = entity.Name,
+            Price = entity.Prices.AsQueryable().Where(x => (!x.Start.HasValue || x.Start <= utcNow) && (!x.End.HasValue || utcNow < x.End)).Select(x => x.Price).FirstOrDefault(),
+        };
+    }
 }

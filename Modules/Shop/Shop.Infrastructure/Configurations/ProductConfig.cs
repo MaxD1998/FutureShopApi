@@ -19,16 +19,16 @@ public class ProductConfig : BaseExternalConfig<ProductEntity>
             .HasColumnOrder(101)
             .IsRequired();
 
-        builder.Property(x => x.Price)
-            .HasColumnOrder(102)
-            .IsRequired();
-
         builder.Property(x => x.IsActive)
-            .HasColumnOrder(103)
+            .HasColumnOrder(102)
             .IsRequired()
             .HasDefaultValue(false);
 
         builder.HasMany(x => x.BasketItems)
+            .WithOne(x => x.Product)
+            .HasForeignKey(x => x.ProductId);
+
+        builder.HasMany(x => x.Prices)
             .WithOne(x => x.Product)
             .HasForeignKey(x => x.ProductId);
 

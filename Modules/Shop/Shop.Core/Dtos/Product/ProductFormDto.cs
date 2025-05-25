@@ -1,4 +1,5 @@
-﻿using Shop.Core.Dtos.ProductParameterValue;
+﻿using Shop.Core.Dtos.Price;
+using Shop.Core.Dtos.ProductParameterValue;
 using Shop.Core.Dtos.ProductTranslation;
 using Shop.Domain.Entities;
 using System.Linq.Expressions;
@@ -11,7 +12,7 @@ public class ProductFormDto
 
     public string Name { get; set; }
 
-    public decimal Price { get; set; }
+    public List<PriceFormDto> Prices { get; set; }
 
     public Guid ProductBaseId { get; set; }
 
@@ -23,7 +24,6 @@ public class ProductFormDto
     {
         IsActive = entity.IsActive,
         Name = entity.Name,
-        Price = entity.Price,
         ProductBaseId = entity.ProductBaseId,
         ProductParameterValues = entity.ProductBase.ProductParameters.AsQueryable().Select(productParameter => new ProductParameterValueFormDto
         {
@@ -32,6 +32,7 @@ public class ProductFormDto
             ProductParameterName = productParameter.Name,
             Value = productParameter.ProductParameterValues.AsQueryable().Where(value => value.ProductId == entity.Id).Select(x => x.Value).FirstOrDefault(),
         }).ToList(),
+        Prices = entity.Prices.AsQueryable().Select(PriceFormDto.Map()).ToList(),
         Translations = entity.Translations.AsQueryable().Select(ProductTranslationFormDto.Map()).ToList(),
     };
 
@@ -39,9 +40,10 @@ public class ProductFormDto
     {
         IsActive = IsActive,
         Name = Name,
-        Price = Price,
         ProductBaseId = ProductBaseId,
         ProductParameterValues = ProductParameterValues.Where(x => x.Value != null && x.Value != string.Empty).Select(x => x.ToEntity()).ToList(),
+        Prices = Prices.Select(x => x.ToEntity()).ToList(),
+        ProductParameterValues = ProductParameterValues.Select(x => x.ToEntity()).ToList(),
         Translations = Translations.Select(x => x.ToEntity()).ToList(),
     };
 }
