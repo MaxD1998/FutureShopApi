@@ -9,7 +9,7 @@ public interface ICategoryEventService
 {
     Task CreateOrUpdateAsync(CategoryEventDto dto, CancellationToken cancellationToken);
 
-    Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task DeleteByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
 }
 
 public class CategoryEventService(ICategoryRepository categoryRepository) : BaseService, ICategoryEventService
@@ -22,14 +22,14 @@ public class CategoryEventService(ICategoryRepository categoryRepository) : Base
         await _categoryRepository.CreateOrUpdateForEventAsync(entity, cancellationToken); ;
     }
 
-    public Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
-        => _categoryRepository.DeleteByIdAsync(id, cancellationToken);
+    public Task DeleteByExternalIdAsync(Guid externalId, CancellationToken cancellationToken)
+        => _categoryRepository.DeleteByExternalIdAsync(externalId, cancellationToken);
 
     private async Task<CategoryEntity> MapToEntity(CategoryEventDto eventDto, CancellationToken cancellationToken)
     {
         var parentIdTask = eventDto.ParentCategoryId.HasValue
             ? _categoryRepository.GetIdByExternalIdAsync(eventDto.ParentCategoryId.Value, cancellationToken)
-            : null;
+            : Task.FromResult<Guid?>(null);
 
         var subCategoriesTask = _categoryRepository.GetListByExternalIdsAsync(eventDto.SubCategoryIds, cancellationToken);
 

@@ -34,7 +34,7 @@ public class CategoryEventHandler(ICategoryEventService categoryEventService) : 
             {
                 var deleteEvent = JsonSerializer.Deserialize<EventMessageDto<Guid>>(message);
                 if (deleteEvent?.Message != null && deleteEvent.Message != Guid.Empty)
-                    return _categoryEventService.DeleteByIdAsync(deleteEvent.Message, cancellationToken);
+                    return _categoryEventService.DeleteByExternalIdAsync(deleteEvent.Message, cancellationToken);
 
                 break;
             }

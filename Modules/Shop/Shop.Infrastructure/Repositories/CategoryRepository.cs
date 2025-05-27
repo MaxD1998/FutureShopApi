@@ -9,6 +9,8 @@ public interface ICategoryRepository : IBaseRepository<CategoryEntity>, IUpdateR
 {
     Task CreateOrUpdateForEventAsync(CategoryEntity eventEntity, CancellationToken cancellationToken);
 
+    Task DeleteByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
+
     Task<Guid?> GetIdByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
 
     Task<List<CategoryEntity>> GetListByExternalIdsAsync(List<Guid> ids, CancellationToken cancellationToken);
@@ -29,6 +31,9 @@ public class CategoryRepository(ShopContext context) : BaseRepository<ShopContex
 
         await _context.SaveChangesAsync(cancellationToken);
     }
+
+    public Task DeleteByExternalIdAsync(Guid externalId, CancellationToken cancellationToken)
+        => _context.Set<CategoryEntity>().Where(x => x.ExternalId == externalId).ExecuteDeleteAsync(cancellationToken);
 
     public Task<Guid?> GetIdByExternalIdAsync(Guid externalId, CancellationToken cancellationToken)
         => _context.Set<CategoryEntity>().Where(x => x.ExternalId == externalId).Select(x => (Guid?)x.Id).FirstOrDefaultAsync(cancellationToken);

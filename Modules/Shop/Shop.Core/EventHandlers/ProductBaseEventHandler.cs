@@ -34,7 +34,7 @@ public class ProductBaseEventHandler(IProductBaseEventService productBaseEventSe
             {
                 var deleteEvent = JsonSerializer.Deserialize<EventMessageDto<Guid>>(message);
                 if (deleteEvent?.Message != null && deleteEvent.Message != Guid.Empty)
-                    return _productBaseEventService.DeleteByIdAsync(deleteEvent.Message, cancellationToken);
+                    return _productBaseEventService.DeleteByExternalIdAsync(deleteEvent.Message, cancellationToken);
 
                 break;
             }

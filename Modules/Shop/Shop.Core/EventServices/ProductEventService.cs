@@ -9,7 +9,7 @@ public interface IProductEventService
 {
     Task CreateOrUpdateAsync(ProductEventDto dto, CancellationToken cancellationToken);
 
-    Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task DeleteByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
 }
 
 public class ProductEventService(IProductBaseRepository productBaseRepository, IProductRepository productRepository) : BaseService, IProductEventService
@@ -23,8 +23,8 @@ public class ProductEventService(IProductBaseRepository productBaseRepository, I
         await _productRepository.CreateOrUpdateForEventAsync(entity, cancellationToken);
     }
 
-    public Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
-        => _productRepository.DeleteByIdAsync(id, cancellationToken);
+    public Task DeleteByExternalIdAsync(Guid externalId, CancellationToken cancellationToken)
+        => _productRepository.DeleteByExternalIdAsync(externalId, cancellationToken);
 
     private async Task<ProductEntity> MapToEntity(ProductEventDto dto, CancellationToken cancellationToken)
     {

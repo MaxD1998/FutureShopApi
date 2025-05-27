@@ -12,6 +12,8 @@ public interface IProductRepository : IBaseRepository<ProductEntity>, IUpdateRep
 {
     Task CreateOrUpdateForEventAsync(ProductEntity eventEntity, CancellationToken cancellationToken);
 
+    Task DeleteByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
+
     Task<Guid?> GetIdByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
 
     Task<List<TResult>> GetListByCategoryIdAsync<TResult>(GetProductListByCategoryIdParams parameters, Expression<Func<ProductEntity, TResult>> map, CancellationToken cancellationToken);
@@ -31,6 +33,9 @@ public class ProductRepository(ShopContext context) : BaseRepository<ShopContext
 
         await _context.SaveChangesAsync(cancellationToken);
     }
+
+    public Task DeleteByExternalIdAsync(Guid externalId, CancellationToken cancellationToken)
+        => _context.Set<ProductEntity>().Where(x => x.ExternalId == externalId).ExecuteDeleteAsync(cancellationToken);
 
     public Task<Guid?> GetIdByExternalIdAsync(Guid externalId, CancellationToken cancellationToken)
         => _context.Set<ProductEntity>().Where(x => x.ExternalId == externalId).Select(x => (Guid?)x.Id).FirstOrDefaultAsync(cancellationToken);

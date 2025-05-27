@@ -34,7 +34,7 @@ public class ProductEventHandler(IProductEventService productEventService) : IMe
             {
                 var deleteEvent = JsonSerializer.Deserialize<EventMessageDto<Guid>>(message);
                 if (deleteEvent?.Message != null && deleteEvent.Message != Guid.Empty)
-                    return _productEventService.DeleteByIdAsync(deleteEvent.Message, cancellationToken);
+                    return _productEventService.DeleteByExternalIdAsync(deleteEvent.Message, cancellationToken);
 
                 break;
             }
