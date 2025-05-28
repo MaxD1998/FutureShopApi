@@ -14,6 +14,9 @@ namespace Authorization.Inrfrastructure.Migrations
                 name: "RefreshToken");
 
             migrationBuilder.DropTable(
+                name: "UserModule");
+
+            migrationBuilder.DropTable(
                 name: "User");
         }
 
@@ -63,10 +66,33 @@ namespace Authorization.Inrfrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserModule",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Type = table.Column<int>(type: "integer", nullable: false),
+                    CanEdit = table.Column<bool>(type: "boolean", nullable: false),
+                    CanDelete = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserModule", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserModule_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "User",
                 columns: new[] { "Id", "CreateTime", "DateOfBirth", "Email", "FirstName", "HashedPassword", "LastName", "ModifyTime", "PhoneNumber", "Type" },
-                values: new object[] { new Guid("d6669a68-5afb-432d-858f-3f5181579a90"), new DateTime(2024, 3, 2, 15, 35, 4, 653, DateTimeKind.Utc).AddTicks(3303), new DateOnly(1, 1, 1), "superadmin@futureshop.pl", "Super", "$2a$11$5tVc.NkKOpJvavSzTx3Wm.fdZ.S6gESA7LXZPO1z71feaeykq1yse", "Admin", null, null, 0 });
+                values: new object[] { new Guid("d6669a68-5afb-432d-858f-3f5181579a90"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateOnly(1, 1, 1), "superadmin@futureshop.pl", "Super", "$2a$11$v1B9qwcIeH.PJLuFjnmK7O1Nu3TSUsc6oZ49.5DXOJhkIDcfzPD..", "Admin", null, null, 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_RefreshToken_UserId",
@@ -78,6 +104,12 @@ namespace Authorization.Inrfrastructure.Migrations
                 name: "IX_User_Email",
                 table: "User",
                 column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserModule_UserId_Type",
+                table: "UserModule",
+                columns: new[] { "UserId", "Type" },
                 unique: true);
         }
     }
