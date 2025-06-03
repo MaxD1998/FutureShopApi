@@ -43,7 +43,6 @@ public class ProductFormDto
         ProductBaseId = ProductBaseId,
         ProductParameterValues = ProductParameterValues.Where(x => x.Value != null && x.Value != string.Empty).Select(x => x.ToEntity()).ToList(),
         Prices = Prices.Select(x => x.ToEntity()).ToList(),
-        ProductParameterValues = ProductParameterValues.Select(x => x.ToEntity()).ToList(),
         Translations = Translations.Select(x => x.ToEntity()).ToList(),
     };
 }
