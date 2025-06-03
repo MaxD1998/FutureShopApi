@@ -4,7 +4,7 @@ using System.Net;
 
 namespace Shared.Api.Middlewares;
 
-public class MongoDbTransactionMiddleware<TContext> : IMiddleware where TContext : BaseMongoDbContext
+public class MongoDbTransactionMiddleware<TContext> : IMiddleware where TContext : BaseNoSqlContext
 {
     private readonly TContext _context;
 

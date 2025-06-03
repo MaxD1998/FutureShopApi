@@ -1,4 +1,4 @@
-﻿using Shared.Core.Interfaces;
+﻿using Shared.Infrastructure.Interfaces;
 using Shop.Core.Enums;
 using Shop.Domain.Entities;
 
@@ -6,6 +6,8 @@ namespace Shop.Core.Dtos.Product;
 
 public class ProductShopListFilterRequestDto : IFilter<ProductEntity>
 {
+    public Guid? FavouriteId { get; set; } = null;
+
     public string Name { get; set; }
 
     public decimal? PriceFrom { get; set; }

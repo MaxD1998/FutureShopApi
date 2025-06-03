@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Shop.Core.Dtos.ProductParameterValue;
+﻿using Shop.Core.Dtos.ProductParameterValue;
 using Shop.Core.Dtos.ProductTranslation;
 using Shop.Domain.Entities;
 using System.Linq.Expressions;
@@ -26,7 +25,13 @@ public class ProductFormDto
         Name = entity.Name,
         Price = entity.Price,
         ProductBaseId = entity.ProductBaseId,
-        ProductParameterValues = entity.ProductParameterValues.AsQueryable().Select(ProductParameterValueFormDto.Map()).ToList(),
+        ProductParameterValues = entity.ProductBase.ProductParameters.AsQueryable().Select(productParameter => new ProductParameterValueFormDto
+        {
+            Id = productParameter.ProductParameterValues.AsQueryable().Where(value => value.ProductId == entity.Id).Select(x => (Guid?)x.Id).FirstOrDefault(),
+            ProductParameterId = productParameter.Id,
+            ProductParameterName = productParameter.Name,
+            Value = productParameter.ProductParameterValues.AsQueryable().Where(value => value.ProductId == entity.Id).Select(x => x.Value).FirstOrDefault(),
+        }).ToList(),
         Translations = entity.Translations.AsQueryable().Select(ProductTranslationFormDto.Map()).ToList(),
     };
 
@@ -36,11 +41,7 @@ public class ProductFormDto
         Name = Name,
         Price = Price,
         ProductBaseId = ProductBaseId,
-        ProductParameterValues = ProductParameterValues.Select(x => x.ToEntity()).ToList(),
+        ProductParameterValues = ProductParameterValues.Where(x => x.Value != null && x.Value != string.Empty).Select(x => x.ToEntity()).ToList(),
         Translations = Translations.Select(x => x.ToEntity()).ToList(),
     };
-}
-
-public class ProductFormValidator : AbstractValidator<ProductFormDto>
-{
 }

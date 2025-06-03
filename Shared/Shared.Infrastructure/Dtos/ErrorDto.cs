@@ -1,29 +1,19 @@
-﻿using FluentValidation.Results;
-
-namespace Shared.Infrastructure.Dtos;
+﻿namespace Shared.Infrastructure.Dtos;
 
 public class ErrorDto
 {
-    public ErrorDto()
+    public ErrorDto(string errorMessage)
     {
+        ErrorMessage = errorMessage;
     }
 
-    public ErrorDto(ValidationFailure dto)
+    public ErrorDto(string errorCode, string errorMessage)
     {
-        ErrorCode = dto.ErrorCode;
-        ErrorMessage = dto.ErrorMessage;
-        PropertyName = dto.PropertyName;
+        ErrorCode = errorCode;
+        ErrorMessage = errorMessage;
     }
 
-    public ErrorDto(ErrorMessageDto dto)
-    {
-        ErrorCode = dto.ErrorCode;
-        ErrorMessage = dto.ErrorMessage;
-    }
+    public string ErrorCode { get; }
 
-    public string ErrorCode { get; set; }
-
-    public string ErrorMessage { get; set; }
-
-    public string PropertyName { get; set; }
+    public string ErrorMessage { get; }
 }

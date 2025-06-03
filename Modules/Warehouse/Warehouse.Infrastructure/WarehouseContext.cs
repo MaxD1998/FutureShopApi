@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace Warehouse.Infrastructure;
 
-public class WarehouseContext : BasePostgreSqlContext
+public class WarehouseContext : BaseContext
 {
     public WarehouseContext(IOptions<ConnectionSettings> connectionSettings) : base(connectionSettings)
     {

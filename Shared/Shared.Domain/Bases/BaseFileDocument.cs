@@ -15,6 +15,11 @@ public class BaseFileDocument : BaseDocument
     [BsonRequired]
     public byte[] Data { get; set; }
 
+    [BsonElement(Order = 54)]
+    [BsonRepresentation(BsonType.String)]
+    [BsonRequired]
+    public string EntityType { get; set; }
+
     [BsonElement(Order = 53)]
     [BsonRepresentation(BsonType.Int64)]
     [BsonRequired]

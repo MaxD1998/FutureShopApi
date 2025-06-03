@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Product.Domain.Entities;
+﻿using Product.Domain.Entities;
 using System.Linq.Expressions;
 
 namespace Product.Core.Dtos.ProductPhoto;
@@ -22,8 +21,4 @@ public class ProductPhotoFormDto
         FileId = FileId,
         Position = index,
     };
-}
-
-public class ProductPhotoFormValidator : AbstractValidator<ProductPhotoFormDto>
-{
 }

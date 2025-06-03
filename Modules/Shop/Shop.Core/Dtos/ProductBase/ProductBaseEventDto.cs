@@ -1,5 +1,4 @@
 ﻿using Shop.Domain.Entities;
-using Shop.Infrastructure;
 
 namespace Shop.Core.Dtos.ProductBase;
 
@@ -11,9 +10,8 @@ public class ProductBaseEventDto
 
     public string Name { get; set; }
 
-    public ProductBaseEntity Map(ShopPostgreSqlContext context) => new()
+    public ProductBaseEntity Map() => new()
     {
-        CategoryId = context.Set<CategoryEntity>().Where(x => x.ExternalId == CategoryId).Select(x => x.Id).FirstOrDefault(),
         ExternalId = Id,
         Name = Name,
     };

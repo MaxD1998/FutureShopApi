@@ -1,9 +1,10 @@
 ﻿using Shared.Domain.Bases;
 using Shared.Domain.Enums;
+using Shared.Domain.Interfaces;
 
 namespace Authorization.Domain.Entities;
 
-public class UserEntity : BaseEntity
+public class UserEntity : BaseEntity, IUpdate<UserEntity>
 {
     public DateOnly DateOfBirth { get; set; }
 
@@ -26,4 +27,10 @@ public class UserEntity : BaseEntity
     public ICollection<UserModuleEntity> UserModules { get; set; } = [];
 
     #endregion Related Data
+
+    #region Methods
+
+    public void Update(UserEntity entity) => throw new NotImplementedException();
+
+    #endregion Methods
 }

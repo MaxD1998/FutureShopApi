@@ -1,7 +1,4 @@
-﻿using FluentValidation;
-using Shared.Core.Errors;
-using Shared.Core.Extensions;
-using Shop.Core.Dtos.CategoryTranslation;
+﻿using Shop.Core.Dtos.CategoryTranslation;
 using Shop.Domain.Entities;
 using System.Linq.Expressions;
 
@@ -33,14 +30,4 @@ public class CategoryFormDto
         IsActive = IsActive,
         Translations = Translations.Select(x => x.ToEntity()).ToList(),
     };
-}
-
-public class CategoryFormValidator : AbstractValidator<CategoryFormDto>
-{
-    public CategoryFormValidator()
-    {
-        RuleFor(x => x.Name)
-            .NotEmpty()
-                .ErrorResponse(ErrorMessage.ValueWasEmpty);
-    }
 }

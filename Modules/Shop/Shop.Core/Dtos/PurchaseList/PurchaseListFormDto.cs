@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Shop.Core.Dtos.PurchaseListItem;
+﻿using Shop.Core.Dtos.PurchaseListItem;
 using Shop.Domain.Entities;
 using System.Linq.Expressions;
 
@@ -29,8 +28,4 @@ public class PurchaseListFormDto
         Name = Name,
         PurchaseListItems = PurchaseListItems.Select(x => x.ToEntity()).ToList()
     };
-}
-
-public class PurchaseListFormValidator : AbstractValidator<PurchaseListFormDto>
-{
 }

@@ -7,14 +7,9 @@ public interface IHeaderService
     string GetHeader(string name);
 }
 
-public class HeaderService : IHeaderService
+public class HeaderService(IHttpContextAccessor accessor) : IHeaderService
 {
-    private readonly IHeaderDictionary _headers;
-
-    public HeaderService(IHttpContextAccessor accessor)
-    {
-        _headers = accessor.HttpContext.Request.Headers;
-    }
+    private readonly IHeaderDictionary _headers = accessor.HttpContext.Request.Headers;
 
     public string GetHeader(string name)
     {

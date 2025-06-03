@@ -1,9 +1,7 @@
-﻿using Api.Extensions;
-using FluentValidation;
-using Product.Core;
-using Product.Core.Jobs;
+﻿using Product.Core.EventServices;
+using Product.Core.Services;
 using Product.Infrastructure;
-using Quartz;
+using Product.Infrastructure.Repositories;
 using Shared.Api.Middlewares;
 
 namespace Api.Modules.Product;
@@ -13,32 +11,39 @@ public static class ProductRegister
     public static void RegisterProductModule(this IServiceCollection services)
     {
         services.ConfigureServices();
-        services.RegisterQuartzJobs();
+        services.RegisterRepositories();
+        services.RegisterEventServices();
+        services.RegisterServices();
         services.RegisterMiddlewares();
     }
 
     private static void ConfigureServices(this IServiceCollection services)
     {
-        services.AddDbContext<ProductPostgreSqlContext>();
-        services.AddScoped<ProductMongoDbContext>();
-        services.AddMediatR(cfg =>
-        {
-            cfg.RegisterServicesFromAssembly(typeof(CoreAssembly).Assembly);
-        });
-        services.AddValidatorsFromAssembly(typeof(CoreAssembly).Assembly);
+        services.AddDbContext<ProductContext>();
+    }
+
+    private static void RegisterEventServices(this IServiceCollection services)
+    {
+        services.AddScoped<IProductPhotoEventService, ProductPhotoEventService>();
     }
 
     private static void RegisterMiddlewares(this IServiceCollection services)
     {
-        services.AddScoped<PostgreSqlDbTransactionMiddleware<ProductPostgreSqlContext>>();
-        services.AddScoped<MongoDbTransactionMiddleware<ProductMongoDbContext>>();
+        services.AddScoped<PostgreSqlDbTransactionMiddleware<ProductContext>>();
     }
 
-    private static void RegisterQuartzJobs(this IServiceCollection services)
+    private static void RegisterRepositories(this IServiceCollection services)
     {
-        services.AddQuartz(q =>
-        {
-            q.AddJobAndTrigger<DeleteNotAssignedPhotoJob>();
-        });
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IProductBaseRepository, ProductBaseRepository>();
+        services.AddScoped<IProductPhotoRepository, ProductPhotoRepository>();
+        services.AddScoped<IProductRepository, ProductRepository>();
+    }
+
+    private static void RegisterServices(this IServiceCollection services)
+    {
+        services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<IProductBaseService, ProductBaseService>();
+        services.AddScoped<IProductService, ProductService>();
     }
 }

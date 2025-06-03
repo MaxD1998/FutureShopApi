@@ -1,7 +1,4 @@
-﻿using FluentValidation;
-using Shared.Core.Errors;
-using Shared.Core.Extensions;
-using Shop.Core.Dtos.ProductParameterTranslation;
+﻿using Shop.Core.Dtos.ProductParameterTranslation;
 using Shop.Domain.Entities;
 using System.Linq.Expressions;
 
@@ -28,14 +25,4 @@ public class ProductParameterFormDto
         Name = Name,
         Translations = Translations.Select(x => x.ToEntity()).ToList()
     };
-}
-
-public class ProductParameterFormValidator : AbstractValidator<ProductParameterFormDto>
-{
-    public ProductParameterFormValidator()
-    {
-        RuleFor(x => x.Name)
-            .NotEmpty()
-                .ErrorResponse(ErrorMessage.ValueWasEmpty);
-    }
 }

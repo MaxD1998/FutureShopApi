@@ -17,7 +17,7 @@ namespace Authorization.Inrfrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.1")
+                .HasAnnotation("ProductVersion", "9.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -123,14 +123,53 @@ namespace Authorization.Inrfrastructure.Migrations
                         new
                         {
                             Id = new Guid("d6669a68-5afb-432d-858f-3f5181579a90"),
-                            CreateTime = new DateTime(2024, 3, 2, 15, 35, 4, 653, DateTimeKind.Utc).AddTicks(3303),
+                            CreateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateOfBirth = new DateOnly(1, 1, 1),
                             Email = "superadmin@futureshop.pl",
                             FirstName = "Super",
-                            HashedPassword = "$2a$11$5tVc.NkKOpJvavSzTx3Wm.fdZ.S6gESA7LXZPO1z71feaeykq1yse",
+                            HashedPassword = "$2a$11$v1B9qwcIeH.PJLuFjnmK7O1Nu3TSUsc6oZ49.5DXOJhkIDcfzPD..",
                             LastName = "Admin",
                             Type = 0
                         });
+                });
+
+            modelBuilder.Entity("Authorization.Domain.Entities.UserModuleEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
+
+                    b.Property<bool>("CanDelete")
+                        .HasColumnType("boolean")
+                        .HasColumnOrder(103);
+
+                    b.Property<bool>("CanEdit")
+                        .HasColumnType("boolean")
+                        .HasColumnOrder(102);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(1);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId", "Type")
+                        .IsUnique();
+
+                    b.ToTable("UserModule", (string)null);
                 });
 
             modelBuilder.Entity("Authorization.Domain.Entities.RefreshTokenEntity", b =>
@@ -144,9 +183,22 @@ namespace Authorization.Inrfrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Authorization.Domain.Entities.UserModuleEntity", b =>
+                {
+                    b.HasOne("Authorization.Domain.Entities.UserEntity", "User")
+                        .WithMany("UserModules")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Authorization.Domain.Entities.UserEntity", b =>
                 {
                     b.Navigation("RefreshToken");
+
+                    b.Navigation("UserModules");
                 });
 #pragma warning restore 612, 618
         }

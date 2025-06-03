@@ -1,18 +1,9 @@
-﻿using FluentValidation;
-using Shop.Domain.Entities;
+﻿using Shop.Domain.Entities;
 
 namespace Shop.Core.Dtos.PurchaseListItem;
 
 public class PurchaseListItemFormDto
 {
-    public PurchaseListItemFormDto()
-    {
-    }
-
-    public PurchaseListItemFormDto(PurchaseListItemEntity entity)
-    {
-    }
-
     public Guid? Id { get; set; }
 
     public Guid ProductId { get; set; }
@@ -22,8 +13,4 @@ public class PurchaseListItemFormDto
         Id = Id ?? Guid.Empty,
         ProductId = ProductId,
     };
-}
-
-public class PurchaseListItemFormValidator : AbstractValidator<PurchaseListItemFormDto>
-{
 }

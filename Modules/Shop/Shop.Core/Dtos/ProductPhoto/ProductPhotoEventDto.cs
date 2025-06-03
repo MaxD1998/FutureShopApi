@@ -1,5 +1,4 @@
 ﻿using Shop.Domain.Entities;
-using Shop.Infrastructure;
 
 namespace Shop.Core.Dtos.ProductPhoto;
 
@@ -13,11 +12,10 @@ public class ProductPhotoEventDto
 
     public Guid ProductId { get; set; }
 
-    public ProductPhotoEntity Map(ShopPostgreSqlContext context) => new()
+    public ProductPhotoEntity Map() => new()
     {
         ExternalId = Id,
         FileId = FileId,
         Position = Position,
-        ProductId = context.Set<ProductEntity>().Where(x => x.ExternalId == ProductId).Select(x => x.Id).FirstOrDefault(),
     };
 }

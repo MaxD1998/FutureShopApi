@@ -1,8 +1,9 @@
 ﻿using Shared.Domain.Bases;
+using Shared.Domain.Interfaces;
 
 namespace Authorization.Domain.Entities;
 
-public class RefreshTokenEntity : BaseEntity
+public class RefreshTokenEntity : BaseEntity, IUpdate<RefreshTokenEntity>
 {
     public DateOnly EndDate { get; set; }
 

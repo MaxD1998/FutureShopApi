@@ -1,23 +1,22 @@
-﻿using MediatR;
-using Shared.Core.Constans;
+﻿using Shared.Core.Constans;
 using Shared.Core.Dtos;
 using Shared.Core.Enums;
 using Shared.Core.Interfaces;
-using Shop.Core.Cqrs.Product.Commands;
 using Shop.Core.Dtos.Product;
+using Shop.Core.EventServices;
 using System.Text.Json;
 
 namespace Shop.Core.EventHandlers;
 
-public class ProductEventHandler(IMediator mediator) : IMessageEventHandler
+public class ProductEventHandler(IProductEventService productEventService) : IMessageEventHandler
 {
-    private readonly IMediator _mediator = mediator;
+    private readonly IProductEventService _productEventService = productEventService;
 
     public string Exchange => RabbitMqExchangeConst.ProductModuleProduct;
 
     public string QueueName => "ShopModule-Product";
 
-    public async Task ExecuteAsync(string message, CancellationToken cancellationToken)
+    public Task ExecuteAsync(string message, CancellationToken cancellationToken)
     {
         var eventMessage = JsonSerializer.Deserialize<EventMessageDto>(message);
 
@@ -27,7 +26,7 @@ public class ProductEventHandler(IMediator mediator) : IMessageEventHandler
             {
                 var productEvent = JsonSerializer.Deserialize<EventMessageDto<ProductEventDto>>(message);
                 if (productEvent?.Message != null)
-                    await _mediator.Send(new CreateOrUpdateProductEventDtoCommand(productEvent.Message), cancellationToken);
+                    return _productEventService.CreateOrUpdateAsync(productEvent.Message, cancellationToken);
 
                 break;
             }
@@ -35,12 +34,14 @@ public class ProductEventHandler(IMediator mediator) : IMessageEventHandler
             {
                 var deleteEvent = JsonSerializer.Deserialize<EventMessageDto<Guid>>(message);
                 if (deleteEvent?.Message != null && deleteEvent.Message != Guid.Empty)
-                    await _mediator.Send(new DeleteProductByIdCommand(deleteEvent.Message), cancellationToken);
+                    return _productEventService.DeleteByExternalIdAsync(deleteEvent.Message, cancellationToken);
 
                 break;
             }
             default:
                 throw new NotSupportedException($"Message type {eventMessage.Type} is not supported.");
         }
+
+        return Task.CompletedTask;
     }
 }

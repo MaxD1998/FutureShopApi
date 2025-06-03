@@ -6,7 +6,7 @@ namespace Shared.Infrastructure.Exceptions;
 
 public class ServiceUnavailableException : BaseException
 {
-    public ServiceUnavailableException(ErrorMessageDto error) : base(error)
+    public ServiceUnavailableException(ErrorDto error) : base(error)
     {
     }
 

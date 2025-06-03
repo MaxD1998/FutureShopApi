@@ -1,5 +1,4 @@
-﻿using FluentValidation;
-using Shop.Domain.Entities;
+﻿using Shop.Domain.Entities;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.ProductParameterValue;
@@ -10,14 +9,9 @@ public class ProductParameterValueFormDto
 
     public Guid ProductParameterId { get; set; }
 
-    public string Value { get; set; }
+    public string ProductParameterName { get; set; }
 
-    public static Expression<Func<ProductParameterValueEntity, ProductParameterValueFormDto>> Map() => entity => new()
-    {
-        Id = entity.Id,
-        ProductParameterId = entity.ProductParameterId,
-        Value = entity.Value,
-    };
+    public string Value { get; set; }
 
     public ProductParameterValueEntity ToEntity() => new()
     {
@@ -25,8 +19,4 @@ public class ProductParameterValueFormDto
         ProductParameterId = ProductParameterId,
         Value = Value,
     };
-}
-
-public class ProductParameterValueFormValidator : AbstractValidator<ProductParameterValueFormDto>
-{
 }

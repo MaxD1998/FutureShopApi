@@ -1,7 +1,4 @@
-﻿using FluentValidation;
-using Shared.Core.Errors;
-using Shared.Core.Extensions;
-using Shop.Core.Dtos.ProductParameter;
+﻿using Shop.Core.Dtos.ProductParameter;
 using Shop.Domain.Entities;
 using System.Linq.Expressions;
 
@@ -28,14 +25,4 @@ public class ProductBaseFormDto
         Name = Name,
         ProductParameters = ProductParameters.Select(x => x.ToEntity()).ToList(),
     };
-}
-
-public class ProductBaseValidator : AbstractValidator<ProductBaseFormDto>
-{
-    public ProductBaseValidator()
-    {
-        RuleFor(x => x.Name)
-            .NotEmpty()
-                .ErrorResponse(ErrorMessage.ValueWasEmpty);
-    }
 }
