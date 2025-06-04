@@ -24,6 +24,7 @@ public class ProductFormDto
     {
         IsActive = entity.IsActive,
         Name = entity.Name,
+        Prices = entity.Prices.AsQueryable().Select(PriceFormDto.Map()).ToList(),
         ProductBaseId = entity.ProductBaseId,
         ProductParameterValues = entity.ProductBase.ProductParameters.AsQueryable().Select(productParameter => new ProductParameterValueFormDto
         {
@@ -32,7 +33,6 @@ public class ProductFormDto
             ProductParameterName = productParameter.Name,
             Value = productParameter.ProductParameterValues.AsQueryable().Where(value => value.ProductId == entity.Id).Select(x => x.Value).FirstOrDefault(),
         }).ToList(),
-        Prices = entity.Prices.AsQueryable().Select(PriceFormDto.Map()).ToList(),
         Translations = entity.Translations.AsQueryable().Select(ProductTranslationFormDto.Map()).ToList(),
     };
 
