@@ -40,7 +40,7 @@ public class CategoryService(ICategoryRepository categoryRepository, IRabbitMqCo
         var entity = await MapToEntity(dto, cancellationToken);
         entity = await _categoryRepository.CreateAsync(entity, cancellationToken);
 
-        await _rabbitMqContext.SendMessageAsync(RabbitMqExchangeConst.ProductModuleCategory, EventMessageDto.Create(entity, MessageType.AddOrUpdate));
+        await _rabbitMqContext.SendMessageAsync(RabbitMqExchangeConst.ProductModuleCategory, EventMessageDto.Create(new CategoryEventDto(entity), MessageType.AddOrUpdate));
 
         var result = await _categoryRepository.GetByIdAsync(entity.Id, CategoryFormDto.Map(), cancellationToken);
 
@@ -91,7 +91,7 @@ public class CategoryService(ICategoryRepository categoryRepository, IRabbitMqCo
         var entity = await MapToEntity(dto, cancellationToken);
         entity = await _categoryRepository.UpdateAsync(id, entity, cancellationToken);
 
-        await _rabbitMqContext.SendMessageAsync(RabbitMqExchangeConst.ProductModuleCategory, EventMessageDto.Create(entity, MessageType.AddOrUpdate));
+        await _rabbitMqContext.SendMessageAsync(RabbitMqExchangeConst.ProductModuleCategory, EventMessageDto.Create(new CategoryEventDto(entity), MessageType.AddOrUpdate));
 
         var result = await _categoryRepository.GetByIdAsync(entity.Id, CategoryFormDto.Map(), cancellationToken);
 

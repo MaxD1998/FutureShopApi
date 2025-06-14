@@ -19,7 +19,7 @@ public class ProductBaseRepository(ShopContext context) : BaseRepository<ShopCon
     public async Task CreateOrUpdateAsync(ProductBaseEntity eventEntity, CancellationToken cancellationToken)
     {
         var entity = await _context.Set<ProductBaseEntity>()
-            .FirstOrDefaultAsync(x => x.ExternalId == eventEntity.Id, cancellationToken);
+            .FirstOrDefaultAsync(x => x.ExternalId == eventEntity.ExternalId, cancellationToken);
 
         if (entity is null)
             await _context.Set<ProductBaseEntity>().AddAsync(eventEntity, cancellationToken);
