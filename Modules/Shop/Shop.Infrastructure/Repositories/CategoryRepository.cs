@@ -50,7 +50,7 @@ public class CategoryRepository(ShopContext context) : BaseRepository<ShopContex
         if (entityToUpdate == null)
             return null;
 
-        entity.Update(entity);
+        entityToUpdate.Update(entity);
 
         await _context.SaveChangesAsync(cancellationToken);
 
