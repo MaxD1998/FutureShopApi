@@ -2,7 +2,7 @@
 
 namespace Shop.Core.Dtos;
 
-public class SimulatePriceRequest
+public class SimulatePriceRequestDto
 {
     public List<PriceFormDto> Collection { get; set; }
 

@@ -32,17 +32,17 @@ public class ProductController(IProductService productService) : ShopModuleBaseC
 
     [HttpPost("SimulateAddPrice")]
     [ProducesResponseType(typeof(ProductFormDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> SimulateAddPriceAsync([FromBody] SimulatePriceRequest request, CancellationToken cancellationToken = default)
+    public Task<IActionResult> SimulateAddPriceAsync([FromBody] SimulatePriceRequestDto request, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_productService.SimulateAddPrice, request, cancellationToken);
 
     [HttpPost("SimulateRemovePrice")]
     [ProducesResponseType(typeof(ProductFormDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> SimulateRemovePriceAsync([FromBody] SimulateRemovePriceRequest request, CancellationToken cancellationToken = default)
+    public Task<IActionResult> SimulateRemovePriceAsync([FromBody] SimulateRemovePriceRequestDto request, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_productService.SimulateRemovePrice, request, cancellationToken);
 
     [HttpPost("SimulateUpdatePrice")]
     [ProducesResponseType(typeof(ProductFormDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> SimulateUpdatePriceAsync([FromBody] SimulatePriceRequest request, CancellationToken cancellationToken = default)
+    public Task<IActionResult> SimulateUpdatePriceAsync([FromBody] SimulatePriceRequestDto request, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_productService.SimulateUpdatePrice, request, cancellationToken);
 
     [HttpPut("{id:guid}")]

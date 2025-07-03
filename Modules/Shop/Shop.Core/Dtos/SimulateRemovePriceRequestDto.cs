@@ -2,7 +2,7 @@
 
 namespace Shop.Core.Dtos;
 
-public class SimulateRemovePriceRequest
+public class SimulateRemovePriceRequestDto
 {
     public List<PriceFormDto> NewCollection { get; set; }
 

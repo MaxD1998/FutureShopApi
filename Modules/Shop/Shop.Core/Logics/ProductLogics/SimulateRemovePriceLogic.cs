@@ -6,11 +6,11 @@ using Shop.Domain.Logics;
 
 namespace Shop.Core.Logics.ProductLogics;
 
-internal class SimulateRemovePriceLogic(ILogic<Guid?, bool> getProductWasActiveLogic) : ILogic<SimulateRemovePriceRequest, ResultDto<List<PriceFormDto>>>
+internal class SimulateRemovePriceLogic(ILogic<Guid?, bool> getProductWasActiveLogic) : ILogic<SimulateRemovePriceRequestDto, ResultDto<List<PriceFormDto>>>
 {
     private readonly ILogic<Guid?, bool> _getProductWasActiveLogic = getProductWasActiveLogic;
 
-    public async Task<ResultDto<List<PriceFormDto>>> ExecuteAsync(SimulateRemovePriceRequest request, CancellationToken cancellationToken)
+    public async Task<ResultDto<List<PriceFormDto>>> ExecuteAsync(SimulateRemovePriceRequestDto request, CancellationToken cancellationToken)
     {
         var wasActive = await _getProductWasActiveLogic.ExecuteAsync(request.ProductId, cancellationToken);
 

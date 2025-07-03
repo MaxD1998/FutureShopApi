@@ -6,13 +6,13 @@ using Shop.Domain.Entities;
 
 namespace Shop.Core.Logics.ProductLogics;
 
-internal abstract class BaseSimulatePriceActionLogic(ILogic<Guid?, bool> getProductWasActiveLogic) : ILogic<SimulatePriceRequest, ResultDto<List<PriceFormDto>>>
+internal abstract class BaseSimulatePriceActionLogic(ILogic<Guid?, bool> getProductWasActiveLogic) : ILogic<SimulatePriceRequestDto, ResultDto<List<PriceFormDto>>>
 {
     private readonly ILogic<Guid?, bool> _getProductWasActiveLogic = getProductWasActiveLogic;
 
     protected abstract Action<ICollection<PriceEntity>, PriceEntity, DateTime, bool> Action { get; }
 
-    public async Task<ResultDto<List<PriceFormDto>>> ExecuteAsync(SimulatePriceRequest request, CancellationToken cancellationToken)
+    public async Task<ResultDto<List<PriceFormDto>>> ExecuteAsync(SimulatePriceRequestDto request, CancellationToken cancellationToken)
     {
         var wasActive = await _getProductWasActiveLogic.ExecuteAsync(request.ProductId, cancellationToken);
 
