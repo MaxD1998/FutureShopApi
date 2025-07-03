@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shared.Infrastructure.Extensions;
+using Shop.Core.Dtos;
 using Shop.Core.Dtos.Product;
 using Shop.Core.Services;
 
@@ -28,6 +29,21 @@ public class ProductController(IProductService productService) : ShopModuleBaseC
     [ProducesResponseType(typeof(IEnumerable<ProductShopListDto>), StatusCodes.Status200OK)]
     public Task<IActionResult> GetShopListByCategoryIdAsync([FromRoute] Guid categoryId, [FromQuery] ProductShopListFilterRequestDto request, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_productService.GetShopListByCategoryIdAsync, categoryId, request, cancellationToken);
+
+    [HttpPost("SimulateAddPrice")]
+    [ProducesResponseType(typeof(ProductFormDto), StatusCodes.Status200OK)]
+    public Task<IActionResult> SimulateAddPriceAsync([FromBody] SimulatePriceRequest request, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_productService.SimulateAddPrice, request, cancellationToken);
+
+    [HttpPost("SimulateRemovePrice")]
+    [ProducesResponseType(typeof(ProductFormDto), StatusCodes.Status200OK)]
+    public Task<IActionResult> SimulateRemovePriceAsync([FromBody] SimulateRemovePriceRequest request, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_productService.SimulateRemovePrice, request, cancellationToken);
+
+    [HttpPost("SimulateUpdatePrice")]
+    [ProducesResponseType(typeof(ProductFormDto), StatusCodes.Status200OK)]
+    public Task<IActionResult> SimulateUpdatePriceAsync([FromBody] SimulatePriceRequest request, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_productService.SimulateUpdatePrice, request, cancellationToken);
 
     [HttpPut("{id:guid}")]
     [ProducesResponseType(typeof(ProductFormDto), StatusCodes.Status200OK)]

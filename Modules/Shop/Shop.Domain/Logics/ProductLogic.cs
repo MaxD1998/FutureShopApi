@@ -28,43 +28,51 @@ public static class ProductLogic
         }
     }
 
-    public static void Remove(ICollection<PriceEntity> entities, ICollection<PriceEntity> updateEntities, PriceEntity entity, DateTime utcNow, bool wasActive)
+    public static void Remove(ICollection<PriceEntity> entities, ICollection<PriceEntity> updateEntities, DateTime utcNow, bool wasActive)
     {
-        if (wasActive)
+        foreach (var entity in entities)
         {
-            if (entity.Start.HasValue && utcNow < entity.Start)
+            if (wasActive)
+            {
+                if (entity.Start.HasValue && utcNow < entity.Start)
+                {
+                    if (!updateEntities.Any(x => x.Id == entity.Id))
+                    {
+                        var priceBefore = entities.FirstOrDefault(x => x.End == entity.Start);
+                        priceBefore.End = entity.End;
+
+                        entities.Remove(entity);
+                    }
+                }
+            }
+            else
             {
                 if (!updateEntities.Any(x => x.Id == entity.Id))
                 {
-                    var priceBefore = entities.FirstOrDefault(x => x.End == entity.Start);
-                    priceBefore.End = entity.End;
+                    if (!entity.Start.HasValue)
+                    {
+                        var priceAfter = entities.FirstOrDefault(x => x.Start == entity.End);
+                        priceAfter.Start = null;
+                    }
+                    else
+                    {
+                        var priceBefore = entities.FirstOrDefault(x => x.End == entity.Start);
+                        priceBefore.End = entity.End;
+                    }
 
                     entities.Remove(entity);
                 }
             }
         }
-        else
-        {
-            if (!updateEntities.Any(x => x.Id == entity.Id))
-            {
-                if (!entity.Start.HasValue)
-                {
-                    var priceAfter = entities.FirstOrDefault(x => x.Start == entity.End);
-                    priceAfter.Start = null;
-                }
-                else
-                {
-                    var priceBefore = entities.FirstOrDefault(x => x.End == entity.Start);
-                    priceBefore.End = entity.End;
-                }
-
-                entities.Remove(entity);
-            }
-        }
     }
 
-    public static void Update(ICollection<PriceEntity> entities, PriceEntity updateEntity, PriceEntity entityToUpdate, DateTime utcNow, bool wasActive)
+    public static void Update(ICollection<PriceEntity> entities, PriceEntity updateEntity, DateTime utcNow, bool wasActive)
     {
+        var entityToUpdate = entities.FirstOrDefault(x => x.Id == updateEntity.Id && x.Id != Guid.Empty);
+
+        if (entityToUpdate == null)
+            return;
+
         if (wasActive)
         {
             if (utcNow < updateEntity.Start && utcNow < entityToUpdate.Start)

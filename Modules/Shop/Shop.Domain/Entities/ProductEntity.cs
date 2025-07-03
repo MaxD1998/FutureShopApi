@@ -68,18 +68,17 @@ public class ProductEntity : BaseExternalEntity, IUpdate<ProductEntity>, IUpdate
                 continue;
             }
 
-            var entityToUpdate = entities.FirstOrDefault(x => x.Id == updateEntity.Id && x.Id != Guid.Empty);
+            var isExist = entities.Any(x => x.Id == updateEntity.Id && x.Id != Guid.Empty);
 
-            if (entityToUpdate is null)
+            if (!isExist)
             {
                 ProductLogic.Add(entities, updateEntity, utcNow, WasActive);
                 continue;
             }
 
-            ProductLogic.Update(entities, updateEntity, entityToUpdate, utcNow, WasActive);
+            ProductLogic.Update(entities, updateEntity, utcNow, WasActive);
         }
 
-        foreach (var entity in entities)
-            ProductLogic.Remove(entities, updateEntities, entity, utcNow, WasActive);
+        ProductLogic.Remove(entities, updateEntities, utcNow, WasActive);
     }
 }
