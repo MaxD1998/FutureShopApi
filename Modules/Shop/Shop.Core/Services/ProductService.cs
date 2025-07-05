@@ -25,11 +25,11 @@ public interface IProductService
 
     Task<ResultDto<List<ProductShopListDto>>> GetShopListByCategoryIdAsync(Guid id, ProductShopListFilterRequestDto request, CancellationToken cancellationToken);
 
-    Task<ResultDto<List<PriceFormDto>>> SimulateAddPrice(SimulatePriceRequestDto request, CancellationToken cancellationToken);
+    Task<ResultDto<List<SimulatePriceFormDto>>> SimulateAddPrice(SimulatePriceRequestDto request, CancellationToken cancellationToken);
 
-    Task<ResultDto<List<PriceFormDto>>> SimulateRemovePrice(SimulateRemovePriceRequestDto request, CancellationToken cancellationToken);
+    Task<ResultDto<List<SimulatePriceFormDto>>> SimulateRemovePrice(SimulateRemovePriceRequestDto request, CancellationToken cancellationToken);
 
-    Task<ResultDto<List<PriceFormDto>>> SimulateUpdatePrice(SimulatePriceRequestDto request, CancellationToken cancellationToken);
+    Task<ResultDto<List<SimulatePriceFormDto>>> SimulateUpdatePrice(SimulatePriceRequestDto request, CancellationToken cancellationToken);
 
     Task<ResultDto<ProductFormDto>> UpdateAsync(Guid id, ProductFormDto dto, CancellationToken cancellationToken);
 }
@@ -79,13 +79,13 @@ public class ProductService(IHeaderService headerService, IHttpContextAccessor h
         return Success(results);
     }
 
-    public async Task<ResultDto<List<PriceFormDto>>> SimulateAddPrice(SimulatePriceRequestDto request, CancellationToken cancellationToken)
+    public async Task<ResultDto<List<SimulatePriceFormDto>>> SimulateAddPrice(SimulatePriceRequestDto request, CancellationToken cancellationToken)
         => await SimulateActionPrice(request, f => f.CreateSimulateAddPriceLogic(_productRepository), cancellationToken);
 
-    public async Task<ResultDto<List<PriceFormDto>>> SimulateRemovePrice(SimulateRemovePriceRequestDto request, CancellationToken cancellationToken)
+    public async Task<ResultDto<List<SimulatePriceFormDto>>> SimulateRemovePrice(SimulateRemovePriceRequestDto request, CancellationToken cancellationToken)
         => await SimulateActionPrice(request, f => f.CreateSimulateRemovePriceLogic(_productRepository), cancellationToken);
 
-    public async Task<ResultDto<List<PriceFormDto>>> SimulateUpdatePrice(SimulatePriceRequestDto request, CancellationToken cancellationToken)
+    public async Task<ResultDto<List<SimulatePriceFormDto>>> SimulateUpdatePrice(SimulatePriceRequestDto request, CancellationToken cancellationToken)
         => await SimulateActionPrice(request, f => f.CreateSimulateUpdatePriceLogic(_productRepository), cancellationToken);
 
     public async Task<ResultDto<ProductFormDto>> UpdateAsync(Guid id, ProductFormDto dto, CancellationToken cancellationToken)
@@ -96,7 +96,7 @@ public class ProductService(IHeaderService headerService, IHttpContextAccessor h
         return Success(result);
     }
 
-    private Task<ResultDto<List<PriceFormDto>>> SimulateActionPrice<TRequest>(TRequest request, Func<LogicFactory, ILogic<TRequest, ResultDto<List<PriceFormDto>>>> factorySelector, CancellationToken cancellationToken)
+    private Task<ResultDto<List<SimulatePriceFormDto>>> SimulateActionPrice<TRequest>(TRequest request, Func<LogicFactory, ILogic<TRequest, ResultDto<List<SimulatePriceFormDto>>>> factorySelector, CancellationToken cancellationToken)
     {
         var factory = new LogicFactory();
         var instace = factorySelector(factory);

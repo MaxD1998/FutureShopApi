@@ -5,7 +5,6 @@ namespace Shop.Domain.Logics;
 public static class ProductLogic
 {
     public static void Add(ICollection<PriceEntity> entities, PriceEntity updateEntity, DateTime utcNow, bool wasActive)
-
     {
         if (wasActive)
         {
@@ -19,7 +18,7 @@ public static class ProductLogic
         }
         else
         {
-            if (!updateEntity.Start.HasValue)
+            if (!updateEntity.Start.HasValue || entities.Count == 0)
                 AddFirstPrice(entities, updateEntity);
             else if (!updateEntity.End.HasValue)
                 AddLastPrice(entities, updateEntity);
@@ -30,7 +29,7 @@ public static class ProductLogic
 
     public static void Remove(ICollection<PriceEntity> entities, ICollection<PriceEntity> updateEntities, DateTime utcNow, bool wasActive)
     {
-        foreach (var entity in entities)
+        foreach (var entity in entities.ToList())
         {
             if (wasActive)
             {
@@ -89,11 +88,21 @@ public static class ProductLogic
 
     private static void AddFirstPrice(ICollection<PriceEntity> entities, PriceEntity updateEntity)
     {
-        var firstPrice = entities.FirstOrDefault(x => !x.Start.HasValue);
-
-        if (updateEntity.End < firstPrice.End)
+        if (entities.Count != 0)
         {
-            firstPrice.End = updateEntity.Start;
+            var firstPrice = entities.FirstOrDefault(x => !x.Start.HasValue);
+
+            if ((updateEntity.End < firstPrice.End || !firstPrice.End.HasValue) && updateEntity.End.HasValue)
+            {
+                firstPrice.Start = updateEntity.End;
+                entities.Add(updateEntity);
+            }
+        }
+        else
+        {
+            updateEntity.Start = null;
+            updateEntity.End = null;
+
             entities.Add(updateEntity);
         }
     }

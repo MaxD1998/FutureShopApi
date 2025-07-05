@@ -4,9 +4,9 @@ namespace Shop.Core.Dtos;
 
 public class SimulateRemovePriceRequestDto
 {
-    public List<PriceFormDto> NewCollection { get; set; }
+    public List<SimulatePriceFormDto> NewCollection { get; set; }
 
-    public List<PriceFormDto> OldCollection { get; set; }
+    public List<SimulatePriceFormDto> OldCollection { get; set; }
 
     public Guid? ProductId { get; set; }
 }
