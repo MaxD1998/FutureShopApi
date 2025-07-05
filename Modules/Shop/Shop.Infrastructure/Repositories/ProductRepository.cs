@@ -24,7 +24,7 @@ public class ProductRepository(ShopContext context) : BaseRepository<ShopContext
     public async Task CreateOrUpdateForEventAsync(ProductEntity eventEntity, CancellationToken cancellationToken)
     {
         var entity = await _context.Set<ProductEntity>()
-            .FirstOrDefaultAsync(x => x.ExternalId == eventEntity.Id, cancellationToken);
+            .FirstOrDefaultAsync(x => x.ExternalId == eventEntity.ExternalId, cancellationToken);
 
         if (entity is null)
             await _context.Set<ProductEntity>().AddAsync(eventEntity, cancellationToken);
@@ -56,6 +56,7 @@ public class ProductRepository(ShopContext context) : BaseRepository<ShopContext
     public async Task<ProductEntity> UpdateAsync(Guid id, ProductEntity entity, CancellationToken cancellationToken)
     {
         var entityToUpdate = await _context.Set<ProductEntity>()
+            .Include(x => x.Prices)
             .Include(x => x.ProductParameterValues)
             .Include(x => x.Translations)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);

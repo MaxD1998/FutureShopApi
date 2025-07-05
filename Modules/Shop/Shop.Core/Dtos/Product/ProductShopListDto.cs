@@ -15,12 +15,17 @@ public class ProductShopListDto
 
     public decimal Price { get; set; }
 
-    public static Expression<Func<ProductEntity, ProductShopListDto>> Map(string lang, Guid? userId, Guid? favouriteId) => entity => new()
+    public static Expression<Func<ProductEntity, ProductShopListDto>> Map(string lang, Guid? userId, Guid? favouriteId)
     {
-        FileId = entity.ProductPhotos.AsQueryable().OrderBy(x => x.Position).Select(x => x.FileId).FirstOrDefault(),
-        Id = entity.Id,
-        IsInPurchaseList = entity.PurchaseListItems.Any(x => x.PurchaseList.UserId != null && x.PurchaseList.UserId == userId || x.PurchaseListId == favouriteId),
-        Name = entity.Translations.AsQueryable().Where(x => x.Lang == lang).Select(x => x.Translation).FirstOrDefault() ?? entity.Name,
-        Price = entity.Price,
-    };
+        var utcNow = DateTime.UtcNow;
+
+        return entity => new()
+        {
+            FileId = entity.ProductPhotos.AsQueryable().OrderBy(x => x.Position).Select(x => x.FileId).FirstOrDefault(),
+            Id = entity.Id,
+            IsInPurchaseList = entity.PurchaseListItems.Any(x => x.PurchaseList.UserId != null && x.PurchaseList.UserId == userId || x.PurchaseListId == favouriteId),
+            Name = entity.Translations.AsQueryable().Where(x => x.Lang == lang).Select(x => x.Translation).FirstOrDefault() ?? entity.Name,
+            Price = entity.Prices.AsQueryable().Where(x => (!x.Start.HasValue || x.Start <= utcNow) && !x.End.HasValue || utcNow < x.End).Select(x => x.Price).FirstOrDefault(),
+        };
+    }
 }

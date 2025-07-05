@@ -19,11 +19,11 @@ public static class CollectionExtension
             result.Update(updateEntity);
         }
 
-        foreach (var entity in entities.ToList())
-        {
-            if (!updateEntities.Any(x => x.Id == entity.Id))
-                entities.Remove(entity);
-        }
+        var ids = updateEntities.Select(x => x.Id).ToList();
+        var toRemove = entities.Where(x => !ids.Contains(x.Id)).ToList();
+
+        foreach (var entity in toRemove)
+            entities.Remove(entity);
     }
 
     public static void UpdateEventEntities<TEntity>(this ICollection<TEntity> entities, ICollection<TEntity> updateEntities) where TEntity : BaseExternalEntity, IUpdateEvent<TEntity>
@@ -40,10 +40,10 @@ public static class CollectionExtension
             result.UpdateEvent(updateEntity);
         }
 
-        foreach (var entity in entities.ToList())
-        {
-            if (!updateEntities.Any(x => x.Id == entity.Id))
-                entities.Remove(entity);
-        }
+        var ids = updateEntities.Select(x => x.ExternalId).ToList();
+        var toRemove = entities.Where(x => !ids.Contains(x.ExternalId)).ToList();
+
+        foreach (var entity in toRemove)
+            entities.Remove(entity);
     }
 }

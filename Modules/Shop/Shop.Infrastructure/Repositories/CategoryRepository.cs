@@ -21,8 +21,8 @@ public class CategoryRepository(ShopContext context) : BaseRepository<ShopContex
     public async Task CreateOrUpdateForEventAsync(CategoryEntity eventEntity, CancellationToken cancellationToken)
     {
         var entity = await _context.Set<CategoryEntity>()
-            .Include(x => x.SubCategories)
-            .FirstOrDefaultAsync(x => x.ExternalId == eventEntity.Id, cancellationToken);
+              .Include(x => x.SubCategories)
+              .FirstOrDefaultAsync(x => x.ExternalId == eventEntity.ExternalId, cancellationToken);
 
         if (entity is null)
             await _context.Set<CategoryEntity>().AddAsync(eventEntity, cancellationToken);
@@ -50,7 +50,7 @@ public class CategoryRepository(ShopContext context) : BaseRepository<ShopContex
         if (entityToUpdate == null)
             return null;
 
-        entity.Update(entity);
+        entityToUpdate.Update(entity);
 
         await _context.SaveChangesAsync(cancellationToken);
 

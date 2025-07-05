@@ -11,13 +11,13 @@ using Shop.Infrastructure;
 namespace Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    partial class ShopPostgreSqlContextModelSnapshot : ModelSnapshot
+    partial class ShopContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.4")
+                .HasAnnotation("ProductVersion", "9.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -248,6 +248,44 @@ namespace Shop.Infrastructure.Migrations
                     b.ToTable("CategoryTranslation", (string)null);
                 });
 
+            modelBuilder.Entity("Shop.Domain.Entities.PriceEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(1);
+
+                    b.Property<DateTime?>("End")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(103);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("numeric")
+                        .HasColumnOrder(101);
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(100);
+
+                    b.Property<DateTime?>("Start")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(102);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Price", (string)null);
+                });
+
             modelBuilder.Entity("Shop.Domain.Entities.ProductBaseEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -303,7 +341,7 @@ namespace Shop.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
                         .HasDefaultValue(false)
-                        .HasColumnOrder(103);
+                        .HasColumnOrder(102);
 
                     b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("timestamp with time zone")
@@ -315,13 +353,12 @@ namespace Shop.Infrastructure.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnOrder(101);
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("numeric")
-                        .HasColumnOrder(102);
-
                     b.Property<Guid>("ProductBaseId")
                         .HasColumnType("uuid")
                         .HasColumnOrder(100);
+
+                    b.Property<bool>("WasActive")
+                        .HasColumnType("boolean");
 
                     b.HasKey("Id");
 
@@ -634,6 +671,17 @@ namespace Shop.Infrastructure.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("Shop.Domain.Entities.PriceEntity", b =>
+                {
+                    b.HasOne("Shop.Domain.Entities.ProductEntity", "Product")
+                        .WithMany("Prices")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("Shop.Domain.Entities.ProductBaseEntity", b =>
                 {
                     b.HasOne("Shop.Domain.Entities.CategoryEntity", "Category")
@@ -767,6 +815,8 @@ namespace Shop.Infrastructure.Migrations
             modelBuilder.Entity("Shop.Domain.Entities.ProductEntity", b =>
                 {
                     b.Navigation("BasketItems");
+
+                    b.Navigation("Prices");
 
                     b.Navigation("ProductParameterValues");
 
