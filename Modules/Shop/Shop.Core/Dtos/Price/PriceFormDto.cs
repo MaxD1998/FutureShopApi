@@ -11,6 +11,8 @@ public class PriceFormDto
 
     public decimal Price { get; set; }
 
+    public Guid ProductId { get; set; }
+
     public DateTime? Start { get; set; }
 
     public static Expression<Func<PriceEntity, PriceFormDto>> Map() => entity => new()
@@ -18,6 +20,7 @@ public class PriceFormDto
         End = entity.End,
         Id = entity.Id,
         Price = entity.Price,
+        ProductId = entity.ProductId,
         Start = entity.Start,
     };
 
@@ -26,6 +29,7 @@ public class PriceFormDto
         End = End,
         Id = Id ?? Guid.Empty,
         Price = Price,
+        ProductId = ProductId,
         Start = Start,
     };
 }

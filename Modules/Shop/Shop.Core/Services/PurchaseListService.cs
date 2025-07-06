@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Shared.Core.Bases;
+﻿using Shared.Core.Bases;
 using Shared.Core.Dtos;
 using Shared.Core.Errors;
-using Shared.Core.Extensions;
+using Shared.Core.Services;
 using Shop.Core.Dtos.PurchaseList;
 using Shop.Domain.Entities;
 using Shop.Infrastructure.Repositories;
@@ -25,15 +24,16 @@ public interface IPurchaseListService
     Task<ResultDto<PurchaseListFormDto>> UpdateAsync(Guid id, PurchaseListFormDto dto, CancellationToken cancellationToken);
 }
 
-public class PurchaseListService(IBasketRepository basketRepository, IHttpContextAccessor httpContextAccessor, IPurchaseListRepository purchaseListRepository) : BaseService, IPurchaseListService
+public class PurchaseListService(IBasketRepository basketRepository, ICurrentUserService currentUserService, IPurchaseListRepository purchaseListRepository) : BaseService, IPurchaseListService
 {
     private readonly IBasketRepository _basketRepository = basketRepository;
-    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+    private readonly ICurrentUserService _currentUserService = currentUserService;
     private readonly IPurchaseListRepository _purchaseListRepository = purchaseListRepository;
 
     public async Task<ResultDto<PurchaseListFormDto>> CreateAsync(PurchaseListFormDto dto, CancellationToken cancellationToken)
     {
-        var entity = await _purchaseListRepository.CreateAsync(dto.ToEntity(), cancellationToken);
+        var userId = _currentUserService.GetUserId();
+        var entity = await _purchaseListRepository.CreateAsync(dto.ToEntity(userId), cancellationToken);
         var result = await _purchaseListRepository.GetByIdAsync(entity.Id, PurchaseListFormDto.Map(), cancellationToken);
 
         return Success(result);
@@ -55,7 +55,7 @@ public class PurchaseListService(IBasketRepository basketRepository, IHttpContex
 
     public async Task<ResultDto<List<PurchaseListDto>>> GetListByAuthorizedUserAsync(CancellationToken cancellationToken)
     {
-        var userId = _httpContextAccessor.GetUserId();
+        var userId = _currentUserService.GetUserId();
 
         if (userId == null)
             return Success<List<PurchaseListDto>>(null);
@@ -95,7 +95,8 @@ public class PurchaseListService(IBasketRepository basketRepository, IHttpContex
 
     public async Task<ResultDto<PurchaseListFormDto>> UpdateAsync(Guid id, PurchaseListFormDto dto, CancellationToken cancellationToken)
     {
-        var entity = await _purchaseListRepository.UpdateAsync(id, dto.ToEntity(), cancellationToken);
+        var userId = _currentUserService.GetUserId();
+        var entity = await _purchaseListRepository.UpdateAsync(id, dto.ToEntity(userId), cancellationToken);
         var result = await _purchaseListRepository.GetByIdAsync(entity.Id, PurchaseListFormDto.Map(), cancellationToken);
 
         return Success(result);

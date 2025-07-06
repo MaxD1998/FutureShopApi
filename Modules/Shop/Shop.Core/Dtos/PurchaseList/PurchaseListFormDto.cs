@@ -21,11 +21,12 @@ public class PurchaseListFormDto
         Name = entity.Name,
     };
 
-    public PurchaseListEntity ToEntity() => new()
+    public PurchaseListEntity ToEntity(Guid? userId) => new()
     {
         Id = Id ?? Guid.Empty,
         IsFavourite = IsFavourite,
         Name = Name,
-        PurchaseListItems = PurchaseListItems.Select(x => x.ToEntity()).ToList()
+        PurchaseListItems = PurchaseListItems.Select(x => x.ToEntity()).ToList(),
+        UserId = userId
     };
 }

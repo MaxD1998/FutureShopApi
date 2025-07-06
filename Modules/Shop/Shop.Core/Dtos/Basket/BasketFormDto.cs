@@ -16,9 +16,10 @@ public class BasketFormDto
         Id = entity.Id,
     };
 
-    public BasketEntity ToEntity() => new()
+    public BasketEntity ToEntity(Guid? userId) => new()
     {
         BasketItems = BasketItems.Select(x => x.ToEntity()).ToList(),
-        Id = Id ?? Guid.Empty
+        Id = Id ?? Guid.Empty,
+        UserId = userId
     };
 }

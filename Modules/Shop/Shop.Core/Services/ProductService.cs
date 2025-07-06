@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Shared.Core.Bases;
+﻿using Shared.Core.Bases;
 using Shared.Core.Dtos;
-using Shared.Core.Extensions;
 using Shared.Core.Services;
 using Shared.Infrastructure.Constants;
 using Shared.Infrastructure.Extensions;
@@ -34,10 +32,10 @@ public interface IProductService
     Task<ResultDto<ProductFormDto>> UpdateAsync(Guid id, ProductFormDto dto, CancellationToken cancellationToken);
 }
 
-public class ProductService(IHeaderService headerService, IHttpContextAccessor httpContextAccessor, IProductRepository productRepository) : BaseService, IProductService
+public class ProductService(IHeaderService headerService, ICurrentUserService currentUserService, IProductRepository productRepository) : BaseService, IProductService
 {
+    private readonly ICurrentUserService _currentUserService = currentUserService;
     private readonly IHeaderService _headerService = headerService;
-    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
     private readonly IProductRepository _productRepository = productRepository;
 
     public async Task<ResultDto<ProductFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
@@ -49,7 +47,7 @@ public class ProductService(IHeaderService headerService, IHttpContextAccessor h
 
     public async Task<ResultDto<ProductDto>> GetDetailsByIdAsync(Guid id, Guid? favouriteId, CancellationToken cancellationToken)
     {
-        var userId = _httpContextAccessor.GetUserId();
+        var userId = _currentUserService.GetUserId();
         var result = await _productRepository.GetByIdAsync(id, ProductDto.Map(_headerService.GetHeader(HeaderNameConst.Lang), userId, favouriteId), cancellationToken);
 
         return Success(result);
@@ -64,7 +62,7 @@ public class ProductService(IHeaderService headerService, IHttpContextAccessor h
 
     public async Task<ResultDto<List<ProductShopListDto>>> GetShopListByCategoryIdAsync(Guid id, ProductShopListFilterRequestDto request, CancellationToken cancellationToken)
     {
-        var userId = _httpContextAccessor.GetUserId();
+        var userId = _currentUserService.GetUserId();
         var lang = _headerService.GetHeader(HeaderNameConst.Lang);
         var parameters = new GetProductListByCategoryIdParams
         {

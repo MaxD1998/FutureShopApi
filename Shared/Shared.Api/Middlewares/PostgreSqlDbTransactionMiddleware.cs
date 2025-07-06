@@ -4,14 +4,9 @@ using System.Net;
 
 namespace Shared.Api.Middlewares;
 
-public class PostgreSqlDbTransactionMiddleware<TContext> : IMiddleware where TContext : BaseContext
+public class PostgreSqlDbTransactionMiddleware<TContext>(TContext context) : IMiddleware where TContext : BaseContext
 {
-    private readonly TContext _context;
-
-    public PostgreSqlDbTransactionMiddleware(TContext context)
-    {
-        _context = context;
-    }
+    private readonly TContext _context = context;
 
     public async Task InvokeAsync(HttpContext context, RequestDelegate next)
     {

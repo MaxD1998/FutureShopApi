@@ -14,7 +14,7 @@ public class CategoryListDto : IDto
 
     public IEnumerable<CategoryListDto> SubCategories { get; private set; }
 
-    public static IEnumerable<CategoryListDto> BuildTree(List<CategoryListDto> dtos)
+    public static List<CategoryListDto> BuildTree(List<CategoryListDto> dtos)
     {
         var categories = dtos.ToList();
         categories.ForEach(category => category.SubCategories = categories.Where(x => x.ParentCategoryId == category.Id).ToList());

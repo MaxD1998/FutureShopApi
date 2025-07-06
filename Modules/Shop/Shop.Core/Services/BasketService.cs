@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
-using Shared.Core.Bases;
+﻿using Shared.Core.Bases;
 using Shared.Core.Dtos;
 using Shared.Core.Errors;
-using Shared.Core.Extensions;
+using Shared.Core.Services;
 using Shop.Core.Dtos.Basket;
 using Shop.Infrastructure.Repositories;
 using System.Net;
@@ -22,15 +21,16 @@ public interface IBasketSerivce
     Task<ResultDto<BasketFormDto>> UpdateAsync(Guid id, BasketFormDto dto, CancellationToken cancellationToken);
 }
 
-public class BasketService(IBasketRepository basketRepository, IHttpContextAccessor httpContextAccessor, IPurchaseListRepository purchaseListRepository) : BaseService, IBasketSerivce
+public class BasketService(IBasketRepository basketRepository, ICurrentUserService currentUserService, IPurchaseListRepository purchaseListRepository) : BaseService, IBasketSerivce
 {
     private readonly IBasketRepository _basketRepository = basketRepository;
-    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+    private readonly ICurrentUserService _currentUserService = currentUserService;
     private readonly IPurchaseListRepository _purchaseListRepository = purchaseListRepository;
 
     public async Task<ResultDto<BasketFormDto>> CreateAsync(BasketFormDto dto, CancellationToken cancellationToken)
     {
-        var entity = await _basketRepository.CreateAsync(dto.ToEntity(), cancellationToken);
+        var userId = _currentUserService.GetUserId();
+        var entity = await _basketRepository.CreateAsync(dto.ToEntity(userId), cancellationToken);
         var result = await _basketRepository.GetByIdAsync(entity.Id, BasketFormDto.Map(), cancellationToken);
 
         return Success(result);
@@ -38,7 +38,7 @@ public class BasketService(IBasketRepository basketRepository, IHttpContextAcces
 
     public async Task<ResultDto<BasketDto>> GetByAuthorizedUserAsync(CancellationToken cancellationToken)
     {
-        var userId = _httpContextAccessor.GetUserId();
+        var userId = _currentUserService.GetUserId();
 
         if (!userId.HasValue)
             return Success<BasketDto>(null);
@@ -86,7 +86,8 @@ public class BasketService(IBasketRepository basketRepository, IHttpContextAcces
 
     public async Task<ResultDto<BasketFormDto>> UpdateAsync(Guid id, BasketFormDto dto, CancellationToken cancellationToken)
     {
-        var entity = await _basketRepository.UpdateAsync(id, dto.ToEntity(), cancellationToken);
+        var userId = _currentUserService.GetUserId();
+        var entity = await _basketRepository.UpdateAsync(id, dto.ToEntity(userId), cancellationToken);
         var result = await _basketRepository.GetByIdAsync(entity.Id, BasketFormDto.Map(), cancellationToken);
 
         return Success(result);

@@ -11,6 +11,7 @@ public static class SharedRegister
 
     private static void RegisterServices(this IServiceCollection services)
     {
+        services.AddScoped<ICurrentUserService, CurrentUserService>();
         services.AddScoped<IHeaderService, HeaderService>();
     }
 }

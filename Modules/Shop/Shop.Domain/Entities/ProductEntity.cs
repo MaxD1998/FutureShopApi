@@ -57,7 +57,7 @@ public class ProductEntity : BaseExternalEntity, IUpdate<ProductEntity>, IUpdate
     {
         var utcNow = DateTime.UtcNow;
 
-        foreach (var updateEntity in updateEntities)
+        foreach (var updateEntity in updateEntities.Except(entities))
         {
             if (entities.Count == 0)
             {

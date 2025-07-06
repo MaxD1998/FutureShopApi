@@ -92,7 +92,7 @@ public static class ProductLogic
         {
             var firstPrice = entities.FirstOrDefault(x => !x.Start.HasValue);
 
-            if ((updateEntity.End < firstPrice.End || !firstPrice.End.HasValue) && updateEntity.End.HasValue)
+            if (!firstPrice.Start.HasValue && updateEntity.End.HasValue)
             {
                 firstPrice.Start = updateEntity.End;
                 entities.Add(updateEntity);
@@ -111,7 +111,7 @@ public static class ProductLogic
     {
         var lastPrice = entities.FirstOrDefault(x => !x.End.HasValue);
 
-        if (lastPrice.Start < updateEntity.Start)
+        if (!lastPrice.End.HasValue && updateEntity.Start.HasValue)
         {
             lastPrice.End = updateEntity.Start;
             entities.Add(updateEntity);

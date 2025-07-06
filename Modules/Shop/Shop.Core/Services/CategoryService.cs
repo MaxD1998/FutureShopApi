@@ -30,8 +30,9 @@ public class CategoryService(ICategoryRepository categoryRepository, IHeaderServ
     public async Task<ResultDto<List<CategoryListDto>>> GetActiveListAsync(CancellationToken cancellationToken)
     {
         var results = await _categoryRepository.GetListAsync(x => x.IsActive, CategoryListDto.Map(_headerService.GetHeader(HeaderNameConst.Lang)), cancellationToken);
+        var tree = CategoryListDto.BuildTree(results);
 
-        return Success(results);
+        return Success(tree);
     }
 
     public async Task<ResultDto<CategoryFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
