@@ -1,4 +1,5 @@
 ﻿using Authorization.Domain.Aggregates.Users.Entities;
+using Authorization.Domain.Aggregates.Users.Entities.RefreshTokens;
 using Authorization.Domain.Aggregates.Users.Exceptions;
 using Authorization.Domain.Exceptions;
 using Shared.Domain.Bases;
@@ -50,25 +51,18 @@ public class User : BaseEntity, IUpdate<User>
 
     #region Related Data
 
-    public RefreshTokenEntity RefreshToken { get; set; }
+    public RefreshToken RefreshToken { get; private set; }
 
     public ICollection<UserModuleEntity> UserModules { get; set; } = [];
 
     #endregion Related Data
 
-    #region Methods
+    #region Setters
 
-    public static User CreateSeed() => new User()
+    public void RemoveRefreshToken()
     {
-        Id = new Guid(EntityIdConst.UserId),
-        CreateTime = DateTime.MinValue,
-        FirstName = "Super",
-        LastName = "Admin",
-        DateOfBirth = DateOnly.MinValue,
-        Email = "superadmin@futureshop.pl",
-        HashedPassword = "$2a$11$v1B9qwcIeH.PJLuFjnmK7O1Nu3TSUsc6oZ49.5DXOJhkIDcfzPD..", // Crypt.HashPassword("123456789"),
-        Type = UserType.SuperAdmin
-    };
+        RefreshToken = null;
+    }
 
     public void SetDateOfBirth(DateOnly dateOfBirth)
     {
@@ -147,12 +141,24 @@ public class User : BaseEntity, IUpdate<User>
         PhoneNumber = phoneNumber;
     }
 
+    public void SetRefreshToken(RefreshToken refreshToken)
+    {
+        if (refreshToken == null)
+            throw new ArgumentNullException(nameof(refreshToken));
+
+        if (RefreshToken == null)
+        {
+            RefreshToken = refreshToken.Clone();
+            return;
+        }
+
+        RefreshToken.Update(refreshToken);
+    }
+
     public void SetType(UserType type)
     {
         Type = type;
     }
-
-    public void Update(User entity) => throw new NotImplementedException();
 
     private bool IsValidEmail(string email)
     {
@@ -165,6 +171,40 @@ public class User : BaseEntity, IUpdate<User>
         {
             return false;
         }
+    }
+
+    #endregion Setters
+
+    #region Methods
+
+    public static User CreateSeed() => new User()
+    {
+        Id = new Guid(EntityIdConst.UserId),
+        CreateTime = DateTime.MinValue,
+        FirstName = "Super",
+        LastName = "Admin",
+        DateOfBirth = DateOnly.MinValue,
+        Email = "superadmin@futureshop.pl",
+        HashedPassword = "$2a$11$v1B9qwcIeH.PJLuFjnmK7O1Nu3TSUsc6oZ49.5DXOJhkIDcfzPD..", // Crypt.HashPassword("123456789"),
+        Type = UserType.SuperAdmin
+    };
+
+    public void Update(User entity)
+    {
+        if (DateOfBirth != entity.DateOfBirth)
+            DateOfBirth = entity.DateOfBirth;
+
+        if (Email != entity.Email)
+            Email = entity.Email;
+
+        if (FirstName != entity.FirstName)
+            FirstName = entity.FirstName;
+
+        if (LastName != entity.LastName)
+            LastName = entity.LastName;
+
+        if (PhoneNumber != entity.PhoneNumber)
+            PhoneNumber = entity.PhoneNumber;
     }
 
     #endregion Methods

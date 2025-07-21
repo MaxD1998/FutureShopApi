@@ -1,5 +1,5 @@
 ﻿using Authorization.Domain.Aggregates.Users;
-using Authorization.Domain.Aggregates.Users.Entities;
+using Authorization.Domain.Aggregates.Users.Entities.RefreshTokens;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.Infrastructure.Bases;
@@ -47,7 +47,7 @@ public class UserConfig : BaseConfig<User>
 
         builder.HasOne(x => x.RefreshToken)
             .WithOne(x => x.User)
-            .HasForeignKey<RefreshTokenEntity>(x => x.UserId);
+            .HasForeignKey<RefreshToken>(x => x.UserId);
 
         builder.HasMany(x => x.UserModules)
             .WithOne(x => x.User)

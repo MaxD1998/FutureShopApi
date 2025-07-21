@@ -38,30 +38,30 @@ public abstract class BaseRepository<TContext, TEntity>(TContext context) : IBas
         return entity;
     }
 
-    public Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
+    public virtual Task DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
         => _context.Set<TEntity>().Where(x => x.Id == id).ExecuteDeleteAsync(cancellationToken);
 
-    public Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public virtual Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         => _context.Set<TEntity>().AsNoTracking().Where(x => x.Id == id).FirstOrDefaultAsync();
 
-    public Task<TResult> GetByIdAsync<TResult>(Guid id, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken)
+    public virtual Task<TResult> GetByIdAsync<TResult>(Guid id, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken)
         => _context.Set<TEntity>().AsNoTracking().Where(x => x.Id == id).Select(map).FirstOrDefaultAsync();
 
-    public Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken)
+    public virtual Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken)
         => _context.Set<TEntity>().AsNoTracking().Select(map).ToListAsync();
 
-    public Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TEntity, bool>> condition, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken)
+    public virtual Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TEntity, bool>> condition, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken)
         => _context.Set<TEntity>().AsNoTracking().Where(condition).Select(map).ToListAsync();
 
-    public Task<PageDto<TResult>> GetPageAsync<TResult>(int pageNumber, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken)
+    public virtual Task<PageDto<TResult>> GetPageAsync<TResult>(int pageNumber, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken)
         => _context.Set<TEntity>().AsNoTracking().Select(map).ToPageAsync(pageNumber, cancellationToken);
 
     protected Task<bool> AnyAsync(Expression<Func<TEntity, bool>> condition, CancellationToken cancellationToken)
         => _context.Set<TEntity>().AnyAsync(condition, cancellationToken);
 
-    protected Task DeleteByAsync(Expression<Func<TEntity, bool>> condition, CancellationToken cancellationToken)
+    protected virtual Task DeleteByAsync(Expression<Func<TEntity, bool>> condition, CancellationToken cancellationToken)
         => _context.Set<TEntity>().Where(condition).ExecuteDeleteAsync(cancellationToken);
 
-    protected Task<TEntity> GetByAsync(Expression<Func<TEntity, bool>> condition, CancellationToken cancellationToken)
+    protected virtual Task<TEntity> GetByAsync(Expression<Func<TEntity, bool>> condition, CancellationToken cancellationToken)
         => _context.Set<TEntity>().AsNoTracking().Where(condition).FirstOrDefaultAsync(cancellationToken);
 }

@@ -1,4 +1,5 @@
 ﻿using Authorization.Domain.Aggregates.Users;
+using Authorization.Domain.Aggregates.Users.Entities.RefreshTokens;
 
 namespace Authorization.Test.Shared.Factories;
 
@@ -18,5 +19,18 @@ internal static class UserTestFactory
         user.GetType().GetProperty(nameof(User.Id)).SetValue(user, id);
 
         return user;
+    }
+
+    public static RefreshToken CreateRefreshToken(int expireTime)
+    {
+        var id = Guid.NewGuid();
+        var startDate = DateOnly.FromDateTime(DateTime.UtcNow);
+        var endDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(expireTime));
+        var token = Guid.NewGuid();
+        var refreshToken = new RefreshToken(startDate, endDate, token);
+
+        refreshToken.GetType().GetProperty(nameof(RefreshToken.Id)).SetValue(refreshToken, id);
+
+        return refreshToken;
     }
 }

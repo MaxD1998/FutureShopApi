@@ -2,7 +2,6 @@
 using Authorization.Core.Dtos.Users;
 using Authorization.Core.Services;
 using Authorization.Domain.Aggregates.Users;
-using Authorization.Domain.Aggregates.Users.Entities;
 using Authorization.Inrfrastructure.Repositories;
 using Authorization.Test.Shared.Factories;
 using Microsoft.AspNetCore.Http;
@@ -23,7 +22,6 @@ public class AuthServiceTest
     private readonly IAuthService _authService;
     private readonly Mock<ICookieService> _cookieServiceMock = new();
     private readonly Mock<IOptions<JwtSettings>> _jwtSettingsMock = new();
-    private readonly Mock<IRefreshTokenRepository> _refreshTokenRepositoryMock = new();
     private readonly Mock<IOptions<RefreshTokenSettings>> _refreshTokenSettingsMock = new();
     private readonly Mock<IUserRepository> _userRepositoryMock = new();
 
@@ -43,7 +41,7 @@ public class AuthServiceTest
         _jwtSettingsMock.Setup(x => x.Value).Returns(jwtSettings);
         _refreshTokenSettingsMock.Setup(x => x.Value).Returns(refreshTokenSettings);
 
-        _authService = new AuthService(_accessorMock.Object, _cookieServiceMock.Object, _jwtSettingsMock.Object, _refreshTokenRepositoryMock.Object, _refreshTokenSettingsMock.Object, _userRepositoryMock.Object);
+        _authService = new AuthService(_accessorMock.Object, _cookieServiceMock.Object, _jwtSettingsMock.Object, _refreshTokenSettingsMock.Object, _userRepositoryMock.Object);
     }
 
     [Fact]
@@ -65,16 +63,8 @@ public class AuthServiceTest
     {
         // Arrange
         var user = UserTestFactory.Create();
-
-        var refreshTokenEntity = new RefreshTokenEntity()
-        {
-            Id = Guid.NewGuid(),
-            UserId = user.Id,
-            User = user,
-            StartDate = DateOnly.FromDateTime(DateTime.UtcNow),
-            EndDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(_refreshTokenSettingsMock.Object.Value.ExpireTime)),
-            Token = Guid.NewGuid()
-        };
+        var refreshToken = UserTestFactory.CreateRefreshToken(_refreshTokenSettingsMock.Object.Value.ExpireTime);
+        user.SetRefreshToken(refreshToken);
 
         var login = new LoginFormDto()
         {
@@ -83,7 +73,7 @@ public class AuthServiceTest
         };
 
         _userRepositoryMock.Setup(x => x.GetByEmailAsync(It.IsAny<string>(), default)).ReturnsAsync(user);
-        _refreshTokenRepositoryMock.Setup(x => x.CreateOrUpdateByUserIdAsync(It.IsAny<RefreshTokenEntity>(), default)).ReturnsAsync(refreshTokenEntity);
+        _userRepositoryMock.Setup(x => x.UpdateAsync(user.Id, It.IsAny<User>(), default)).ReturnsAsync(user);
 
         // Act
         var result = await _authService.LoginAsync(login, default);
@@ -92,7 +82,7 @@ public class AuthServiceTest
         _cookieServiceMock.Verify(x
             => x.AddCookie(
                 It.Is<string>(y => y == CookieNameConst.RefreshToken),
-                It.Is<string>(y => y == refreshTokenEntity.Token.ToString()),
+                It.Is<string>(y => y == user.RefreshToken.Token.ToString()),
                 It.Is<int>(y => y == _refreshTokenSettingsMock.Object.Value.ExpireTime)
             )
         , Times.Once);
@@ -115,7 +105,7 @@ public class AuthServiceTest
         httpContextMock.User = claimsPrincipalMock.Object;
         accessorMock.Setup(x => x.HttpContext).Returns(httpContextMock);
 
-        var authService = new AuthService(accessorMock.Object, _cookieServiceMock.Object, _jwtSettingsMock.Object, _refreshTokenRepositoryMock.Object, _refreshTokenSettingsMock.Object, _userRepositoryMock.Object);
+        var authService = new AuthService(accessorMock.Object, _cookieServiceMock.Object, _jwtSettingsMock.Object, _refreshTokenSettingsMock.Object, _userRepositoryMock.Object);
 
         // Act
         var result = await authService.LogoutAsync(default);
@@ -193,15 +183,8 @@ public class AuthServiceTest
     {
         // Arrange
         var user = UserTestFactory.Create();
-        var refreshTokenEntity = new RefreshTokenEntity()
-        {
-            Id = Guid.NewGuid(),
-            UserId = user.Id,
-            User = user,
-            StartDate = DateOnly.FromDateTime(DateTime.UtcNow),
-            EndDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(_refreshTokenSettingsMock.Object.Value.ExpireTime)),
-            Token = Guid.NewGuid()
-        };
+        var refreshToken = UserTestFactory.CreateRefreshToken(_refreshTokenSettingsMock.Object.Value.ExpireTime);
+        user.SetRefreshToken(refreshToken);
 
         var login = new UserFormDto()
         {
@@ -212,7 +195,7 @@ public class AuthServiceTest
         };
 
         _userRepositoryMock.Setup(x => x.CreateAsync(It.IsAny<User>(), default)).ReturnsAsync(user);
-        _refreshTokenRepositoryMock.Setup(x => x.CreateOrUpdateByUserIdAsync(It.IsAny<RefreshTokenEntity>(), default)).ReturnsAsync(refreshTokenEntity);
+        _userRepositoryMock.Setup(x => x.UpdateAsync(user.Id, It.IsAny<User>(), default)).ReturnsAsync(user);
 
         // Act
         var result = await _authService.RegisterAsync(login, default);
@@ -221,7 +204,7 @@ public class AuthServiceTest
         _cookieServiceMock.Verify(x
             => x.AddCookie(
                 It.Is<string>(y => y == CookieNameConst.RefreshToken),
-                It.Is<string>(y => y == refreshTokenEntity.Token.ToString()),
+                It.Is<string>(y => y == user.RefreshToken.Token.ToString()),
                 It.Is<int>(y => y == _refreshTokenSettingsMock.Object.Value.ExpireTime)
             )
         , Times.Once);

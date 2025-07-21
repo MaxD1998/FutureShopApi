@@ -27,7 +27,6 @@ public static class AuthRegister
 
     private static void RegisterRepositories(this IServiceCollection services)
     {
-        services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
     }
 

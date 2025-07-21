@@ -1,0 +1,90 @@
+﻿using Authorization.Domain.Aggregates.Users.Entities.RefreshTokens.Exceptions;
+using Authorization.Domain.Exceptions;
+using Shared.Domain.Bases;
+using Shared.Domain.Interfaces;
+using Shared.Shared.Interfaces;
+
+namespace Authorization.Domain.Aggregates.Users.Entities.RefreshTokens;
+
+public class RefreshToken : BaseEntity, ICloneable<RefreshToken>, IUpdate<RefreshToken>
+{
+    public RefreshToken()
+    {
+    }
+
+    public RefreshToken(DateOnly startDate, DateOnly endDate, Guid token)
+    {
+        SetStartDate(startDate);
+        SetEndDate(endDate);
+        SetToken(token);
+    }
+
+    public DateOnly EndDate { get; private set; }
+
+    public DateOnly StartDate { get; private set; }
+
+    public Guid Token { get; private set; }
+
+    public Guid UserId { get; private set; }
+
+    #region Related Data
+
+    public User User { get; private set; }
+
+    #endregion Related Data
+
+    #region Setters
+
+    public void SetEndDate(DateOnly endDate)
+    {
+        if (endDate < DateOnly.FromDateTime(DateTime.UtcNow))
+            throw new RefreshTokenEndDateInPastException();
+
+        EndDate = endDate;
+    }
+
+    public void SetStartDate(DateOnly startDate)
+    {
+        if (startDate > DateOnly.FromDateTime(DateTime.UtcNow))
+            throw new RefreshTokenStartDateInFutureException();
+
+        StartDate = startDate;
+    }
+
+    public void SetToken(Guid token)
+    {
+        if (token == Guid.Empty)
+            throw new PropertyWasEmptyException(nameof(Token));
+
+        Token = token;
+    }
+
+    #endregion Setters
+
+    #region Methods
+
+    public RefreshToken Clone() => new()
+    {
+        Id = Id,
+        CreateTime = CreateTime,
+        ModifyTime = ModifyTime,
+        EndDate = EndDate,
+        StartDate = StartDate,
+        Token = Token,
+        UserId = UserId,
+    };
+
+    public void Update(RefreshToken entity)
+    {
+        if (EndDate != entity.EndDate)
+            EndDate = entity.EndDate;
+
+        if (StartDate != entity.StartDate)
+            StartDate = entity.StartDate;
+
+        if (Token != entity.Token)
+            Token = entity.Token;
+    }
+
+    #endregion Methods
+}

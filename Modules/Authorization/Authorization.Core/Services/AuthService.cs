@@ -1,7 +1,7 @@
 ﻿using Authorization.Core.Dtos;
 using Authorization.Core.Dtos.Users;
 using Authorization.Domain.Aggregates.Users;
-using Authorization.Domain.Aggregates.Users.Entities;
+using Authorization.Domain.Aggregates.Users.Entities.RefreshTokens;
 using Authorization.Inrfrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -35,7 +35,6 @@ public class AuthService : BaseService, IAuthService
     private readonly ICookieService _cookieService;
     private readonly HttpContext _httpContext;
     private readonly JwtSettings _jwtSettings;
-    private readonly IRefreshTokenRepository _refreshTokenRepository;
     private readonly RefreshTokenSettings _refreshTokenSettings;
     private readonly IUserRepository _userRepository;
 
@@ -43,14 +42,12 @@ public class AuthService : BaseService, IAuthService
         IHttpContextAccessor accessor,
         ICookieService cookieService,
         IOptions<JwtSettings> jwtSettings,
-        IRefreshTokenRepository refreshTokenRepository,
         IOptions<RefreshTokenSettings> refreshTokenSettings,
         IUserRepository userRepository)
     {
         _cookieService = cookieService;
         _httpContext = accessor.HttpContext;
         _jwtSettings = jwtSettings.Value;
-        _refreshTokenRepository = refreshTokenRepository;
         _refreshTokenSettings = refreshTokenSettings.Value;
         _userRepository = userRepository;
     }
@@ -62,7 +59,7 @@ public class AuthService : BaseService, IAuthService
         if (user is null)
             return Error<AuthorizeDto>(HttpStatusCode.Forbidden, CommonExceptionMessage.C004WrongEmailOrPassword);
 
-        var refreshToken = await AddOrUpdateRefreshTokenAsync(user.Id, cancellationToken);
+        var refreshToken = await AddOrUpdateRefreshTokenAsync(user, cancellationToken);
         var result = new AuthorizeDto(user, GenerateJwt(user));
         var expireDays = _refreshTokenSettings.ExpireTime;
 
@@ -78,7 +75,7 @@ public class AuthService : BaseService, IAuthService
         if (!Guid.TryParse(nullableUserId, out var userId))
             return Error(HttpStatusCode.BadRequest, CommonExceptionMessage.C005BadGuidFormat);
 
-        await _refreshTokenRepository.DeleteByUserId(userId, cancellationToken);
+        await _userRepository.RemoveRefreshTokenAsync(userId, cancellationToken);
 
         _cookieService.RemoveCookie(CookieNameConst.RefreshToken);
 
@@ -113,8 +110,8 @@ public class AuthService : BaseService, IAuthService
         if (isExist)
             return Error<AuthorizeDto>(HttpStatusCode.Conflict, CommonExceptionMessage.C006RecordAlreadyExists);
 
-        var user = await _userRepository.CreateAsync(dto.ToEntity(), cancellationToken);
-        var refreshToken = await AddOrUpdateRefreshTokenAsync(user.Id, cancellationToken);
+        var user = await _userRepository.CreateAsync(dto.ToUser(), cancellationToken);
+        var refreshToken = await AddOrUpdateRefreshTokenAsync(user, cancellationToken);
         var result = new AuthorizeDto(user, GenerateJwt(user));
         var expireDays = _refreshTokenSettings.ExpireTime;
 
@@ -140,18 +137,18 @@ public class AuthService : BaseService, IAuthService
         return result;
     }
 
-    private async Task<Guid> AddOrUpdateRefreshTokenAsync(Guid userId, CancellationToken cancellationToken = default)
+    private async Task<Guid> AddOrUpdateRefreshTokenAsync(User user, CancellationToken cancellationToken = default)
     {
-        var entity = new RefreshTokenEntity()
-        {
-            StartDate = DateOnly.FromDateTime(DateTime.UtcNow),
-            EndDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(_refreshTokenSettings.ExpireTime)),
-            Token = Guid.NewGuid(),
-            UserId = userId,
-        };
+        var startDate = DateOnly.FromDateTime(DateTime.UtcNow);
+        var endDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(_refreshTokenSettings.ExpireTime));
+        var token = Guid.NewGuid();
 
-        entity = await _refreshTokenRepository.CreateOrUpdateByUserIdAsync(entity, cancellationToken);
-        return entity.Token;
+        var refreshToken = new RefreshToken(startDate, endDate, token);
+
+        user.SetRefreshToken(refreshToken);
+
+        user = await _userRepository.UpdateAsync(user.Id, user, cancellationToken);
+        return user.RefreshToken.Token;
     }
 
     private string GenerateJwt(User user)

@@ -1,13 +1,13 @@
-﻿using Authorization.Domain.Aggregates.Users.Entities;
+﻿using Authorization.Domain.Aggregates.Users.Entities.RefreshTokens;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.Infrastructure.Bases;
 
 namespace Authorization.Inrfrastructure.Configurations;
 
-public class RefreshTokenConfig : BaseConfig<RefreshTokenEntity>
+public class RefreshTokenConfig : BaseConfig<RefreshToken>
 {
-    protected override void ConfigureEntity(EntityTypeBuilder<RefreshTokenEntity> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<RefreshToken> builder)
     {
         builder.Property(x => x.UserId)
             .HasColumnOrder(100)
