@@ -1,15 +1,15 @@
-﻿using Authorization.Domain.Entities;
-using Authorization.Inrfrastructure.Seeds;
+﻿using Authorization.Domain.Aggregates.Users;
+using Authorization.Domain.Aggregates.Users.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.Infrastructure.Bases;
-using Shared.Infrastructure.Constants;
+using Shared.Shared.Constants;
 
 namespace Authorization.Inrfrastructure.Configurations;
 
-public class UserConfig : BaseConfig<UserEntity>
+public class UserConfig : BaseConfig<User>
 {
-    protected override void ConfigureEntity(EntityTypeBuilder<UserEntity> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<User> builder)
     {
         builder.Property(x => x.FirstName)
             .HasColumnOrder(100)
@@ -53,6 +53,6 @@ public class UserConfig : BaseConfig<UserEntity>
             .WithOne(x => x.User)
             .HasForeignKey(x => x.UserId);
 
-        builder.HasData(UserSeed.Seed());
+        builder.HasData(User.CreateSeed());
     }
 }

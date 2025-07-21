@@ -1,12 +1,12 @@
-﻿using Authorization.Core.Dtos.UserModule;
-using Authorization.Domain.Entities;
+﻿using Authorization.Core.Dtos.UsersModule;
+using Authorization.Domain.Aggregates.Users;
 using Shared.Domain.Enums;
 
 namespace Authorization.Core.Dtos;
 
 public class AuthorizeDto
 {
-    public AuthorizeDto(UserEntity entity, string token)
+    public AuthorizeDto(Domain.Aggregates.Users.User entity, string token)
     {
         Id = entity.Id;
         Username = $"{entity.FirstName} {entity.LastName}";

@@ -1,6 +1,6 @@
-﻿using Authorization.Domain.Entities;
+﻿using Authorization.Domain.Aggregates.Users.Entities;
 
-namespace Authorization.Core.Dtos.RefreshToken;
+namespace Authorization.Core.Dtos.RefreshTokens;
 
 public class RefreshTokenFormDto
 {

@@ -1,8 +1,10 @@
-﻿using Authorization.Core.Dtos.Login;
-using Authorization.Core.Dtos.User;
+﻿using Authorization.Core.Dtos;
+using Authorization.Core.Dtos.Users;
 using Authorization.Core.Services;
-using Authorization.Domain.Entities;
+using Authorization.Domain.Aggregates.Users;
+using Authorization.Domain.Aggregates.Users.Entities;
 using Authorization.Inrfrastructure.Repositories;
+using Authorization.Test.Shared.Factories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Moq;
@@ -48,7 +50,7 @@ public class AuthServiceTest
     public async Task LoginAsync_LoginFail_ReturnForbiddenError()
     {
         // Arrange
-        _userRepositoryMock.Setup(x => x.GetByEmailAsync(default, default)).ReturnsAsync((UserEntity)null);
+        _userRepositoryMock.Setup(x => x.GetByEmailAsync(default, default)).ReturnsAsync((User)null);
 
         // Act
         var result = await _authService.LoginAsync(new LoginFormDto(), default);
@@ -62,20 +64,13 @@ public class AuthServiceTest
     public async Task LoginAsync_LoginSuccess_ReturnValue()
     {
         // Arrange
-        var userEntity = new UserEntity()
-        {
-            Id = Guid.NewGuid(),
-            Email = "test@futureshop.pl",
-            HashedPassword = "HashedPassword",
-            FirstName = "Test",
-            LastName = "User",
-        };
+        var user = UserTestFactory.Create();
 
         var refreshTokenEntity = new RefreshTokenEntity()
         {
             Id = Guid.NewGuid(),
-            UserId = userEntity.Id,
-            User = userEntity,
+            UserId = user.Id,
+            User = user,
             StartDate = DateOnly.FromDateTime(DateTime.UtcNow),
             EndDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(_refreshTokenSettingsMock.Object.Value.ExpireTime)),
             Token = Guid.NewGuid()
@@ -87,7 +82,7 @@ public class AuthServiceTest
             Password = "password",
         };
 
-        _userRepositoryMock.Setup(x => x.GetByEmailAsync(It.IsAny<string>(), default)).ReturnsAsync(userEntity);
+        _userRepositoryMock.Setup(x => x.GetByEmailAsync(It.IsAny<string>(), default)).ReturnsAsync(user);
         _refreshTokenRepositoryMock.Setup(x => x.CreateOrUpdateByUserIdAsync(It.IsAny<RefreshTokenEntity>(), default)).ReturnsAsync(refreshTokenEntity);
 
         // Act
@@ -103,8 +98,8 @@ public class AuthServiceTest
         , Times.Once);
 
         Assert.NotNull(result);
-        Assert.Equal(userEntity.Id, result.Result.Id);
-        Assert.Equal($"{userEntity.FirstName} {userEntity.LastName}", result.Result.Username);
+        Assert.Equal(user.Id, result.Result.Id);
+        Assert.Equal($"{user.FirstName} {user.LastName}", result.Result.Username);
         Assert.NotEmpty(result.Result.Token);
     }
 
@@ -147,28 +142,21 @@ public class AuthServiceTest
     public async Task RefreshTokenAsync_RefreshJwtSuccess_ReturnValue()
     {
         // Arrange
-        var userEntity = new UserEntity()
-        {
-            Id = Guid.NewGuid(),
-            Email = "test@futureshop.pl",
-            HashedPassword = "HashedPassword",
-            FirstName = "Test",
-            LastName = "User",
-            Type = UserType.SuperAdmin
-        };
+        var user = UserTestFactory.Create();
+        user.SetType(UserType.SuperAdmin);
 
         _cookieServiceMock.Setup(x => x.GetCookieValue(CookieNameConst.RefreshToken)).Returns(ResultDto.Success(Guid.NewGuid().ToString()));
-        _userRepositoryMock.Setup(x => x.GetByTokenAsync(It.IsAny<Guid>(), default)).ReturnsAsync(userEntity);
+        _userRepositoryMock.Setup(x => x.GetByTokenAsync(It.IsAny<Guid>(), default)).ReturnsAsync(user);
 
         // Act
         var result = await _authService.RefreshTokenAsync();
 
         //Assert
         Assert.NotNull(result);
-        Assert.Equal(userEntity.Id, result.Result.Id);
-        Assert.Equal($"{userEntity.FirstName} {userEntity.LastName}", result.Result.Username);
+        Assert.Equal(user.Id, result.Result.Id);
+        Assert.Equal($"{user.FirstName} {user.LastName}", result.Result.Username);
         Assert.NotEmpty(result.Result.Token);
-        Assert.Equal(userEntity.Type.GetUserPrivileges(), result.Result.Roles);
+        Assert.Equal(user.Type.GetUserPrivileges(), result.Result.Roles);
     }
 
     [Fact]
@@ -176,7 +164,7 @@ public class AuthServiceTest
     {
         // Arrange
         _cookieServiceMock.Setup(x => x.GetCookieValue(CookieNameConst.RefreshToken)).Returns(ResultDto.Success(Guid.NewGuid().ToString()));
-        _userRepositoryMock.Setup(x => x.GetByTokenAsync(Guid.NewGuid(), default)).ReturnsAsync((UserEntity)null);
+        _userRepositoryMock.Setup(x => x.GetByTokenAsync(Guid.NewGuid(), default)).ReturnsAsync((User)null);
 
         // Act
         var result = await _authService.RefreshTokenAsync();
@@ -204,20 +192,12 @@ public class AuthServiceTest
     public async Task RegisterAsync_RegisterSuccess_ReturnValue()
     {
         // Arrange
-        var userEntity = new UserEntity()
-        {
-            Id = Guid.NewGuid(),
-            Email = "test@futureshop.pl",
-            HashedPassword = "HashedPassword",
-            FirstName = "Test",
-            LastName = "User",
-        };
-
+        var user = UserTestFactory.Create();
         var refreshTokenEntity = new RefreshTokenEntity()
         {
             Id = Guid.NewGuid(),
-            UserId = userEntity.Id,
-            User = userEntity,
+            UserId = user.Id,
+            User = user,
             StartDate = DateOnly.FromDateTime(DateTime.UtcNow),
             EndDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(_refreshTokenSettingsMock.Object.Value.ExpireTime)),
             Token = Guid.NewGuid()
@@ -231,7 +211,7 @@ public class AuthServiceTest
             LastName = "User",
         };
 
-        _userRepositoryMock.Setup(x => x.CreateAsync(It.IsAny<UserEntity>(), default)).ReturnsAsync(userEntity);
+        _userRepositoryMock.Setup(x => x.CreateAsync(It.IsAny<User>(), default)).ReturnsAsync(user);
         _refreshTokenRepositoryMock.Setup(x => x.CreateOrUpdateByUserIdAsync(It.IsAny<RefreshTokenEntity>(), default)).ReturnsAsync(refreshTokenEntity);
 
         // Act
@@ -247,8 +227,8 @@ public class AuthServiceTest
         , Times.Once);
 
         Assert.NotNull(result);
-        Assert.Equal(userEntity.Id, result.Result.Id);
-        Assert.Equal($"{userEntity.FirstName} {userEntity.LastName}", result.Result.Username);
+        Assert.Equal(user.Id, result.Result.Id);
+        Assert.Equal($"{user.FirstName} {user.LastName}", result.Result.Username);
         Assert.NotEmpty(result.Result.Token);
     }
 }

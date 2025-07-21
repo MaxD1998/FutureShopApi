@@ -1,7 +1,7 @@
-﻿using Authorization.Domain.Entities;
+﻿using Authorization.Domain.Aggregates.Users.Entities;
 using Shared.Domain.Enums;
 
-namespace Authorization.Core.Dtos.UserModule;
+namespace Authorization.Core.Dtos.UsersModule;
 
 public class UserModuleDto
 {

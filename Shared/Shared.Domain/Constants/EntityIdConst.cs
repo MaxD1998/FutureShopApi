@@ -1,4 +1,4 @@
-﻿namespace Shared.Infrastructure.Constants;
+﻿namespace Shared.Domain.Constants;
 
 public static class EntityIdConst
 {

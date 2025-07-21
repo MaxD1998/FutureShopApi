@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Shared.Domain.Bases;
-using Shared.Infrastructure.Errors;
 using Shared.Infrastructure.Exceptions;
 using Shared.Infrastructure.Settings;
 using System.Diagnostics;
@@ -17,7 +16,7 @@ public abstract class BaseContext : DbContext
     {
         _connectionSettings = connectionSettings.Value;
         if (!_connectionSettings.MigrationMode && !Database.CanConnect())
-            throw new ServiceUnavailableException(CommonExceptionMessage.D001DatabaseNotAvailable);
+            throw new DatabaseUnavailableException();
     }
 
     protected abstract string ConnectionString { get; }
@@ -33,11 +32,11 @@ public abstract class BaseContext : DbContext
             switch (entity.State)
             {
                 case EntityState.Added:
-                    entity.Entity.CreateTime = DateTime.UtcNow;
+                    entity.Entity.MarkCreated();
                     break;
 
                 case EntityState.Modified:
-                    entity.Entity.ModifyTime = DateTime.UtcNow;
+                    entity.Entity.MarkModified();
                     entity.Property(x => x.CreateTime).IsModified = false;
                     break;
 

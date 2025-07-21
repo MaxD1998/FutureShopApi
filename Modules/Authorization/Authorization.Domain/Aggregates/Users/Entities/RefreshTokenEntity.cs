@@ -1,7 +1,7 @@
 ﻿using Shared.Domain.Bases;
 using Shared.Domain.Interfaces;
 
-namespace Authorization.Domain.Entities;
+namespace Authorization.Domain.Aggregates.Users.Entities;
 
 public class RefreshTokenEntity : BaseEntity, IUpdate<RefreshTokenEntity>
 {
@@ -15,7 +15,7 @@ public class RefreshTokenEntity : BaseEntity, IUpdate<RefreshTokenEntity>
 
     #region Related Data
 
-    public UserEntity User { get; set; }
+    public User User { get; set; }
 
     #endregion Related Data
 

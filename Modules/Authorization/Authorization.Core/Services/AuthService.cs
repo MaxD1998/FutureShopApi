@@ -1,7 +1,7 @@
 ﻿using Authorization.Core.Dtos;
-using Authorization.Core.Dtos.Login;
-using Authorization.Core.Dtos.User;
-using Authorization.Domain.Entities;
+using Authorization.Core.Dtos.Users;
+using Authorization.Domain.Aggregates.Users;
+using Authorization.Domain.Aggregates.Users.Entities;
 using Authorization.Inrfrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -123,7 +123,7 @@ public class AuthService : BaseService, IAuthService
         return Success(result);
     }
 
-    private static List<Claim> GetClaims(UserEntity user)
+    private static List<Claim> GetClaims(User user)
     {
         var result = new List<Claim>()
         {
@@ -154,7 +154,7 @@ public class AuthService : BaseService, IAuthService
         return entity.Token;
     }
 
-    private string GenerateJwt(UserEntity user)
+    private string GenerateJwt(User user)
     {
         var claims = GetClaims(user);
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.JwtKey));

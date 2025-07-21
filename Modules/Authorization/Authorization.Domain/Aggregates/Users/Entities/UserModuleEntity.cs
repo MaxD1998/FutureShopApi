@@ -1,7 +1,7 @@
 ﻿using Shared.Domain.Bases;
 using Shared.Domain.Enums;
 
-namespace Authorization.Domain.Entities;
+namespace Authorization.Domain.Aggregates.Users.Entities;
 
 public class UserModuleEntity : BaseEntity
 {
@@ -15,7 +15,7 @@ public class UserModuleEntity : BaseEntity
 
     #region Related Data
 
-    public UserEntity User { get; set; }
+    public User User { get; set; }
 
     #endregion Related Data
 }

@@ -1,4 +1,4 @@
-﻿namespace Authorization.Core.Dtos.Login;
+﻿namespace Authorization.Core.Dtos;
 
 public class LoginFormDto
 {

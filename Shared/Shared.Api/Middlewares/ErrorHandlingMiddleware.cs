@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Shared.Infrastructure.Bases;
-using Shared.Infrastructure.Dtos;
+using Shared.Domain.Bases;
 
 namespace Shared.Api.Middlewares;
 
@@ -16,13 +15,13 @@ public class ErrorHandlingMiddleware : IMiddleware
         {
             if (exception is BaseException handleException)
             {
-                context.Response.StatusCode = handleException.StatusCode;
-                await context.Response.WriteAsJsonAsync(handleException.Error);
+                context.Response.StatusCode = (int)handleException.StatusCode;
+                await context.Response.WriteAsJsonAsync(handleException.ErrorMessage);
             }
             else
             {
                 context.Response.StatusCode = StatusCodes.Status500InternalServerError;
-                await context.Response.WriteAsJsonAsync(new ErrorDto(exception.Message));
+                await context.Response.WriteAsJsonAsync(exception.Message);
             }
         }
     }

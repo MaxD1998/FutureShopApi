@@ -1,4 +1,4 @@
-﻿using Authorization.Domain.Entities;
+﻿using Authorization.Domain.Aggregates.Users.Entities;
 using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
 
