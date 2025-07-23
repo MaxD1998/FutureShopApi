@@ -2,7 +2,7 @@
 using Authorization.Core.Dtos.Users;
 using Authorization.Core.Services;
 using Authorization.Domain.Aggregates.Users;
-using Authorization.Inrfrastructure.Repositories;
+using Authorization.Infrastructure.Repositories;
 using Authorization.Test.Shared.Factories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -48,7 +48,7 @@ public class AuthServiceTest
     public async Task LoginAsync_LoginFail_ReturnForbiddenError()
     {
         // Arrange
-        _userRepositoryMock.Setup(x => x.GetByEmailAsync(default, default)).ReturnsAsync((User)null);
+        _userRepositoryMock.Setup(x => x.GetByEmailAsync(default, default)).ReturnsAsync((UserAggregate)null);
 
         // Act
         var result = await _authService.LoginAsync(new LoginFormDto(), default);
@@ -73,7 +73,7 @@ public class AuthServiceTest
         };
 
         _userRepositoryMock.Setup(x => x.GetByEmailAsync(It.IsAny<string>(), default)).ReturnsAsync(user);
-        _userRepositoryMock.Setup(x => x.UpdateAsync(user.Id, It.IsAny<User>(), default)).ReturnsAsync(user);
+        _userRepositoryMock.Setup(x => x.UpdateAsync(user.Id, It.IsAny<UserAggregate>(), default)).ReturnsAsync(user);
 
         // Act
         var result = await _authService.LoginAsync(login, default);
@@ -154,7 +154,7 @@ public class AuthServiceTest
     {
         // Arrange
         _cookieServiceMock.Setup(x => x.GetCookieValue(CookieNameConst.RefreshToken)).Returns(ResultDto.Success(Guid.NewGuid().ToString()));
-        _userRepositoryMock.Setup(x => x.GetByTokenAsync(Guid.NewGuid(), default)).ReturnsAsync((User)null);
+        _userRepositoryMock.Setup(x => x.GetByTokenAsync(Guid.NewGuid(), default)).ReturnsAsync((UserAggregate)null);
 
         // Act
         var result = await _authService.RefreshTokenAsync();
@@ -194,8 +194,8 @@ public class AuthServiceTest
             LastName = "User",
         };
 
-        _userRepositoryMock.Setup(x => x.CreateAsync(It.IsAny<User>(), default)).ReturnsAsync(user);
-        _userRepositoryMock.Setup(x => x.UpdateAsync(user.Id, It.IsAny<User>(), default)).ReturnsAsync(user);
+        _userRepositoryMock.Setup(x => x.CreateAsync(It.IsAny<UserAggregate>(), default)).ReturnsAsync(user);
+        _userRepositoryMock.Setup(x => x.UpdateAsync(user.Id, It.IsAny<UserAggregate>(), default)).ReturnsAsync(user);
 
         // Act
         var result = await _authService.RegisterAsync(login, default);

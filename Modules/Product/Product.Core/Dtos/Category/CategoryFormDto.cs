@@ -1,5 +1,4 @@
-﻿using Product.Domain.Entities;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 
 namespace Product.Core.Dtos.Category;
 
@@ -11,14 +10,14 @@ public class CategoryFormDto
 
     public List<IdNameDto> SubCategories { get; set; } = [];
 
-    public static Expression<Func<CategoryEntity, CategoryFormDto>> Map() => entity => new CategoryFormDto
+    public static Expression<Func<Domain.Aggregates.Categories.CategoryAggregate, CategoryFormDto>> Map() => entity => new CategoryFormDto
     {
         Name = entity.Name,
         ParentCategoryId = entity.ParentCategoryId,
         SubCategories = entity.SubCategories.AsQueryable().Select(IdNameDto.MapFromCategory()).ToList(),
     };
 
-    public CategoryEntity ToEntity() => new()
+    public Domain.Aggregates.Categories.CategoryAggregate ToEntity() => new(Name)
     {
         Name = Name,
         ParentCategoryId = ParentCategoryId,

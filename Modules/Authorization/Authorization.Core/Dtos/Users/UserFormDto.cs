@@ -17,5 +17,5 @@ public class UserFormDto
 
     public string PhoneNumber { get; set; }
 
-    public User ToUser() => new(DateOnly.FromDateTime(DateOfBirth), Email, FirstName, LastName, Crypt.HashPassword(Password), PhoneNumber);
+    public UserAggregate ToUser() => new(DateOnly.FromDateTime(DateOfBirth), Email, FirstName, LastName, Crypt.HashPassword(Password), PhoneNumber);
 }

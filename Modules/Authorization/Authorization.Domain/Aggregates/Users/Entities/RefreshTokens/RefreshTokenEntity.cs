@@ -1,18 +1,18 @@
 ﻿using Authorization.Domain.Aggregates.Users.Entities.RefreshTokens.Exceptions;
-using Authorization.Domain.Exceptions;
 using Shared.Domain.Bases;
+using Shared.Domain.Exceptions;
 using Shared.Domain.Interfaces;
 using Shared.Shared.Interfaces;
 
 namespace Authorization.Domain.Aggregates.Users.Entities.RefreshTokens;
 
-public class RefreshToken : BaseEntity, ICloneable<RefreshToken>, IUpdate<RefreshToken>
+public class RefreshTokenEntity : BaseEntity, ICloneable<RefreshTokenEntity>, IUpdate<RefreshTokenEntity>
 {
-    public RefreshToken()
+    public RefreshTokenEntity()
     {
     }
 
-    public RefreshToken(DateOnly startDate, DateOnly endDate, Guid token)
+    public RefreshTokenEntity(DateOnly startDate, DateOnly endDate, Guid token)
     {
         SetStartDate(startDate);
         SetEndDate(endDate);
@@ -26,12 +26,6 @@ public class RefreshToken : BaseEntity, ICloneable<RefreshToken>, IUpdate<Refres
     public Guid Token { get; private set; }
 
     public Guid UserId { get; private set; }
-
-    #region Related Data
-
-    public User User { get; private set; }
-
-    #endregion Related Data
 
     #region Setters
 
@@ -63,7 +57,7 @@ public class RefreshToken : BaseEntity, ICloneable<RefreshToken>, IUpdate<Refres
 
     #region Methods
 
-    public RefreshToken Clone() => new()
+    public RefreshTokenEntity Clone() => new()
     {
         Id = Id,
         CreateTime = CreateTime,
@@ -74,7 +68,7 @@ public class RefreshToken : BaseEntity, ICloneable<RefreshToken>, IUpdate<Refres
         UserId = UserId,
     };
 
-    public void Update(RefreshToken entity)
+    public void Update(RefreshTokenEntity entity)
     {
         if (EndDate != entity.EndDate)
             EndDate = entity.EndDate;

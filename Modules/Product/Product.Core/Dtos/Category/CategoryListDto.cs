@@ -1,4 +1,4 @@
-﻿using Product.Domain.Entities;
+﻿using Product.Domain.Aggregates.Categories;
 using Shared.Core.Interfaces;
 using System.Linq.Expressions;
 
@@ -14,7 +14,7 @@ public class CategoryListDto : IDto
 
     public int SubCategoryQuantity { get; private set; }
 
-    public static Expression<Func<CategoryEntity, CategoryListDto>> Map() => entity => new CategoryListDto
+    public static Expression<Func<CategoryAggregate, CategoryListDto>> Map() => entity => new CategoryListDto
     {
         SubCategoryQuantity = entity.SubCategories.Count,
         Id = entity.Id,

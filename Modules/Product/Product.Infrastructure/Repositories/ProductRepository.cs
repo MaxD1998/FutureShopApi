@@ -1,19 +1,19 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Product.Domain.Entities;
+using Product.Domain.Aggregates.Products;
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Interfaces;
 
 namespace Product.Infrastructure.Repositories;
 
-public interface IProductRepository : IBaseRepository<ProductEntity>, IUpdateRepository<ProductEntity>
+public interface IProductRepository : IBaseRepository<ProductAggregate>, IUpdateRepository<ProductAggregate>
 {
 }
 
-public class ProductRepository(ProductContext context) : BaseRepository<ProductContext, ProductEntity>(context), IProductRepository
+public class ProductRepository(ProductContext context) : BaseRepository<ProductContext, ProductAggregate>(context), IProductRepository
 {
-    public async Task<ProductEntity> UpdateAsync(Guid id, ProductEntity entity, CancellationToken cancellationToken)
+    public async Task<ProductAggregate> UpdateAsync(Guid id, ProductAggregate entity, CancellationToken cancellationToken)
     {
-        var entityToUpdate = await _context.Set<ProductEntity>()
+        var entityToUpdate = await _context.Set<ProductAggregate>()
             .Include(x => x.ProductPhotos)
             .Where(x => x.Id == id)
             .FirstOrDefaultAsync(cancellationToken);

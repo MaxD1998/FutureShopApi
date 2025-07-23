@@ -5,7 +5,7 @@ namespace Authorization.Test.Shared.Factories;
 
 internal static class UserTestFactory
 {
-    public static User Create()
+    public static UserAggregate Create()
     {
         var id = Guid.NewGuid();
         var dateOfBirth = new DateOnly(1900, 1, 1);
@@ -14,22 +14,22 @@ internal static class UserTestFactory
         var firstName = "Test";
         var lastName = "User";
 
-        var user = new User(dateOfBirth, email, hashedPassword, firstName, lastName);
+        var user = new UserAggregate(dateOfBirth, email, hashedPassword, firstName, lastName);
 
-        user.GetType().GetProperty(nameof(User.Id)).SetValue(user, id);
+        user.GetType().GetProperty(nameof(UserAggregate.Id)).SetValue(user, id);
 
         return user;
     }
 
-    public static RefreshToken CreateRefreshToken(int expireTime)
+    public static RefreshTokenEntity CreateRefreshToken(int expireTime)
     {
         var id = Guid.NewGuid();
         var startDate = DateOnly.FromDateTime(DateTime.UtcNow);
         var endDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(expireTime));
         var token = Guid.NewGuid();
-        var refreshToken = new RefreshToken(startDate, endDate, token);
+        var refreshToken = new RefreshTokenEntity(startDate, endDate, token);
 
-        refreshToken.GetType().GetProperty(nameof(RefreshToken.Id)).SetValue(refreshToken, id);
+        refreshToken.GetType().GetProperty(nameof(RefreshTokenEntity.Id)).SetValue(refreshToken, id);
 
         return refreshToken;
     }

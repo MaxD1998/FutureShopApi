@@ -1,18 +1,18 @@
 ﻿using Authorization.Domain.Aggregates.Users.Entities;
 using Authorization.Domain.Aggregates.Users.Entities.RefreshTokens;
 using Authorization.Domain.Aggregates.Users.Exceptions;
-using Authorization.Domain.Exceptions;
 using Shared.Domain.Bases;
 using Shared.Domain.Constants;
 using Shared.Domain.Enums;
+using Shared.Domain.Exceptions;
 using Shared.Domain.Interfaces;
 using Shared.Shared.Constants;
 
 namespace Authorization.Domain.Aggregates.Users;
 
-public class User : BaseEntity, IUpdate<User>
+public class UserAggregate : BaseEntity, IUpdate<UserAggregate>
 {
-    public User(DateOnly dateOfBirth, string email, string firstName, string hashedPassword, string lastName)
+    public UserAggregate(DateOnly dateOfBirth, string email, string firstName, string hashedPassword, string lastName)
     {
         SetDateOfBirth(dateOfBirth);
         SetEmail(email);
@@ -21,7 +21,7 @@ public class User : BaseEntity, IUpdate<User>
         SetLastName(lastName);
     }
 
-    public User(DateOnly dateOfBirth, string email, string firstName, string hashedPassword, string lastName, string phoneNumber)
+    public UserAggregate(DateOnly dateOfBirth, string email, string firstName, string hashedPassword, string lastName, string phoneNumber)
     {
         SetDateOfBirth(dateOfBirth);
         SetEmail(email);
@@ -31,7 +31,7 @@ public class User : BaseEntity, IUpdate<User>
         SetPhoneNumber(phoneNumber);
     }
 
-    private User()
+    private UserAggregate()
     {
     }
 
@@ -51,7 +51,7 @@ public class User : BaseEntity, IUpdate<User>
 
     #region Related Data
 
-    public RefreshToken RefreshToken { get; private set; }
+    public RefreshTokenEntity RefreshToken { get; private set; }
 
     public ICollection<UserModuleEntity> UserModules { get; set; } = [];
 
@@ -141,7 +141,7 @@ public class User : BaseEntity, IUpdate<User>
         PhoneNumber = phoneNumber;
     }
 
-    public void SetRefreshToken(RefreshToken refreshToken)
+    public void SetRefreshToken(RefreshTokenEntity refreshToken)
     {
         if (refreshToken == null)
             throw new ArgumentNullException(nameof(refreshToken));
@@ -177,7 +177,7 @@ public class User : BaseEntity, IUpdate<User>
 
     #region Methods
 
-    public static User CreateSeed() => new User()
+    public static UserAggregate CreateSeed() => new UserAggregate()
     {
         Id = new Guid(EntityIdConst.UserId),
         CreateTime = DateTime.MinValue,
@@ -189,7 +189,7 @@ public class User : BaseEntity, IUpdate<User>
         Type = UserType.SuperAdmin
     };
 
-    public void Update(User entity)
+    public void Update(UserAggregate entity)
     {
         if (DateOfBirth != entity.DateOfBirth)
             DateOfBirth = entity.DateOfBirth;
@@ -205,6 +205,8 @@ public class User : BaseEntity, IUpdate<User>
 
         if (PhoneNumber != entity.PhoneNumber)
             PhoneNumber = entity.PhoneNumber;
+
+        RefreshToken = entity.RefreshToken?.Clone();
     }
 
     #endregion Methods

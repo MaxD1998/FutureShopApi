@@ -2,7 +2,7 @@
 using Authorization.Core.Dtos.Users;
 using Authorization.Domain.Aggregates.Users;
 using Authorization.Domain.Aggregates.Users.Entities.RefreshTokens;
-using Authorization.Inrfrastructure.Repositories;
+using Authorization.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -120,7 +120,7 @@ public class AuthService : BaseService, IAuthService
         return Success(result);
     }
 
-    private static List<Claim> GetClaims(User user)
+    private static List<Claim> GetClaims(UserAggregate user)
     {
         var result = new List<Claim>()
         {
@@ -137,13 +137,13 @@ public class AuthService : BaseService, IAuthService
         return result;
     }
 
-    private async Task<Guid> AddOrUpdateRefreshTokenAsync(User user, CancellationToken cancellationToken = default)
+    private async Task<Guid> AddOrUpdateRefreshTokenAsync(UserAggregate user, CancellationToken cancellationToken = default)
     {
         var startDate = DateOnly.FromDateTime(DateTime.UtcNow);
         var endDate = DateOnly.FromDateTime(DateTime.UtcNow.AddDays(_refreshTokenSettings.ExpireTime));
         var token = Guid.NewGuid();
 
-        var refreshToken = new RefreshToken(startDate, endDate, token);
+        var refreshToken = new RefreshTokenEntity(startDate, endDate, token);
 
         user.SetRefreshToken(refreshToken);
 
@@ -151,7 +151,7 @@ public class AuthService : BaseService, IAuthService
         return user.RefreshToken.Token;
     }
 
-    private string GenerateJwt(User user)
+    private string GenerateJwt(UserAggregate user)
     {
         var claims = GetClaims(user);
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.JwtKey));

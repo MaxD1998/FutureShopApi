@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Product.Domain.Entities;
+using Product.Domain.Aggregates.ProductBases;
 using Shared.Infrastructure.Bases;
 using Shared.Shared.Constants;
 
 namespace Product.Infrastructure.Configurations;
 
-public class ProductBaseConfig : BaseConfig<ProductBaseEntity>
+public class ProductBaseConfig : BaseConfig<ProductBaseAggregate>
 {
-    protected override void ConfigureEntity(EntityTypeBuilder<ProductBaseEntity> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<ProductBaseAggregate> builder)
     {
         builder.Property(x => x.CategoryId)
             .HasColumnOrder(100)

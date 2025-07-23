@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.Infrastructure.Bases;
 
-namespace Authorization.Inrfrastructure.Configurations;
+namespace Authorization.Infrastructure.Configurations;
 
 public class UserModuleConfig : BaseConfig<UserModuleEntity>
 {

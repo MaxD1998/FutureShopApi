@@ -1,35 +1,36 @@
 ﻿using Authorization.Domain.Aggregates.Users;
+using Authorization.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Interfaces;
 
-namespace Authorization.Inrfrastructure.Repositories;
+namespace Authorization.Infrastructure.Repositories;
 
-public interface IUserRepository : IBaseRepository<User>, IUpdateRepository<User>
+public interface IUserRepository : IBaseRepository<UserAggregate>, IUpdateRepository<UserAggregate>
 {
     Task<bool> AnyByEmailAsync(string email, CancellationToken cancellationToken);
 
-    Task<User> GetByEmailAsync(string email, CancellationToken cancellationToken);
+    Task<UserAggregate> GetByEmailAsync(string email, CancellationToken cancellationToken);
 
-    Task<User> GetByTokenAsync(Guid token, CancellationToken cancellationToken);
+    Task<UserAggregate> GetByTokenAsync(Guid token, CancellationToken cancellationToken);
 
     Task RemoveRefreshTokenAsync(Guid id, CancellationToken cancellationToken);
 }
 
-public class UserRepository(AuthContext context) : BaseRepository<AuthContext, User>(context), IUserRepository
+public class UserRepository(AuthContext context) : BaseRepository<AuthContext, UserAggregate>(context), IUserRepository
 {
     public Task<bool> AnyByEmailAsync(string email, CancellationToken cancellationToken)
         => AnyAsync(x => x.Email == email, cancellationToken);
 
-    public Task<User> GetByEmailAsync(string email, CancellationToken cancellationToken)
+    public Task<UserAggregate> GetByEmailAsync(string email, CancellationToken cancellationToken)
         => GetByAsync(x => x.Email == email, cancellationToken);
 
-    public Task<User> GetByTokenAsync(Guid token, CancellationToken cancellationToken)
+    public Task<UserAggregate> GetByTokenAsync(Guid token, CancellationToken cancellationToken)
         => GetByAsync(x => x.RefreshToken.Token == token, cancellationToken);
 
     public async Task RemoveRefreshTokenAsync(Guid id, CancellationToken cancellationToken)
     {
-        var user = await _context.Set<User>()
+        var user = await _context.Set<UserAggregate>()
             .Include(x => x.RefreshToken)
             .Where(x => x.Id == id)
             .FirstOrDefaultAsync(cancellationToken);
@@ -42,9 +43,9 @@ public class UserRepository(AuthContext context) : BaseRepository<AuthContext, U
         await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<User> UpdateAsync(Guid id, User entity, CancellationToken cancellationToken)
+    public async Task<UserAggregate> UpdateAsync(Guid id, UserAggregate entity, CancellationToken cancellationToken)
     {
-        var entityToUpdate = await _context.Set<User>()
+        var entityToUpdate = await _context.Set<UserAggregate>()
             .Include(x => x.RefreshToken)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 

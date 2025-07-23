@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.Infrastructure.Bases;
 using Shared.Shared.Constants;
 
-namespace Authorization.Inrfrastructure.Configurations;
+namespace Authorization.Infrastructure.Configurations;
 
-public class UserConfig : BaseConfig<User>
+public class UserConfig : BaseConfig<UserAggregate>
 {
-    protected override void ConfigureEntity(EntityTypeBuilder<User> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<UserAggregate> builder)
     {
         builder.Property(x => x.FirstName)
             .HasColumnOrder(100)
@@ -46,13 +46,13 @@ public class UserConfig : BaseConfig<User>
             .IsUnique();
 
         builder.HasOne(x => x.RefreshToken)
-            .WithOne(x => x.User)
-            .HasForeignKey<RefreshToken>(x => x.UserId);
+            .WithOne()
+            .HasForeignKey<RefreshTokenEntity>(x => x.UserId);
 
         builder.HasMany(x => x.UserModules)
             .WithOne(x => x.User)
             .HasForeignKey(x => x.UserId);
 
-        builder.HasData(User.CreateSeed());
+        builder.HasData(UserAggregate.CreateSeed());
     }
 }

@@ -1,10 +1,10 @@
-﻿using Product.Domain.Entities;
+﻿using Product.Domain.Aggregates.Categories;
 
 namespace Product.Core.Dtos.Category;
 
-public class CategoryEventDto(CategoryEntity entity)
+public class CategoryEventDto(CategoryAggregate entity)
 {
-    private readonly CategoryEntity _entity = entity;
+    private readonly CategoryAggregate _entity = entity;
 
     public Guid Id => _entity.Id;
 

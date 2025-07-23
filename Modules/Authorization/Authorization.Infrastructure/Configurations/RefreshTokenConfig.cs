@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.Infrastructure.Bases;
 
-namespace Authorization.Inrfrastructure.Configurations;
+namespace Authorization.Infrastructure.Configurations;
 
-public class RefreshTokenConfig : BaseConfig<RefreshToken>
+public class RefreshTokenConfig : BaseConfig<RefreshTokenEntity>
 {
-    protected override void ConfigureEntity(EntityTypeBuilder<RefreshToken> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<RefreshTokenEntity> builder)
     {
         builder.Property(x => x.UserId)
             .HasColumnOrder(100)

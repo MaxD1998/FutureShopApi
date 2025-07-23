@@ -6,7 +6,7 @@ namespace Authorization.Core.Dtos;
 
 public class AuthorizeDto
 {
-    public AuthorizeDto(Domain.Aggregates.Users.User entity, string token)
+    public AuthorizeDto(UserAggregate entity, string token)
     {
         Id = entity.Id;
         Username = $"{entity.FirstName} {entity.LastName}";

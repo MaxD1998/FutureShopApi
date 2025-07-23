@@ -8,6 +8,7 @@ public abstract class BaseConfig<TEntity> : IEntityTypeConfiguration<TEntity> wh
 {
     public void Configure(EntityTypeBuilder<TEntity> builder)
     {
+        builder.ToTable(typeof(TEntity).Name.Replace("Aggregate", string.Empty));
         builder.ToTable(typeof(TEntity).Name.Replace("Entity", string.Empty));
         builder.HasKey(x => x.Id);
 

@@ -1,6 +1,6 @@
 ﻿using Authorization.Core.Services;
-using Authorization.Inrfrastructure;
-using Authorization.Inrfrastructure.Repositories;
+using Authorization.Infrastructure;
+using Authorization.Infrastructure.Repositories;
 using Shared.Api.Middlewares;
 
 namespace Api.Modules.Authorization;

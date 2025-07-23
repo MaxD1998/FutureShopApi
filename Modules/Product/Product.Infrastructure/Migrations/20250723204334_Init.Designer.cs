@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Product.Infrastructure;
@@ -11,18 +12,20 @@ using Product.Infrastructure;
 namespace Product.Infrastructure.Migrations
 {
     [DbContext(typeof(ProductContext))]
-    partial class ProductPostgreSqlContextModelSnapshot : ModelSnapshot
+    [Migration("20250723204334_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.0")
+                .HasAnnotation("ProductVersion", "9.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Product.Domain.Entities.CategoryEntity", b =>
+            modelBuilder.Entity("Product.Domain.Aggregates.Categories.Category", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -53,7 +56,7 @@ namespace Product.Infrastructure.Migrations
                     b.ToTable("Category", (string)null);
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.ProductBaseEntity", b =>
+            modelBuilder.Entity("Product.Domain.Aggregates.ProductBases.ProductBase", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -85,39 +88,7 @@ namespace Product.Infrastructure.Migrations
                     b.ToTable("ProductBase", (string)null);
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.ProductEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnOrder(0);
-
-                    b.Property<DateTime>("CreateTime")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnOrder(1);
-
-                    b.Property<DateTime?>("ModifyTime")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnOrder(2);
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnOrder(101);
-
-                    b.Property<Guid>("ProductBaseId")
-                        .HasColumnType("uuid")
-                        .HasColumnOrder(100);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductBaseId");
-
-                    b.ToTable("Product", (string)null);
-                });
-
-            modelBuilder.Entity("Product.Domain.Entities.ProductPhotoEntity", b =>
+            modelBuilder.Entity("Product.Domain.Aggregates.Products.Entities.ProductPhoto", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -156,19 +127,49 @@ namespace Product.Infrastructure.Migrations
                     b.ToTable("ProductPhoto", (string)null);
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.CategoryEntity", b =>
+            modelBuilder.Entity("Product.Domain.Aggregates.Products.Product", b =>
                 {
-                    b.HasOne("Product.Domain.Entities.CategoryEntity", "ParentCategory")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(1);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnOrder(101);
+
+                    b.Property<Guid>("ProductBaseId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductBaseId");
+
+                    b.ToTable("Product", (string)null);
+                });
+
+            modelBuilder.Entity("Product.Domain.Aggregates.Categories.Category", b =>
+                {
+                    b.HasOne("Product.Domain.Aggregates.Categories.Category", null)
                         .WithMany("SubCategories")
                         .HasForeignKey("ParentCategoryId")
                         .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("ParentCategory");
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.ProductBaseEntity", b =>
+            modelBuilder.Entity("Product.Domain.Aggregates.ProductBases.ProductBase", b =>
                 {
-                    b.HasOne("Product.Domain.Entities.CategoryEntity", "Category")
+                    b.HasOne("Product.Domain.Aggregates.Categories.Category", "Category")
                         .WithMany("ProductBases")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -177,20 +178,9 @@ namespace Product.Infrastructure.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.ProductEntity", b =>
+            modelBuilder.Entity("Product.Domain.Aggregates.Products.Entities.ProductPhoto", b =>
                 {
-                    b.HasOne("Product.Domain.Entities.ProductBaseEntity", "ProductBase")
-                        .WithMany("Products")
-                        .HasForeignKey("ProductBaseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ProductBase");
-                });
-
-            modelBuilder.Entity("Product.Domain.Entities.ProductPhotoEntity", b =>
-                {
-                    b.HasOne("Product.Domain.Entities.ProductEntity", "Product")
+                    b.HasOne("Product.Domain.Aggregates.Products.Product", "Product")
                         .WithMany("ProductPhotos")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -199,19 +189,30 @@ namespace Product.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.CategoryEntity", b =>
+            modelBuilder.Entity("Product.Domain.Aggregates.Products.Product", b =>
+                {
+                    b.HasOne("Product.Domain.Aggregates.ProductBases.ProductBase", "ProductBase")
+                        .WithMany("Products")
+                        .HasForeignKey("ProductBaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductBase");
+                });
+
+            modelBuilder.Entity("Product.Domain.Aggregates.Categories.Category", b =>
                 {
                     b.Navigation("ProductBases");
 
                     b.Navigation("SubCategories");
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.ProductBaseEntity", b =>
+            modelBuilder.Entity("Product.Domain.Aggregates.ProductBases.ProductBase", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("Product.Domain.Entities.ProductEntity", b =>
+            modelBuilder.Entity("Product.Domain.Aggregates.Products.Product", b =>
                 {
                     b.Navigation("ProductPhotos");
                 });

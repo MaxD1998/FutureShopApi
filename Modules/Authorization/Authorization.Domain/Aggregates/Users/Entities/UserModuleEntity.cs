@@ -15,7 +15,7 @@ public class UserModuleEntity : BaseEntity
 
     #region Related Data
 
-    public User User { get; set; }
+    public UserAggregate User { get; set; }
 
     #endregion Related Data
 }

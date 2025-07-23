@@ -1,7 +1,7 @@
 ﻿using Shared.Domain.Bases;
 using System.Net;
 
-namespace Authorization.Domain.Exceptions;
+namespace Shared.Domain.Exceptions;
 
 public class PropertyWasEmptyException : BaseException
 {

@@ -1,9 +1,9 @@
 ﻿using Shared.Domain.Bases;
 using Shared.Domain.Interfaces;
 
-namespace Product.Domain.Entities;
+namespace Product.Domain.Aggregates.Products.Entities;
 
-public class ProductPhotoEntity : BaseEntity, IUpdate<ProductPhotoEntity>
+public class ProductPhoto : BaseEntity, IUpdate<ProductPhoto>
 {
     public string FileId { get; set; }
 
@@ -13,11 +13,11 @@ public class ProductPhotoEntity : BaseEntity, IUpdate<ProductPhotoEntity>
 
     #region Related Data
 
-    public ProductEntity Product { get; set; }
+    public ProductAggregate Product { get; set; }
 
     #endregion Related Data
 
-    public void Update(ProductPhotoEntity entity)
+    public void Update(ProductPhoto entity)
     {
         Position = entity.Position;
     }

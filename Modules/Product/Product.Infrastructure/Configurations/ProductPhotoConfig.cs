@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Product.Domain.Entities;
+using Product.Domain.Aggregates.Products.Entities;
 using Shared.Infrastructure.Bases;
 
 namespace Product.Infrastructure.Configurations;
 
-public class ProductPhotoConfig : BaseConfig<ProductPhotoEntity>
+public class ProductPhotoConfig : BaseConfig<ProductPhoto>
 {
-    protected override void ConfigureEntity(EntityTypeBuilder<ProductPhotoEntity> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<ProductPhoto> builder)
     {
         builder.Property(x => x.ProductId)
             .HasColumnOrder(100)

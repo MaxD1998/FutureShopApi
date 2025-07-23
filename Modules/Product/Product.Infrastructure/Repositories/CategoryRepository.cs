@@ -1,28 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Product.Domain.Entities;
+using Product.Domain.Aggregates.Categories;
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Interfaces;
 using System.Linq.Expressions;
 
 namespace Product.Infrastructure.Repositories;
 
-public interface ICategoryRepository : IBaseRepository<CategoryEntity>, IUpdateRepository<CategoryEntity>
+public interface ICategoryRepository : IBaseRepository<CategoryAggregate>, IUpdateRepository<CategoryAggregate>
 {
-    Task<List<CategoryEntity>> GetListByIds(List<Guid> ids, CancellationToken cancellationToken);
+    Task<List<CategoryAggregate>> GetListByIds(List<Guid> ids, CancellationToken cancellationToken);
 
-    Task<List<TResult>> GetListPotentialParentCategories<TResult>(Guid? id, List<Guid> childIds, Expression<Func<CategoryEntity, TResult>> map, CancellationToken cancellationToken);
+    Task<List<TResult>> GetListPotentialParentCategories<TResult>(Guid? id, List<Guid> childIds, Expression<Func<CategoryAggregate, TResult>> map, CancellationToken cancellationToken);
 
-    Task<List<TResult>> GetListPotentialSubcategoriesAsync<TResult>(Guid? id, Guid? parentId, List<Guid> childIds, Expression<Func<CategoryEntity, TResult>> map, CancellationToken cancellationToken);
+    Task<List<TResult>> GetListPotentialSubcategoriesAsync<TResult>(Guid? id, Guid? parentId, List<Guid> childIds, Expression<Func<CategoryAggregate, TResult>> map, CancellationToken cancellationToken);
 }
 
-public class CategoryRepository(ProductContext context) : BaseRepository<ProductContext, CategoryEntity>(context), ICategoryRepository
+public class CategoryRepository(ProductContext context) : BaseRepository<ProductContext, CategoryAggregate>(context), ICategoryRepository
 {
-    public Task<List<CategoryEntity>> GetListByIds(List<Guid> ids, CancellationToken cancellationToken)
-        => _context.Set<CategoryEntity>().Where(x => ids.Contains(x.Id)).ToListAsync(cancellationToken);
+    public Task<List<CategoryAggregate>> GetListByIds(List<Guid> ids, CancellationToken cancellationToken)
+        => _context.Set<CategoryAggregate>().Where(x => ids.Contains(x.Id)).ToListAsync(cancellationToken);
 
-    public async Task<List<TResult>> GetListPotentialParentCategories<TResult>(Guid? id, List<Guid> childIds, Expression<Func<CategoryEntity, TResult>> map, CancellationToken cancellationToken)
+    public async Task<List<TResult>> GetListPotentialParentCategories<TResult>(Guid? id, List<Guid> childIds, Expression<Func<CategoryAggregate, TResult>> map, CancellationToken cancellationToken)
     {
-        var query = _context.Set<CategoryEntity>()
+        var query = _context.Set<CategoryAggregate>()
             .AsNoTracking()
         .AsQueryable();
 
@@ -42,9 +42,9 @@ public class CategoryRepository(ProductContext context) : BaseRepository<Product
         return results;
     }
 
-    public async Task<List<TResult>> GetListPotentialSubcategoriesAsync<TResult>(Guid? id, Guid? parentId, List<Guid> childIds, Expression<Func<CategoryEntity, TResult>> map, CancellationToken cancellationToken)
+    public async Task<List<TResult>> GetListPotentialSubcategoriesAsync<TResult>(Guid? id, Guid? parentId, List<Guid> childIds, Expression<Func<CategoryAggregate, TResult>> map, CancellationToken cancellationToken)
     {
-        var query = _context.Set<CategoryEntity>()
+        var query = _context.Set<CategoryAggregate>()
         .AsNoTracking()
         .AsQueryable();
 
@@ -68,9 +68,9 @@ public class CategoryRepository(ProductContext context) : BaseRepository<Product
         return results;
     }
 
-    public async Task<CategoryEntity> UpdateAsync(Guid id, CategoryEntity entity, CancellationToken cancellationToken)
+    public async Task<CategoryAggregate> UpdateAsync(Guid id, CategoryAggregate entity, CancellationToken cancellationToken)
     {
-        var entityToUpdate = await _context.Set<CategoryEntity>()
+        var entityToUpdate = await _context.Set<CategoryAggregate>()
             .Include(x => x.SubCategories)
             .Where(x => x.Id == id)
             .FirstOrDefaultAsync(cancellationToken);
@@ -87,7 +87,7 @@ public class CategoryRepository(ProductContext context) : BaseRepository<Product
 
     private async Task<IEnumerable<Guid>> ExceptionIdsAsync(IEnumerable<Guid> ids, CancellationToken cancellationToken = default)
     {
-        var results = await _context.Set<CategoryEntity>()
+        var results = await _context.Set<CategoryAggregate>()
             .Where(x => ids.Contains(x.Id))
             .SelectMany(x => x.SubCategories.Select(x => x.Id))
             .ToListAsync(cancellationToken);
@@ -101,7 +101,7 @@ public class CategoryRepository(ProductContext context) : BaseRepository<Product
     private async Task<IEnumerable<Guid>> GetExceptionIdAsync(Guid parentId, CancellationToken cancellationToken = default)
     {
         var results = new List<Guid>();
-        var exceptionCategory = await _context.Set<CategoryEntity>()
+        var exceptionCategory = await _context.Set<CategoryAggregate>()
             .FirstOrDefaultAsync(x => x.Id == parentId, cancellationToken);
 
         if (exceptionCategory == null)

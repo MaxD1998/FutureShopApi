@@ -1,6 +1,6 @@
 ﻿using Product.Core.Dtos;
 using Product.Core.Dtos.Category;
-using Product.Domain.Entities;
+using Product.Domain.Aggregates.Categories;
 using Product.Infrastructure.Repositories;
 using Shared.Core.Bases;
 using Shared.Core.Constans;
@@ -98,12 +98,14 @@ public class CategoryService(ICategoryRepository categoryRepository, IRabbitMqCo
         return Success(result);
     }
 
-    private async Task<CategoryEntity> MapToEntity(CategoryFormDto dto, CancellationToken cancellationToken)
+    private async Task<CategoryAggregate> MapToEntity(CategoryFormDto dto, CancellationToken cancellationToken)
     {
         var entity = dto.ToEntity();
         var subcategoryIds = dto.SubCategories.Select(x => x.Id).ToList();
+        var subCategories = await _categoryRepository.GetListByIds(subcategoryIds, cancellationToken);
 
-        entity.SubCategories = await _categoryRepository.GetListByIds(subcategoryIds, cancellationToken);
+        foreach (var subCategory in subCategories)
+            entity.AddSubCategory(subCategory);
 
         return entity;
     }
