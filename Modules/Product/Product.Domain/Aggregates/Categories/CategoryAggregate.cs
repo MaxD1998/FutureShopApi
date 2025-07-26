@@ -1,5 +1,4 @@
-﻿using Product.Domain.Aggregates.ProductBases;
-using Shared.Domain.Bases;
+﻿using Shared.Domain.Bases;
 using Shared.Domain.Exceptions;
 using Shared.Domain.Interfaces;
 using Shared.Shared.Constants;
@@ -10,22 +9,21 @@ public class CategoryAggregate : BaseEntity, IUpdate<CategoryAggregate>
 {
     private HashSet<CategoryAggregate> _subCategories = [];
 
-    public CategoryAggregate(string name)
+    public CategoryAggregate(string name, Guid? parentCategoryId)
     {
         SetName(name);
+        SetParentCategoryId(parentCategoryId);
     }
 
     private CategoryAggregate()
     {
     }
 
-    public string Name { get; set; }
+    public string Name { get; private set; }
 
-    public Guid? ParentCategoryId { get; set; }
+    public Guid? ParentCategoryId { get; private set; }
 
     #region Related Data
-
-    public ICollection<ProductBaseAggregate> ProductBases { get; private set; } = [];
 
     public IReadOnlyCollection<CategoryAggregate> SubCategories => _subCategories;
 
@@ -45,6 +43,11 @@ public class CategoryAggregate : BaseEntity, IUpdate<CategoryAggregate>
             throw new PropertyWasTooLongException(propertyName, maxLength);
 
         Name = name;
+    }
+
+    public void SetParentCategoryId(Guid? parentCategoryId)
+    {
+        ParentCategoryId = parentCategoryId;
     }
 
     #endregion Setters

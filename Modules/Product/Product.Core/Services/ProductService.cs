@@ -55,7 +55,7 @@ public class ProductService(IProductRepository productRepository, IRabbitMqConte
 
     public async Task<ResultDto<PageDto<ProductListDto>>> GetPageListAsync(int indexPage, CancellationToken cancellationToken)
     {
-        var results = await _productRepository.GetPageAsync(indexPage, ProductListDto.Map(), cancellationToken);
+        var results = await _productRepository.GetPageAsync(indexPage, ProductListDto.Map(_context), cancellationToken);
 
         return Success(results);
     }

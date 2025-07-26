@@ -14,7 +14,6 @@ public class ProductBaseRepository(ProductContext context) : BaseRepository<Prod
     public async Task<ProductBaseAggregate> UpdateAsync(Guid id, ProductBaseAggregate entity, CancellationToken cancellationToken)
     {
         var entityToUpdate = await _context.Set<ProductBaseAggregate>()
-            .Include(x => x.Products)
             .Where(x => x.Id == id)
             .FirstOrDefaultAsync(cancellationToken);
 

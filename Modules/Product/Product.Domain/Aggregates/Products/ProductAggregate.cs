@@ -1,5 +1,4 @@
-﻿using Product.Domain.Aggregates.ProductBases;
-using Product.Domain.Aggregates.Products.Entities;
+﻿using Product.Domain.Aggregates.Products.Entities;
 using Shared.Domain.Bases;
 using Shared.Domain.Extensions;
 using Shared.Domain.Interfaces;
@@ -13,8 +12,6 @@ public class ProductAggregate : BaseEntity, IUpdate<ProductAggregate>
     public Guid ProductBaseId { get; set; }
 
     #region Related Data
-
-    public ProductBaseAggregate ProductBase { get; set; }
 
     public ICollection<ProductPhoto> ProductPhotos { get; set; } = [];
 

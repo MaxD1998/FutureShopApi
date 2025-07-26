@@ -1,4 +1,5 @@
 ﻿using Product.Domain.Aggregates.Categories;
+using Product.Domain.Aggregates.Products;
 using Shared.Domain.Bases;
 using Shared.Domain.Interfaces;
 
@@ -12,9 +13,9 @@ public class ProductBaseAggregate : BaseEntity, IUpdate<ProductBaseAggregate>
 
     #region Related Data
 
-    public CategoryAggregate Category { get; set; }
+    public CategoryAggregate Category { get; private set; }
 
-    public ICollection<Products.ProductAggregate> Products { get; set; } = [];
+    public IReadOnlyCollection<ProductAggregate> Products { get; private set; } = [];
 
     #endregion Related Data
 
