@@ -20,7 +20,7 @@ public class ProductBaseConfig : BaseConfig<ProductBaseAggregate>
             .IsRequired();
 
         builder.HasMany(x => x.Products)
-            .WithOne()
+            .WithOne(x => x.ProductBase)
             .HasForeignKey(x => x.ProductBaseId);
     }
 }

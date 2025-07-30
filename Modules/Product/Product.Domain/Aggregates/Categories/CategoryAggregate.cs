@@ -1,11 +1,13 @@
-﻿using Shared.Domain.Bases;
+﻿using Product.Domain.Aggregates.ProductBases;
+using Shared.Domain.Bases;
 using Shared.Domain.Exceptions;
 using Shared.Domain.Interfaces;
 using Shared.Shared.Constants;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Product.Domain.Aggregates.Categories;
 
-public class CategoryAggregate : BaseEntity, IUpdate<CategoryAggregate>
+public class CategoryAggregate : BaseEntity, IUpdate<CategoryAggregate>, IEqualityComparer<CategoryAggregate>
 {
     private HashSet<CategoryAggregate> _subCategories = [];
 
@@ -24,6 +26,8 @@ public class CategoryAggregate : BaseEntity, IUpdate<CategoryAggregate>
     public Guid? ParentCategoryId { get; private set; }
 
     #region Related Data
+
+    public IReadOnlyCollection<ProductBaseAggregate> ProductBases { get; private set; } = [];
 
     public IReadOnlyCollection<CategoryAggregate> SubCategories => _subCategories;
 
