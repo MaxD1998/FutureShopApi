@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using Product.Domain.Aggregates.Products.Entities;
+using System.Linq.Expressions;
 
 namespace Product.Core.Dtos.ProductPhoto;
 
@@ -8,16 +9,11 @@ public class ProductPhotoFormDto
 
     public Guid? Id { get; set; }
 
-    public static Expression<Func<Domain.Aggregates.Products.Entities.ProductPhoto, ProductPhotoFormDto>> Map() => entity => new()
+    public static Expression<Func<ProductPhotoEntity, ProductPhotoFormDto>> Map() => entity => new()
     {
         FileId = entity.FileId,
         Id = entity.Id,
     };
 
-    public Domain.Aggregates.Products.Entities.ProductPhoto ToEntity(int index) => new()
-    {
-        Id = Id ?? Guid.Empty,
-        FileId = FileId,
-        Position = index,
-    };
+    public ProductPhotoEntity ToEntity(int index) => new(Id ?? Guid.Empty, FileId, index);
 }

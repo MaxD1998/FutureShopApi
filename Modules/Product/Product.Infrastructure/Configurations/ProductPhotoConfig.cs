@@ -5,9 +5,9 @@ using Shared.Infrastructure.Bases;
 
 namespace Product.Infrastructure.Configurations;
 
-public class ProductPhotoConfig : BaseConfig<ProductPhoto>
+public class ProductPhotoConfig : BaseConfig<ProductPhotoEntity>
 {
-    protected override void ConfigureEntity(EntityTypeBuilder<ProductPhoto> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<ProductPhotoEntity> builder)
     {
         builder.Property(x => x.ProductId)
             .HasColumnOrder(100)

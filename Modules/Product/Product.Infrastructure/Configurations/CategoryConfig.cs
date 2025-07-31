@@ -15,8 +15,6 @@ public class CategoryConfig : BaseConfig<CategoryAggregate>
             .HasColumnOrder(100)
             .IsRequired();
 
-        builder.Metadata.FindNavigation(nameof(CategoryAggregate.SubCategories)).SetPropertyAccessMode(PropertyAccessMode.Field);
-
         builder.HasMany(x => x.SubCategories)
             .WithOne()
             .HasForeignKey(x => x.ParentCategoryId)
@@ -25,5 +23,7 @@ public class CategoryConfig : BaseConfig<CategoryAggregate>
         builder.HasMany(x => x.ProductBases)
             .WithOne(x => x.Category)
             .HasForeignKey(x => x.CategoryId);
+
+        builder.Metadata.FindNavigation(nameof(CategoryAggregate.SubCategories)).SetPropertyAccessMode(PropertyAccessMode.Field);
     }
 }

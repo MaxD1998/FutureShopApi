@@ -19,10 +19,5 @@ public class ProductFormDto
         ProductPhotos = entity.ProductPhotos.AsQueryable().OrderBy(x => x.Position).Select(ProductPhotoFormDto.Map()).ToList(),
     };
 
-    public ProductAggregate ToEntity() => new()
-    {
-        Name = Name,
-        ProductBaseId = ProductBaseId,
-        ProductPhotos = ProductPhotos.Select((x, index) => x.ToEntity(index)).ToList(),
-    };
+    public ProductAggregate ToEntity() => new(Name, ProductBaseId, ProductPhotos.Select((x, index) => x.ToEntity(index)).ToList());
 }

@@ -9,7 +9,7 @@ namespace Product.Domain.Aggregates.Categories;
 
 public class CategoryAggregate : BaseEntity, IUpdate<CategoryAggregate>
 {
-    private HashSet<CategoryAggregate> _subCategories = [];
+    private HashSet<CategoryAggregate> _subCategories = CategoryAggregateComparer.CreateSet();
 
     public CategoryAggregate(string name, Guid? parentCategoryId)
     {

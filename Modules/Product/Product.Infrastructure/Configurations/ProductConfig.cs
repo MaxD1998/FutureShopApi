@@ -20,7 +20,9 @@ public class ProductConfig : BaseConfig<ProductAggregate>
             .IsRequired();
 
         builder.HasMany(x => x.ProductPhotos)
-            .WithOne(x => x.Product)
+            .WithOne()
             .HasForeignKey(x => x.ProductId);
+
+        builder.Metadata.FindNavigation(nameof(ProductAggregate.ProductPhotos)).SetPropertyAccessMode(PropertyAccessMode.Field);
     }
 }
