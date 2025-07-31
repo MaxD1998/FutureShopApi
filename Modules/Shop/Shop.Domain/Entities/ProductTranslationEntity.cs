@@ -4,6 +4,14 @@ namespace Shop.Domain.Entities;
 
 public class ProductTranslationEntity : BaseTranslationEntity<ProductTranslationEntity>
 {
+    public ProductTranslationEntity(Guid id, string lang, string translation) : base(id, lang, translation)
+    {
+    }
+
+    private ProductTranslationEntity() : base()
+    {
+    }
+
     public Guid ProductId { get; set; }
 
     #region Related Data

@@ -25,6 +25,9 @@ public abstract class BaseEntity : IEntity
 
     #region Methods
 
+    protected void ValidateRequiredLangStringProperty(string propertyName, string value)
+        => ValidateRequiredStringProperty(propertyName, value, StringLengthConst.LangString);
+
     protected void ValidateRequiredLongStringProperty(string propertyName, string value)
         => ValidateRequiredStringProperty(propertyName, value, StringLengthConst.LongString);
 

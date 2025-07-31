@@ -13,7 +13,7 @@ public abstract class BaseTranslationFormDto
 }
 
 public abstract class BaseTranslationFormDto<TEntity, TFormDto> : BaseTranslationFormDto
-    where TEntity : BaseTranslationEntity<TEntity>, new()
+    where TEntity : BaseTranslationEntity<TEntity>
     where TFormDto : BaseTranslationFormDto, new()
 {
     public static Expression<Func<TEntity, TFormDto>> Map() => entity => new TFormDto
@@ -23,10 +23,5 @@ public abstract class BaseTranslationFormDto<TEntity, TFormDto> : BaseTranslatio
         Translation = entity.Translation
     };
 
-    public TEntity ToEntity() => new()
-    {
-        Id = Id ?? Guid.Empty,
-        Lang = Lang,
-        Translation = Translation
-    };
+    public abstract TEntity ToEntity();
 }
