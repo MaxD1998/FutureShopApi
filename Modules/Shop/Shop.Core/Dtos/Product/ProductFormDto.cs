@@ -1,7 +1,7 @@
 ﻿using Shop.Core.Dtos.Price;
 using Shop.Core.Dtos.ProductParameterValue;
 using Shop.Core.Dtos.ProductTranslation;
-using Shop.Domain.Entities;
+using Shop.Domain.Aggregates.Products;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.Product;
@@ -20,7 +20,7 @@ public class ProductFormDto
 
     public List<ProductTranslationFormDto> Translations { get; set; }
 
-    public static Expression<Func<ProductEntity, ProductFormDto>> Map() => entity => new()
+    public static Expression<Func<ProductAggregate, ProductFormDto>> Map() => entity => new()
     {
         IsActive = entity.IsActive,
         Name = entity.Name,
@@ -36,7 +36,7 @@ public class ProductFormDto
         Translations = entity.Translations.AsQueryable().Select(ProductTranslationFormDto.Map()).ToList(),
     };
 
-    public ProductEntity ToEntity() => new()
+    public ProductAggregate ToEntity() => new()
     {
         IsActive = IsActive,
         Name = Name,

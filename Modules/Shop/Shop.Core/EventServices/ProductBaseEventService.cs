@@ -1,6 +1,6 @@
 ﻿using Shared.Core.Bases;
 using Shop.Core.Dtos.ProductBase;
-using Shop.Domain.Entities;
+using Shop.Domain.Aggregates.ProductBases;
 using Shop.Infrastructure.Repositories;
 
 namespace Shop.Core.EventServices;
@@ -26,7 +26,7 @@ public class ProductBaseEventService(ICategoryRepository categoryRepository, IPr
     public Task DeleteByExternalIdAsync(Guid externalId, CancellationToken cancellationToken)
         => _productBaseRepository.DeleteByExternalIdAsync(externalId, cancellationToken);
 
-    private async Task<ProductBaseEntity> MapToEntity(ProductBaseEventDto dto, CancellationToken cancellationToken)
+    private async Task<ProductBaseAggregate> MapToEntity(ProductBaseEventDto dto, CancellationToken cancellationToken)
     {
         var entity = dto.Map();
         var categoryId = await _categoryRepository.GetIdByExternalIdAsync(dto.CategoryId, cancellationToken);

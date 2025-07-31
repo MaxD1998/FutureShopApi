@@ -1,7 +1,8 @@
 ﻿using Shared.Domain.Bases;
 using Shared.Domain.Interfaces;
+using Shop.Domain.Aggregates.Products;
 
-namespace Shop.Domain.Entities;
+namespace Shop.Domain.Aggregates.PurchaseLists.Entities;
 
 public class PurchaseListItemEntity : BaseEntity, IUpdate<PurchaseListItemEntity>
 {
@@ -11,9 +12,9 @@ public class PurchaseListItemEntity : BaseEntity, IUpdate<PurchaseListItemEntity
 
     #region Related Data
 
-    public ProductEntity Product { get; set; }
+    public ProductAggregate Product { get; set; }
 
-    public PurchaseListEntity PurchaseList { get; set; }
+    public PurchaseListAggregate PurchaseList { get; set; }
 
     #endregion Related Data
 

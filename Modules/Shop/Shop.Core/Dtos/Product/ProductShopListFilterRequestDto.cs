@@ -1,11 +1,11 @@
 ﻿using Shared.Infrastructure.Interfaces;
 using Shop.Core.Enums;
-using Shop.Domain.Entities;
+using Shop.Domain.Aggregates.Products;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.Product;
 
-public class ProductShopListFilterRequestDto : IFilter<ProductEntity>
+public class ProductShopListFilterRequestDto : IFilter<ProductAggregate>
 {
     public Guid? FavouriteId { get; set; } = null;
 
@@ -17,7 +17,7 @@ public class ProductShopListFilterRequestDto : IFilter<ProductEntity>
 
     public ProductSortType SortType { get; set; }
 
-    public IQueryable<ProductEntity> FilterExecute(IQueryable<ProductEntity> query, string lang)
+    public IQueryable<ProductAggregate> FilterExecute(IQueryable<ProductAggregate> query, string lang)
     {
         var utcNow = DateTime.UtcNow;
 
@@ -30,7 +30,7 @@ public class ProductShopListFilterRequestDto : IFilter<ProductEntity>
         if (PriceTo != null)
             query = query.Where(x => x.Prices.Any(y => (!y.Start.HasValue || y.Start <= utcNow) && (!y.End.HasValue || utcNow < y.End) && y.Price <= PriceTo));
 
-        Expression<Func<ProductEntity, bool>> orderByCondition = x => x.Prices.Any(y => (!y.Start.HasValue || y.Start <= utcNow) && (!y.End.HasValue || utcNow < y.End));
+        Expression<Func<ProductAggregate, bool>> orderByCondition = x => x.Prices.Any(y => (!y.Start.HasValue || y.Start <= utcNow) && (!y.End.HasValue || utcNow < y.End));
 
         query = SortType switch
         {

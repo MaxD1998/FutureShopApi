@@ -1,5 +1,5 @@
 ﻿using Shared.Core.Interfaces;
-using Shop.Domain.Entities;
+using Shop.Domain.Aggregates.Categories;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.Category;
@@ -22,7 +22,7 @@ public class CategoryListDto : IDto
         return categories.Where(x => x.ParentCategoryId == null).ToList();
     }
 
-    public static Expression<Func<CategoryEntity, CategoryListDto>> Map(string lang) => entity => new CategoryListDto
+    public static Expression<Func<CategoryAggregate, CategoryListDto>> Map(string lang) => entity => new CategoryListDto
     {
         Id = entity.Id,
         Name = entity.Translations.Where(x => x.Lang == lang).Select(x => x.Translation).FirstOrDefault() ?? entity.Name,

@@ -2,13 +2,13 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.Infrastructure.Bases;
 using Shared.Shared.Constants;
-using Shop.Domain.Entities;
+using Shop.Domain.Aggregates.Categories;
 
 namespace Shop.Infrastructure.Configurations;
 
-public class CategoryConfig : BaseExternalConfig<CategoryEntity>
+public class CategoryConfig : BaseExternalConfig<CategoryAggregate>
 {
-    protected override void ConfigureEntity(EntityTypeBuilder<CategoryEntity> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<CategoryAggregate> builder)
     {
         builder.Property(x => x.ParentCategoryId)
             .HasColumnOrder(100);

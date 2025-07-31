@@ -1,4 +1,4 @@
-﻿using Shop.Domain.Entities;
+﻿using Shop.Domain.Aggregates.Products.Entities;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.Price;

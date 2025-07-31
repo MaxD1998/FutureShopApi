@@ -1,5 +1,5 @@
 ﻿using Shop.Core.Dtos.ProductPhoto;
-using Shop.Domain.Entities;
+using Shop.Domain.Aggregates.Products;
 
 namespace Shop.Core.Dtos.Product;
 
@@ -13,7 +13,7 @@ public class ProductEventDto
 
     public List<ProductPhotoEventDto> ProductPhotos { get; set; }
 
-    public ProductEntity Map() => new()
+    public ProductAggregate Map() => new()
     {
         ExternalId = Id,
         Name = Name,

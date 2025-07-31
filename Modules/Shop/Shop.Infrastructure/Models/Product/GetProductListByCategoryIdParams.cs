@@ -1,5 +1,5 @@
 ﻿using Shared.Infrastructure.Interfaces;
-using Shop.Domain.Entities;
+using Shop.Domain.Aggregates.Products;
 
 namespace Shop.Infrastructure.Models.Product;
 
@@ -7,7 +7,7 @@ public class GetProductListByCategoryIdParams
 {
     public Guid CategoryId { get; set; }
 
-    public IFilter<ProductEntity> Filter { get; set; }
+    public IFilter<ProductAggregate> Filter { get; set; }
 
     public string Lang { get; set; }
 

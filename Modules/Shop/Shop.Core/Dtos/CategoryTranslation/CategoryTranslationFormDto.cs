@@ -1,5 +1,5 @@
 ﻿using Shared.Core.Bases;
-using Shop.Domain.Entities;
+using Shop.Domain.Aggregates.Categories.Entities;
 
 namespace Shop.Core.Dtos.CategoryTranslation;
 

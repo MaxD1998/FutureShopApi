@@ -1,4 +1,4 @@
-﻿using Shop.Domain.Entities;
+﻿using Shop.Domain.Aggregates.PurchaseLists.Entities;
 
 namespace Shop.Core.Dtos.PurchaseListItem;
 

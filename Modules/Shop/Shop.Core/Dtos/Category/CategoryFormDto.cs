@@ -1,5 +1,5 @@
 ﻿using Shop.Core.Dtos.CategoryTranslation;
-using Shop.Domain.Entities;
+using Shop.Domain.Aggregates.Categories;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.Category;
@@ -16,7 +16,7 @@ public class CategoryFormDto
 
     public List<CategoryTranslationFormDto> Translations { get; set; } = [];
 
-    public static Expression<Func<CategoryEntity, CategoryFormDto>> Map() => entity => new CategoryFormDto
+    public static Expression<Func<CategoryAggregate, CategoryFormDto>> Map() => entity => new CategoryFormDto
     {
         IsActive = entity.IsActive,
         Name = entity.Name,
@@ -25,7 +25,7 @@ public class CategoryFormDto
         Translations = entity.Translations.AsQueryable().Select(CategoryTranslationFormDto.Map()).ToList(),
     };
 
-    public CategoryEntity ToEntity() => new()
+    public CategoryAggregate ToEntity() => new()
     {
         IsActive = IsActive,
         Translations = Translations.Select(x => x.ToEntity()).ToList(),

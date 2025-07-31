@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.Infrastructure.Bases;
-using Shop.Domain.Entities;
+using Shop.Domain.Aggregates.Baskets;
 
 namespace Shop.Infrastructure.Configurations;
 
-public class BasketConfig : BaseConfig<BasketEntity>
+public class BasketConfig : BaseConfig<BasketAggregate>
 {
-    protected override void ConfigureEntity(EntityTypeBuilder<BasketEntity> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<BasketAggregate> builder)
     {
         builder.Property(x => x.UserId)
             .HasColumnOrder(100);

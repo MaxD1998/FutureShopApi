@@ -1,4 +1,4 @@
-﻿using Shop.Domain.Entities;
+﻿using Shop.Domain.Aggregates.Products.Entities;
 
 namespace Shop.Domain.Logics;
 

@@ -1,6 +1,7 @@
 ﻿using Shared.Domain.Bases;
+using Shop.Domain.Aggregates.ProductBases.Entities;
 
-namespace Shop.Domain.Entities;
+namespace Shop.Domain.Aggregates.Products.Entities;
 
 public class ProductParameterTranslationEntity : BaseTranslationEntity<ProductParameterTranslationEntity>
 {

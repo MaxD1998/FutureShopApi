@@ -1,28 +1,28 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Interfaces;
-using Shop.Domain.Entities;
+using Shop.Domain.Aggregates.ProductBases;
 
 namespace Shop.Infrastructure.Repositories;
 
-public interface IProductBaseRepository : IBaseRepository<ProductBaseEntity>, IUpdateRepository<ProductBaseEntity>
+public interface IProductBaseRepository : IBaseRepository<ProductBaseAggregate>, IUpdateRepository<ProductBaseAggregate>
 {
-    Task CreateOrUpdateAsync(ProductBaseEntity entity, CancellationToken cancellationToken);
+    Task CreateOrUpdateAsync(ProductBaseAggregate entity, CancellationToken cancellationToken);
 
     Task DeleteByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
 
     Task<Guid?> GetIdByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
 }
 
-public class ProductBaseRepository(ShopContext context) : BaseRepository<ShopContext, ProductBaseEntity>(context), IProductBaseRepository
+public class ProductBaseRepository(ShopContext context) : BaseRepository<ShopContext, ProductBaseAggregate>(context), IProductBaseRepository
 {
-    public async Task CreateOrUpdateAsync(ProductBaseEntity eventEntity, CancellationToken cancellationToken)
+    public async Task CreateOrUpdateAsync(ProductBaseAggregate eventEntity, CancellationToken cancellationToken)
     {
-        var entity = await _context.Set<ProductBaseEntity>()
+        var entity = await _context.Set<ProductBaseAggregate>()
             .FirstOrDefaultAsync(x => x.ExternalId == eventEntity.ExternalId, cancellationToken);
 
         if (entity is null)
-            await _context.Set<ProductBaseEntity>().AddAsync(eventEntity, cancellationToken);
+            await _context.Set<ProductBaseAggregate>().AddAsync(eventEntity, cancellationToken);
         else
             entity.UpdateEvent(eventEntity);
 
@@ -30,14 +30,14 @@ public class ProductBaseRepository(ShopContext context) : BaseRepository<ShopCon
     }
 
     public Task DeleteByExternalIdAsync(Guid externalId, CancellationToken cancellationToken)
-        => _context.Set<ProductBaseEntity>().Where(x => x.ExternalId == externalId).ExecuteDeleteAsync(cancellationToken);
+        => _context.Set<ProductBaseAggregate>().Where(x => x.ExternalId == externalId).ExecuteDeleteAsync(cancellationToken);
 
     public Task<Guid?> GetIdByExternalIdAsync(Guid externalId, CancellationToken cancellationToken)
-        => _context.Set<ProductBaseEntity>().Where(x => x.ExternalId == externalId).Select(x => (Guid?)x.Id).FirstOrDefaultAsync(cancellationToken);
+        => _context.Set<ProductBaseAggregate>().Where(x => x.ExternalId == externalId).Select(x => (Guid?)x.Id).FirstOrDefaultAsync(cancellationToken);
 
-    public async Task<ProductBaseEntity> UpdateAsync(Guid id, ProductBaseEntity entity, CancellationToken cancellationToken)
+    public async Task<ProductBaseAggregate> UpdateAsync(Guid id, ProductBaseAggregate entity, CancellationToken cancellationToken)
     {
-        var entityToUpdate = await _context.Set<ProductBaseEntity>()
+        var entityToUpdate = await _context.Set<ProductBaseAggregate>()
             .Include(x => x.ProductParameters)
                 .ThenInclude(x => x.Translations)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);

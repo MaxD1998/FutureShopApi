@@ -2,32 +2,33 @@
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Extensions;
 using Shared.Infrastructure.Interfaces;
-using Shop.Domain.Entities;
+using Shop.Domain.Aggregates.Categories;
+using Shop.Domain.Aggregates.Products;
 using Shop.Infrastructure.Models.Product;
 using System.Linq.Expressions;
 
 namespace Shop.Infrastructure.Repositories;
 
-public interface IProductRepository : IBaseRepository<ProductEntity>, IUpdateRepository<ProductEntity>
+public interface IProductRepository : IBaseRepository<ProductAggregate>, IUpdateRepository<ProductAggregate>
 {
-    Task CreateOrUpdateForEventAsync(ProductEntity eventEntity, CancellationToken cancellationToken);
+    Task CreateOrUpdateForEventAsync(ProductAggregate eventEntity, CancellationToken cancellationToken);
 
     Task DeleteByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
 
     Task<Guid?> GetIdByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
 
-    Task<List<TResult>> GetListByCategoryIdAsync<TResult>(GetProductListByCategoryIdParams parameters, Expression<Func<ProductEntity, TResult>> map, CancellationToken cancellationToken);
+    Task<List<TResult>> GetListByCategoryIdAsync<TResult>(GetProductListByCategoryIdParams parameters, Expression<Func<ProductAggregate, TResult>> map, CancellationToken cancellationToken);
 }
 
-public class ProductRepository(ShopContext context) : BaseRepository<ShopContext, ProductEntity>(context), IProductRepository
+public class ProductRepository(ShopContext context) : BaseRepository<ShopContext, ProductAggregate>(context), IProductRepository
 {
-    public async Task CreateOrUpdateForEventAsync(ProductEntity eventEntity, CancellationToken cancellationToken)
+    public async Task CreateOrUpdateForEventAsync(ProductAggregate eventEntity, CancellationToken cancellationToken)
     {
-        var entity = await _context.Set<ProductEntity>()
+        var entity = await _context.Set<ProductAggregate>()
             .FirstOrDefaultAsync(x => x.ExternalId == eventEntity.ExternalId, cancellationToken);
 
         if (entity is null)
-            await _context.Set<ProductEntity>().AddAsync(eventEntity, cancellationToken);
+            await _context.Set<ProductAggregate>().AddAsync(eventEntity, cancellationToken);
         else
             entity.UpdateEvent(eventEntity);
 
@@ -35,15 +36,15 @@ public class ProductRepository(ShopContext context) : BaseRepository<ShopContext
     }
 
     public Task DeleteByExternalIdAsync(Guid externalId, CancellationToken cancellationToken)
-        => _context.Set<ProductEntity>().Where(x => x.ExternalId == externalId).ExecuteDeleteAsync(cancellationToken);
+        => _context.Set<ProductAggregate>().Where(x => x.ExternalId == externalId).ExecuteDeleteAsync(cancellationToken);
 
     public Task<Guid?> GetIdByExternalIdAsync(Guid externalId, CancellationToken cancellationToken)
-        => _context.Set<ProductEntity>().Where(x => x.ExternalId == externalId).Select(x => (Guid?)x.Id).FirstOrDefaultAsync(cancellationToken);
+        => _context.Set<ProductAggregate>().Where(x => x.ExternalId == externalId).Select(x => (Guid?)x.Id).FirstOrDefaultAsync(cancellationToken);
 
-    public async Task<List<TResult>> GetListByCategoryIdAsync<TResult>(GetProductListByCategoryIdParams parameters, Expression<Func<ProductEntity, TResult>> map, CancellationToken cancellationToken)
+    public async Task<List<TResult>> GetListByCategoryIdAsync<TResult>(GetProductListByCategoryIdParams parameters, Expression<Func<ProductAggregate, TResult>> map, CancellationToken cancellationToken)
     {
         var categoryIds = await GetCategoryIds([parameters.CategoryId], cancellationToken);
-        var results = await _context.Set<ProductEntity>()
+        var results = await _context.Set<ProductAggregate>()
             .AsNoTracking()
             .Where(x => categoryIds.Contains(x.ProductBase.CategoryId) && x.IsActive)
             .Filter(parameters.Filter, parameters.Lang)
@@ -53,9 +54,9 @@ public class ProductRepository(ShopContext context) : BaseRepository<ShopContext
         return results;
     }
 
-    public async Task<ProductEntity> UpdateAsync(Guid id, ProductEntity entity, CancellationToken cancellationToken)
+    public async Task<ProductAggregate> UpdateAsync(Guid id, ProductAggregate entity, CancellationToken cancellationToken)
     {
-        var entityToUpdate = await _context.Set<ProductEntity>()
+        var entityToUpdate = await _context.Set<ProductAggregate>()
             .Include(x => x.Prices)
             .Include(x => x.ProductParameterValues)
             .Include(x => x.Translations)
@@ -76,7 +77,7 @@ public class ProductRepository(ShopContext context) : BaseRepository<ShopContext
         cancellationToken.ThrowIfCancellationRequested();
 
         var results = new List<Guid>();
-        var categories = await _context.Set<CategoryEntity>()
+        var categories = await _context.Set<CategoryAggregate>()
             .AsNoTracking()
             .Include(x => x.SubCategories)
             .Where(x => categoryIds.Contains(x.Id))

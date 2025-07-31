@@ -1,4 +1,4 @@
-﻿using Shop.Domain.Entities;
+﻿using Shop.Domain.Aggregates.Categories;
 
 namespace Shop.Core.Dtos.Category;
 
@@ -12,7 +12,7 @@ public class CategoryEventDto
 
     public List<Guid> SubCategoryIds { get; set; } = [];
 
-    public CategoryEntity Map() => new()
+    public CategoryAggregate Map() => new()
     {
         ExternalId = Id,
         Name = Name,

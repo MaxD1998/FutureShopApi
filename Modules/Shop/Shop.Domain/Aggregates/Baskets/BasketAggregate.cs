@@ -3,10 +3,11 @@ using Shared.Domain.Extensions;
 using Shared.Domain.Interfaces;
 using Shared.Shared.Helpers;
 using Shared.Shared.Interfaces;
+using Shop.Domain.Aggregates.Baskets.Entities;
 
-namespace Shop.Domain.Entities;
+namespace Shop.Domain.Aggregates.Baskets;
 
-public class BasketEntity : BaseEntity, IUpdate<BasketEntity>, ICloneable<BasketEntity>
+public class BasketAggregate : BaseEntity, IUpdate<BasketAggregate>, ICloneable<BasketAggregate>
 {
     public Guid? UserId { get; set; }
 
@@ -16,9 +17,9 @@ public class BasketEntity : BaseEntity, IUpdate<BasketEntity>, ICloneable<Basket
 
     #endregion Realted Data
 
-    public BasketEntity Clone() => DeepClone.Clone(this);
+    public BasketAggregate Clone() => DeepClone.Clone(this);
 
-    public void Update(BasketEntity entity)
+    public void Update(BasketAggregate entity)
     {
         BasketItems.UpdateEntities(entity.BasketItems);
     }

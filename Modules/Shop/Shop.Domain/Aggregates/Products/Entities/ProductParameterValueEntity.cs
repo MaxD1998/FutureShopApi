@@ -1,7 +1,9 @@
 ﻿using Shared.Domain.Bases;
 using Shared.Domain.Interfaces;
+using Shop.Domain.Aggregates.ProductBases.Entities;
+using Shop.Domain.Aggregates.Products;
 
-namespace Shop.Domain.Entities;
+namespace Shop.Domain.Aggregates.Products.Entities;
 
 public class ProductParameterValueEntity : BaseEntity, IUpdate<ProductParameterValueEntity>
 {
@@ -13,7 +15,7 @@ public class ProductParameterValueEntity : BaseEntity, IUpdate<ProductParameterV
 
     #region Related Data
 
-    public ProductEntity Product { get; set; }
+    public ProductAggregate Product { get; set; }
 
     public ProductParameterEntity ProductParameter { get; set; }
 

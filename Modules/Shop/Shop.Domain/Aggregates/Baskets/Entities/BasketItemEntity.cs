@@ -1,7 +1,8 @@
 ﻿using Shared.Domain.Bases;
 using Shared.Domain.Interfaces;
+using Shop.Domain.Aggregates.Products;
 
-namespace Shop.Domain.Entities;
+namespace Shop.Domain.Aggregates.Baskets.Entities;
 
 public class BasketItemEntity : BaseEntity, IUpdate<BasketItemEntity>
 {
@@ -13,9 +14,9 @@ public class BasketItemEntity : BaseEntity, IUpdate<BasketItemEntity>
 
     #region Related Data
 
-    public BasketEntity Basket { get; set; }
+    public BasketAggregate Basket { get; set; }
 
-    public ProductEntity Product { get; set; }
+    public ProductAggregate Product { get; set; }
 
     #endregion Related Data
 

@@ -1,7 +1,7 @@
 ﻿using Shared.Domain.Bases;
 using Shared.Domain.Interfaces;
 
-namespace Shop.Domain.Entities;
+namespace Shop.Domain.Aggregates.Products.Entities;
 
 public class PriceEntity : BaseEntity, IUpdate<PriceEntity>, IEquatable<PriceEntity>
 {
@@ -15,7 +15,7 @@ public class PriceEntity : BaseEntity, IUpdate<PriceEntity>, IEquatable<PriceEnt
 
     #region Related Data
 
-    public ProductEntity Product { get; set; }
+    public ProductAggregate Product { get; set; }
 
     #endregion Related Data
 

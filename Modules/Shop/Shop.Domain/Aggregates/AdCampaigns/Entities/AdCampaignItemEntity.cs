@@ -1,7 +1,8 @@
 ﻿using Shared.Domain.Bases;
 using Shared.Domain.Interfaces;
+using Shop.Domain.Aggregates.AdCampaigns;
 
-namespace Shop.Domain.Entities;
+namespace Shop.Domain.Aggregates.AdCampaigns.Entities;
 
 public class AdCampaignItemEntity : BaseEntity, IUpdate<AdCampaignItemEntity>
 {
@@ -15,7 +16,7 @@ public class AdCampaignItemEntity : BaseEntity, IUpdate<AdCampaignItemEntity>
 
     #region Related Data
 
-    public AdCampaignEntity AdCampaign { get; set; }
+    public AdCampaignAggregate AdCampaign { get; set; }
 
     #endregion Related Data
 

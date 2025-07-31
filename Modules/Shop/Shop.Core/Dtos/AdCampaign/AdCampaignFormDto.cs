@@ -1,5 +1,5 @@
 ﻿using Shop.Core.Dtos.AdCampaignItem;
-using Shop.Domain.Entities;
+using Shop.Domain.Aggregates.AdCampaigns;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.AdCampaign;
@@ -18,7 +18,7 @@ public class AdCampaignFormDto
 
     public DateTime Start { get; set; }
 
-    public static Expression<Func<AdCampaignEntity, AdCampaignFormDto>> Map() => entity => new()
+    public static Expression<Func<AdCampaignAggregate, AdCampaignFormDto>> Map() => entity => new()
     {
         AdCampaignItems = entity.AdCampaignItems.AsQueryable().Select(AdCampaignItemFormDto.Map()).ToList(),
         End = entity.End,
@@ -28,7 +28,7 @@ public class AdCampaignFormDto
         Start = entity.Start,
     };
 
-    public AdCampaignEntity ToEntity() => new()
+    public AdCampaignAggregate ToEntity() => new()
     {
         AdCampaignItems = AdCampaignItems.GroupBy(x => x.Lang).SelectMany(x => x.Select((item, index) => item.ToEntity(index))).ToList(),
         End = End,

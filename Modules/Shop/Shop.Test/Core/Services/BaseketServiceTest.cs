@@ -2,7 +2,7 @@
 using Shared.Core.Services;
 using Shop.Core.Dtos.Basket;
 using Shop.Core.Services;
-using Shop.Domain.Entities;
+using Shop.Domain.Aggregates.Baskets;
 using Shop.Infrastructure.Repositories;
 using System.Linq.Expressions;
 
@@ -39,14 +39,14 @@ public class BaseketServiceTest
         _currentUserServiceMock.Setup(x => x.GetUserId()).Returns(userId);
         _basketRepositoryMock
             .Setup(x =>
-                x.CreateAsync(It.IsAny<BasketEntity>(),
+                x.CreateAsync(It.IsAny<BasketAggregate>(),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(basketOutputEntity);
 
         _basketRepositoryMock
             .Setup(x =>
                 x.GetByIdAsync(It.IsAny<Guid>(),
-                It.IsAny<Expression<Func<BasketEntity, BasketFormDto>>>(),
+                It.IsAny<Expression<Func<BasketAggregate, BasketFormDto>>>(),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(new BasketFormDto
             {
@@ -58,13 +58,13 @@ public class BaseketServiceTest
         //Assert
         _basketRepositoryMock
             .Verify(x =>
-                x.CreateAsync(It.Is<BasketEntity>(x => x.UserId == userId),
+                x.CreateAsync(It.Is<BasketAggregate>(x => x.UserId == userId),
                 It.IsAny<CancellationToken>()));
 
         _basketRepositoryMock
             .Setup(x =>
                 x.GetByIdAsync(It.Is<Guid>(x => x == basketOutputEntity.Id),
-                It.IsAny<Expression<Func<BasketEntity, BasketFormDto>>>(),
+                It.IsAny<Expression<Func<BasketAggregate, BasketFormDto>>>(),
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync(new BasketFormDto
             {

@@ -1,4 +1,4 @@
-﻿using Shop.Domain.Entities;
+﻿using Shop.Domain.Aggregates.ProductBases;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.ProductBase;
@@ -15,7 +15,7 @@ public class ProductBaseListDto
 
     public int ProductParameterCount { get; set; }
 
-    public static Expression<Func<ProductBaseEntity, ProductBaseListDto>> Map() => entity => new()
+    public static Expression<Func<ProductBaseAggregate, ProductBaseListDto>> Map() => entity => new()
     {
         CategoryName = entity.Category.Name,
         Id = entity.Id,

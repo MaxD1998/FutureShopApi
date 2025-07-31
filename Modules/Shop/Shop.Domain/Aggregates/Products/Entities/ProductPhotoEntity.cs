@@ -1,7 +1,8 @@
 ﻿using Shared.Domain.Bases;
 using Shared.Domain.Interfaces;
+using Shop.Domain.Aggregates.Products;
 
-namespace Shop.Domain.Entities;
+namespace Shop.Domain.Aggregates.Products.Entities;
 
 public class ProductPhotoEntity : BaseExternalEntity, IUpdateEvent<ProductPhotoEntity>
 {
@@ -13,7 +14,7 @@ public class ProductPhotoEntity : BaseExternalEntity, IUpdateEvent<ProductPhotoE
 
     #region Related Data
 
-    public ProductEntity Product { get; set; }
+    public ProductAggregate Product { get; set; }
 
     #endregion Related Data
 

@@ -1,5 +1,5 @@
 ﻿using Shop.Core.Interfaces;
-using Shop.Domain.Entities;
+using Shop.Domain.Aggregates.Products.Entities;
 using Shop.Domain.Logics;
 
 namespace Shop.Core.Logics.ProductLogics;

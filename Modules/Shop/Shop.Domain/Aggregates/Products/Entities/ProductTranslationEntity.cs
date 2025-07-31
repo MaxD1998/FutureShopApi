@@ -1,6 +1,7 @@
 ﻿using Shared.Domain.Bases;
+using Shop.Domain.Aggregates.Products;
 
-namespace Shop.Domain.Entities;
+namespace Shop.Domain.Aggregates.Products.Entities;
 
 public class ProductTranslationEntity : BaseTranslationEntity<ProductTranslationEntity>
 {
@@ -16,7 +17,7 @@ public class ProductTranslationEntity : BaseTranslationEntity<ProductTranslation
 
     #region Related Data
 
-    public ProductEntity Product { get; set; }
+    public ProductAggregate Product { get; set; }
 
     #endregion Related Data
 }

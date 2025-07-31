@@ -2,13 +2,13 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.Infrastructure.Bases;
 using Shared.Shared.Constants;
-using Shop.Domain.Entities;
+using Shop.Domain.Aggregates.AdCampaigns;
 
 namespace Shop.Infrastructure.Configurations;
 
-public class AdCampaignConfig : BaseConfig<AdCampaignEntity>
+public class AdCampaignConfig : BaseConfig<AdCampaignAggregate>
 {
-    protected override void ConfigureEntity(EntityTypeBuilder<AdCampaignEntity> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<AdCampaignAggregate> builder)
     {
         builder.Property(x => x.Name)
             .HasMaxLength(StringLengthConst.LongString)

@@ -2,13 +2,13 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.Infrastructure.Bases;
 using Shared.Shared.Constants;
-using Shop.Domain.Entities;
+using Shop.Domain.Aggregates.Products;
 
 namespace Shop.Infrastructure.Configurations;
 
-public class ProductConfig : BaseExternalConfig<ProductEntity>
+public class ProductConfig : BaseExternalConfig<ProductAggregate>
 {
-    protected override void ConfigureEntity(EntityTypeBuilder<ProductEntity> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<ProductAggregate> builder)
     {
         builder.Property(x => x.ProductBaseId)
             .HasColumnOrder(100)

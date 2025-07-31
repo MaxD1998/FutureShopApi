@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.Infrastructure.Bases;
-using Shop.Domain.Entities;
+using Shop.Domain.Aggregates.PurchaseLists;
 
 namespace Shop.Infrastructure.Configurations;
 
-public class PurchaseListConfig : BaseConfig<PurchaseListEntity>
+public class PurchaseListConfig : BaseConfig<PurchaseListAggregate>
 {
-    protected override void ConfigureEntity(EntityTypeBuilder<PurchaseListEntity> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<PurchaseListAggregate> builder)
     {
         builder.Property(x => x.UserId)
             .HasColumnOrder(100);

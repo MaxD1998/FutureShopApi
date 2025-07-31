@@ -1,10 +1,11 @@
 ﻿using Shared.Domain.Bases;
 using Shared.Domain.Extensions;
 using Shared.Domain.Interfaces;
+using Shop.Domain.Aggregates.AdCampaigns.Entities;
 
-namespace Shop.Domain.Entities;
+namespace Shop.Domain.Aggregates.AdCampaigns;
 
-public class AdCampaignEntity : BaseEntity, IUpdate<AdCampaignEntity>
+public class AdCampaignAggregate : BaseEntity, IUpdate<AdCampaignAggregate>
 {
     public DateTime End { get; set; }
 
@@ -20,7 +21,7 @@ public class AdCampaignEntity : BaseEntity, IUpdate<AdCampaignEntity>
 
     #endregion Related Data
 
-    public void Update(AdCampaignEntity entity)
+    public void Update(AdCampaignAggregate entity)
     {
         End = entity.End;
         IsActive = entity.IsActive;

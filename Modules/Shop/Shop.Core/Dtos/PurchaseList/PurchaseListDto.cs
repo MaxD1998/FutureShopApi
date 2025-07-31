@@ -1,5 +1,5 @@
 ﻿using Shop.Core.Dtos.PurchaseListItem;
-using Shop.Domain.Entities;
+using Shop.Domain.Aggregates.PurchaseLists;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.PurchaseList;
@@ -18,7 +18,7 @@ public class PurchaseListDto
 
     public Guid? UserId { get; set; }
 
-    public static Expression<Func<PurchaseListEntity, PurchaseListDto>> Map() => entity => new()
+    public static Expression<Func<PurchaseListAggregate, PurchaseListDto>> Map() => entity => new()
     {
         Id = entity.Id,
         IsFavourite = entity.IsFavourite,

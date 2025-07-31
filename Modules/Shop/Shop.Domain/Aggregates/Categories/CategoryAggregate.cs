@@ -1,10 +1,12 @@
 ﻿using Shared.Domain.Bases;
 using Shared.Domain.Extensions;
 using Shared.Domain.Interfaces;
+using Shop.Domain.Aggregates.Categories.Entities;
+using Shop.Domain.Aggregates.ProductBases;
 
-namespace Shop.Domain.Entities;
+namespace Shop.Domain.Aggregates.Categories;
 
-public class CategoryEntity : BaseExternalEntity, IUpdate<CategoryEntity>, IUpdateEvent<CategoryEntity>
+public class CategoryAggregate : BaseExternalEntity, IUpdate<CategoryAggregate>, IUpdateEvent<CategoryAggregate>
 {
     public bool IsActive { get; set; }
 
@@ -14,23 +16,23 @@ public class CategoryEntity : BaseExternalEntity, IUpdate<CategoryEntity>, IUpda
 
     #region Related Data
 
-    public CategoryEntity ParentCategory { get; set; }
+    public CategoryAggregate ParentCategory { get; set; }
 
-    public ICollection<ProductBaseEntity> ProductBases { get; set; } = [];
+    public ICollection<ProductBaseAggregate> ProductBases { get; set; } = [];
 
-    public ICollection<CategoryEntity> SubCategories { get; set; } = [];
+    public ICollection<CategoryAggregate> SubCategories { get; set; } = [];
 
     public ICollection<CategoryTranslationEntity> Translations { get; set; } = [];
 
     #endregion Related Data
 
-    public void Update(CategoryEntity entity)
+    public void Update(CategoryAggregate entity)
     {
         IsActive = entity.IsActive;
         Translations.UpdateEntities(entity.Translations);
     }
 
-    public void UpdateEvent(CategoryEntity entity)
+    public void UpdateEvent(CategoryAggregate entity)
     {
         Name = entity.Name;
         ParentCategory = entity.ParentCategory;

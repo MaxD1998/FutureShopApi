@@ -1,4 +1,4 @@
-﻿using Shop.Domain.Entities;
+﻿using Shop.Domain.Aggregates.ProductBases;
 
 namespace Shop.Core.Dtos.ProductBase;
 
@@ -10,7 +10,7 @@ public class ProductBaseEventDto
 
     public string Name { get; set; }
 
-    public ProductBaseEntity Map() => new()
+    public ProductBaseAggregate Map() => new()
     {
         ExternalId = Id,
         Name = Name,

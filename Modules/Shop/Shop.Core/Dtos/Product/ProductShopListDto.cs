@@ -1,4 +1,4 @@
-﻿using Shop.Domain.Entities;
+﻿using Shop.Domain.Aggregates.Products;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.Product;
@@ -15,7 +15,7 @@ public class ProductShopListDto
 
     public decimal Price { get; set; }
 
-    public static Expression<Func<ProductEntity, ProductShopListDto>> Map(string lang, Guid? userId, Guid? favouriteId)
+    public static Expression<Func<ProductAggregate, ProductShopListDto>> Map(string lang, Guid? userId, Guid? favouriteId)
     {
         var utcNow = DateTime.UtcNow;
 

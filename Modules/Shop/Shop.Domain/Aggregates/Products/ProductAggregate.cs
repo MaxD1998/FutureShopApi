@@ -1,11 +1,15 @@
 ﻿using Shared.Domain.Bases;
 using Shared.Domain.Extensions;
 using Shared.Domain.Interfaces;
+using Shop.Domain.Aggregates.Baskets.Entities;
+using Shop.Domain.Aggregates.ProductBases;
+using Shop.Domain.Aggregates.Products.Entities;
+using Shop.Domain.Aggregates.PurchaseLists.Entities;
 using Shop.Domain.Logics;
 
-namespace Shop.Domain.Entities;
+namespace Shop.Domain.Aggregates.Products;
 
-public class ProductEntity : BaseExternalEntity, IUpdate<ProductEntity>, IUpdateEvent<ProductEntity>
+public class ProductAggregate : BaseExternalEntity, IUpdate<ProductAggregate>, IUpdateEvent<ProductAggregate>
 {
     public bool IsActive { get; set; }
 
@@ -21,7 +25,7 @@ public class ProductEntity : BaseExternalEntity, IUpdate<ProductEntity>, IUpdate
 
     public ICollection<PriceEntity> Prices { get; set; } = [];
 
-    public ProductBaseEntity ProductBase { get; set; }
+    public ProductBaseAggregate ProductBase { get; set; }
 
     public ICollection<ProductParameterValueEntity> ProductParameterValues { get; set; } = [];
 
@@ -33,7 +37,7 @@ public class ProductEntity : BaseExternalEntity, IUpdate<ProductEntity>, IUpdate
 
     #endregion Related Data
 
-    public void Update(ProductEntity entity)
+    public void Update(ProductAggregate entity)
     {
         IsActive = entity.IsActive;
         Name = entity.Name;
@@ -47,7 +51,7 @@ public class ProductEntity : BaseExternalEntity, IUpdate<ProductEntity>, IUpdate
         UpdatePrices(Prices, entity.Prices);
     }
 
-    public void UpdateEvent(ProductEntity entity)
+    public void UpdateEvent(ProductAggregate entity)
     {
         Name = entity.Name;
         ProductPhotos.UpdateEventEntities(entity.ProductPhotos);

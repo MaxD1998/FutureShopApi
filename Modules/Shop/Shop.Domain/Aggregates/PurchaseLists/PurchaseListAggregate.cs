@@ -1,10 +1,11 @@
 ﻿using Shared.Domain.Bases;
 using Shared.Domain.Extensions;
 using Shared.Domain.Interfaces;
+using Shop.Domain.Aggregates.PurchaseLists.Entities;
 
-namespace Shop.Domain.Entities;
+namespace Shop.Domain.Aggregates.PurchaseLists;
 
-public class PurchaseListEntity : BaseEntity, IUpdate<PurchaseListEntity>
+public class PurchaseListAggregate : BaseEntity, IUpdate<PurchaseListAggregate>
 {
     public bool IsFavourite { get; set; }
 
@@ -18,7 +19,7 @@ public class PurchaseListEntity : BaseEntity, IUpdate<PurchaseListEntity>
 
     #endregion Related Data
 
-    public void Update(PurchaseListEntity entity)
+    public void Update(PurchaseListAggregate entity)
     {
         IsFavourite = entity.IsFavourite;
         Name = entity.Name;

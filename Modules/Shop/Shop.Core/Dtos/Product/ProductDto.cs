@@ -1,4 +1,4 @@
-﻿using Shop.Domain.Entities;
+﻿using Shop.Domain.Aggregates.Products;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.Product;
@@ -17,7 +17,7 @@ public class ProductDto
 
     public IEnumerable<IdNameValueDto> ProductParameters { get; set; }
 
-    public static Expression<Func<ProductEntity, ProductDto>> Map(string lang, Guid? userId, Guid? favouriteId)
+    public static Expression<Func<ProductAggregate, ProductDto>> Map(string lang, Guid? userId, Guid? favouriteId)
     {
         var utcNow = DateTime.UtcNow;
 

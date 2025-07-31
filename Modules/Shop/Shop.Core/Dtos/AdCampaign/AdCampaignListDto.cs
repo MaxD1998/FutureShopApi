@@ -1,4 +1,4 @@
-﻿using Shop.Domain.Entities;
+﻿using Shop.Domain.Aggregates.AdCampaigns;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.AdCampaign;
@@ -17,7 +17,7 @@ public class AdCampaignListDto
 
     public string Start { get; set; }
 
-    public static Expression<Func<AdCampaignEntity, AdCampaignListDto>> Map() => entity => new()
+    public static Expression<Func<AdCampaignAggregate, AdCampaignListDto>> Map() => entity => new()
     {
         AdCampaignItemQuantity = entity.AdCampaignItems.AsQueryable().Count(),
         End = entity.End.ToString("dd-MM-yyyy"),
