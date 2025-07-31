@@ -1,6 +1,6 @@
 ﻿using Shop.Domain.Aggregates.Products.Entities;
 
-namespace Shop.Domain.Logics;
+namespace Shop.Domain.Aggregates.Products.Logics;
 
 public static class ProductLogic
 {

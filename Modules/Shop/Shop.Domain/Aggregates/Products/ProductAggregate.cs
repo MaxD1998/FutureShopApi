@@ -4,8 +4,8 @@ using Shared.Domain.Interfaces;
 using Shop.Domain.Aggregates.Baskets.Entities;
 using Shop.Domain.Aggregates.ProductBases;
 using Shop.Domain.Aggregates.Products.Entities;
+using Shop.Domain.Aggregates.Products.Logics;
 using Shop.Domain.Aggregates.PurchaseLists.Entities;
-using Shop.Domain.Logics;
 
 namespace Shop.Domain.Aggregates.Products;
 

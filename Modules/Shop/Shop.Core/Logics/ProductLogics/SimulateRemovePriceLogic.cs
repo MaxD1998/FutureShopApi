@@ -2,7 +2,7 @@
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.Price;
 using Shop.Core.Interfaces;
-using Shop.Domain.Logics;
+using Shop.Domain.Aggregates.Products.Logics;
 
 namespace Shop.Core.Logics.ProductLogics;
 
