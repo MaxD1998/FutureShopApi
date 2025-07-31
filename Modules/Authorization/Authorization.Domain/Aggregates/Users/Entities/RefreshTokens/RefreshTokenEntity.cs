@@ -1,6 +1,5 @@
 ﻿using Authorization.Domain.Aggregates.Users.Entities.RefreshTokens.Exceptions;
 using Shared.Domain.Bases;
-using Shared.Domain.Exceptions;
 using Shared.Domain.Interfaces;
 using Shared.Shared.Interfaces;
 
@@ -47,8 +46,7 @@ public class RefreshTokenEntity : BaseEntity, ICloneable<RefreshTokenEntity>, IU
 
     public void SetToken(Guid token)
     {
-        if (token == Guid.Empty)
-            throw new PropertyWasEmptyException(nameof(Token));
+        ValidateRequiredProperty(nameof(Token), token);
 
         Token = token;
     }

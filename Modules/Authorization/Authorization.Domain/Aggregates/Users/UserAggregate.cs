@@ -4,9 +4,7 @@ using Authorization.Domain.Aggregates.Users.Exceptions;
 using Shared.Domain.Bases;
 using Shared.Domain.Constants;
 using Shared.Domain.Enums;
-using Shared.Domain.Exceptions;
 using Shared.Domain.Interfaces;
-using Shared.Shared.Constants;
 
 namespace Authorization.Domain.Aggregates.Users;
 
@@ -74,14 +72,7 @@ public class UserAggregate : BaseEntity, IUpdate<UserAggregate>
 
     public void SetEmail(string email)
     {
-        var propertyName = nameof(Email);
-        var maxLength = StringLengthConst.LongString;
-
-        if (string.IsNullOrWhiteSpace(email))
-            throw new PropertyWasEmptyException(propertyName);
-
-        if (email.Length > maxLength)
-            throw new PropertyWasTooLongException(propertyName, maxLength);
+        ValidateRequiredLongStringProperty(nameof(Email), email);
 
         if (!IsValidEmail(email))
             throw new UserInvalidEmailFormatException();
@@ -91,52 +82,31 @@ public class UserAggregate : BaseEntity, IUpdate<UserAggregate>
 
     public void SetFirstName(string firstName)
     {
-        var propertyName = nameof(FirstName);
-        var maxLength = StringLengthConst.LongString;
-
-        if (string.IsNullOrWhiteSpace(firstName))
-            throw new PropertyWasEmptyException(propertyName);
-
-        if (firstName.Length > maxLength)
-            throw new PropertyWasTooLongException(propertyName, maxLength);
+        ValidateRequiredLongStringProperty(nameof(FirstName), firstName);
 
         FirstName = firstName;
     }
 
     public void SetHashedPassword(string hashedPassword)
     {
-        var propertyName = nameof(HashedPassword);
-
-        if (string.IsNullOrWhiteSpace(hashedPassword))
-            throw new PropertyWasEmptyException(propertyName);
+        ValidateRequiredProperty(nameof(HashedPassword), hashedPassword);
 
         HashedPassword = hashedPassword;
     }
 
     public void SetLastName(string lastName)
     {
-        var propertyName = nameof(LastName);
-        var maxLength = StringLengthConst.LongString;
-
-        if (string.IsNullOrWhiteSpace(lastName))
-            throw new PropertyWasEmptyException(propertyName);
-
-        if (lastName.Length > maxLength)
-            throw new PropertyWasTooLongException(propertyName, maxLength);
+        ValidateRequiredLongStringProperty(nameof(LastName), lastName);
 
         LastName = lastName;
     }
 
     public void SetPhoneNumber(string phoneNumber)
     {
-        if (string.IsNullOrWhiteSpace(phoneNumber))
-            return;
+        ValidateShortStringProperty(nameof(PhoneNumber), phoneNumber);
 
-        var propertyName = nameof(PhoneNumber);
-        var maxLength = StringLengthConst.ShortString;
-
-        if (phoneNumber.Length > maxLength)
-            throw new PropertyWasTooLongException(propertyName, maxLength);
+        if (phoneNumber == string.Empty)
+            phoneNumber = null;
 
         PhoneNumber = phoneNumber;
     }

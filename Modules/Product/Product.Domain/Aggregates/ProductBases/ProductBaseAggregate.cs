@@ -7,9 +7,19 @@ namespace Product.Domain.Aggregates.ProductBases;
 
 public class ProductBaseAggregate : BaseEntity, IUpdate<ProductBaseAggregate>
 {
-    public Guid CategoryId { get; set; }
+    public ProductBaseAggregate(Guid categoryId, string name)
+    {
+        SetCategoryId(categoryId);
+        SetName(name);
+    }
 
-    public string Name { get; set; }
+    private ProductBaseAggregate()
+    {
+    }
+
+    public Guid CategoryId { get; private set; }
+
+    public string Name { get; private set; }
 
     #region Related Data
 
@@ -19,9 +29,31 @@ public class ProductBaseAggregate : BaseEntity, IUpdate<ProductBaseAggregate>
 
     #endregion Related Data
 
+    #region Setters
+
+    public void SetCategoryId(Guid categoryId)
+    {
+        ValidateRequiredProperty(nameof(CategoryId), categoryId);
+
+        CategoryId = categoryId;
+    }
+
+    public void SetName(string name)
+    {
+        ValidateRequiredLongStringProperty(nameof(Name), name);
+
+        Name = name;
+    }
+
+    #endregion Setters
+
+    #region Methods
+
     public void Update(ProductBaseAggregate entity)
     {
         CategoryId = entity.CategoryId;
         Name = entity.Name;
     }
+
+    #endregion Methods
 }

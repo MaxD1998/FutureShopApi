@@ -1,13 +1,13 @@
-﻿using Product.Domain.Aggregates.ProductBases;
+﻿using Product.Domain.Aggregates.Categories.Comparers;
+using Product.Domain.Aggregates.ProductBases;
 using Shared.Domain.Bases;
 using Shared.Domain.Exceptions;
 using Shared.Domain.Interfaces;
 using Shared.Shared.Constants;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Product.Domain.Aggregates.Categories;
 
-public class CategoryAggregate : BaseEntity, IUpdate<CategoryAggregate>, IEqualityComparer<CategoryAggregate>
+public class CategoryAggregate : BaseEntity, IUpdate<CategoryAggregate>
 {
     private HashSet<CategoryAggregate> _subCategories = [];
 
@@ -72,7 +72,7 @@ public class CategoryAggregate : BaseEntity, IUpdate<CategoryAggregate>, IEquali
     {
         Name = entity.Name;
         ParentCategoryId = entity.ParentCategoryId;
-        _subCategories = entity.SubCategories.ToHashSet();
+        _subCategories = CategoryAggregateComparer.CreateSet(entity.SubCategories);
     }
 
     #endregion Methods
