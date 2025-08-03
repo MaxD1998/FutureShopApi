@@ -24,14 +24,14 @@ public class ProductPhotoEntity : BaseEntity, IUpdate<ProductPhotoEntity>
 
     #region Setters
 
-    public void SetFileId(string fileId)
+    private void SetFileId(string fileId)
     {
         ValidateRequiredProperty(nameof(fileId), fileId);
 
         FileId = fileId;
     }
 
-    public void SetPosition(int position)
+    private void SetPosition(int position)
     {
         Position = position;
     }

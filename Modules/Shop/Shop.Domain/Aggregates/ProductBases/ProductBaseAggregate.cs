@@ -23,6 +23,24 @@ public class ProductBaseAggregate : BaseExternalEntity, IUpdate<ProductBaseAggre
 
     #endregion Related Data
 
+    #region Setters
+
+    private void SetCategoryId(Guid categoryId)
+    {
+        ValidateRequiredProperty(nameof(CategoryId), categoryId);
+
+        CategoryId = categoryId;
+    }
+
+    private void SetName(string name)
+    {
+        ValidateRequiredLongStringProperty(nameof(Name), name);
+
+        Name = name;
+    }
+
+    #endregion Setters
+
     public void Update(ProductBaseAggregate entity)
     {
         ProductParameters.UpdateEntities(entity.ProductParameters);

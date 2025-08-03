@@ -1,6 +1,8 @@
 ﻿using Shared.Domain.Bases;
+using Shared.Domain.Exceptions;
 using Shared.Domain.Extensions;
 using Shared.Domain.Interfaces;
+using Shared.Shared.Constants;
 using Shop.Domain.Aggregates.Categories.Entities;
 using Shop.Domain.Aggregates.ProductBases;
 
@@ -25,6 +27,29 @@ public class CategoryAggregate : BaseExternalEntity, IUpdate<CategoryAggregate>,
     public ICollection<CategoryTranslationEntity> Translations { get; set; } = [];
 
     #endregion Related Data
+
+    #region Setters
+
+    private void SetName(string name)
+    {
+        var propertyName = nameof(name);
+        var maxLength = StringLengthConst.LongString;
+
+        if (string.IsNullOrWhiteSpace(name))
+            throw new PropertyWasEmptyException(propertyName);
+
+        if (name.Length > maxLength)
+            throw new PropertyWasTooLongException(propertyName, maxLength);
+
+        Name = name;
+    }
+
+    private void SetParentCategoryId(Guid? parentCategoryId)
+    {
+        ParentCategoryId = parentCategoryId;
+    }
+
+    #endregion Setters
 
     public void Update(CategoryAggregate entity)
     {

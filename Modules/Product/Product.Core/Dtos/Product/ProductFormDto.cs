@@ -10,7 +10,7 @@ public class ProductFormDto
 
     public Guid ProductBaseId { get; set; }
 
-    public List<ProductPhotoFormDto> ProductPhotos { get; set; }
+    public List<ProductPhotoFormDto> ProductPhotos { get; set; } = [];
 
     public static Expression<Func<ProductAggregate, ProductFormDto>> Map() => entity => new()
     {

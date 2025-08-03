@@ -28,7 +28,7 @@ public class AdCampaignConfig : BaseConfig<AdCampaignAggregate>
             .IsRequired();
 
         builder.HasMany(x => x.AdCampaignItems)
-            .WithOne(x => x.AdCampaign)
+            .WithOne()
             .HasForeignKey(x => x.AdCampaignId);
     }
 }

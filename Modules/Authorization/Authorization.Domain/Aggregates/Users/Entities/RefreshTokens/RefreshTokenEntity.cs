@@ -28,7 +28,7 @@ public class RefreshTokenEntity : BaseEntity, ICloneable<RefreshTokenEntity>, IU
 
     #region Setters
 
-    public void SetEndDate(DateOnly endDate)
+    private void SetEndDate(DateOnly endDate)
     {
         if (endDate < DateOnly.FromDateTime(DateTime.UtcNow))
             throw new RefreshTokenEndDateInPastException();
@@ -36,7 +36,7 @@ public class RefreshTokenEntity : BaseEntity, ICloneable<RefreshTokenEntity>, IU
         EndDate = endDate;
     }
 
-    public void SetStartDate(DateOnly startDate)
+    private void SetStartDate(DateOnly startDate)
     {
         if (startDate > DateOnly.FromDateTime(DateTime.UtcNow))
             throw new RefreshTokenStartDateInFutureException();
@@ -44,7 +44,7 @@ public class RefreshTokenEntity : BaseEntity, ICloneable<RefreshTokenEntity>, IU
         StartDate = startDate;
     }
 
-    public void SetToken(Guid token)
+    private void SetToken(Guid token)
     {
         ValidateRequiredProperty(nameof(Token), token);
 

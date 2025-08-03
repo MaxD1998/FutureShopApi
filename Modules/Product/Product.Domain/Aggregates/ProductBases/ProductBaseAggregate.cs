@@ -31,14 +31,14 @@ public class ProductBaseAggregate : BaseEntity, IUpdate<ProductBaseAggregate>
 
     #region Setters
 
-    public void SetCategoryId(Guid categoryId)
+    private void SetCategoryId(Guid categoryId)
     {
         ValidateRequiredProperty(nameof(CategoryId), categoryId);
 
         CategoryId = categoryId;
     }
 
-    public void SetName(string name)
+    private void SetName(string name)
     {
         ValidateRequiredLongStringProperty(nameof(Name), name);
 

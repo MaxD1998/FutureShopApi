@@ -35,7 +35,7 @@ public class CategoryAggregate : BaseEntity, IUpdate<CategoryAggregate>
 
     #region Setters
 
-    public void SetName(string name)
+    private void SetName(string name)
     {
         var propertyName = nameof(name);
         var maxLength = StringLengthConst.LongString;
@@ -49,7 +49,7 @@ public class CategoryAggregate : BaseEntity, IUpdate<CategoryAggregate>
         Name = name;
     }
 
-    public void SetParentCategoryId(Guid? parentCategoryId)
+    private void SetParentCategoryId(Guid? parentCategoryId)
     {
         ParentCategoryId = parentCategoryId;
     }

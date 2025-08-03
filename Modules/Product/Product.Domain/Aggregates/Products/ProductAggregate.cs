@@ -36,21 +36,21 @@ public class ProductAggregate : BaseEntity, IUpdate<ProductAggregate>
 
     #region Setters
 
-    public void SetName(string name)
+    private void SetName(string name)
     {
         ValidateRequiredLongStringProperty(nameof(Name), name);
 
         Name = name;
     }
 
-    public void SetProductBaseId(Guid productBaseId)
+    private void SetProductBaseId(Guid productBaseId)
     {
         ValidateRequiredProperty(nameof(ProductBaseId), productBaseId);
 
         ProductBaseId = productBaseId;
     }
 
-    public void SetProductPhotos(IEnumerable<ProductPhotoEntity> productPhotos)
+    private void SetProductPhotos(IEnumerable<ProductPhotoEntity> productPhotos)
     {
         if (productPhotos == null)
             throw new ArgumentNullException(nameof(productPhotos));

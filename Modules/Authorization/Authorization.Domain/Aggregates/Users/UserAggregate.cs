@@ -5,6 +5,7 @@ using Shared.Domain.Bases;
 using Shared.Domain.Constants;
 using Shared.Domain.Enums;
 using Shared.Domain.Interfaces;
+using Shared.Shared.Helpers;
 
 namespace Authorization.Domain.Aggregates.Users;
 
@@ -57,74 +58,6 @@ public class UserAggregate : BaseEntity, IUpdate<UserAggregate>
 
     #region Setters
 
-    public void RemoveRefreshToken()
-    {
-        RefreshToken = null;
-    }
-
-    public void SetDateOfBirth(DateOnly dateOfBirth)
-    {
-        if (dateOfBirth.Year < 1900)
-            throw new UserInvalidDateOfBirthException();
-
-        DateOfBirth = dateOfBirth;
-    }
-
-    public void SetEmail(string email)
-    {
-        ValidateRequiredLongStringProperty(nameof(Email), email);
-
-        if (!IsValidEmail(email))
-            throw new UserInvalidEmailFormatException();
-
-        Email = email;
-    }
-
-    public void SetFirstName(string firstName)
-    {
-        ValidateRequiredLongStringProperty(nameof(FirstName), firstName);
-
-        FirstName = firstName;
-    }
-
-    public void SetHashedPassword(string hashedPassword)
-    {
-        ValidateRequiredProperty(nameof(HashedPassword), hashedPassword);
-
-        HashedPassword = hashedPassword;
-    }
-
-    public void SetLastName(string lastName)
-    {
-        ValidateRequiredLongStringProperty(nameof(LastName), lastName);
-
-        LastName = lastName;
-    }
-
-    public void SetPhoneNumber(string phoneNumber)
-    {
-        ValidateShortStringProperty(nameof(PhoneNumber), phoneNumber);
-
-        if (phoneNumber == string.Empty)
-            phoneNumber = null;
-
-        PhoneNumber = phoneNumber;
-    }
-
-    public void SetRefreshToken(RefreshTokenEntity refreshToken)
-    {
-        if (refreshToken == null)
-            throw new ArgumentNullException(nameof(refreshToken));
-
-        if (RefreshToken == null)
-        {
-            RefreshToken = refreshToken.Clone();
-            return;
-        }
-
-        RefreshToken.Update(refreshToken);
-    }
-
     public void SetType(UserType type)
     {
         Type = type;
@@ -143,6 +76,55 @@ public class UserAggregate : BaseEntity, IUpdate<UserAggregate>
         }
     }
 
+    private void SetDateOfBirth(DateOnly dateOfBirth)
+    {
+        if (dateOfBirth < MinimalDate.DateOnly)
+            throw new UserInvalidDateOfBirthException();
+
+        DateOfBirth = dateOfBirth;
+    }
+
+    private void SetEmail(string email)
+    {
+        ValidateRequiredLongStringProperty(nameof(Email), email);
+
+        if (!IsValidEmail(email))
+            throw new UserInvalidEmailFormatException();
+
+        Email = email;
+    }
+
+    private void SetFirstName(string firstName)
+    {
+        ValidateRequiredLongStringProperty(nameof(FirstName), firstName);
+
+        FirstName = firstName;
+    }
+
+    private void SetHashedPassword(string hashedPassword)
+    {
+        ValidateRequiredProperty(nameof(HashedPassword), hashedPassword);
+
+        HashedPassword = hashedPassword;
+    }
+
+    private void SetLastName(string lastName)
+    {
+        ValidateRequiredLongStringProperty(nameof(LastName), lastName);
+
+        LastName = lastName;
+    }
+
+    private void SetPhoneNumber(string phoneNumber)
+    {
+        ValidateShortStringProperty(nameof(PhoneNumber), phoneNumber);
+
+        if (phoneNumber == string.Empty)
+            phoneNumber = null;
+
+        PhoneNumber = phoneNumber;
+    }
+
     #endregion Setters
 
     #region Methods
@@ -158,6 +140,25 @@ public class UserAggregate : BaseEntity, IUpdate<UserAggregate>
         HashedPassword = "$2a$11$v1B9qwcIeH.PJLuFjnmK7O1Nu3TSUsc6oZ49.5DXOJhkIDcfzPD..", // Crypt.HashPassword("123456789"),
         Type = UserType.SuperAdmin
     };
+
+    public void RemoveRefreshToken()
+    {
+        RefreshToken = null;
+    }
+
+    public void SetRefreshToken(RefreshTokenEntity refreshToken)
+    {
+        if (refreshToken == null)
+            throw new ArgumentNullException(nameof(refreshToken));
+
+        if (RefreshToken == null)
+        {
+            RefreshToken = refreshToken.Clone();
+            return;
+        }
+
+        RefreshToken.Update(refreshToken);
+    }
 
     public void Update(UserAggregate entity)
     {
