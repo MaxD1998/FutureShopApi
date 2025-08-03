@@ -10,8 +10,6 @@ public class AdCampaignFormDto
 
     public DateTime End { get; set; }
 
-    public Guid? Id { get; set; }
-
     public bool IsActive { get; set; }
 
     public string Name { get; set; }
@@ -22,19 +20,15 @@ public class AdCampaignFormDto
     {
         AdCampaignItems = entity.AdCampaignItems.AsQueryable().Select(AdCampaignItemFormDto.Map()).ToList(),
         End = entity.End,
-        Id = entity.Id,
         IsActive = entity.IsActive,
         Name = entity.Name,
         Start = entity.Start,
     };
 
-    public AdCampaignAggregate ToEntity() => new()
+    public AdCampaignAggregate ToEntity()
     {
-        AdCampaignItems = AdCampaignItems.GroupBy(x => x.Lang).SelectMany(x => x.Select((item, index) => item.ToEntity(index))).ToList(),
-        End = End,
-        Id = Id ?? Guid.Empty,
-        IsActive = IsActive,
-        Name = Name,
-        Start = Start,
-    };
+        var adCampaignItems = AdCampaignItems.GroupBy(x => x.Lang).SelectMany(x => x.Select((item, index) => item.ToEntity(index))).ToList();
+
+        return new(Name, Start, End, IsActive, adCampaignItems);
+    }
 }

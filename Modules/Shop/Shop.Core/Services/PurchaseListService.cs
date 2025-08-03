@@ -3,7 +3,7 @@ using Shared.Core.Dtos;
 using Shared.Core.Errors;
 using Shared.Core.Services;
 using Shop.Core.Dtos.PurchaseList;
-using Shop.Domain.Entities;
+using Shop.Domain.Aggregates.PurchaseLists;
 using Shop.Infrastructure.Repositories;
 using System.Net;
 
@@ -74,7 +74,7 @@ public class PurchaseListService(IBasketRepository basketRepository, ICurrentUse
         if (basket is null)
             return Error<PurchaseListDto>(HttpStatusCode.NotFound, CommonExceptionMessage.C007RecordWasNotFound);
 
-        var purchaseList = new PurchaseListEntity
+        var purchaseList = new PurchaseListAggregate
         {
             Name = dto.Name,
         };
