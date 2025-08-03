@@ -14,7 +14,7 @@ public class PropertyWasTooLongException : BaseException
         _length = length;
     }
 
-    public override string ErrorMessage => $"The property '{_propertyName}' exceeds the maximum allowed length of {_length} characters.";
+    public override string ErrorMessage => $"The property \'{_propertyName}\' exceeds the maximum allowed length of {_length} characters.";
 
     public override HttpStatusCode StatusCode => HttpStatusCode.BadRequest;
 }

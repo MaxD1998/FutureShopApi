@@ -18,11 +18,5 @@ public class AdCampaignItemFormDto
         Lang = entity.Lang,
     };
 
-    public AdCampaignItemEntity ToEntity(int index) => new()
-    {
-        Id = Id ?? Guid.Empty,
-        FileId = FileId,
-        Lang = Lang,
-        Position = index,
-    };
+    public AdCampaignItemEntity ToEntity(int index) => new(Id ?? Guid.Empty, FileId, Lang, index);
 }

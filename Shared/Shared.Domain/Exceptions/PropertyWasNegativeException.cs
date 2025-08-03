@@ -3,16 +3,16 @@ using System.Net;
 
 namespace Shared.Domain.Exceptions;
 
-public class PropertyWasEmptyException : BaseException
+public class PropertyWasNegativeException : BaseException
 {
     private readonly string _propertyName;
 
-    public PropertyWasEmptyException(string propertyName)
+    public PropertyWasNegativeException(string propertyName)
     {
         _propertyName = propertyName;
     }
 
-    public override string ErrorMessage => $"The property \'{_propertyName}\' cannot be empty.";
+    public override string ErrorMessage => $"The property \' {_propertyName} \' was negative.";
 
     public override HttpStatusCode StatusCode => HttpStatusCode.BadRequest;
 }

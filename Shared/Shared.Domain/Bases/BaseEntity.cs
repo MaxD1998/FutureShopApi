@@ -25,6 +25,12 @@ public abstract class BaseEntity : IEntity
 
     #region Methods
 
+    protected void ValidateNonNegativeProperty(string propertyName, int value)
+    {
+        if (value < 0)
+            throw new PropertyWasNegativeException(propertyName);
+    }
+
     protected void ValidateRequiredLangStringProperty(string propertyName, string value)
         => ValidateRequiredStringProperty(propertyName, value, StringLengthConst.LangString);
 

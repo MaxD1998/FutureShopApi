@@ -33,6 +33,8 @@ public class ProductPhotoEntity : BaseEntity, IUpdate<ProductPhotoEntity>
 
     private void SetPosition(int position)
     {
+        ValidateNonNegativeProperty(nameof(Position), position);
+
         Position = position;
     }
 
