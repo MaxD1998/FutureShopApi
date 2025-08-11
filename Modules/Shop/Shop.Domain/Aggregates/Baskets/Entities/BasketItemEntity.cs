@@ -1,28 +1,58 @@
 ﻿using Shared.Domain.Bases;
 using Shared.Domain.Interfaces;
-using Shop.Domain.Aggregates.Products;
 
 namespace Shop.Domain.Aggregates.Baskets.Entities;
 
 public class BasketItemEntity : BaseEntity, IUpdate<BasketItemEntity>
 {
-    public Guid BasketId { get; set; }
+    public BasketItemEntity(Guid productId, int quantity)
+    {
+        SetProductId(productId);
+        SetQuantity(quantity);
+    }
 
-    public Guid ProductId { get; set; }
+    public BasketItemEntity(Guid id, Guid productId, int quantity)
+    {
+        Id = id;
+        SetProductId(productId);
+        SetQuantity(quantity);
+    }
 
-    public int Quantity { get; set; }
+    private BasketItemEntity()
+    {
+    }
 
-    #region Related Data
+    public Guid BasketId { get; private set; }
 
-    public BasketAggregate Basket { get; set; }
+    public Guid ProductId { get; private set; }
 
-    public ProductAggregate Product { get; set; }
+    public int Quantity { get; private set; }
 
-    #endregion Related Data
+    #region MyRegion
+
+    private void SetProductId(Guid productId)
+    {
+        ValidateRequiredProperty(nameof(ProductId), productId);
+
+        ProductId = productId;
+    }
+
+    private void SetQuantity(int quantity)
+    {
+        ValidateNonNegativeProperty(nameof(Quantity), quantity);
+
+        Quantity = quantity;
+    }
+
+    #endregion MyRegion
+
+    #region Methods
 
     public void Update(BasketItemEntity entity)
     {
         ProductId = entity.ProductId;
         Quantity = entity.Quantity;
     }
+
+    #endregion Methods
 }

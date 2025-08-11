@@ -3,6 +3,8 @@ using Shared.Core.Dtos;
 using Shared.Core.Errors;
 using Shared.Core.Services;
 using Shop.Core.Dtos.Basket;
+using Shop.Core.Factories;
+using Shop.Core.Logics.Baskets;
 using Shop.Infrastructure.Repositories;
 using System.Net;
 
@@ -10,7 +12,7 @@ namespace Shop.Core.Services;
 
 public interface IBasketSerivce
 {
-    Task<ResultDto<BasketFormDto>> CreateAsync(BasketFormDto dto, CancellationToken cancellationToken);
+    Task<ResultDto<BasketFormResponseDto>> CreateAsync(BasketFormRequestDto dto, CancellationToken cancellationToken);
 
     Task<ResultDto<BasketDto>> GetByAuthorizedUserAsync(CancellationToken cancellationToken);
 
@@ -18,20 +20,22 @@ public interface IBasketSerivce
 
     Task<ResultDto<BasketDto>> ImportPurchaseListAsync(ImportPurchaseListToBasketDto dto, CancellationToken cancellationToken);
 
-    Task<ResultDto<BasketFormDto>> UpdateAsync(Guid id, BasketFormDto dto, CancellationToken cancellationToken);
+    Task<ResultDto<BasketFormResponseDto>> UpdateAsync(Guid id, BasketFormRequestDto dto, CancellationToken cancellationToken);
 }
 
-public class BasketService(IBasketRepository basketRepository, ICurrentUserService currentUserService, IPurchaseListRepository purchaseListRepository) : BaseService, IBasketSerivce
+public class BasketService(IBasketRepository basketRepository, ICurrentUserService currentUserService, IProductRepository productRepository, IPurchaseListRepository purchaseListRepository) : BaseService, IBasketSerivce
 {
     private readonly IBasketRepository _basketRepository = basketRepository;
     private readonly ICurrentUserService _currentUserService = currentUserService;
+    private readonly ILogicFactory _logicFactory = new LogicFactory();
+    private readonly IProductRepository _productRepository = productRepository;
     private readonly IPurchaseListRepository _purchaseListRepository = purchaseListRepository;
 
-    public async Task<ResultDto<BasketFormDto>> CreateAsync(BasketFormDto dto, CancellationToken cancellationToken)
+    public async Task<ResultDto<BasketFormResponseDto>> CreateAsync(BasketFormRequestDto dto, CancellationToken cancellationToken)
     {
         var userId = _currentUserService.GetUserId();
         var entity = await _basketRepository.CreateAsync(dto.ToEntity(userId), cancellationToken);
-        var result = await _basketRepository.GetByIdAsync(entity.Id, BasketFormDto.Map(), cancellationToken);
+        var result = await _basketRepository.GetByIdAsync(entity.Id, BasketFormResponseDto.Map(), cancellationToken);
 
         return Success(result);
     }
@@ -43,52 +47,44 @@ public class BasketService(IBasketRepository basketRepository, ICurrentUserServi
         if (!userId.HasValue)
             return Success<BasketDto>(null);
 
-        var result = await _basketRepository.GetByUserIdAsync(userId.Value, BasketDto.Map(x => x.PurchaseList.UserId == userId), cancellationToken);
+        var requestModel = new GetBasketDtoByUserIdRequestModel(userId.Value);
 
-        return Success(result);
+        return await _logicFactory.ExecuteAsync(requestModel, f => f.CreateGetBasketDtoByUserIdLogic(_basketRepository, _productRepository), cancellationToken);
     }
 
     public async Task<ResultDto<BasketDto>> GetByIdAsync(Guid id, Guid? favouriteId, CancellationToken cancellationToken)
     {
-        var result = await _basketRepository.GetByIdAsync(id, BasketDto.Map(x => x.PurchaseListId == favouriteId), cancellationToken);
+        var requestModel = new GetBasketDtoByIdRequestModel(id, favouriteId);
 
-        return Success(result);
+        return await _logicFactory.ExecuteAsync(requestModel, f => f.CreateGetBasketDtoByIdLogic(_basketRepository, _productRepository), cancellationToken);
     }
 
     public async Task<ResultDto<BasketDto>> ImportPurchaseListAsync(ImportPurchaseListToBasketDto dto, CancellationToken cancellationToken)
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        var basketTask = _basketRepository.GetByIdAsync(dto.BasketId, cancellationToken);
-        var purchaseListTask = _purchaseListRepository.GetByIdAsync(dto.PurchaseListId, cancellationToken);
-
-        await Task.WhenAll(basketTask, purchaseListTask);
-
-        var basket = basketTask.Result;
-        var purchaseList = purchaseListTask.Result;
+        var basket = await _basketRepository.GetByIdAsync(dto.BasketId, cancellationToken);
+        var purchaseList = await _purchaseListRepository.GetByIdAsync(dto.PurchaseListId, cancellationToken);
 
         if (basket is null || purchaseList is null)
             return Error<BasketDto>(HttpStatusCode.NotFound, CommonExceptionMessage.C007RecordWasNotFound);
 
         foreach (var purchaseListItem in purchaseList.PurchaseListItems)
         {
-            basket.BasketItems.Add(new()
-            {
-                ProductId = purchaseListItem.ProductId,
-            });
+            basket.AddBasketItem(new(purchaseListItem.ProductId, 1));
         }
 
         var entity = await _basketRepository.UpdateAsync(basket.Id, basket, cancellationToken);
-        var result = await _basketRepository.GetByIdAsync(entity.Id, BasketDto.Map(x => x.PurchaseListId == dto.PurchaseListId), cancellationToken);
+        var requestModel = new GetBasketDtoByIdRequestModel(entity.Id, dto.PurchaseListId);
 
-        return Success(result);
+        return await _logicFactory.ExecuteAsync(requestModel, f => f.CreateGetBasketDtoByIdLogic(_basketRepository, _productRepository), cancellationToken);
     }
 
-    public async Task<ResultDto<BasketFormDto>> UpdateAsync(Guid id, BasketFormDto dto, CancellationToken cancellationToken)
+    public async Task<ResultDto<BasketFormResponseDto>> UpdateAsync(Guid id, BasketFormRequestDto dto, CancellationToken cancellationToken)
     {
         var userId = _currentUserService.GetUserId();
         var entity = await _basketRepository.UpdateAsync(id, dto.ToEntity(userId), cancellationToken);
-        var result = await _basketRepository.GetByIdAsync(entity.Id, BasketFormDto.Map(), cancellationToken);
+        var result = await _basketRepository.GetByIdAsync(entity.Id, BasketFormResponseDto.Map(), cancellationToken);
 
         return Success(result);
     }

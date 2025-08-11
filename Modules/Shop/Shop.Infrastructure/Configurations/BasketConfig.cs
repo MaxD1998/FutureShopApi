@@ -13,7 +13,7 @@ public class BasketConfig : BaseConfig<BasketAggregate>
             .HasColumnOrder(100);
 
         builder.HasMany(x => x.BasketItems)
-            .WithOne(x => x.Basket)
+            .WithOne()
             .HasForeignKey(x => x.BasketId);
 
         builder.HasIndex(x => x.UserId)

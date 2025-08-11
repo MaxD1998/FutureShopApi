@@ -66,8 +66,7 @@ public class ProductAggregate : BaseEntity, IUpdate<ProductAggregate>
     {
         Name = entity.Name;
 
-        var productPhotos = ProductPhotoEntityComparer.CreateSet(entity.ProductPhotos);
-        _productPhotos.UpdateEntities(productPhotos);
+        _productPhotos.UpdateEntities(entity.ProductPhotos);
     }
 
     #endregion Methods

@@ -1,7 +1,6 @@
 ﻿using Shared.Domain.Bases;
 using Shared.Domain.Extensions;
 using Shared.Domain.Interfaces;
-using Shop.Domain.Aggregates.ProductBases;
 using Shop.Domain.Aggregates.Products.Entities;
 
 namespace Shop.Domain.Aggregates.ProductBases.Entities;

@@ -25,7 +25,7 @@ public class ProductConfig : BaseExternalConfig<ProductAggregate>
             .HasDefaultValue(false);
 
         builder.HasMany(x => x.BasketItems)
-            .WithOne(x => x.Product)
+            .WithOne()
             .HasForeignKey(x => x.ProductId);
 
         builder.HasMany(x => x.Prices)

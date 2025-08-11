@@ -13,11 +13,12 @@ public class BaseketServiceTest
     private readonly Mock<IBasketRepository> _basketRepositoryMock = new();
     private readonly IBasketSerivce _basketSerivce;
     private readonly Mock<ICurrentUserService> _currentUserServiceMock = new();
+    private readonly Mock<IProductRepository> _productRepositoryMock = new();
     private readonly Mock<IPurchaseListRepository> _purchaseListRepositoryMock = new();
 
     public BaseketServiceTest()
     {
-        _basketSerivce = new BasketService(_basketRepositoryMock.Object, _currentUserServiceMock.Object, _purchaseListRepositoryMock.Object);
+        _basketSerivce = new BasketService(_basketRepositoryMock.Object, _currentUserServiceMock.Object, _productRepositoryMock.Object, _purchaseListRepositoryMock.Object);
     }
 
     [Theory]
@@ -27,7 +28,7 @@ public class BaseketServiceTest
     {
         //Arrange
         var userId = guidString == null ? null : (Guid?)Guid.Parse(guidString);
-        var basketDto = new BasketFormDto()
+        var basketDto = new BasketFormRequestDto()
         {
             BasketItems = [],
         };
@@ -46,9 +47,9 @@ public class BaseketServiceTest
         _basketRepositoryMock
             .Setup(x =>
                 x.GetByIdAsync(It.IsAny<Guid>(),
-                It.IsAny<Expression<Func<BasketAggregate, BasketFormDto>>>(),
+                It.IsAny<Expression<Func<BasketAggregate, BasketFormResponseDto>>>(),
                 It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new BasketFormDto
+            .ReturnsAsync(new BasketFormResponseDto
             {
                 Id = basketOutputEntity.Id,
                 BasketItems = []
@@ -64,9 +65,9 @@ public class BaseketServiceTest
         _basketRepositoryMock
             .Setup(x =>
                 x.GetByIdAsync(It.Is<Guid>(x => x == basketOutputEntity.Id),
-                It.IsAny<Expression<Func<BasketAggregate, BasketFormDto>>>(),
+                It.IsAny<Expression<Func<BasketAggregate, BasketFormRequestDto>>>(),
                 It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new BasketFormDto
+            .ReturnsAsync(new BasketFormResponseDto
             {
                 Id = basketOutputEntity.Id,
                 BasketItems = []

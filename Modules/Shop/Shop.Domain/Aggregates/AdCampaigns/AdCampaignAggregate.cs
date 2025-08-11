@@ -87,8 +87,7 @@ public class AdCampaignAggregate : BaseEntity, IUpdate<AdCampaignAggregate>
         Name = entity.Name;
         Start = entity.Start;
 
-        var adCampaignItems = entity.AdCampaignItems.ToList();
-        _adCampaignItems.UpdateEntities(adCampaignItems);
+        _adCampaignItems.UpdateEntities(entity.AdCampaignItems);
     }
 
     #endregion Methods

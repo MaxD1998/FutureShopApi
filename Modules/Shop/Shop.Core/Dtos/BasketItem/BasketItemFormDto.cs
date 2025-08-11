@@ -18,10 +18,5 @@ public class BasketItemFormDto
         Quantity = entity.Quantity,
     };
 
-    public BasketItemEntity ToEntity() => new()
-    {
-        Id = Id ?? Guid.Empty,
-        ProductId = ProductId,
-        Quantity = Quantity,
-    };
+    public BasketItemEntity ToEntity() => new(Id ?? Guid.Empty, ProductId, Quantity);
 }
