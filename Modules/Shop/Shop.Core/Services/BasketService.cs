@@ -49,14 +49,14 @@ public class BasketService(IBasketRepository basketRepository, ICurrentUserServi
 
         var requestModel = new GetBasketDtoByUserIdRequestModel(userId.Value);
 
-        return await _logicFactory.ExecuteAsync(requestModel, f => f.CreateGetBasketDtoByUserIdLogic(_basketRepository, _productRepository), cancellationToken);
+        return await _logicFactory.ExecuteAsync(requestModel, f => f.GetBasketDtoByUserIdLogic(_basketRepository, _productRepository), cancellationToken);
     }
 
     public async Task<ResultDto<BasketDto>> GetByIdAsync(Guid id, Guid? favouriteId, CancellationToken cancellationToken)
     {
         var requestModel = new GetBasketDtoByIdRequestModel(id, favouriteId);
 
-        return await _logicFactory.ExecuteAsync(requestModel, f => f.CreateGetBasketDtoByIdLogic(_basketRepository, _productRepository), cancellationToken);
+        return await _logicFactory.ExecuteAsync(requestModel, f => f.GetBasketDtoByIdLogic(_basketRepository, _productRepository), cancellationToken);
     }
 
     public async Task<ResultDto<BasketDto>> ImportPurchaseListAsync(ImportPurchaseListToBasketDto dto, CancellationToken cancellationToken)
@@ -77,7 +77,7 @@ public class BasketService(IBasketRepository basketRepository, ICurrentUserServi
         var entity = await _basketRepository.UpdateAsync(basket.Id, basket, cancellationToken);
         var requestModel = new GetBasketDtoByIdRequestModel(entity.Id, dto.PurchaseListId);
 
-        return await _logicFactory.ExecuteAsync(requestModel, f => f.CreateGetBasketDtoByIdLogic(_basketRepository, _productRepository), cancellationToken);
+        return await _logicFactory.ExecuteAsync(requestModel, f => f.GetBasketDtoByIdLogic(_basketRepository, _productRepository), cancellationToken);
     }
 
     public async Task<ResultDto<BasketFormResponseDto>> UpdateAsync(Guid id, BasketFormRequestDto dto, CancellationToken cancellationToken)

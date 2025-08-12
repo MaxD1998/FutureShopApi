@@ -43,7 +43,7 @@ public class ProductBaseAggregate : BaseExternalEntity, IUpdate<ProductBaseAggre
 
     public void Update(ProductBaseAggregate entity)
     {
-        ProductParameters.UpdateEntities(entity.ProductParameters);
+        ProductParameters.UpdateEntities(entity.ProductParameters.ToList());
     }
 
     public void UpdateEvent(ProductBaseAggregate entity)

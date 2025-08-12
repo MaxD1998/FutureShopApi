@@ -7,6 +7,8 @@ namespace Shop.Domain.Aggregates.PurchaseLists;
 
 public class PurchaseListAggregate : BaseEntity, IUpdate<PurchaseListAggregate>
 {
+    private HashSet<PurchaseListItemEntity> _purchaseListItems;
+
     public bool IsFavourite { get; set; }
 
     public string Name { get; set; }
@@ -15,7 +17,7 @@ public class PurchaseListAggregate : BaseEntity, IUpdate<PurchaseListAggregate>
 
     #region Related Data
 
-    public ICollection<PurchaseListItemEntity> PurchaseListItems { get; set; } = [];
+    public IReadOnlyCollection<PurchaseListItemEntity> PurchaseListItems => _purchaseListItems;
 
     #endregion Related Data
 
@@ -23,6 +25,6 @@ public class PurchaseListAggregate : BaseEntity, IUpdate<PurchaseListAggregate>
     {
         IsFavourite = entity.IsFavourite;
         Name = entity.Name;
-        PurchaseListItems.UpdateEntities(entity.PurchaseListItems);
+        _purchaseListItems.UpdateEntities(entity.PurchaseListItems);
     }
 }

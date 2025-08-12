@@ -1,6 +1,4 @@
-﻿using Shop.Domain.Aggregates.Categories;
-
-namespace Shop.Core.Dtos.Category;
+﻿namespace Shop.Core.Dtos.Category;
 
 public class CategoryEventDto
 {
@@ -11,10 +9,4 @@ public class CategoryEventDto
     public Guid? ParentCategoryId { get; set; }
 
     public List<Guid> SubCategoryIds { get; set; } = [];
-
-    public CategoryAggregate Map() => new()
-    {
-        ExternalId = Id,
-        Name = Name,
-    };
 }

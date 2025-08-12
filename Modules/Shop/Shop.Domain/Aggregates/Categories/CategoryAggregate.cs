@@ -3,6 +3,7 @@ using Shared.Domain.Exceptions;
 using Shared.Domain.Extensions;
 using Shared.Domain.Interfaces;
 using Shared.Shared.Constants;
+using Shop.Domain.Aggregates.Categories.Comparers;
 using Shop.Domain.Aggregates.Categories.Entities;
 using Shop.Domain.Aggregates.ProductBases;
 
@@ -10,21 +11,35 @@ namespace Shop.Domain.Aggregates.Categories;
 
 public class CategoryAggregate : BaseExternalEntity, IUpdate<CategoryAggregate>, IUpdateEvent<CategoryAggregate>
 {
-    public bool IsActive { get; set; }
+    private HashSet<CategoryTranslationEntity> _translations = CategoryTranslateEntityComparer.CreateSet();
 
-    public string Name { get; set; }
+    public CategoryAggregate(Guid externalId, string name, Guid? parentCategoryId, List<CategoryAggregate> subCategories)
+    {
+        ExternalId = externalId;
+        SetName(name);
+        SetParentCategoryId(parentCategoryId);
+        SubCategories = subCategories ?? [];
+    }
 
-    public Guid? ParentCategoryId { get; set; }
+    private CategoryAggregate()
+    {
+    }
+
+    public bool IsActive { get; private set; } = false;
+
+    public string Name { get; private set; }
+
+    public Guid? ParentCategoryId { get; private set; }
 
     #region Related Data
 
-    public CategoryAggregate ParentCategory { get; set; }
+    public CategoryAggregate ParentCategory { get; private set; }
 
-    public ICollection<ProductBaseAggregate> ProductBases { get; set; } = [];
+    public IReadOnlyCollection<ProductBaseAggregate> ProductBases { get; private set; } = [];
 
-    public ICollection<CategoryAggregate> SubCategories { get; set; } = [];
+    public IReadOnlyCollection<CategoryAggregate> SubCategories { get; private set; } = [];
 
-    public ICollection<CategoryTranslationEntity> Translations { get; set; } = [];
+    public IReadOnlyCollection<CategoryTranslationEntity> Translations => _translations;
 
     #endregion Related Data
 
@@ -51,10 +66,12 @@ public class CategoryAggregate : BaseExternalEntity, IUpdate<CategoryAggregate>,
 
     #endregion Setters
 
+    #region Methods
+
     public void Update(CategoryAggregate entity)
     {
         IsActive = entity.IsActive;
-        Translations.UpdateEntities(entity.Translations);
+        _translations.UpdateEntities(entity.Translations);
     }
 
     public void UpdateEvent(CategoryAggregate entity)
@@ -63,4 +80,6 @@ public class CategoryAggregate : BaseExternalEntity, IUpdate<CategoryAggregate>,
         ParentCategory = entity.ParentCategory;
         SubCategories = entity.SubCategories;
     }
+
+    #endregion Methods
 }

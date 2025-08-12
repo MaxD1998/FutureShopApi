@@ -2,5 +2,5 @@
 
 public class BaseExternalEntity : BaseEntity
 {
-    public Guid ExternalId { get; set; }
+    public Guid ExternalId { get; protected set; }
 }

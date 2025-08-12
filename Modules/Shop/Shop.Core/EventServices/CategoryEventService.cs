@@ -32,10 +32,7 @@ public class CategoryEventService(ICategoryRepository categoryRepository) : Base
             : null;
 
         var subCategories = await _categoryRepository.GetListByExternalIdsAsync(eventDto.SubCategoryIds, cancellationToken);
-
-        var entity = eventDto.Map();
-        entity.ParentCategoryId = parentId;
-        entity.SubCategories = subCategories;
+        var entity = new CategoryAggregate(eventDto.Id, eventDto.Name, parentId, subCategories);
 
         return entity;
     }

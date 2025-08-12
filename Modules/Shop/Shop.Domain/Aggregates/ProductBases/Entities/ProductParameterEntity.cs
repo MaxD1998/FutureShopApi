@@ -7,6 +7,8 @@ namespace Shop.Domain.Aggregates.ProductBases.Entities;
 
 public class ProductParameterEntity : BaseEntity, IUpdate<ProductParameterEntity>
 {
+    private HashSet<ProductParameterTranslationEntity> _translations;
+
     public string Name { get; set; }
 
     public Guid ProductBaseId { get; set; }
@@ -17,13 +19,13 @@ public class ProductParameterEntity : BaseEntity, IUpdate<ProductParameterEntity
 
     public ICollection<ProductParameterValueEntity> ProductParameterValues { get; set; } = [];
 
-    public ICollection<ProductParameterTranslationEntity> Translations { get; set; } = [];
+    public IReadOnlyCollection<ProductParameterTranslationEntity> Translations => _translations;
 
     #endregion Related Data
 
     public void Update(ProductParameterEntity entity)
     {
         Name = entity.Name;
-        Translations.UpdateEntities(entity.Translations);
+        _translations.UpdateEntities(entity.Translations);
     }
 }

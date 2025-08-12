@@ -11,6 +11,9 @@ namespace Shop.Domain.Aggregates.Products;
 
 public class ProductAggregate : BaseExternalEntity, IUpdate<ProductAggregate>, IUpdateEvent<ProductAggregate>
 {
+    private HashSet<ProductParameterValueEntity> _productParameterValues;
+    private HashSet<ProductTranslationEntity> _translations;
+
     public bool IsActive { get; set; }
 
     public string Name { get; set; }
@@ -21,19 +24,19 @@ public class ProductAggregate : BaseExternalEntity, IUpdate<ProductAggregate>, I
 
     #region Related Data
 
-    public ICollection<BasketItemEntity> BasketItems { get; set; } = [];
+    public IReadOnlyCollection<BasketItemEntity> BasketItems { get; set; } = [];
 
     public ICollection<PriceEntity> Prices { get; set; } = [];
 
     public ProductBaseAggregate ProductBase { get; set; }
 
-    public ICollection<ProductParameterValueEntity> ProductParameterValues { get; set; } = [];
+    public IReadOnlyCollection<ProductParameterValueEntity> ProductParameterValues { get; set; } = [];
 
     public ICollection<ProductPhotoEntity> ProductPhotos { get; set; } = [];
 
-    public ICollection<PurchaseListItemEntity> PurchaseListItems { get; set; } = [];
+    public IReadOnlyCollection<PurchaseListItemEntity> PurchaseListItems { get; set; } = [];
 
-    public ICollection<ProductTranslationEntity> Translations { get; set; } = [];
+    public IReadOnlyCollection<ProductTranslationEntity> Translations { get; set; } = [];
 
     #endregion Related Data
 
@@ -45,8 +48,8 @@ public class ProductAggregate : BaseExternalEntity, IUpdate<ProductAggregate>, I
         if (!WasActive && entity.IsActive)
             WasActive = entity.IsActive;
 
-        ProductParameterValues.UpdateEntities(entity.ProductParameterValues);
-        Translations.UpdateEntities(entity.Translations);
+        _productParameterValues.UpdateEntities(entity.ProductParameterValues);
+        _translations.UpdateEntities(entity.Translations);
 
         UpdatePrices(Prices, entity.Prices);
     }
