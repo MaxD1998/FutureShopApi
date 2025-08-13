@@ -1,8 +1,8 @@
-﻿using Authorization.Inrfrastructure.Entities;
+﻿using Authorization.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
 
-namespace Authorization.Inrfrastructure.Repositories;
+namespace Authorization.Infrastructure.Repositories;
 
 public interface IRefreshTokenRepository : IBaseRepository<RefreshTokenEntity>
 {

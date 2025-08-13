@@ -6,7 +6,7 @@ using Api.Modules.Product;
 using Api.Modules.Shop;
 using Api.Modules.Warehouse;
 using Api.OpenApi;
-using Authorization.Inrfrastructure;
+using Authorization.Infrastructure;
 using File.Infrastructure;
 using Product.Infrastructure;
 using Quartz.AspNetCore;

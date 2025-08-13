@@ -1,11 +1,11 @@
-﻿using Authorization.Inrfrastructure.Entities;
-using Authorization.Inrfrastructure.Seeds;
+﻿using Authorization.Infrastructure.Entities;
+using Authorization.Infrastructure.Seeds;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Constants;
 
-namespace Authorization.Inrfrastructure.Configurations;
+namespace Authorization.Infrastructure.Configurations;
 
 public class UserConfig : BaseConfig<UserEntity>
 {

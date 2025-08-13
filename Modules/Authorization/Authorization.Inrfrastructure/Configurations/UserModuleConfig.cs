@@ -1,9 +1,9 @@
-﻿using Authorization.Inrfrastructure.Entities;
+﻿using Authorization.Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.Infrastructure.Bases;
 
-namespace Authorization.Inrfrastructure.Configurations;
+namespace Authorization.Infrastructure.Configurations;
 
 public class UserModuleConfig : BaseConfig<UserModuleEntity>
 {

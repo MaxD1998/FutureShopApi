@@ -1,4 +1,4 @@
-﻿using Authorization.Inrfrastructure.Entities;
+﻿using Authorization.Infrastructure.Entities;
 using Shared.Infrastructure.Enums;
 
 namespace Authorization.Core.Dtos.UserModule;

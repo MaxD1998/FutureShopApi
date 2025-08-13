@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Product", "Product", "{E581
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authorization.Core", "Modules\Authorization\Authorization.Core\Authorization.Core.csproj", "{69748C8F-664E-45DE-B377-BA0032F0F537}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authorization.Inrfrastructure", "Modules\Authorization\Authorization.Inrfrastructure\Authorization.Inrfrastructure.csproj", "{4CBD33CF-A40B-4551-B7F5-71FB9BBFDC26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Authorization.Infrastructure", "Modules\Authorization\Authorization.Inrfrastructure\Authorization.Infrastructure.csproj", "{4CBD33CF-A40B-4551-B7F5-71FB9BBFDC26}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Product.Core", "Modules\Product\Product.Core\Product.Core.csproj", "{91EADC71-81BA-44FC-A555-07C72C51849A}"
 EndProject

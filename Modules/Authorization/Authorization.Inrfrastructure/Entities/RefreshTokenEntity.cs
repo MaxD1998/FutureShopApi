@@ -1,7 +1,7 @@
 ﻿using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Interfaces;
 
-namespace Authorization.Inrfrastructure.Entities;
+namespace Authorization.Infrastructure.Entities;
 
 public class RefreshTokenEntity : BaseEntity, IUpdate<RefreshTokenEntity>
 {

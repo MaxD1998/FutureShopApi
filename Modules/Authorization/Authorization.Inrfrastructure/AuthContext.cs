@@ -4,7 +4,7 @@ using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Settings;
 using System.Reflection;
 
-namespace Authorization.Inrfrastructure;
+namespace Authorization.Infrastructure;
 
 public class AuthContext : BaseContext
 {

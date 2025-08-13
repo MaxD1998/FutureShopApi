@@ -1,7 +1,7 @@
 ﻿using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Enums;
 
-namespace Authorization.Inrfrastructure.Entities;
+namespace Authorization.Infrastructure.Entities;
 
 public class UserModuleEntity : BaseEntity
 {

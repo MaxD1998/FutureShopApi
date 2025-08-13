@@ -2,7 +2,7 @@
 using Shared.Infrastructure.Enums;
 using Shared.Infrastructure.Interfaces;
 
-namespace Authorization.Inrfrastructure.Entities;
+namespace Authorization.Infrastructure.Entities;
 
 public class UserEntity : BaseEntity, IUpdate<UserEntity>
 {

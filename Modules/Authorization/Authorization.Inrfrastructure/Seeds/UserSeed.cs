@@ -1,8 +1,8 @@
-﻿using Authorization.Inrfrastructure.Entities;
+﻿using Authorization.Infrastructure.Entities;
 using Shared.Infrastructure.Constants;
 using Shared.Infrastructure.Enums;
 
-namespace Authorization.Inrfrastructure.Seeds;
+namespace Authorization.Infrastructure.Seeds;
 
 public class UserSeed
 {
