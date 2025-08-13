@@ -1,6 +1,6 @@
 ﻿using Shop.Core.Interfaces;
-using Shop.Domain.Entities;
-using Shop.Domain.Logics;
+using Shop.Infrastructure.Entities;
+using Shop.Infrastructure.Logics;
 
 namespace Shop.Core.Logics.ProductLogics;
 

@@ -1,6 +1,6 @@
-﻿using Authorization.Domain.Entities;
-using Shared.Domain.Enums;
+﻿using Authorization.Inrfrastructure.Entities;
 using Shared.Infrastructure.Constants;
+using Shared.Infrastructure.Enums;
 
 namespace Authorization.Inrfrastructure.Seeds;
 

@@ -1,7 +1,7 @@
 ﻿using Authorization.Core.Dtos;
 using Authorization.Core.Dtos.Login;
 using Authorization.Core.Dtos.User;
-using Authorization.Domain.Entities;
+using Authorization.Inrfrastructure.Entities;
 using Authorization.Inrfrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -9,8 +9,8 @@ using Microsoft.IdentityModel.Tokens;
 using Shared.Core.Bases;
 using Shared.Core.Dtos;
 using Shared.Core.Errors;
-using Shared.Domain.Enums;
 using Shared.Infrastructure.Constants;
+using Shared.Infrastructure.Enums;
 using Shared.Infrastructure.Settings;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;

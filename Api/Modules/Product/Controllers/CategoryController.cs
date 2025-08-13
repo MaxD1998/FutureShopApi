@@ -3,7 +3,7 @@ using Product.Core.Dtos;
 using Product.Core.Dtos.Category;
 using Product.Core.Services;
 using Shared.Api.Attributes;
-using Shared.Domain.Enums;
+using Shared.Infrastructure.Enums;
 using Shared.Infrastructure.Extensions;
 
 namespace Api.Modules.Product.Controllers;

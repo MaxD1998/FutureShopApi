@@ -1,4 +1,4 @@
-﻿using Authorization.Domain.Entities;
+﻿using Authorization.Inrfrastructure.Entities;
 using Authorization.Inrfrastructure.Seeds;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;

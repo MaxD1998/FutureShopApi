@@ -1,5 +1,5 @@
 ﻿using Product.Core.Dtos.ProductPhoto;
-using Product.Domain.Entities;
+using Product.Infrastructure.Entities;
 using System.Linq.Expressions;
 
 namespace Product.Core.Dtos.Product;

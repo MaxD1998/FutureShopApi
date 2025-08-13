@@ -1,4 +1,4 @@
-﻿using Product.Domain.Entities;
+﻿using Product.Infrastructure.Entities;
 using Shared.Core.Bases;
 using System.Linq.Expressions;
 

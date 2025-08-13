@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Product.Domain.Entities;
+using Product.Infrastructure.Entities;
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Constants;
 

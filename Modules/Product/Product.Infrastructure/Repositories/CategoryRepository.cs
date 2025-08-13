@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Product.Domain.Entities;
+using Product.Infrastructure.Entities;
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Interfaces;
 using System.Linq.Expressions;

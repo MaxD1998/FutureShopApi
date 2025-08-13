@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shop.Domain.Entities;
+using Shop.Infrastructure.Entities;
 using System.Linq.Expressions;
 
 namespace Shop.Infrastructure.Repositories;

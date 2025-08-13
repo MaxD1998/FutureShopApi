@@ -1,4 +1,4 @@
-﻿using Authorization.Domain.Entities;
+﻿using Authorization.Inrfrastructure.Entities;
 using Shared.Infrastructure.Bases;
 
 namespace Authorization.Inrfrastructure.Repositories;

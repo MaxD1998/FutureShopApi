@@ -1,6 +1,6 @@
 ﻿using Authorization.Core.Dtos.UserModule;
-using Authorization.Domain.Entities;
-using Shared.Domain.Enums;
+using Authorization.Inrfrastructure.Entities;
+using Shared.Infrastructure.Enums;
 
 namespace Authorization.Core.Dtos;
 

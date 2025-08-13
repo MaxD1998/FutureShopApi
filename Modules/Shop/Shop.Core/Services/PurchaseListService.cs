@@ -3,7 +3,7 @@ using Shared.Core.Dtos;
 using Shared.Core.Errors;
 using Shared.Core.Services;
 using Shop.Core.Dtos.PurchaseList;
-using Shop.Domain.Entities;
+using Shop.Infrastructure.Entities;
 using Shop.Infrastructure.Repositories;
 using System.Net;
 

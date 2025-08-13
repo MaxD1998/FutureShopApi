@@ -1,7 +1,7 @@
 ﻿using Shop.Core.Dtos.Price;
 using Shop.Core.Dtos.ProductParameterValue;
 using Shop.Core.Dtos.ProductTranslation;
-using Shop.Domain.Entities;
+using Shop.Infrastructure.Entities;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.Product;

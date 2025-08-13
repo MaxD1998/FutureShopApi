@@ -1,7 +1,7 @@
 ﻿using File.Core.Dtos.ProductPhoto;
 using File.Core.Errors;
 using File.Core.Extensions;
-using File.Domain.Documents;
+using File.Infrastructure.Documents;
 using File.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
 using Shared.Core.Bases;

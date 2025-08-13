@@ -1,4 +1,4 @@
-﻿using Authorization.Domain.Entities;
+﻿using Authorization.Inrfrastructure.Entities;
 
 namespace Authorization.Core.Dtos.RefreshToken;
 

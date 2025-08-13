@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Interfaces;
-using Shop.Domain.Entities;
+using Shop.Infrastructure.Entities;
 using System.Linq.Expressions;
 
 namespace Shop.Infrastructure.Repositories;

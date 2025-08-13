@@ -9,21 +9,30 @@ namespace Shop.Core.Factories;
 
 internal interface ILogicFactory
 {
-    ILogic<SimulatePriceRequestDto, ResultDto<List<SimulatePriceFormDto>>> CreateSimulateAddPriceLogic(IProductRepository productRepository);
+    Task<TResult> ExecuteAsync<TRequest, TResult>(TRequest request, Func<ILogicFactory, ILogic<TRequest, TResult>> factorySelector, CancellationToken cancellationToken);
 
-    ILogic<SimulateRemovePriceRequestDto, ResultDto<List<SimulatePriceFormDto>>> CreateSimulateRemovePriceLogic(IProductRepository productRepository);
+    ILogic<SimulatePriceRequestDto, ResultDto<List<SimulatePriceFormDto>>> SimulateAddPriceLogic(IProductRepository productRepository);
 
-    ILogic<SimulatePriceRequestDto, ResultDto<List<SimulatePriceFormDto>>> CreateSimulateUpdatePriceLogic(IProductRepository productRepository);
+    ILogic<SimulateRemovePriceRequestDto, ResultDto<List<SimulatePriceFormDto>>> SimulateRemovePriceLogic(IProductRepository productRepository);
+
+    ILogic<SimulatePriceRequestDto, ResultDto<List<SimulatePriceFormDto>>> SimulateUpdatePriceLogic(IProductRepository productRepository);
 }
 
 internal class LogicFactory() : ILogicFactory
 {
-    public ILogic<SimulatePriceRequestDto, ResultDto<List<SimulatePriceFormDto>>> CreateSimulateAddPriceLogic(IProductRepository productRepository)
+    public Task<TResult> ExecuteAsync<TRequest, TResult>(TRequest request, Func<ILogicFactory, ILogic<TRequest, TResult>> factorySelector, CancellationToken cancellationToken)
+    {
+        var instace = factorySelector(this);
+
+        return instace.ExecuteAsync(request, cancellationToken);
+    }
+
+    public ILogic<SimulatePriceRequestDto, ResultDto<List<SimulatePriceFormDto>>> SimulateAddPriceLogic(IProductRepository productRepository)
         => new SimulateAddPriceLogic(new GetProductWasActiveLogic(productRepository));
 
-    public ILogic<SimulateRemovePriceRequestDto, ResultDto<List<SimulatePriceFormDto>>> CreateSimulateRemovePriceLogic(IProductRepository productRepository)
+    public ILogic<SimulateRemovePriceRequestDto, ResultDto<List<SimulatePriceFormDto>>> SimulateRemovePriceLogic(IProductRepository productRepository)
         => new SimulateRemovePriceLogic(new GetProductWasActiveLogic(productRepository));
 
-    public ILogic<SimulatePriceRequestDto, ResultDto<List<SimulatePriceFormDto>>> CreateSimulateUpdatePriceLogic(IProductRepository productRepository)
+    public ILogic<SimulatePriceRequestDto, ResultDto<List<SimulatePriceFormDto>>> SimulateUpdatePriceLogic(IProductRepository productRepository)
         => new SimulateUpdatePriceLogic(new GetProductWasActiveLogic(productRepository));
 }

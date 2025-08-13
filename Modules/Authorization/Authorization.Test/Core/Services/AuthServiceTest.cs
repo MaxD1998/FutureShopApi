@@ -1,14 +1,14 @@
 ﻿using Authorization.Core.Dtos.Login;
 using Authorization.Core.Dtos.User;
 using Authorization.Core.Services;
-using Authorization.Domain.Entities;
+using Authorization.Inrfrastructure.Entities;
 using Authorization.Inrfrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Moq;
 using Shared.Core.Dtos;
-using Shared.Domain.Enums;
 using Shared.Infrastructure.Constants;
+using Shared.Infrastructure.Enums;
 using Shared.Infrastructure.Settings;
 using System.Net;
 using System.Security.Claims;

@@ -1,4 +1,4 @@
-﻿using Shared.Domain.Bases;
+﻿using Shared.Infrastructure.Bases;
 
 namespace Shared.Infrastructure.Interfaces;
 

@@ -1,5 +1,4 @@
 ﻿using MongoDB.Driver;
-using Shared.Domain.Bases;
 using Shared.Infrastructure.Errors;
 using Shared.Infrastructure.Exceptions;
 

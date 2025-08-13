@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
-using Shared.Domain.Bases;
 using System.Linq.Expressions;
 
 namespace Shared.Infrastructure.Bases;

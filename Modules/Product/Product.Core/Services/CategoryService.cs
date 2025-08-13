@@ -1,6 +1,6 @@
 ﻿using Product.Core.Dtos;
 using Product.Core.Dtos.Category;
-using Product.Domain.Entities;
+using Product.Infrastructure.Entities;
 using Product.Infrastructure.Repositories;
 using Shared.Core.Bases;
 using Shared.Core.Constans;

@@ -1,4 +1,4 @@
-﻿using File.Domain.Documents;
+﻿using File.Infrastructure.Documents;
 using MongoDB.Driver;
 using Shared.Infrastructure.Bases;
 

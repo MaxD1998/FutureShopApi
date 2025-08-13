@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shared.Domain.Bases;
-using Shared.Domain.Interfaces;
 using Shared.Infrastructure.Extensions;
+using Shared.Infrastructure.Interfaces;
 using System.Linq.Expressions;
 
 namespace Shared.Infrastructure.Bases;
