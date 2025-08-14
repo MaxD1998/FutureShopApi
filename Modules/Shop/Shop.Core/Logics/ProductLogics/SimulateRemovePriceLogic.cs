@@ -3,17 +3,15 @@ using Shop.Core.Dtos;
 using Shop.Core.Dtos.Price;
 using Shop.Core.Interfaces;
 using Shop.Infrastructure.Helpers;
+using Shop.Infrastructure.Repositories;
 
 namespace Shop.Core.Logics.ProductLogics;
 
-internal class SimulateRemovePriceLogic(ILogic<GetProductWasActiveModel, bool> getProductWasActiveLogic) : ILogic<SimulateRemovePriceRequestDto, ResultDto<List<SimulatePriceFormDto>>>
+internal class SimulateRemovePriceLogic(IProductRepository productRepository) : BasePriceLogic(productRepository), ILogic<SimulateRemovePriceRequestDto, ResultDto<List<SimulatePriceFormDto>>>
 {
-    private readonly ILogic<GetProductWasActiveModel, bool> _getProductWasActiveLogic = getProductWasActiveLogic;
-
     public async Task<ResultDto<List<SimulatePriceFormDto>>> ExecuteAsync(SimulateRemovePriceRequestDto request, CancellationToken cancellationToken)
     {
-        var model = new GetProductWasActiveModel(request.ProductId);
-        var wasActive = await _getProductWasActiveLogic.ExecuteAsync(model, cancellationToken);
+        var wasActive = await GetProductWasActiveByIdAsync(request.ProductId, cancellationToken);
 
         foreach (var element in request.OldCollection.Where(x => x.IsNew))
         {

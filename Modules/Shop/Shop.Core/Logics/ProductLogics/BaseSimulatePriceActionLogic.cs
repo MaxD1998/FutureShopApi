@@ -3,19 +3,17 @@ using Shop.Core.Dtos;
 using Shop.Core.Dtos.Price;
 using Shop.Core.Interfaces;
 using Shop.Infrastructure.Entities;
+using Shop.Infrastructure.Repositories;
 
 namespace Shop.Core.Logics.ProductLogics;
 
-internal abstract class BaseSimulatePriceActionLogic(ILogic<GetProductWasActiveModel, bool> getProductWasActiveLogic) : ILogic<SimulatePriceRequestDto, ResultDto<List<SimulatePriceFormDto>>>
+internal abstract class BaseSimulatePriceActionLogic(IProductRepository productRepository) : BasePriceLogic(productRepository), ILogic<SimulatePriceRequestDto, ResultDto<List<SimulatePriceFormDto>>>
 {
-    private readonly ILogic<GetProductWasActiveModel, bool> _getProductWasActiveLogic = getProductWasActiveLogic;
-
     protected abstract Action<ICollection<PriceEntity>, PriceEntity, DateTime, bool> Action { get; }
 
     public async Task<ResultDto<List<SimulatePriceFormDto>>> ExecuteAsync(SimulatePriceRequestDto request, CancellationToken cancellationToken)
     {
-        var model = new GetProductWasActiveModel(request.ProductId);
-        var wasActive = await _getProductWasActiveLogic.ExecuteAsync(model, cancellationToken);
+        var wasActive = await GetProductWasActiveByIdAsync(request.ProductId, cancellationToken);
 
         if (request.Element.FakeId == 0)
             request.Element.Id = Guid.NewGuid();

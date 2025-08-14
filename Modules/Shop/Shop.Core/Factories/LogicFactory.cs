@@ -28,11 +28,11 @@ internal class LogicFactory() : ILogicFactory
     }
 
     public ILogic<SimulatePriceRequestDto, ResultDto<List<SimulatePriceFormDto>>> SimulateAddPriceLogic(IProductRepository productRepository)
-        => new SimulateAddPriceLogic(new GetProductWasActiveLogic(productRepository));
+        => new SimulateAddPriceLogic(productRepository);
 
     public ILogic<SimulateRemovePriceRequestDto, ResultDto<List<SimulatePriceFormDto>>> SimulateRemovePriceLogic(IProductRepository productRepository)
-        => new SimulateRemovePriceLogic(new GetProductWasActiveLogic(productRepository));
+        => new SimulateRemovePriceLogic(productRepository);
 
     public ILogic<SimulatePriceRequestDto, ResultDto<List<SimulatePriceFormDto>>> SimulateUpdatePriceLogic(IProductRepository productRepository)
-        => new SimulateUpdatePriceLogic(new GetProductWasActiveLogic(productRepository));
+        => new SimulateUpdatePriceLogic(productRepository);
 }
