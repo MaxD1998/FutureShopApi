@@ -1,8 +1,8 @@
 ﻿using Shared.Core.Dtos;
+using Shared.Shared.Interfaces;
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.Price;
-using Shop.Core.Interfaces;
-using Shop.Infrastructure.Helpers;
+using Shop.Infrastructure.DomainLogics;
 using Shop.Infrastructure.Repositories;
 
 namespace Shop.Core.Logics.ProductLogics;
@@ -25,7 +25,7 @@ internal class SimulateRemovePriceLogic(IProductRepository productRepository) : 
         var oldCollection = request.OldCollection.Select(x => x.ToEntity()).ToList();
         var newCollection = request.NewCollection.Select(x => x.ToEntity()).ToList();
 
-        PriceHelper.Remove(oldCollection, newCollection, DateTime.UtcNow, wasActive);
+        PriceDomainLogic.Remove(oldCollection, newCollection, DateTime.UtcNow, wasActive);
 
         var results = oldCollection.Select(SimulatePriceFormDto.Map()).ToList();
 

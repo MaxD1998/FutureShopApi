@@ -1,8 +1,8 @@
 ﻿using Shop.Infrastructure.Entities;
 
-namespace Shop.Infrastructure.Helpers;
+namespace Shop.Infrastructure.DomainLogics;
 
-public static class PriceHelper
+public static class PriceDomainLogic
 {
     public static void Add(ICollection<PriceEntity> entities, PriceEntity updateEntity, DateTime utcNow, bool wasActive)
     {

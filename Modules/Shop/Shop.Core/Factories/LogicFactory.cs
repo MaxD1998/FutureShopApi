@@ -1,16 +1,14 @@
 ﻿using Shared.Core.Dtos;
+using Shared.Shared.Interfaces;
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.Price;
-using Shop.Core.Interfaces;
 using Shop.Core.Logics.ProductLogics;
 using Shop.Infrastructure.Repositories;
 
 namespace Shop.Core.Factories;
 
-internal interface ILogicFactory
+internal interface ILogicFactory : ILogicFactory<ILogicFactory>
 {
-    Task<TResult> ExecuteAsync<TRequest, TResult>(TRequest request, Func<ILogicFactory, ILogic<TRequest, TResult>> factorySelector, CancellationToken cancellationToken);
-
     ILogic<SimulatePriceRequestDto, ResultDto<List<SimulatePriceFormDto>>> SimulateAddPriceLogic(IProductRepository productRepository);
 
     ILogic<SimulateRemovePriceRequestDto, ResultDto<List<SimulatePriceFormDto>>> SimulateRemovePriceLogic(IProductRepository productRepository);
