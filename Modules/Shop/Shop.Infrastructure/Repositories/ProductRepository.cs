@@ -61,7 +61,7 @@ public class ProductRepository(ShopContext context) : BaseRepository<ShopContext
             .Include(x => x.Translations)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-        if (entity == null)
+        if (entityToUpdate == null)
             return null;
 
         entityToUpdate.Update(entity);

@@ -1,7 +1,7 @@
 ﻿using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Extensions;
 using Shared.Infrastructure.Interfaces;
-using Shop.Infrastructure.Logics;
+using Shop.Infrastructure.Helpers;
 
 namespace Shop.Infrastructure.Entities;
 
@@ -72,13 +72,13 @@ public class ProductEntity : BaseExternalEntity, IUpdate<ProductEntity>, IUpdate
 
             if (!isExist)
             {
-                ProductLogic.Add(entities, updateEntity, utcNow, WasActive);
+                PriceHelper.Add(entities, updateEntity, utcNow, WasActive);
                 continue;
             }
 
-            ProductLogic.Update(entities, updateEntity, utcNow, WasActive);
+            PriceHelper.Update(entities, updateEntity, utcNow, WasActive);
         }
 
-        ProductLogic.Remove(entities, updateEntities, utcNow, WasActive);
+        PriceHelper.Remove(entities, updateEntities, utcNow, WasActive);
     }
 }

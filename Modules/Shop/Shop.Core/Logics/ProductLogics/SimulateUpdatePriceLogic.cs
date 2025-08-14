@@ -1,10 +1,10 @@
 ﻿using Shop.Core.Interfaces;
 using Shop.Infrastructure.Entities;
-using Shop.Infrastructure.Logics;
+using Shop.Infrastructure.Helpers;
 
 namespace Shop.Core.Logics.ProductLogics;
 
-internal class SimulateUpdatePriceLogic(ILogic<Guid?, bool> getProductWasActiveLogic) : BaseSimulatePriceActionLogic(getProductWasActiveLogic)
+internal class SimulateUpdatePriceLogic(ILogic<GetProductWasActiveModel, bool> getProductWasActiveLogic) : BaseSimulatePriceActionLogic(getProductWasActiveLogic)
 {
-    protected override Action<ICollection<PriceEntity>, PriceEntity, DateTime, bool> Action => ProductLogic.Update;
+    protected override Action<ICollection<PriceEntity>, PriceEntity, DateTime, bool> Action => PriceHelper.Update;
 }

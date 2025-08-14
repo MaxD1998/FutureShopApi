@@ -28,7 +28,7 @@ public class AdCampaignRepository(ShopContext context) : BaseRepository<ShopCont
             .Include(x => x.AdCampaignItems)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-        if (entity == null)
+        if (entityToUpdate == null)
             return null;
 
         entityToUpdate.Update(entity);

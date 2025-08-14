@@ -42,7 +42,7 @@ public class ProductBaseRepository(ShopContext context) : BaseRepository<ShopCon
                 .ThenInclude(x => x.Translations)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-        if (entity == null)
+        if (entityToUpdate == null)
             return null;
 
         entityToUpdate.Update(entity);

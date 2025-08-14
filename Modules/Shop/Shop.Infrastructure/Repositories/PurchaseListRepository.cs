@@ -52,7 +52,7 @@ public class PurchaseListRepository(ShopContext context) : BaseRepository<ShopCo
             .Include(x => x.PurchaseListItems)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-        if (entity == null)
+        if (entityToUpdate == null)
             return null;
 
         entityToUpdate.Update(entity);
