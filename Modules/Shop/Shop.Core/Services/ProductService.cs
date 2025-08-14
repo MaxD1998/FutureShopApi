@@ -14,7 +14,7 @@ namespace Shop.Core.Services;
 
 public interface IProductService
 {
-    Task<ResultDto<ProductFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<ResultDto<ProductResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
     Task<ResultDto<ProductDto>> GetDetailsByIdAsync(Guid id, Guid? favouriteId, CancellationToken cancellationToken);
 
@@ -28,7 +28,7 @@ public interface IProductService
 
     Task<ResultDto<List<SimulatePriceFormDto>>> SimulateUpdatePriceAsync(SimulatePriceRequestDto request, CancellationToken cancellationToken);
 
-    Task<ResultDto<ProductFormDto>> UpdateAsync(Guid id, ProductFormDto dto, CancellationToken cancellationToken);
+    Task<ResultDto<ProductResponseFormDto>> UpdateAsync(Guid id, ProductRequestFormDto dto, CancellationToken cancellationToken);
 }
 
 internal class ProductService(IHeaderService headerService, ICurrentUserService currentUserService, IProductRepository productRepository) : BaseService, IProductService
@@ -38,9 +38,9 @@ internal class ProductService(IHeaderService headerService, ICurrentUserService 
     private readonly ILogicFactory _logicFactory = new LogicFactory();
     private readonly IProductRepository _productRepository = productRepository;
 
-    public async Task<ResultDto<ProductFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ResultDto<ProductResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        var result = await _productRepository.GetByIdAsync(id, ProductFormDto.Map(), cancellationToken);
+        var result = await _productRepository.GetByIdAsync(id, ProductResponseFormDto.Map(), cancellationToken);
 
         return Success(result);
     }
@@ -86,10 +86,10 @@ internal class ProductService(IHeaderService headerService, ICurrentUserService 
     public async Task<ResultDto<List<SimulatePriceFormDto>>> SimulateUpdatePriceAsync(SimulatePriceRequestDto request, CancellationToken cancellationToken)
         => await _logicFactory.ExecuteAsync(request, f => f.SimulateUpdatePriceLogic(_productRepository), cancellationToken);
 
-    public async Task<ResultDto<ProductFormDto>> UpdateAsync(Guid id, ProductFormDto dto, CancellationToken cancellationToken)
+    public async Task<ResultDto<ProductResponseFormDto>> UpdateAsync(Guid id, ProductRequestFormDto dto, CancellationToken cancellationToken)
     {
         var entity = await _productRepository.UpdateAsync(id, dto.ToEntity(), cancellationToken);
-        var result = await _productRepository.GetByIdAsync(entity.Id, ProductFormDto.Map(), cancellationToken);
+        var result = await _productRepository.GetByIdAsync(entity.Id, ProductResponseFormDto.Map(), cancellationToken);
 
         return Success(result);
     }

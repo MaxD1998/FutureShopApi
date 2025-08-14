@@ -12,7 +12,7 @@ public class ProductController(IProductService productService) : ShopModuleBaseC
     private readonly IProductService _productService = productService;
 
     [HttpGet("{id:guid}")]
-    [ProducesResponseType(typeof(ProductFormDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProductResponseFormDto), StatusCodes.Status200OK)]
     public Task<IActionResult> GetByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_productService.GetByIdAsync, id, cancellationToken);
 
@@ -47,7 +47,7 @@ public class ProductController(IProductService productService) : ShopModuleBaseC
         => ApiResponseAsync(_productService.SimulateUpdatePriceAsync, request, cancellationToken);
 
     [HttpPut("{id:guid}")]
-    [ProducesResponseType(typeof(ProductFormDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] ProductFormDto dto, CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(ProductResponseFormDto), StatusCodes.Status200OK)]
+    public Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] ProductRequestFormDto dto, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_productService.UpdateAsync, id, dto, cancellationToken);
 }

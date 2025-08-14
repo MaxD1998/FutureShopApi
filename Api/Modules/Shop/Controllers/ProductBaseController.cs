@@ -11,7 +11,7 @@ public class ProductBaseController(IProductBaseService productBaseService) : Sho
     private readonly IProductBaseService _productBaseService = productBaseService;
 
     [HttpGet("{id:guid}")]
-    [ProducesResponseType(typeof(ProductBaseFormDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProductBaseResponseFormDto), StatusCodes.Status200OK)]
     public Task<IActionResult> GetByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_productBaseService.GetByIdAsync, id, cancellationToken);
 
@@ -26,7 +26,7 @@ public class ProductBaseController(IProductBaseService productBaseService) : Sho
         => ApiResponseAsync(_productBaseService.GetPageAsync, pageNumber, cancellationToken);
 
     [HttpPut("{id:guid}")]
-    [ProducesResponseType(typeof(ProductBaseFormDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] ProductBaseFormDto dto, CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(ProductBaseResponseFormDto), StatusCodes.Status200OK)]
+    public Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] ProductBaseRequestFormDto dto, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_productBaseService.UpdateAsync, id, dto, cancellationToken);
 }

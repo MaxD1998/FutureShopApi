@@ -10,7 +10,7 @@ namespace Shop.Core.Services;
 
 public interface IBasketSerivce
 {
-    Task<ResultDto<BasketFormDto>> CreateAsync(BasketFormDto dto, CancellationToken cancellationToken);
+    Task<ResultDto<BasketResponseFormDto>> CreateAsync(BasketRequestFormDto dto, CancellationToken cancellationToken);
 
     Task<ResultDto<BasketDto>> GetByAuthorizedUserAsync(CancellationToken cancellationToken);
 
@@ -18,7 +18,7 @@ public interface IBasketSerivce
 
     Task<ResultDto<BasketDto>> ImportPurchaseListAsync(ImportPurchaseListToBasketDto dto, CancellationToken cancellationToken);
 
-    Task<ResultDto<BasketFormDto>> UpdateAsync(Guid id, BasketFormDto dto, CancellationToken cancellationToken);
+    Task<ResultDto<BasketResponseFormDto>> UpdateAsync(Guid id, BasketRequestFormDto dto, CancellationToken cancellationToken);
 }
 
 internal class BasketService(IBasketRepository basketRepository, ICurrentUserService currentUserService, IPurchaseListRepository purchaseListRepository) : BaseService, IBasketSerivce
@@ -27,11 +27,11 @@ internal class BasketService(IBasketRepository basketRepository, ICurrentUserSer
     private readonly ICurrentUserService _currentUserService = currentUserService;
     private readonly IPurchaseListRepository _purchaseListRepository = purchaseListRepository;
 
-    public async Task<ResultDto<BasketFormDto>> CreateAsync(BasketFormDto dto, CancellationToken cancellationToken)
+    public async Task<ResultDto<BasketResponseFormDto>> CreateAsync(BasketRequestFormDto dto, CancellationToken cancellationToken)
     {
         var userId = _currentUserService.GetUserId();
         var entity = await _basketRepository.CreateAsync(dto.ToEntity(userId), cancellationToken);
-        var result = await _basketRepository.GetByIdAsync(entity.Id, BasketFormDto.Map(), cancellationToken);
+        var result = await _basketRepository.GetByIdAsync(entity.Id, BasketResponseFormDto.Map(), cancellationToken);
 
         return Success(result);
     }
@@ -84,11 +84,11 @@ internal class BasketService(IBasketRepository basketRepository, ICurrentUserSer
         return Success(result);
     }
 
-    public async Task<ResultDto<BasketFormDto>> UpdateAsync(Guid id, BasketFormDto dto, CancellationToken cancellationToken)
+    public async Task<ResultDto<BasketResponseFormDto>> UpdateAsync(Guid id, BasketRequestFormDto dto, CancellationToken cancellationToken)
     {
         var userId = _currentUserService.GetUserId();
         var entity = await _basketRepository.UpdateAsync(id, dto.ToEntity(userId), cancellationToken);
-        var result = await _basketRepository.GetByIdAsync(entity.Id, BasketFormDto.Map(), cancellationToken);
+        var result = await _basketRepository.GetByIdAsync(entity.Id, BasketResponseFormDto.Map(), cancellationToken);
 
         return Success(result);
     }

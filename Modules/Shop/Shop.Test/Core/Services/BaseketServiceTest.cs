@@ -27,7 +27,7 @@ public class BaseketServiceTest
     {
         //Arrange
         var userId = guidString == null ? null : (Guid?)Guid.Parse(guidString);
-        var basketDto = new BasketFormDto()
+        var basketDto = new BasketRequestFormDto()
         {
             BasketItems = [],
         };
@@ -46,9 +46,9 @@ public class BaseketServiceTest
         _basketRepositoryMock
             .Setup(x =>
                 x.GetByIdAsync(It.IsAny<Guid>(),
-                It.IsAny<Expression<Func<BasketEntity, BasketFormDto>>>(),
+                It.IsAny<Expression<Func<BasketEntity, BasketResponseFormDto>>>(),
                 It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new BasketFormDto
+            .ReturnsAsync(new BasketResponseFormDto
             {
                 Id = basketOutputEntity.Id,
                 BasketItems = []
@@ -64,9 +64,9 @@ public class BaseketServiceTest
         _basketRepositoryMock
             .Setup(x =>
                 x.GetByIdAsync(It.Is<Guid>(x => x == basketOutputEntity.Id),
-                It.IsAny<Expression<Func<BasketEntity, BasketFormDto>>>(),
+                It.IsAny<Expression<Func<BasketEntity, BasketResponseFormDto>>>(),
                 It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new BasketFormDto
+            .ReturnsAsync(new BasketResponseFormDto
             {
                 Id = basketOutputEntity.Id,
                 BasketItems = []

@@ -1,23 +1,15 @@
 ﻿using Product.Core.Dtos.ProductPhoto;
 using Product.Infrastructure.Entities;
-using System.Linq.Expressions;
 
 namespace Product.Core.Dtos.Product;
 
-public class ProductFormDto
+public class ProductRequestFormDto
 {
     public string Name { get; set; }
 
     public Guid ProductBaseId { get; set; }
 
     public List<ProductPhotoFormDto> ProductPhotos { get; set; }
-
-    public static Expression<Func<ProductEntity, ProductFormDto>> Map() => entity => new()
-    {
-        Name = entity.Name,
-        ProductBaseId = entity.ProductBaseId,
-        ProductPhotos = entity.ProductPhotos.AsQueryable().OrderBy(x => x.Position).Select(ProductPhotoFormDto.Map()).ToList(),
-    };
 
     public ProductEntity ToEntity() => new()
     {
