@@ -31,7 +31,7 @@ public interface IProductService
     Task<ResultDto<ProductFormDto>> UpdateAsync(Guid id, ProductFormDto dto, CancellationToken cancellationToken);
 }
 
-public class ProductService(IHeaderService headerService, ICurrentUserService currentUserService, IProductRepository productRepository) : BaseService, IProductService
+internal class ProductService(IHeaderService headerService, ICurrentUserService currentUserService, IProductRepository productRepository) : BaseService, IProductService
 {
     private readonly ICurrentUserService _currentUserService = currentUserService;
     private readonly IHeaderService _headerService = headerService;

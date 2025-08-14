@@ -15,7 +15,7 @@ public interface ICategoryRepository : IBaseRepository<CategoryEntity>, IUpdateR
     Task<List<TResult>> GetListPotentialSubcategoriesAsync<TResult>(Guid? id, Guid? parentId, List<Guid> childIds, Expression<Func<CategoryEntity, TResult>> map, CancellationToken cancellationToken);
 }
 
-public class CategoryRepository(ProductContext context) : BaseRepository<ProductContext, CategoryEntity>(context), ICategoryRepository
+internal class CategoryRepository(ProductContext context) : BaseRepository<ProductContext, CategoryEntity>(context), ICategoryRepository
 {
     public Task<List<CategoryEntity>> GetListByIds(List<Guid> ids, CancellationToken cancellationToken)
         => _context.Set<CategoryEntity>().Where(x => ids.Contains(x.Id)).ToListAsync(cancellationToken);

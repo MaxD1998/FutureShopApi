@@ -9,7 +9,7 @@ public interface IProductParameterRepository
     Task<List<TResult>> GetListByProductIdAsync<TResult>(Guid productId, Expression<Func<ProductParameterEntity, TResult>> map, CancellationToken cancellationToken);
 }
 
-public class ProductParameterRepository(ShopContext context) : IProductParameterRepository
+internal class ProductParameterRepository(ShopContext context) : IProductParameterRepository
 {
     private readonly ShopContext _context = context;
 

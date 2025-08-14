@@ -9,7 +9,7 @@ public interface IProductBaseRepository : IBaseRepository<ProductBaseEntity>, IU
 {
 }
 
-public class ProductBaseRepository(ProductContext context) : BaseRepository<ProductContext, ProductBaseEntity>(context), IProductBaseRepository
+internal class ProductBaseRepository(ProductContext context) : BaseRepository<ProductContext, ProductBaseEntity>(context), IProductBaseRepository
 {
     public async Task<ProductBaseEntity> UpdateAsync(Guid id, ProductBaseEntity entity, CancellationToken cancellationToken)
     {

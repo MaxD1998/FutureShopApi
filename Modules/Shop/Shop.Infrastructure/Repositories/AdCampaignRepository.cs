@@ -11,7 +11,7 @@ public interface IAdCampaignRepository : IBaseRepository<AdCampaignEntity>, IUpd
     Task<List<TResult>> GetActualAsync<TResult>(Expression<Func<AdCampaignEntity, TResult>> map, CancellationToken cancellationToken);
 }
 
-public class AdCampaignRepository(ShopContext context) : BaseRepository<ShopContext, AdCampaignEntity>(context), IAdCampaignRepository
+internal class AdCampaignRepository(ShopContext context) : BaseRepository<ShopContext, AdCampaignEntity>(context), IAdCampaignRepository
 {
     public Task<List<TResult>> GetActualAsync<TResult>(Expression<Func<AdCampaignEntity, TResult>> map, CancellationToken cancellationToken)
     {

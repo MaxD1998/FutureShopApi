@@ -13,7 +13,7 @@ public interface ICookieService
     ResultDto RemoveCookie(string name);
 }
 
-public class CookieService : BaseService, ICookieService
+internal class CookieService : BaseService, ICookieService
 {
     private readonly IResponseCookies _reponseCookies;
     private readonly IRequestCookieCollection _requestCookieCollection;

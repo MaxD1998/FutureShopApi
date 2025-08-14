@@ -1,5 +1,4 @@
-﻿using Authorization.Infrastructure;
-using Authorization.Infrastructure.Entities;
+﻿using Authorization.Infrastructure.Entities;
 using Shared.Infrastructure.Bases;
 
 namespace Authorization.Infrastructure.Repositories;
@@ -13,7 +12,7 @@ public interface IUserRepository : IBaseRepository<UserEntity>
     Task<UserEntity> GetByTokenAsync(Guid token, CancellationToken cancellationToken);
 }
 
-public class UserRepository(AuthContext context) : BaseRepository<AuthContext, UserEntity>(context), IUserRepository
+internal class UserRepository(AuthContext context) : BaseRepository<AuthContext, UserEntity>(context), IUserRepository
 {
     public Task<bool> AnyByEmailAsync(string email, CancellationToken cancellationToken)
         => AnyAsync(x => x.Email == email, cancellationToken);

@@ -30,7 +30,7 @@ public interface ICategoryService
     Task<ResultDto<CategoryFormDto>> UpdateAsync(Guid id, CategoryFormDto dto, CancellationToken cancellationToken);
 }
 
-public class CategoryService(ICategoryRepository categoryRepository, IRabbitMqContext rabbitMqContext) : BaseService, ICategoryService
+internal class CategoryService(ICategoryRepository categoryRepository, IRabbitMqContext rabbitMqContext) : BaseService, ICategoryService
 {
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
     private readonly IRabbitMqContext _rabbitMqContext = rabbitMqContext;

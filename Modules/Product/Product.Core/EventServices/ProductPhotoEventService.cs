@@ -11,7 +11,7 @@ public interface IProductPhotoEventService
     Task GetMissingFileIdsAsync(List<string> ids, CancellationToken cancellationToken);
 }
 
-public class ProductPhotoEventService(IProductPhotoRepository productPhotoRepository, IRabbitMqContext rabbitMqContext) : IProductPhotoEventService
+internal class ProductPhotoEventService(IProductPhotoRepository productPhotoRepository, IRabbitMqContext rabbitMqContext) : IProductPhotoEventService
 {
     private readonly IProductPhotoRepository _productPhotoRepository = productPhotoRepository;
     private readonly IRabbitMqContext _rabbitMqContext = rabbitMqContext;

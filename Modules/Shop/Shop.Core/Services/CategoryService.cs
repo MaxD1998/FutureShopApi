@@ -22,7 +22,7 @@ public interface ICategoryService
     Task<ResultDto<CategoryFormDto>> UdpateAsync(Guid id, CategoryFormDto dto, CancellationToken cancellationToken);
 }
 
-public class CategoryService(ICategoryRepository categoryRepository, IHeaderService headerService) : BaseService, ICategoryService
+internal class CategoryService(ICategoryRepository categoryRepository, IHeaderService headerService) : BaseService, ICategoryService
 {
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
     private readonly IHeaderService _headerService = headerService;

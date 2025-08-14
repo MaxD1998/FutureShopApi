@@ -21,7 +21,7 @@ public interface IFileService
     Task<ResultDto<List<ProductPhotoInfoDto>>> GetListInfoByIdsAsync(List<string> ids, CancellationToken cancellationToken);
 }
 
-public class FileService(IFileRepository fileRepository) : BaseService, IFileService
+internal class FileService(IFileRepository fileRepository) : BaseService, IFileService
 {
     private readonly IFileRepository _fileRepository = fileRepository;
 

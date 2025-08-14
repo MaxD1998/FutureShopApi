@@ -22,7 +22,7 @@ public interface IProductService
     Task<ResultDto<ProductFormDto>> UpdateAsync(Guid id, ProductFormDto dto, CancellationToken cancellationToken);
 }
 
-public class ProductService(IProductRepository productRepository, IRabbitMqContext rabbitMqContext) : BaseService, IProductService
+internal class ProductService(IProductRepository productRepository, IRabbitMqContext rabbitMqContext) : BaseService, IProductService
 {
     private readonly IProductRepository _productRepository = productRepository;
     private readonly IRabbitMqContext _rabbitMqContext = rabbitMqContext;

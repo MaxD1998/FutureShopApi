@@ -14,7 +14,7 @@ public interface IProductBaseRepository : IBaseRepository<ProductBaseEntity>, IU
     Task<Guid?> GetIdByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
 }
 
-public class ProductBaseRepository(ShopContext context) : BaseRepository<ShopContext, ProductBaseEntity>(context), IProductBaseRepository
+internal class ProductBaseRepository(ShopContext context) : BaseRepository<ShopContext, ProductBaseEntity>(context), IProductBaseRepository
 {
     public async Task CreateOrUpdateAsync(ProductBaseEntity eventEntity, CancellationToken cancellationToken)
     {

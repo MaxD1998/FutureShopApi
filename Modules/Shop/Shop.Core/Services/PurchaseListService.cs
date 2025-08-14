@@ -24,7 +24,7 @@ public interface IPurchaseListService
     Task<ResultDto<PurchaseListFormDto>> UpdateAsync(Guid id, PurchaseListFormDto dto, CancellationToken cancellationToken);
 }
 
-public class PurchaseListService(IBasketRepository basketRepository, ICurrentUserService currentUserService, IPurchaseListRepository purchaseListRepository) : BaseService, IPurchaseListService
+internal class PurchaseListService(IBasketRepository basketRepository, ICurrentUserService currentUserService, IPurchaseListRepository purchaseListRepository) : BaseService, IPurchaseListService
 {
     private readonly IBasketRepository _basketRepository = basketRepository;
     private readonly ICurrentUserService _currentUserService = currentUserService;

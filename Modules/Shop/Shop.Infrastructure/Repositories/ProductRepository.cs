@@ -19,7 +19,7 @@ public interface IProductRepository : IBaseRepository<ProductEntity>, IUpdateRep
     Task<List<TResult>> GetListByCategoryIdAsync<TResult>(GetProductListByCategoryIdParams parameters, Expression<Func<ProductEntity, TResult>> map, CancellationToken cancellationToken);
 }
 
-public class ProductRepository(ShopContext context) : BaseRepository<ShopContext, ProductEntity>(context), IProductRepository
+internal class ProductRepository(ShopContext context) : BaseRepository<ShopContext, ProductEntity>(context), IProductRepository
 {
     public async Task CreateOrUpdateForEventAsync(ProductEntity eventEntity, CancellationToken cancellationToken)
     {

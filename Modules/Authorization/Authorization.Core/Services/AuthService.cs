@@ -30,7 +30,7 @@ public interface IAuthService
     Task<ResultDto<AuthorizeDto>> RegisterAsync(UserFormDto dto, CancellationToken cancellationToken = default);
 }
 
-public class AuthService : BaseService, IAuthService
+internal class AuthService : BaseService, IAuthService
 {
     private readonly ICookieService _cookieService;
     private readonly HttpContext _httpContext;

@@ -12,7 +12,7 @@ public interface IProductEventService
     Task DeleteByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
 }
 
-public class ProductEventService(IProductBaseRepository productBaseRepository, IProductRepository productRepository) : BaseService, IProductEventService
+internal class ProductEventService(IProductBaseRepository productBaseRepository, IProductRepository productRepository) : BaseService, IProductEventService
 {
     private readonly IProductBaseRepository _productBaseRepository = productBaseRepository;
     private readonly IProductRepository _productRepository = productRepository;

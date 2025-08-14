@@ -11,7 +11,7 @@ public interface IRefreshTokenRepository : IBaseRepository<RefreshTokenEntity>
     Task DeleteByUserId(Guid userId, CancellationToken cancellationToken);
 }
 
-public class RefreshTokenRepository(AuthContext context) : BaseRepository<AuthContext, RefreshTokenEntity>(context), IRefreshTokenRepository
+internal class RefreshTokenRepository(AuthContext context) : BaseRepository<AuthContext, RefreshTokenEntity>(context), IRefreshTokenRepository
 {
     public async Task<RefreshTokenEntity> CreateOrUpdateByUserIdAsync(RefreshTokenEntity entityToUpdate, CancellationToken cancellationToken)
     {

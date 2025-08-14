@@ -21,7 +21,7 @@ public interface IAdCampaignService
     Task<ResultDto<AdCampaignFormDto>> UpdateAsync(Guid id, AdCampaignFormDto dto, CancellationToken cancellationToken);
 }
 
-public class AdCampaignService(IAdCampaignRepository adCampaignRepository) : BaseService, IAdCampaignService
+internal class AdCampaignService(IAdCampaignRepository adCampaignRepository) : BaseService, IAdCampaignService
 {
     private readonly IAdCampaignRepository _adCampaignRepository = adCampaignRepository;
 

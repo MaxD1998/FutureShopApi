@@ -21,7 +21,7 @@ public interface IBasketSerivce
     Task<ResultDto<BasketFormDto>> UpdateAsync(Guid id, BasketFormDto dto, CancellationToken cancellationToken);
 }
 
-public class BasketService(IBasketRepository basketRepository, ICurrentUserService currentUserService, IPurchaseListRepository purchaseListRepository) : BaseService, IBasketSerivce
+internal class BasketService(IBasketRepository basketRepository, ICurrentUserService currentUserService, IPurchaseListRepository purchaseListRepository) : BaseService, IBasketSerivce
 {
     private readonly IBasketRepository _basketRepository = basketRepository;
     private readonly ICurrentUserService _currentUserService = currentUserService;

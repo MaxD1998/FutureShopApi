@@ -12,7 +12,7 @@ public interface ICategoryEventService
     Task DeleteByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
 }
 
-public class CategoryEventService(ICategoryRepository categoryRepository) : BaseService, ICategoryEventService
+internal class CategoryEventService(ICategoryRepository categoryRepository) : BaseService, ICategoryEventService
 {
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
 

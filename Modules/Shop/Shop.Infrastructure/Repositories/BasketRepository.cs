@@ -11,7 +11,7 @@ public interface IBasketRepository : IBaseRepository<BasketEntity>, IUpdateRepos
     Task<TResult> GetByUserIdAsync<TResult>(Guid userId, Expression<Func<BasketEntity, TResult>> map, CancellationToken cancellationToken);
 }
 
-public class BasketRepository(ShopContext context) : BaseRepository<ShopContext, BasketEntity>(context), IBasketRepository
+internal class BasketRepository(ShopContext context) : BaseRepository<ShopContext, BasketEntity>(context), IBasketRepository
 {
     public async Task<TResult> GetByUserIdAsync<TResult>(Guid userId, Expression<Func<BasketEntity, TResult>> map, CancellationToken cancellationToken)
         => await _context.Set<BasketEntity>().AsNoTracking().Where(x => x.UserId == userId).Select(map).FirstOrDefaultAsync(cancellationToken);

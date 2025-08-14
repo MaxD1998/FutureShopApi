@@ -18,7 +18,7 @@ public interface IProductBaseService
     Task<ResultDto<ProductBaseFormDto>> UpdateAsync(Guid id, ProductBaseFormDto dto, CancellationToken cancellationToken);
 }
 
-public class ProductBaseService(IProductBaseRepository productBaseRepository) : BaseService, IProductBaseService
+internal class ProductBaseService(IProductBaseRepository productBaseRepository) : BaseService, IProductBaseService
 {
     private readonly IProductBaseRepository _productBaseRepository = productBaseRepository;
 
