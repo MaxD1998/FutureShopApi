@@ -1,4 +1,4 @@
-﻿using Shared.Domain.Bases;
+﻿using Shared.Infrastructure.Bases;
 using System.Linq.Expressions;
 
 namespace Shared.Core.Bases;

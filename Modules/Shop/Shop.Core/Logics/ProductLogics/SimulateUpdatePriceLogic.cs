@@ -1,10 +1,10 @@
-﻿using Shop.Core.Interfaces;
-using Shop.Domain.Entities;
-using Shop.Domain.Logics;
+﻿using Shop.Infrastructure.DomainLogics;
+using Shop.Infrastructure.Entities;
+using Shop.Infrastructure.Repositories;
 
 namespace Shop.Core.Logics.ProductLogics;
 
-internal class SimulateUpdatePriceLogic(ILogic<Guid?, bool> getProductWasActiveLogic) : BaseSimulatePriceActionLogic(getProductWasActiveLogic)
+internal class SimulateUpdatePriceLogic(IProductRepository productRepository) : BaseSimulatePriceActionLogic(productRepository)
 {
-    protected override Action<ICollection<PriceEntity>, PriceEntity, DateTime, bool> Action => ProductLogic.Update;
+    protected override Action<ICollection<PriceEntity>, PriceEntity, DateTime, bool> Action => PriceDomainLogic.Update;
 }

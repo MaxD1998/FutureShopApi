@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Product.Domain.Entities;
+using Product.Infrastructure.Entities;
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Interfaces;
 
@@ -9,7 +9,7 @@ public interface IProductRepository : IBaseRepository<ProductEntity>, IUpdateRep
 {
 }
 
-public class ProductRepository(ProductContext context) : BaseRepository<ProductContext, ProductEntity>(context), IProductRepository
+internal class ProductRepository(ProductContext context) : BaseRepository<ProductContext, ProductEntity>(context), IProductRepository
 {
     public async Task<ProductEntity> UpdateAsync(Guid id, ProductEntity entity, CancellationToken cancellationToken)
     {

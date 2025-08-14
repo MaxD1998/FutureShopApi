@@ -2,7 +2,7 @@
 using Product.Core.Dtos.Product;
 using Product.Core.Services;
 using Shared.Api.Attributes;
-using Shared.Domain.Enums;
+using Shared.Infrastructure.Enums;
 using Shared.Infrastructure.Extensions;
 
 namespace Api.Modules.Product.Controllers;
@@ -13,8 +13,8 @@ public class ProductController(IProductService productService) : ProductModuleBa
     private readonly IProductService _productService = productService;
 
     [HttpPost]
-    [ProducesResponseType(typeof(ProductFormDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> CreateAsync([FromBody] ProductFormDto dto, CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(ProductResponseFormDto), StatusCodes.Status200OK)]
+    public Task<IActionResult> CreateAsync([FromBody] ProductRequestFormDto dto, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_productService.CreateAsync, dto, cancellationToken);
 
     [HttpDelete("{id:guid}")]
@@ -23,7 +23,7 @@ public class ProductController(IProductService productService) : ProductModuleBa
         => ApiResponseAsync(_productService.DeleteByIdAsync, id, cancellationToken);
 
     [HttpGet("{id:guid}")]
-    [ProducesResponseType(typeof(ProductFormDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProductResponseFormDto), StatusCodes.Status200OK)]
     public Task<IActionResult> GetByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_productService.GetByIdAsync, id, cancellationToken);
 
@@ -33,7 +33,7 @@ public class ProductController(IProductService productService) : ProductModuleBa
         => ApiResponseAsync(_productService.GetPageListAsync, pageNumber, cancellationToken);
 
     [HttpPut("{id:guid}")]
-    [ProducesResponseType(typeof(ProductFormDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] ProductFormDto dto, CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(ProductResponseFormDto), StatusCodes.Status200OK)]
+    public Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] ProductRequestFormDto dto, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_productService.UpdateAsync, id, dto, cancellationToken);
 }

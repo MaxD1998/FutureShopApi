@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Shared.Domain.Enums;
+using Shared.Infrastructure.Enums;
 
 namespace Shared.Api.Attributes;
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Interfaces;
-using Shop.Domain.Entities;
+using Shop.Infrastructure.Entities;
 
 namespace Shop.Infrastructure.Repositories;
 
@@ -14,7 +14,7 @@ public interface IProductBaseRepository : IBaseRepository<ProductBaseEntity>, IU
     Task<Guid?> GetIdByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
 }
 
-public class ProductBaseRepository(ShopContext context) : BaseRepository<ShopContext, ProductBaseEntity>(context), IProductBaseRepository
+internal class ProductBaseRepository(ShopContext context) : BaseRepository<ShopContext, ProductBaseEntity>(context), IProductBaseRepository
 {
     public async Task CreateOrUpdateAsync(ProductBaseEntity eventEntity, CancellationToken cancellationToken)
     {
@@ -42,7 +42,7 @@ public class ProductBaseRepository(ShopContext context) : BaseRepository<ShopCon
                 .ThenInclude(x => x.Translations)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-        if (entity == null)
+        if (entityToUpdate == null)
             return null;
 
         entityToUpdate.Update(entity);

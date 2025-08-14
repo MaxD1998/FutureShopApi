@@ -2,7 +2,7 @@
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Extensions;
 using Shared.Infrastructure.Interfaces;
-using Shop.Domain.Entities;
+using Shop.Infrastructure.Entities;
 using Shop.Infrastructure.Models.Product;
 using System.Linq.Expressions;
 
@@ -19,7 +19,7 @@ public interface IProductRepository : IBaseRepository<ProductEntity>, IUpdateRep
     Task<List<TResult>> GetListByCategoryIdAsync<TResult>(GetProductListByCategoryIdParams parameters, Expression<Func<ProductEntity, TResult>> map, CancellationToken cancellationToken);
 }
 
-public class ProductRepository(ShopContext context) : BaseRepository<ShopContext, ProductEntity>(context), IProductRepository
+internal class ProductRepository(ShopContext context) : BaseRepository<ShopContext, ProductEntity>(context), IProductRepository
 {
     public async Task CreateOrUpdateForEventAsync(ProductEntity eventEntity, CancellationToken cancellationToken)
     {
@@ -61,7 +61,7 @@ public class ProductRepository(ShopContext context) : BaseRepository<ShopContext
             .Include(x => x.Translations)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-        if (entity == null)
+        if (entityToUpdate == null)
             return null;
 
         entityToUpdate.Update(entity);

@@ -12,7 +12,7 @@ public interface IFileJobService
     Task<ResultDto> SendIdBatchesForAssignmentCheck(CancellationToken cancellationToken);
 }
 
-public class FileJobService(IFileRepository fileRepository, IRabbitMqContext rabbitMqContext) : BaseService, IFileJobService
+internal class FileJobService(IFileRepository fileRepository, IRabbitMqContext rabbitMqContext) : BaseService, IFileJobService
 {
     private readonly IFileRepository _fileRepository = fileRepository;
     private readonly IRabbitMqContext _rabbitMqContext = rabbitMqContext;

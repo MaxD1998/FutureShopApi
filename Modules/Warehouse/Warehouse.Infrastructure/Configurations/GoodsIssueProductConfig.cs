@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.Infrastructure.Bases;
-using Warehouse.Domain.Entities;
+using Warehouse.Infrastructure.Entities;
 
 namespace Warehouse.Infrastructure.Configurations;
 

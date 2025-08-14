@@ -1,16 +1,16 @@
 ﻿using Authorization.Core.Dtos;
 using Authorization.Core.Dtos.Login;
 using Authorization.Core.Dtos.User;
-using Authorization.Domain.Entities;
-using Authorization.Inrfrastructure.Repositories;
+using Authorization.Infrastructure.Entities;
+using Authorization.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Shared.Core.Bases;
 using Shared.Core.Dtos;
 using Shared.Core.Errors;
-using Shared.Domain.Enums;
 using Shared.Infrastructure.Constants;
+using Shared.Infrastructure.Enums;
 using Shared.Infrastructure.Settings;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
@@ -30,7 +30,7 @@ public interface IAuthService
     Task<ResultDto<AuthorizeDto>> RegisterAsync(UserFormDto dto, CancellationToken cancellationToken = default);
 }
 
-public class AuthService : BaseService, IAuthService
+internal class AuthService : BaseService, IAuthService
 {
     private readonly ICookieService _cookieService;
     private readonly HttpContext _httpContext;

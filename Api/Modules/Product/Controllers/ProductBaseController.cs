@@ -3,7 +3,7 @@ using Product.Core.Dtos;
 using Product.Core.Dtos.ProductBase;
 using Product.Core.Services;
 using Shared.Api.Attributes;
-using Shared.Domain.Enums;
+using Shared.Infrastructure.Enums;
 using Shared.Infrastructure.Extensions;
 
 namespace Api.Modules.Product.Controllers;
@@ -14,8 +14,8 @@ public class ProductBaseController(IProductBaseService productBaseService) : Pro
     private readonly IProductBaseService _productBaseService = productBaseService;
 
     [HttpPost]
-    [ProducesResponseType(typeof(ProductBaseFormDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> CreateAsync([FromBody] ProductBaseFormDto dto, CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(ProductBaseResponseFormDto), StatusCodes.Status200OK)]
+    public Task<IActionResult> CreateAsync([FromBody] ProductBaseRequestFormDto dto, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_productBaseService.CreateAsync, dto, cancellationToken);
 
     [HttpDelete("{id:guid}")]
@@ -24,7 +24,7 @@ public class ProductBaseController(IProductBaseService productBaseService) : Pro
         => ApiResponseAsync(_productBaseService.DeleteAsync, id, cancellationToken);
 
     [HttpGet("{id:guid}")]
-    [ProducesResponseType(typeof(ProductBaseFormDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProductBaseResponseFormDto), StatusCodes.Status200OK)]
     public Task<IActionResult> GetByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_productBaseService.GetByIdAsync, id, cancellationToken);
 
@@ -44,7 +44,7 @@ public class ProductBaseController(IProductBaseService productBaseService) : Pro
         => ApiResponseAsync(_productBaseService.GetPageListAsync, pageNumber, cancellationToken);
 
     [HttpPut("{id:guid}")]
-    [ProducesResponseType(typeof(ProductBaseFormDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] ProductBaseFormDto dto, CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(ProductBaseResponseFormDto), StatusCodes.Status200OK)]
+    public Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] ProductBaseRequestFormDto dto, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_productBaseService.UpdateAsync, id, dto, cancellationToken);
 }

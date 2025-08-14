@@ -1,18 +1,17 @@
 ﻿using Shared.Core.Dtos;
+using Shared.Shared.Interfaces;
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.Price;
-using Shop.Core.Interfaces;
-using Shop.Domain.Logics;
+using Shop.Infrastructure.DomainLogics;
+using Shop.Infrastructure.Repositories;
 
 namespace Shop.Core.Logics.ProductLogics;
 
-internal class SimulateRemovePriceLogic(ILogic<Guid?, bool> getProductWasActiveLogic) : ILogic<SimulateRemovePriceRequestDto, ResultDto<List<SimulatePriceFormDto>>>
+internal class SimulateRemovePriceLogic(IProductRepository productRepository) : BasePriceLogic(productRepository), ILogic<SimulateRemovePriceRequestDto, ResultDto<List<SimulatePriceFormDto>>>
 {
-    private readonly ILogic<Guid?, bool> _getProductWasActiveLogic = getProductWasActiveLogic;
-
     public async Task<ResultDto<List<SimulatePriceFormDto>>> ExecuteAsync(SimulateRemovePriceRequestDto request, CancellationToken cancellationToken)
     {
-        var wasActive = await _getProductWasActiveLogic.ExecuteAsync(request.ProductId, cancellationToken);
+        var wasActive = await GetProductWasActiveByIdAsync(request.ProductId, cancellationToken);
 
         foreach (var element in request.OldCollection.Where(x => x.IsNew))
         {
@@ -26,7 +25,7 @@ internal class SimulateRemovePriceLogic(ILogic<Guid?, bool> getProductWasActiveL
         var oldCollection = request.OldCollection.Select(x => x.ToEntity()).ToList();
         var newCollection = request.NewCollection.Select(x => x.ToEntity()).ToList();
 
-        ProductLogic.Remove(oldCollection, newCollection, DateTime.UtcNow, wasActive);
+        PriceDomainLogic.Remove(oldCollection, newCollection, DateTime.UtcNow, wasActive);
 
         var results = oldCollection.Select(SimulatePriceFormDto.Map()).ToList();
 

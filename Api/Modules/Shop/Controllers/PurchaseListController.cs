@@ -11,8 +11,8 @@ public class PurchaseListController(IPurchaseListService purchaseListService) : 
     private readonly IPurchaseListService _purchaseListService = purchaseListService;
 
     [HttpPost]
-    [ProducesResponseType(typeof(PurchaseListFormDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> CreateAsync([FromBody] PurchaseListFormDto dto, CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(PurchaseListResponseFormDto), StatusCodes.Status200OK)]
+    public Task<IActionResult> CreateAsync([FromBody] PurchaseListRequestFormDto dto, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_purchaseListService.CreateAsync, dto, cancellationToken);
 
     [HttpDelete("{id:guid}")]
@@ -37,7 +37,7 @@ public class PurchaseListController(IPurchaseListService purchaseListService) : 
         => ApiResponseAsync(_purchaseListService.ImportBasketAsync, dto, cancellationToken);
 
     [HttpPut("{id:guid}")]
-    [ProducesResponseType(typeof(PurchaseListFormDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] PurchaseListFormDto dto, CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(PurchaseListResponseFormDto), StatusCodes.Status200OK)]
+    public Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] PurchaseListRequestFormDto dto, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_purchaseListService.UpdateAsync, id, dto, cancellationToken);
 }

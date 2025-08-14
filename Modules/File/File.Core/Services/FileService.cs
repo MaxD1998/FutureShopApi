@@ -1,7 +1,7 @@
 ﻿using File.Core.Dtos.ProductPhoto;
 using File.Core.Errors;
 using File.Core.Extensions;
-using File.Domain.Documents;
+using File.Infrastructure.Documents;
 using File.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
 using Shared.Core.Bases;
@@ -21,7 +21,7 @@ public interface IFileService
     Task<ResultDto<List<ProductPhotoInfoDto>>> GetListInfoByIdsAsync(List<string> ids, CancellationToken cancellationToken);
 }
 
-public class FileService(IFileRepository fileRepository) : BaseService, IFileService
+internal class FileService(IFileRepository fileRepository) : BaseService, IFileService
 {
     private readonly IFileRepository _fileRepository = fileRepository;
 

@@ -2,7 +2,7 @@
 using Shared.Api.Results;
 using Shared.Core.Dtos;
 using Shared.Core.Interfaces;
-using Shared.Domain.Bases;
+using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Dtos;
 using System.Net;
 

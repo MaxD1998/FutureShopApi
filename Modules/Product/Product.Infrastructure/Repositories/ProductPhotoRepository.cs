@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Product.Domain.Entities;
+using Product.Infrastructure.Entities;
 using Shared.Infrastructure.Bases;
 
 namespace Product.Infrastructure.Repositories;
@@ -9,7 +9,7 @@ public interface IProductPhotoRepository : IBaseRepository<ProductPhotoEntity>
     Task<List<string>> GetMissingFileIdsAsync(List<string> fileIds, CancellationToken cancellationToken);
 }
 
-public class ProductPhotoRepository(ProductContext context) : BaseRepository<ProductContext, ProductPhotoEntity>(context), IProductPhotoRepository
+internal class ProductPhotoRepository(ProductContext context) : BaseRepository<ProductContext, ProductPhotoEntity>(context), IProductPhotoRepository
 {
     public async Task<List<string>> GetMissingFileIdsAsync(List<string> fileIds, CancellationToken cancellationToken)
     {

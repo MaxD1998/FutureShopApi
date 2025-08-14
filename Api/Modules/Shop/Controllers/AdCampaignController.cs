@@ -11,8 +11,8 @@ public class AdCampaignController(IAdCampaignService adCampaignService) : ShopMo
     private readonly IAdCampaignService _adCampaignService = adCampaignService;
 
     [HttpPost]
-    [ProducesResponseType(typeof(AdCampaignFormDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> CreateAsync([FromBody] AdCampaignFormDto dto, CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(AdCampaignResponseFormDto), StatusCodes.Status200OK)]
+    public Task<IActionResult> CreateAsync([FromBody] AdCampaignRequestFormDto dto, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_adCampaignService.CreateAsync, dto, cancellationToken);
 
     [HttpDelete("{id:guid}")]
@@ -27,7 +27,7 @@ public class AdCampaignController(IAdCampaignService adCampaignService) : ShopMo
         => ApiResponseAsync(_adCampaignService.GetActualAsync, cancellationToken);
 
     [HttpGet("{id:guid}")]
-    [ProducesResponseType(typeof(AdCampaignFormDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(AdCampaignResponseFormDto), StatusCodes.Status200OK)]
     public Task<IActionResult> GetByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_adCampaignService.GetByIdAsync, id, cancellationToken);
 
@@ -37,7 +37,7 @@ public class AdCampaignController(IAdCampaignService adCampaignService) : ShopMo
         => ApiResponseAsync(_adCampaignService.GetPageAsync, pageNumber, cancellationToken);
 
     [HttpPut("{id:guid}")]
-    [ProducesResponseType(typeof(AdCampaignFormDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] AdCampaignFormDto dto, CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(AdCampaignResponseFormDto), StatusCodes.Status200OK)]
+    public Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] AdCampaignRequestFormDto dto, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_adCampaignService.UpdateAsync, id, dto, cancellationToken);
 }

@@ -3,7 +3,7 @@ using Shared.Core.Dtos;
 using Shared.Core.Errors;
 using Shared.Core.Services;
 using Shop.Core.Dtos.PurchaseList;
-using Shop.Domain.Entities;
+using Shop.Infrastructure.Entities;
 using Shop.Infrastructure.Repositories;
 using System.Net;
 
@@ -11,7 +11,7 @@ namespace Shop.Core.Services;
 
 public interface IPurchaseListService
 {
-    Task<ResultDto<PurchaseListFormDto>> CreateAsync(PurchaseListFormDto dto, CancellationToken cancellationToken);
+    Task<ResultDto<PurchaseListResponseFormDto>> CreateAsync(PurchaseListRequestFormDto dto, CancellationToken cancellationToken);
 
     Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
 
@@ -21,20 +21,20 @@ public interface IPurchaseListService
 
     Task<ResultDto<PurchaseListDto>> ImportBasketAsync(ImportBasketToPurchaseListDto dto, CancellationToken cancellationToken);
 
-    Task<ResultDto<PurchaseListFormDto>> UpdateAsync(Guid id, PurchaseListFormDto dto, CancellationToken cancellationToken);
+    Task<ResultDto<PurchaseListResponseFormDto>> UpdateAsync(Guid id, PurchaseListRequestFormDto dto, CancellationToken cancellationToken);
 }
 
-public class PurchaseListService(IBasketRepository basketRepository, ICurrentUserService currentUserService, IPurchaseListRepository purchaseListRepository) : BaseService, IPurchaseListService
+internal class PurchaseListService(IBasketRepository basketRepository, ICurrentUserService currentUserService, IPurchaseListRepository purchaseListRepository) : BaseService, IPurchaseListService
 {
     private readonly IBasketRepository _basketRepository = basketRepository;
     private readonly ICurrentUserService _currentUserService = currentUserService;
     private readonly IPurchaseListRepository _purchaseListRepository = purchaseListRepository;
 
-    public async Task<ResultDto<PurchaseListFormDto>> CreateAsync(PurchaseListFormDto dto, CancellationToken cancellationToken)
+    public async Task<ResultDto<PurchaseListResponseFormDto>> CreateAsync(PurchaseListRequestFormDto dto, CancellationToken cancellationToken)
     {
         var userId = _currentUserService.GetUserId();
         var entity = await _purchaseListRepository.CreateAsync(dto.ToEntity(userId), cancellationToken);
-        var result = await _purchaseListRepository.GetByIdAsync(entity.Id, PurchaseListFormDto.Map(), cancellationToken);
+        var result = await _purchaseListRepository.GetByIdAsync(entity.Id, PurchaseListResponseFormDto.Map(), cancellationToken);
 
         return Success(result);
     }
@@ -93,11 +93,11 @@ public class PurchaseListService(IBasketRepository basketRepository, ICurrentUse
         return Success(result);
     }
 
-    public async Task<ResultDto<PurchaseListFormDto>> UpdateAsync(Guid id, PurchaseListFormDto dto, CancellationToken cancellationToken)
+    public async Task<ResultDto<PurchaseListResponseFormDto>> UpdateAsync(Guid id, PurchaseListRequestFormDto dto, CancellationToken cancellationToken)
     {
         var userId = _currentUserService.GetUserId();
         var entity = await _purchaseListRepository.UpdateAsync(id, dto.ToEntity(userId), cancellationToken);
-        var result = await _purchaseListRepository.GetByIdAsync(entity.Id, PurchaseListFormDto.Map(), cancellationToken);
+        var result = await _purchaseListRepository.GetByIdAsync(entity.Id, PurchaseListResponseFormDto.Map(), cancellationToken);
 
         return Success(result);
     }

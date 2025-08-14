@@ -12,11 +12,11 @@ namespace Product.Core.Services;
 
 public interface IProductBaseService
 {
-    Task<ResultDto<ProductBaseFormDto>> CreateAsync(ProductBaseFormDto dto, CancellationToken cancellationToken);
+    Task<ResultDto<ProductBaseResponseFormDto>> CreateAsync(ProductBaseRequestFormDto dto, CancellationToken cancellationToken);
 
     Task<ResultDto> DeleteAsync(Guid id, CancellationToken cancellationToken);
 
-    Task<ResultDto<ProductBaseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<ResultDto<ProductBaseResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
     Task<ResultDto<IdNameDto>> GetIdNameByIdAsync(Guid id, CancellationToken cancellationToken);
 
@@ -24,21 +24,21 @@ public interface IProductBaseService
 
     Task<ResultDto<PageDto<ProductBaseListDto>>> GetPageListAsync(int pageIndex, CancellationToken cancellationToken);
 
-    Task<ResultDto<ProductBaseFormDto>> UpdateAsync(Guid id, ProductBaseFormDto dto, CancellationToken cancellationToken);
+    Task<ResultDto<ProductBaseResponseFormDto>> UpdateAsync(Guid id, ProductBaseRequestFormDto dto, CancellationToken cancellationToken);
 }
 
-public class ProductBaseService(IProductBaseRepository productBaseRepository, IRabbitMqContext rabbitMqContext) : BaseService, IProductBaseService
+internal class ProductBaseService(IProductBaseRepository productBaseRepository, IRabbitMqContext rabbitMqContext) : BaseService, IProductBaseService
 {
     private readonly IProductBaseRepository _productBaseRepository = productBaseRepository;
     private readonly IRabbitMqContext _rabbitMqContext = rabbitMqContext;
 
-    public async Task<ResultDto<ProductBaseFormDto>> CreateAsync(ProductBaseFormDto dto, CancellationToken cancellationToken)
+    public async Task<ResultDto<ProductBaseResponseFormDto>> CreateAsync(ProductBaseRequestFormDto dto, CancellationToken cancellationToken)
     {
         var entity = await _productBaseRepository.CreateAsync(dto.ToEntity(), cancellationToken);
 
         await _rabbitMqContext.SendMessageAsync(RabbitMqExchangeConst.ProductModuleProductBase, EventMessageDto.Create(entity, MessageType.AddOrUpdate));
 
-        var result = await _productBaseRepository.GetByIdAsync(entity.Id, ProductBaseFormDto.Map(), cancellationToken);
+        var result = await _productBaseRepository.GetByIdAsync(entity.Id, ProductBaseResponseFormDto.Map(), cancellationToken);
 
         return Success(result);
     }
@@ -52,9 +52,9 @@ public class ProductBaseService(IProductBaseRepository productBaseRepository, IR
         return Success();
     }
 
-    public async Task<ResultDto<ProductBaseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ResultDto<ProductBaseResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        var result = await _productBaseRepository.GetByIdAsync(id, ProductBaseFormDto.Map(), cancellationToken);
+        var result = await _productBaseRepository.GetByIdAsync(id, ProductBaseResponseFormDto.Map(), cancellationToken);
 
         return Success(result);
     }
@@ -80,13 +80,13 @@ public class ProductBaseService(IProductBaseRepository productBaseRepository, IR
         return Success(results);
     }
 
-    public async Task<ResultDto<ProductBaseFormDto>> UpdateAsync(Guid id, ProductBaseFormDto dto, CancellationToken cancellationToken)
+    public async Task<ResultDto<ProductBaseResponseFormDto>> UpdateAsync(Guid id, ProductBaseRequestFormDto dto, CancellationToken cancellationToken)
     {
         var entity = await _productBaseRepository.UpdateAsync(id, dto.ToEntity(), cancellationToken);
 
         await _rabbitMqContext.SendMessageAsync(RabbitMqExchangeConst.ProductModuleProductBase, EventMessageDto.Create(entity, MessageType.AddOrUpdate));
 
-        var result = await _productBaseRepository.GetByIdAsync(entity.Id, ProductBaseFormDto.Map(), cancellationToken);
+        var result = await _productBaseRepository.GetByIdAsync(entity.Id, ProductBaseResponseFormDto.Map(), cancellationToken);
 
         return Success(result);
     }

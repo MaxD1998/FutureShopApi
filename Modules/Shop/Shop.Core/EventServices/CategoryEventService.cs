@@ -1,6 +1,6 @@
 ﻿using Shared.Core.Bases;
 using Shop.Core.Dtos.Category;
-using Shop.Domain.Entities;
+using Shop.Infrastructure.Entities;
 using Shop.Infrastructure.Repositories;
 
 namespace Shop.Core.EventServices;
@@ -12,7 +12,7 @@ public interface ICategoryEventService
     Task DeleteByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
 }
 
-public class CategoryEventService(ICategoryRepository categoryRepository) : BaseService, ICategoryEventService
+internal class CategoryEventService(ICategoryRepository categoryRepository) : BaseService, ICategoryEventService
 {
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
 

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Interfaces;
-using Shop.Domain.Entities;
+using Shop.Infrastructure.Entities;
 using System.Linq.Expressions;
 
 namespace Shop.Infrastructure.Repositories;
@@ -11,7 +11,7 @@ public interface IPurchaseListRepository : IBaseRepository<PurchaseListEntity>, 
     Task<List<TResult>> GetByUserIdAsync<TResult>(Guid userId, Expression<Func<PurchaseListEntity, TResult>> map, CancellationToken cancellationToken);
 }
 
-public class PurchaseListRepository(ShopContext context) : BaseRepository<ShopContext, PurchaseListEntity>(context), IPurchaseListRepository
+internal class PurchaseListRepository(ShopContext context) : BaseRepository<ShopContext, PurchaseListEntity>(context), IPurchaseListRepository
 {
     public override async Task<PurchaseListEntity> CreateAsync(PurchaseListEntity entity, CancellationToken cancellationToken)
     {
@@ -52,7 +52,7 @@ public class PurchaseListRepository(ShopContext context) : BaseRepository<ShopCo
             .Include(x => x.PurchaseListItems)
             .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
 
-        if (entity == null)
+        if (entityToUpdate == null)
             return null;
 
         entityToUpdate.Update(entity);

@@ -1,4 +1,4 @@
-﻿using File.Domain.Documents;
+﻿using File.Infrastructure.Documents;
 using MongoDB.Driver;
 using Shared.Infrastructure.Bases;
 
@@ -9,7 +9,7 @@ public interface IFileRepository : IBaseNoSqlRepository<FileDocument>
     Task<List<string>> Get1000IdAsync(int pageIndex, CancellationToken cancellationToken);
 }
 
-public class FileRepository(FileContext context) : BaseNoSqlRepository<FileContext, FileDocument>(context), IFileRepository
+internal class FileRepository(FileContext context) : BaseNoSqlRepository<FileContext, FileDocument>(context), IFileRepository
 {
     public Task<List<string>> Get1000IdAsync(int pageIndex, CancellationToken cancellationToken)
     {

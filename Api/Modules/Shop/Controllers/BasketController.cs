@@ -10,8 +10,8 @@ public class BasketController(IBasketSerivce basketSerivce) : ShopModuleBaseCont
     private readonly IBasketSerivce _basketSerivce = basketSerivce;
 
     [HttpPost]
-    [ProducesResponseType(typeof(BasketFormDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> CreateAsync([FromBody] BasketFormDto dto, CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(BasketResponseFormDto), StatusCodes.Status200OK)]
+    public Task<IActionResult> CreateAsync([FromBody] BasketRequestFormDto dto, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_basketSerivce.CreateAsync, dto, cancellationToken);
 
     [HttpGet("{id:guid}")]
@@ -31,7 +31,7 @@ public class BasketController(IBasketSerivce basketSerivce) : ShopModuleBaseCont
         => ApiResponseAsync(_basketSerivce.ImportPurchaseListAsync, dto, cancellationToken);
 
     [HttpPut("{id:guid}")]
-    [ProducesResponseType(typeof(BasketFormDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] BasketFormDto dto, CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(BasketResponseFormDto), StatusCodes.Status200OK)]
+    public Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] BasketRequestFormDto dto, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_basketSerivce.UpdateAsync, id, dto, cancellationToken);
 }

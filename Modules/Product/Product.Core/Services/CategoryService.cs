@@ -1,6 +1,6 @@
 ﻿using Product.Core.Dtos;
 using Product.Core.Dtos.Category;
-using Product.Domain.Entities;
+using Product.Infrastructure.Entities;
 using Product.Infrastructure.Repositories;
 using Shared.Core.Bases;
 using Shared.Core.Constans;
@@ -13,11 +13,11 @@ namespace Product.Core.Services;
 
 public interface ICategoryService
 {
-    Task<ResultDto<CategoryFormDto>> CreateAsync(CategoryFormDto dto, CancellationToken cancellationToken);
+    Task<ResultDto<CategoryResponseFormDto>> CreateAsync(CategoryRequestFormDto dto, CancellationToken cancellationToken);
 
     Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
 
-    Task<ResultDto<CategoryFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<ResultDto<CategoryResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
     Task<ResultDto<List<IdNameDto>>> GetListIdNameAsync(CancellationToken cancellationToken);
 
@@ -27,22 +27,22 @@ public interface ICategoryService
 
     Task<ResultDto<PageDto<CategoryListDto>>> GetPageListAsync(int pageNumber, CancellationToken cancellationToken);
 
-    Task<ResultDto<CategoryFormDto>> UpdateAsync(Guid id, CategoryFormDto dto, CancellationToken cancellationToken);
+    Task<ResultDto<CategoryResponseFormDto>> UpdateAsync(Guid id, CategoryRequestFormDto dto, CancellationToken cancellationToken);
 }
 
-public class CategoryService(ICategoryRepository categoryRepository, IRabbitMqContext rabbitMqContext) : BaseService, ICategoryService
+internal class CategoryService(ICategoryRepository categoryRepository, IRabbitMqContext rabbitMqContext) : BaseService, ICategoryService
 {
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
     private readonly IRabbitMqContext _rabbitMqContext = rabbitMqContext;
 
-    public async Task<ResultDto<CategoryFormDto>> CreateAsync(CategoryFormDto dto, CancellationToken cancellationToken)
+    public async Task<ResultDto<CategoryResponseFormDto>> CreateAsync(CategoryRequestFormDto dto, CancellationToken cancellationToken)
     {
         var entity = await MapToEntity(dto, cancellationToken);
         entity = await _categoryRepository.CreateAsync(entity, cancellationToken);
 
         await _rabbitMqContext.SendMessageAsync(RabbitMqExchangeConst.ProductModuleCategory, EventMessageDto.Create(new CategoryEventDto(entity), MessageType.AddOrUpdate));
 
-        var result = await _categoryRepository.GetByIdAsync(entity.Id, CategoryFormDto.Map(), cancellationToken);
+        var result = await _categoryRepository.GetByIdAsync(entity.Id, CategoryResponseFormDto.Map(), cancellationToken);
 
         return Success(result);
     }
@@ -55,9 +55,9 @@ public class CategoryService(ICategoryRepository categoryRepository, IRabbitMqCo
         return Success();
     }
 
-    public async Task<ResultDto<CategoryFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ResultDto<CategoryResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        var result = await _categoryRepository.GetByIdAsync(id, CategoryFormDto.Map(), cancellationToken);
+        var result = await _categoryRepository.GetByIdAsync(id, CategoryResponseFormDto.Map(), cancellationToken);
         return Success(result);
     }
 
@@ -86,19 +86,19 @@ public class CategoryService(ICategoryRepository categoryRepository, IRabbitMqCo
         return Success(results);
     }
 
-    public async Task<ResultDto<CategoryFormDto>> UpdateAsync(Guid id, CategoryFormDto dto, CancellationToken cancellationToken)
+    public async Task<ResultDto<CategoryResponseFormDto>> UpdateAsync(Guid id, CategoryRequestFormDto dto, CancellationToken cancellationToken)
     {
         var entity = await MapToEntity(dto, cancellationToken);
         entity = await _categoryRepository.UpdateAsync(id, entity, cancellationToken);
 
         await _rabbitMqContext.SendMessageAsync(RabbitMqExchangeConst.ProductModuleCategory, EventMessageDto.Create(new CategoryEventDto(entity), MessageType.AddOrUpdate));
 
-        var result = await _categoryRepository.GetByIdAsync(entity.Id, CategoryFormDto.Map(), cancellationToken);
+        var result = await _categoryRepository.GetByIdAsync(entity.Id, CategoryResponseFormDto.Map(), cancellationToken);
 
         return Success(result);
     }
 
-    private async Task<CategoryEntity> MapToEntity(CategoryFormDto dto, CancellationToken cancellationToken)
+    private async Task<CategoryEntity> MapToEntity(CategoryRequestFormDto dto, CancellationToken cancellationToken)
     {
         var entity = dto.ToEntity();
         var subcategoryIds = dto.SubCategories.Select(x => x.Id).ToList();

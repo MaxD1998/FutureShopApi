@@ -9,22 +9,22 @@ namespace Shop.Core.Services;
 
 public interface IProductBaseService
 {
-    Task<ResultDto<ProductBaseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<ResultDto<ProductBaseResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
     Task<ResultDto<IdNameDto>> GetIdNametByIdAsync(Guid id, CancellationToken cancellationToken);
 
     Task<ResultDto<PageDto<ProductBaseListDto>>> GetPageAsync(int pageIndex, CancellationToken cancellationToken);
 
-    Task<ResultDto<ProductBaseFormDto>> UpdateAsync(Guid id, ProductBaseFormDto dto, CancellationToken cancellationToken);
+    Task<ResultDto<ProductBaseResponseFormDto>> UpdateAsync(Guid id, ProductBaseRequestFormDto dto, CancellationToken cancellationToken);
 }
 
-public class ProductBaseService(IProductBaseRepository productBaseRepository) : BaseService, IProductBaseService
+internal class ProductBaseService(IProductBaseRepository productBaseRepository) : BaseService, IProductBaseService
 {
     private readonly IProductBaseRepository _productBaseRepository = productBaseRepository;
 
-    public async Task<ResultDto<ProductBaseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ResultDto<ProductBaseResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        var result = await _productBaseRepository.GetByIdAsync(id, ProductBaseFormDto.Map(), cancellationToken);
+        var result = await _productBaseRepository.GetByIdAsync(id, ProductBaseResponseFormDto.Map(), cancellationToken);
 
         return Success(result);
     }
@@ -43,10 +43,10 @@ public class ProductBaseService(IProductBaseRepository productBaseRepository) : 
         return Success(results);
     }
 
-    public async Task<ResultDto<ProductBaseFormDto>> UpdateAsync(Guid id, ProductBaseFormDto dto, CancellationToken cancellationToken)
+    public async Task<ResultDto<ProductBaseResponseFormDto>> UpdateAsync(Guid id, ProductBaseRequestFormDto dto, CancellationToken cancellationToken)
     {
         var entity = await _productBaseRepository.UpdateAsync(id, dto.ToEntity(), cancellationToken);
-        var result = await _productBaseRepository.GetByIdAsync(entity.Id, ProductBaseFormDto.Map(), cancellationToken);
+        var result = await _productBaseRepository.GetByIdAsync(entity.Id, ProductBaseResponseFormDto.Map(), cancellationToken);
 
         return Success(result);
     }

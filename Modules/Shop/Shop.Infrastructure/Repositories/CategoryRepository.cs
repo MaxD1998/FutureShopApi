@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Interfaces;
-using Shop.Domain.Entities;
+using Shop.Infrastructure.Entities;
 
 namespace Shop.Infrastructure.Repositories;
 
@@ -16,7 +16,7 @@ public interface ICategoryRepository : IBaseRepository<CategoryEntity>, IUpdateR
     Task<List<CategoryEntity>> GetListByExternalIdsAsync(List<Guid> ids, CancellationToken cancellationToken);
 }
 
-public class CategoryRepository(ShopContext context) : BaseRepository<ShopContext, CategoryEntity>(context), ICategoryRepository
+internal class CategoryRepository(ShopContext context) : BaseRepository<ShopContext, CategoryEntity>(context), ICategoryRepository
 {
     public async Task CreateOrUpdateForEventAsync(CategoryEntity eventEntity, CancellationToken cancellationToken)
     {

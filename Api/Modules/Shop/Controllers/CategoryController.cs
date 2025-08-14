@@ -12,7 +12,7 @@ public class CategoryController(ICategoryService categoryService) : ShopModuleBa
     private readonly ICategoryService _categoryService = categoryService;
 
     [HttpGet("{id:guid}")]
-    [ProducesResponseType(typeof(CategoryFormDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(CategoryResponseFormDto), StatusCodes.Status200OK)]
     public Task<IActionResult> GetByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_categoryService.GetByIdAsync, id, cancellationToken);
 
@@ -34,7 +34,7 @@ public class CategoryController(ICategoryService categoryService) : ShopModuleBa
         => ApiResponseAsync(_categoryService.GetPageListAsync, pageNumber, cancellationToken);
 
     [HttpPut("{id:guid}")]
-    [ProducesResponseType(typeof(CategoryFormDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] CategoryFormDto dto, CancellationToken cancellationToken = default)
+    [ProducesResponseType(typeof(CategoryResponseFormDto), StatusCodes.Status200OK)]
+    public Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] CategoryRequestFormDto dto, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_categoryService.UdpateAsync, id, dto, cancellationToken);
 }

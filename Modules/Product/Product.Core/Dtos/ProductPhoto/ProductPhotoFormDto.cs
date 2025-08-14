@@ -1,4 +1,4 @@
-﻿using Product.Domain.Entities;
+﻿using Product.Infrastructure.Entities;
 using System.Linq.Expressions;
 
 namespace Product.Core.Dtos.ProductPhoto;

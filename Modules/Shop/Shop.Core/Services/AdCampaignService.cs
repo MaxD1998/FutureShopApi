@@ -8,27 +8,27 @@ namespace Shop.Core.Services;
 
 public interface IAdCampaignService
 {
-    Task<ResultDto<AdCampaignFormDto>> CreateAsync(AdCampaignFormDto dto, CancellationToken cancellationToken);
+    Task<ResultDto<AdCampaignResponseFormDto>> CreateAsync(AdCampaignRequestFormDto dto, CancellationToken cancellationToken);
 
     Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
 
     Task<ResultDto<List<string>>> GetActualAsync(CancellationToken cancellationToken);
 
-    Task<ResultDto<AdCampaignFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<ResultDto<AdCampaignResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
     Task<ResultDto<PageDto<AdCampaignListDto>>> GetPageAsync(int pageIndex, CancellationToken cancellationToken);
 
-    Task<ResultDto<AdCampaignFormDto>> UpdateAsync(Guid id, AdCampaignFormDto dto, CancellationToken cancellationToken);
+    Task<ResultDto<AdCampaignResponseFormDto>> UpdateAsync(Guid id, AdCampaignRequestFormDto dto, CancellationToken cancellationToken);
 }
 
-public class AdCampaignService(IAdCampaignRepository adCampaignRepository) : BaseService, IAdCampaignService
+internal class AdCampaignService(IAdCampaignRepository adCampaignRepository) : BaseService, IAdCampaignService
 {
     private readonly IAdCampaignRepository _adCampaignRepository = adCampaignRepository;
 
-    public async Task<ResultDto<AdCampaignFormDto>> CreateAsync(AdCampaignFormDto dto, CancellationToken cancellationToken)
+    public async Task<ResultDto<AdCampaignResponseFormDto>> CreateAsync(AdCampaignRequestFormDto dto, CancellationToken cancellationToken)
     {
         var entity = await _adCampaignRepository.CreateAsync(dto.ToEntity(), cancellationToken);
-        var result = await _adCampaignRepository.GetByIdAsync(entity.Id, AdCampaignFormDto.Map(), cancellationToken);
+        var result = await _adCampaignRepository.GetByIdAsync(entity.Id, AdCampaignResponseFormDto.Map(), cancellationToken);
 
         return Success(result);
     }
@@ -47,9 +47,9 @@ public class AdCampaignService(IAdCampaignRepository adCampaignRepository) : Bas
         return Success(results);
     }
 
-    public async Task<ResultDto<AdCampaignFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ResultDto<AdCampaignResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
-        var result = await _adCampaignRepository.GetByIdAsync(id, AdCampaignFormDto.Map(), cancellationToken);
+        var result = await _adCampaignRepository.GetByIdAsync(id, AdCampaignResponseFormDto.Map(), cancellationToken);
 
         return Success(result);
     }
@@ -61,10 +61,10 @@ public class AdCampaignService(IAdCampaignRepository adCampaignRepository) : Bas
         return Success(results);
     }
 
-    public async Task<ResultDto<AdCampaignFormDto>> UpdateAsync(Guid id, AdCampaignFormDto dto, CancellationToken cancellationToken)
+    public async Task<ResultDto<AdCampaignResponseFormDto>> UpdateAsync(Guid id, AdCampaignRequestFormDto dto, CancellationToken cancellationToken)
     {
         var entity = await _adCampaignRepository.UpdateAsync(id, dto.ToEntity(), cancellationToken);
-        var result = await _adCampaignRepository.GetByIdAsync(entity.Id, AdCampaignFormDto.Map(), cancellationToken);
+        var result = await _adCampaignRepository.GetByIdAsync(entity.Id, AdCampaignResponseFormDto.Map(), cancellationToken);
 
         return Success(result);
     }
