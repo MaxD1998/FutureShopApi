@@ -1,5 +1,5 @@
-﻿using Shop.Core.Dtos.PurchaseListItem;
-using Shop.Infrastructure.Entities;
+﻿using Shop.Core.Dtos.PurchaseList.PurchaseListItem;
+using Shop.Infrastructure.Entities.PurchaseLists;
 
 namespace Shop.Core.Dtos.PurchaseList;
 

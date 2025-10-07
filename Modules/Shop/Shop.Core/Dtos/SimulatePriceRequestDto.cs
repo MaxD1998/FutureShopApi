@@ -1,4 +1,4 @@
-﻿using Shop.Core.Dtos.Price;
+﻿using Shop.Core.Dtos.Product.Price;
 
 namespace Shop.Core.Dtos;
 

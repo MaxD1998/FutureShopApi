@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Shared.Infrastructure.Errors;
 using Shared.Infrastructure.Exceptions;
 using Shared.Infrastructure.Settings;
 using System.Diagnostics;
@@ -16,7 +15,7 @@ public abstract class BaseContext : DbContext
     {
         _connectionSettings = connectionSettings.Value;
         if (!_connectionSettings.MigrationMode && !Database.CanConnect())
-            throw new ServiceUnavailableException(CommonExceptionMessage.D001DatabaseNotAvailable);
+            throw new ServiceUnavailableException();
     }
 
     protected abstract string ConnectionString { get; }

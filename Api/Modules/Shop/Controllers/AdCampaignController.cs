@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Infrastructure.Extensions;
+using Shop.Core.Dtos;
 using Shop.Core.Dtos.AdCampaign;
 using Shop.Core.Services;
 
@@ -30,6 +31,11 @@ public class AdCampaignController(IAdCampaignService adCampaignService) : ShopMo
     [ProducesResponseType(typeof(AdCampaignResponseFormDto), StatusCodes.Status200OK)]
     public Task<IActionResult> GetByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_adCampaignService.GetByIdAsync, id, cancellationToken);
+
+    [HttpGet("All")]
+    [ProducesResponseType(typeof(List<IdNameDto>), StatusCodes.Status200OK)]
+    public Task<IActionResult> GetListIdNameAsync(CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_adCampaignService.GetListIdNameAsync, cancellationToken);
 
     [HttpGet("Page/{pageNumber:int}")]
     [ProducesResponseType(typeof(PageDto<AdCampaignListDto>), StatusCodes.Status200OK)]

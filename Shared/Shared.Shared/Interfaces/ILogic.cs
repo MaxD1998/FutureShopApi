@@ -1,11 +1,11 @@
 ﻿namespace Shared.Shared.Interfaces;
 
-public interface ILogic<TRequest>
+public interface ILogic<in TRequest>
 {
     Task ExecuteAsync(TRequest request, CancellationToken cancellationToken);
 }
 
-public interface ILogic<TRequest, TResult>
+public interface ILogic<in TRequest, TResult>
 {
     Task<TResult> ExecuteAsync(TRequest request, CancellationToken cancellationToken);
 }

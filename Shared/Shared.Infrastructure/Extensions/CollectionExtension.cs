@@ -46,4 +46,10 @@ public static class CollectionExtension
         foreach (var entity in toRemove)
             entities.Remove(entity);
     }
+
+    public static void ValidateEntities<TEntity>(this ICollection<TEntity> entities) where TEntity : IEntity
+    {
+        foreach (var entity in entities.OfType<IEntityValidation>())
+            entity.Validate();
+    }
 }

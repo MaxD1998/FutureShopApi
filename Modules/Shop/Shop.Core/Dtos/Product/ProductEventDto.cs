@@ -1,5 +1,5 @@
-﻿using Shop.Core.Dtos.ProductPhoto;
-using Shop.Infrastructure.Entities;
+﻿using Shop.Core.Dtos.Product.ProductPhoto;
+using Shop.Infrastructure.Entities.Products;
 
 namespace Shop.Core.Dtos.Product;
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Shop.Core.EventServices;
+using Shop.Core.Factories;
 using Shop.Core.Services;
 
 namespace Shop.Core;
@@ -17,6 +18,9 @@ public static class Register
         services.AddScoped<ICategoryService, CategoryService>();
         services.AddScoped<IProductBaseService, ProductBaseService>();
         services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<IPromotionService, PromotionService>();
         services.AddScoped<IPurchaseListService, PurchaseListService>();
+
+        services.AddScoped<ILogicFactory, LogicFactory>();
     }
 }

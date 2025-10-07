@@ -1,5 +1,5 @@
 ﻿using Shared.Core.Bases;
-using Shop.Infrastructure.Entities;
+using Shop.Infrastructure.Entities.Products;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos;

@@ -2,7 +2,8 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Constants;
-using Shop.Infrastructure.Entities;
+using Shop.Infrastructure.Entities.AdCampaigns;
+using Shop.Infrastructure.Entities.Promotions;
 
 namespace Shop.Infrastructure.Configurations;
 
@@ -30,5 +31,13 @@ public class AdCampaignConfig : BaseConfig<AdCampaignEntity>
         builder.HasMany(x => x.AdCampaignItems)
             .WithOne(x => x.AdCampaign)
             .HasForeignKey(x => x.AdCampaignId);
+
+        builder.HasMany(x => x.AdCampaignProducts)
+            .WithOne(x => x.AdCampaign)
+            .HasForeignKey(x => x.AdCampaignId);
+
+        builder.HasOne(x => x.Promotion)
+            .WithOne(x => x.AdCampaign)
+            .HasForeignKey<PromotionEntity>(x => x.AdCampaignId);
     }
 }

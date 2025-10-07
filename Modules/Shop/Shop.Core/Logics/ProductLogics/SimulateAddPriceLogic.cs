@@ -1,5 +1,5 @@
 ﻿using Shop.Infrastructure.DomainLogics;
-using Shop.Infrastructure.Entities;
+using Shop.Infrastructure.Entities.Products;
 using Shop.Infrastructure.Repositories;
 
 namespace Shop.Core.Logics.ProductLogics;

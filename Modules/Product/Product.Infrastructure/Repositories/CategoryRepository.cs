@@ -79,6 +79,7 @@ internal class CategoryRepository(ProductContext context) : BaseRepository<Produ
             return null;
 
         entityToUpdate.Update(entity);
+        entityToUpdate.Validate();
 
         await _context.SaveChangesAsync(cancellationToken);
 

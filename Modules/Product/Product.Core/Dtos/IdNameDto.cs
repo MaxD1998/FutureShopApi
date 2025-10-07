@@ -6,9 +6,7 @@ namespace Product.Core.Dtos;
 
 public class IdNameDto : BaseIdNameDto
 {
-    public static Expression<Func<CategoryEntity, IdNameDto>> MapFromCategory() => MapFromCategory(null);
-
-    public static Expression<Func<CategoryEntity, IdNameDto>> MapFromCategory(string lang) => entity => new IdNameDto
+    public static Expression<Func<CategoryEntity, IdNameDto>> MapFromCategory() => entity => new IdNameDto
     {
         Id = entity.Id,
         Name = entity.Name

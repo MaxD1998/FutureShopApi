@@ -2,9 +2,15 @@
 using Shared.Core.Dtos;
 using Shared.Core.Errors;
 using Shared.Core.Services;
+using Shared.Infrastructure.Constants;
 using Shop.Core.Dtos.Basket;
+using Shop.Core.Dtos.Basket.BasketItem;
+using Shop.Core.Factories;
+using Shop.Core.Logics.PromotionLogics.Models;
+using Shop.Infrastructure.Enums;
 using Shop.Infrastructure.Repositories;
 using System.Net;
+using System.Text.Json;
 
 namespace Shop.Core.Services;
 
@@ -21,10 +27,19 @@ public interface IBasketSerivce
     Task<ResultDto<BasketResponseFormDto>> UpdateAsync(Guid id, BasketRequestFormDto dto, CancellationToken cancellationToken);
 }
 
-internal class BasketService(IBasketRepository basketRepository, ICurrentUserService currentUserService, IPurchaseListRepository purchaseListRepository) : BaseService, IBasketSerivce
+internal class BasketService(
+    IBasketRepository basketRepository,
+    ICurrentUserService currentUserService,
+    IHeaderService headerService,
+    ILogicFactory logicFactory,
+    IPromotionRepository promotionRepository,
+    IPurchaseListRepository purchaseListRepository) : BaseService, IBasketSerivce
 {
     private readonly IBasketRepository _basketRepository = basketRepository;
     private readonly ICurrentUserService _currentUserService = currentUserService;
+    private readonly IHeaderService _headerService = headerService;
+    private readonly ILogicFactory _logicFactory = logicFactory;
+    private readonly IPromotionRepository _promotionRepository = promotionRepository;
     private readonly IPurchaseListRepository _purchaseListRepository = purchaseListRepository;
 
     public async Task<ResultDto<BasketResponseFormDto>> CreateAsync(BasketRequestFormDto dto, CancellationToken cancellationToken)
@@ -39,11 +54,29 @@ internal class BasketService(IBasketRepository basketRepository, ICurrentUserSer
     public async Task<ResultDto<BasketDto>> GetByAuthorizedUserAsync(CancellationToken cancellationToken)
     {
         var userId = _currentUserService.GetUserId();
+        var codesStr = _headerService.GetHeader(HeaderNameConst.Codes);
+        var codes = JsonSerializer.Deserialize<List<string>>(codesStr);
 
         if (!userId.HasValue)
             return Success<BasketDto>(null);
 
         var result = await _basketRepository.GetByUserIdAsync(userId.Value, BasketDto.Map(x => x.PurchaseList.UserId == userId), cancellationToken);
+
+        var promotions = await _promotionRepository.GetActivePromotionsAsync(codes, cancellationToken);
+
+        if (promotions != null && promotions.Count > 0)
+        {
+            var productList = result.BasketItems.Select(x => x.Product).ToList();
+            foreach (var promotion in promotions)
+            {
+                var promotionRequest = new SetPromotionForProductsRequestModel<BasketItemProductDto>(promotion, productList);
+                productList = promotion.Type switch
+                {
+                    PromotionType.Percent => await _logicFactory.ExecuteAsync(promotionRequest, f => f.SetPercentPromotionForProductsLogic<BasketItemProductDto>(), cancellationToken),
+                    _ => productList
+                };
+            }
+        }
 
         return Success(result);
     }
@@ -59,13 +92,8 @@ internal class BasketService(IBasketRepository basketRepository, ICurrentUserSer
     {
         cancellationToken.ThrowIfCancellationRequested();
 
-        var basketTask = _basketRepository.GetByIdAsync(dto.BasketId, cancellationToken);
-        var purchaseListTask = _purchaseListRepository.GetByIdAsync(dto.PurchaseListId, cancellationToken);
-
-        await Task.WhenAll(basketTask, purchaseListTask);
-
-        var basket = basketTask.Result;
-        var purchaseList = purchaseListTask.Result;
+        var basket = await _basketRepository.GetByIdAsync(dto.BasketId, cancellationToken);
+        var purchaseList = await _purchaseListRepository.GetByIdAsync(dto.PurchaseListId, cancellationToken);
 
         if (basket is null || purchaseList is null)
             return Error<BasketDto>(HttpStatusCode.NotFound, CommonExceptionMessage.C007RecordWasNotFound);

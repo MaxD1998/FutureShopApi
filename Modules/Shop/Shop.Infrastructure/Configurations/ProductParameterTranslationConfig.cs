@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.Infrastructure.Bases;
-using Shop.Infrastructure.Entities;
+using Shop.Infrastructure.Entities.ProductBases;
 
 namespace Shop.Infrastructure.Configurations;
 

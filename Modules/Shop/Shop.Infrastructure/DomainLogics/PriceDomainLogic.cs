@@ -1,4 +1,4 @@
-﻿using Shop.Infrastructure.Entities;
+﻿using Shop.Infrastructure.Entities.Products;
 
 namespace Shop.Infrastructure.DomainLogics;
 

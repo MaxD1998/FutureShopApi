@@ -1,6 +1,7 @@
 ﻿using Shared.Core.Bases;
 using Shared.Core.Dtos;
 using Shared.Infrastructure.Extensions;
+using Shop.Core.Dtos;
 using Shop.Core.Dtos.AdCampaign;
 using Shop.Infrastructure.Repositories;
 
@@ -15,6 +16,8 @@ public interface IAdCampaignService
     Task<ResultDto<List<string>>> GetActualAsync(CancellationToken cancellationToken);
 
     Task<ResultDto<AdCampaignResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+
+    Task<ResultDto<List<IdNameDto>>> GetListIdNameAsync(CancellationToken cancellationToken);
 
     Task<ResultDto<PageDto<AdCampaignListDto>>> GetPageAsync(int pageIndex, CancellationToken cancellationToken);
 
@@ -52,6 +55,12 @@ internal class AdCampaignService(IAdCampaignRepository adCampaignRepository) : B
         var result = await _adCampaignRepository.GetByIdAsync(id, AdCampaignResponseFormDto.Map(), cancellationToken);
 
         return Success(result);
+    }
+
+    public async Task<ResultDto<List<IdNameDto>>> GetListIdNameAsync(CancellationToken cancellationToken)
+    {
+        var results = await _adCampaignRepository.GetListAsync(IdNameDto.MapFromAdCampaign(), cancellationToken);
+        return Success(results);
     }
 
     public async Task<ResultDto<PageDto<AdCampaignListDto>>> GetPageAsync(int pageIndex, CancellationToken cancellationToken)

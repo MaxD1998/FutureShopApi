@@ -16,8 +16,8 @@ public class ErrorHandlingMiddleware : IMiddleware
         {
             if (exception is BaseException handleException)
             {
-                context.Response.StatusCode = handleException.StatusCode;
-                await context.Response.WriteAsJsonAsync(handleException.Error);
+                context.Response.StatusCode = (int)handleException.StatusCode;
+                await context.Response.WriteAsJsonAsync(handleException.ErrorMessage);
             }
             else
             {

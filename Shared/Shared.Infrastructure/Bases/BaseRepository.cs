@@ -31,6 +31,9 @@ public abstract class BaseRepository<TContext, TEntity>(TContext context) : IBas
 
     public virtual async Task<TEntity> CreateAsync(TEntity entity, CancellationToken cancellationToken)
     {
+        if (entity is IEntityValidation entityValidation)
+            entityValidation.Validate();
+
         await _context.Set<TEntity>().AddAsync(entity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 

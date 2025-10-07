@@ -1,4 +1,4 @@
-﻿using Shop.Infrastructure.Entities;
+﻿using Shop.Infrastructure.Entities.ProductBases;
 
 namespace Shop.Core.Dtos.ProductBase;
 

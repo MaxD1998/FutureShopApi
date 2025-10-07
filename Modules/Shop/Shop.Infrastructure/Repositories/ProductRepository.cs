@@ -2,8 +2,9 @@
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Extensions;
 using Shared.Infrastructure.Interfaces;
-using Shop.Infrastructure.Entities;
-using Shop.Infrastructure.Models.Product;
+using Shop.Infrastructure.Entities.Categories;
+using Shop.Infrastructure.Entities.Products;
+using Shop.Infrastructure.Models.Products;
 using System.Linq.Expressions;
 
 namespace Shop.Infrastructure.Repositories;
@@ -65,6 +66,7 @@ internal class ProductRepository(ShopContext context) : BaseRepository<ShopConte
             return null;
 
         entityToUpdate.Update(entity);
+        entityToUpdate.Validate();
 
         await _context.SaveChangesAsync(cancellationToken);
 

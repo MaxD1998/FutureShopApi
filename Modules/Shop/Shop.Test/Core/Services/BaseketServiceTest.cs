@@ -2,7 +2,7 @@
 using Shared.Core.Services;
 using Shop.Core.Dtos.Basket;
 using Shop.Core.Services;
-using Shop.Infrastructure.Entities;
+using Shop.Infrastructure.Entities.Baskets;
 using Shop.Infrastructure.Repositories;
 using System.Linq.Expressions;
 

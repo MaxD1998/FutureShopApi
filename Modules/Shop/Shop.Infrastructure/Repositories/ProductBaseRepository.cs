@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Interfaces;
-using Shop.Infrastructure.Entities;
+using Shop.Infrastructure.Entities.ProductBases;
 
 namespace Shop.Infrastructure.Repositories;
 
@@ -46,6 +46,7 @@ internal class ProductBaseRepository(ShopContext context) : BaseRepository<ShopC
             return null;
 
         entityToUpdate.Update(entity);
+        entityToUpdate.Validate();
 
         await _context.SaveChangesAsync(cancellationToken);
 

@@ -1,15 +1,10 @@
-﻿using Shared.Infrastructure.Dtos;
+﻿using System.Net;
 
 namespace Shared.Infrastructure.Bases;
 
 public abstract class BaseException : Exception
 {
-    public BaseException(ErrorDto error)
-    {
-        Error = error;
-    }
+    public abstract string ErrorMessage { get; }
 
-    public ErrorDto Error { get; }
-
-    public abstract int StatusCode { get; }
+    public abstract HttpStatusCode StatusCode { get; }
 }

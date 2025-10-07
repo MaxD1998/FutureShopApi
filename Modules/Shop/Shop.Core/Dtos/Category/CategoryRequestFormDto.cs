@@ -1,5 +1,5 @@
-﻿using Shop.Core.Dtos.CategoryTranslation;
-using Shop.Infrastructure.Entities;
+﻿using Shop.Core.Dtos.Category.CategoryTranslation;
+using Shop.Infrastructure.Entities.Categories;
 
 namespace Shop.Core.Dtos.Category;
 

@@ -22,6 +22,7 @@ internal class ProductRepository(ProductContext context) : BaseRepository<Produc
             return null;
 
         entityToUpdate.Update(entity);
+        entityToUpdate.Validate();
 
         await _context.SaveChangesAsync(cancellationToken);
 

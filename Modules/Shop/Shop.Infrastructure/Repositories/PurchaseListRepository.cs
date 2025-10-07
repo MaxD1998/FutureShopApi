@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Interfaces;
-using Shop.Infrastructure.Entities;
+using Shop.Infrastructure.Entities.PurchaseLists;
 using System.Linq.Expressions;
 
 namespace Shop.Infrastructure.Repositories;
@@ -56,6 +56,7 @@ internal class PurchaseListRepository(ShopContext context) : BaseRepository<Shop
             return null;
 
         entityToUpdate.Update(entity);
+        entityToUpdate.Validate();
 
         await _context.SaveChangesAsync(cancellationToken);
 

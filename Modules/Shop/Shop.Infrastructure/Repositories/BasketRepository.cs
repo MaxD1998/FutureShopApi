@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Interfaces;
-using Shop.Infrastructure.Entities;
+using Shop.Infrastructure.Entities.Baskets;
 using System.Linq.Expressions;
 
 namespace Shop.Infrastructure.Repositories;
@@ -26,6 +26,7 @@ internal class BasketRepository(ShopContext context) : BaseRepository<ShopContex
             return null;
 
         entityToUpdate.Update(entity);
+        entityToUpdate.Validate();
 
         await _context.SaveChangesAsync(cancellationToken);
 

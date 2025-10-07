@@ -1,5 +1,6 @@
-﻿using Shop.Core.Dtos.BasketItem;
-using Shop.Infrastructure.Entities;
+﻿using Shop.Core.Dtos.Basket.BasketItem;
+using Shop.Infrastructure.Entities.Baskets;
+using Shop.Infrastructure.Entities.PurchaseLists;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.Basket;

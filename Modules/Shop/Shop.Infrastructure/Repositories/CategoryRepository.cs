@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Interfaces;
-using Shop.Infrastructure.Entities;
+using Shop.Infrastructure.Entities.Categories;
 
 namespace Shop.Infrastructure.Repositories;
 
@@ -51,6 +51,7 @@ internal class CategoryRepository(ShopContext context) : BaseRepository<ShopCont
             return null;
 
         entityToUpdate.Update(entity);
+        entityToUpdate.Validate();
 
         await _context.SaveChangesAsync(cancellationToken);
 

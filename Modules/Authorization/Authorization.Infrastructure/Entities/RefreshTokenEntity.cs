@@ -1,9 +1,11 @@
-﻿using Shared.Infrastructure.Bases;
+﻿using Authorization.Infrastructure.Exceptions.RefreshTokens;
+using Shared.Infrastructure.Bases;
+using Shared.Infrastructure.Exceptions;
 using Shared.Infrastructure.Interfaces;
 
 namespace Authorization.Infrastructure.Entities;
 
-public class RefreshTokenEntity : BaseEntity, IUpdate<RefreshTokenEntity>
+public class RefreshTokenEntity : BaseEntity, IUpdate<RefreshTokenEntity>, IEntityValidation
 {
     public DateOnly EndDate { get; set; }
 
@@ -27,6 +29,32 @@ public class RefreshTokenEntity : BaseEntity, IUpdate<RefreshTokenEntity>
         StartDate = entity.StartDate;
         Token = entity.Token;
         UserId = entity.UserId;
+    }
+
+    public void Validate()
+    {
+        var utcNow = DateOnly.FromDateTime(DateTime.UtcNow);
+        ValidateEndDate(utcNow);
+        ValidateStartDate(utcNow);
+        ValidateToken();
+    }
+
+    private void ValidateEndDate(DateOnly date)
+    {
+        if (EndDate < date)
+            throw new RefreshTokenEndDateInPastException();
+    }
+
+    private void ValidateStartDate(DateOnly date)
+    {
+        if (StartDate > date)
+            throw new RefreshTokenStartDateInFutureException();
+    }
+
+    private void ValidateToken()
+    {
+        if (Token == Guid.Empty)
+            throw new PropertyWasEmptyException(nameof(Token));
     }
 
     #endregion Methods

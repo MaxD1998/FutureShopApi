@@ -1,5 +1,4 @@
 ﻿using MongoDB.Driver;
-using Shared.Infrastructure.Errors;
 using Shared.Infrastructure.Exceptions;
 
 namespace Shared.Infrastructure.Bases;
@@ -15,7 +14,7 @@ public abstract class BaseNoSqlContext
         }
         catch
         {
-            throw new ServiceUnavailableException(CommonExceptionMessage.D001DatabaseNotAvailable);
+            throw new ServiceUnavailableException();
         }
     }
 

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shared.Infrastructure.Extensions;
 using Shop.Core.Dtos;
-using Shop.Core.Dtos.Price;
 using Shop.Core.Dtos.Product;
+using Shop.Core.Dtos.Product.Price;
 using Shop.Core.Services;
 
 namespace Api.Modules.Shop.Controllers;
@@ -20,6 +20,11 @@ public class ProductController(IProductService productService) : ShopModuleBaseC
     [ProducesResponseType(typeof(ProductDto), StatusCodes.Status200OK)]
     public Task<IActionResult> GetDetailsByIdAsync([FromRoute] Guid id, [FromQuery] Guid? favouriteId = null, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_productService.GetDetailsByIdAsync, id, favouriteId, cancellationToken);
+
+    [HttpGet("List")]
+    [ProducesResponseType(typeof(ProductResponseFormDto), StatusCodes.Status200OK)]
+    public Task<IActionResult> GetListIdNameAsync([FromQuery] List<Guid> excludedIds, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_productService.GetListIdNameAsync, excludedIds, cancellationToken);
 
     [HttpGet("Page/{pageNumber:int}")]
     [ProducesResponseType(typeof(PageDto<ProductListDto>), StatusCodes.Status200OK)]

@@ -1,7 +1,7 @@
 ﻿using Shared.Core.Dtos;
 using Shared.Shared.Interfaces;
 using Shop.Core.Dtos;
-using Shop.Core.Dtos.Price;
+using Shop.Core.Dtos.Product.Price;
 using Shop.Infrastructure.DomainLogics;
 using Shop.Infrastructure.Repositories;
 
