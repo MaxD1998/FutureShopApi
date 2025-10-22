@@ -3,6 +3,7 @@ using Shared.Core.Dtos;
 using Shared.Core.Services;
 using Shared.Infrastructure.Constants;
 using Shared.Infrastructure.Extensions;
+using Shared.Shared.Dtos;
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.Category;
 using Shop.Infrastructure.Repositories;
@@ -17,7 +18,7 @@ public interface ICategoryService
 
     Task<ResultDto<IdNameDto>> GetIdNameByIdAsync(Guid id, CancellationToken cancellationToken);
 
-    Task<ResultDto<PageDto<CategoryPageListDto>>> GetPageListAsync(int pageNumber, CancellationToken cancellationToken);
+    Task<ResultDto<PageDto<CategoryPageListDto>>> GetPageListAsync(PaginationDto pagination, CancellationToken cancellationToken);
 
     Task<ResultDto<CategoryResponseFormDto>> UdpateAsync(Guid id, CategoryRequestFormDto dto, CancellationToken cancellationToken);
 }
@@ -49,9 +50,9 @@ internal class CategoryService(ICategoryRepository categoryRepository, IHeaderSe
         return Success(result);
     }
 
-    public async Task<ResultDto<PageDto<CategoryPageListDto>>> GetPageListAsync(int pageNumber, CancellationToken cancellationToken)
+    public async Task<ResultDto<PageDto<CategoryPageListDto>>> GetPageListAsync(PaginationDto pagination, CancellationToken cancellationToken)
     {
-        var results = await _categoryRepository.GetPageAsync(pageNumber, CategoryPageListDto.Map(), cancellationToken);
+        var results = await _categoryRepository.GetPageAsync(pagination, CategoryPageListDto.Map(), cancellationToken);
 
         return Success(results);
     }

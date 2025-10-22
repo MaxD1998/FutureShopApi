@@ -1,6 +1,7 @@
 ﻿using Moq;
 using Shared.Core.Services;
 using Shop.Core.Dtos.Basket;
+using Shop.Core.Factories;
 using Shop.Core.Services;
 using Shop.Infrastructure.Entities.Baskets;
 using Shop.Infrastructure.Repositories;
@@ -13,11 +14,21 @@ public class BaseketServiceTest
     private readonly Mock<IBasketRepository> _basketRepositoryMock = new();
     private readonly IBasketSerivce _basketSerivce;
     private readonly Mock<ICurrentUserService> _currentUserServiceMock = new();
+    private readonly Mock<IHeaderService> _headerService = new();
+    private readonly Mock<ILogicFactory> _logicFactory = new();
+    private readonly Mock<IPromotionRepository> _promotionRepositoryMock = new();
     private readonly Mock<IPurchaseListRepository> _purchaseListRepositoryMock = new();
 
     public BaseketServiceTest()
     {
-        _basketSerivce = new BasketService(_basketRepositoryMock.Object, _currentUserServiceMock.Object, _purchaseListRepositoryMock.Object);
+        _basketSerivce = new BasketService(
+            _basketRepositoryMock.Object,
+            _currentUserServiceMock.Object,
+            _headerService.Object,
+            _logicFactory.Object,
+            _promotionRepositoryMock.Object,
+            _purchaseListRepositoryMock.Object
+        );
     }
 
     [Theory]

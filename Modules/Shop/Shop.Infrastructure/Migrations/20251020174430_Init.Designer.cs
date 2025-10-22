@@ -13,7 +13,7 @@ using Shop.Infrastructure;
 namespace Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20250906203817_Init")]
+    [Migration("20251020174430_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -21,7 +21,7 @@ namespace Shop.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.8")
+                .HasAnnotation("ProductVersion", "9.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -58,6 +58,10 @@ namespace Shop.Infrastructure.Migrations
                     b.Property<DateTime>("Start")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(101);
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(104);
 
                     b.HasKey("Id");
 

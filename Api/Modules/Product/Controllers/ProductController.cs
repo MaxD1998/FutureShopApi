@@ -4,6 +4,7 @@ using Product.Core.Services;
 using Shared.Api.Attributes;
 using Shared.Infrastructure.Enums;
 using Shared.Infrastructure.Extensions;
+using Shared.Shared.Dtos;
 
 namespace Api.Modules.Product.Controllers;
 
@@ -27,10 +28,10 @@ public class ProductController(IProductService productService) : ProductModuleBa
     public Task<IActionResult> GetByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_productService.GetByIdAsync, id, cancellationToken);
 
-    [HttpGet("Page/{pageNumber:int}")]
+    [HttpGet("Page")]
     [ProducesResponseType(typeof(PageDto<ProductListDto>), StatusCodes.Status200OK)]
-    public Task<IActionResult> GetPageAsync([FromRoute] int pageNumber, CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_productService.GetPageListAsync, pageNumber, cancellationToken);
+    public Task<IActionResult> GetPageAsync([FromQuery] PaginationDto pagination, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_productService.GetPageListAsync, pagination, cancellationToken);
 
     [HttpPut("{id:guid}")]
     [ProducesResponseType(typeof(ProductResponseFormDto), StatusCodes.Status200OK)]

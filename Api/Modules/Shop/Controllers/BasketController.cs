@@ -16,8 +16,8 @@ public class BasketController(IBasketSerivce basketSerivce) : ShopModuleBaseCont
 
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(BasketDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> GetByIdAsync([FromRoute] Guid id, [FromQuery] Guid? favouriteId = null, CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_basketSerivce.GetByIdAsync, id, favouriteId, cancellationToken);
+    public Task<IActionResult> GetByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_basketSerivce.GetByIdAsync, id, cancellationToken);
 
     [HttpGet("UserBasket")]
     [Authorize]

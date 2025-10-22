@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Interfaces;
+using Shared.Shared.Dtos;
 
 namespace Shared.Infrastructure.Extensions;
 
@@ -8,20 +9,20 @@ public static class DbQueryExtension
     public static IQueryable<T> Filter<T>(this IQueryable<T> query, IFilter<T> filter, string lang) where T : class
         => filter.FilterExecute(query, lang);
 
-    public static async Task<PageDto<T>> ToPageAsync<T>(this IQueryable<T> query, int pageNumber, CancellationToken cancellationToken = default)
+    public static async Task<PageDto<T>> ToPageAsync<T>(this IQueryable<T> query, PaginationDto pagination, CancellationToken cancellationToken = default)
     {
         cancellationToken.ThrowIfCancellationRequested();
-        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(pageNumber);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(pagination.PageNumber);
+        ArgumentOutOfRangeException.ThrowIfNegativeOrZero(pagination.PageSize);
 
-        var itemsCount = 25;
         var items = await query
-            .Skip(itemsCount * (pageNumber - 1))
-            .Take(itemsCount)
+            .Skip(pagination.PageSize * (pagination.PageNumber - 1))
+            .Take(pagination.PageSize)
             .ToListAsync(cancellationToken);
 
         var recordsCount = await query.CountAsync(cancellationToken);
-        var totalPages = recordsCount / itemsCount + 1;
+        var totalPages = recordsCount / pagination.PageSize + 1;
 
-        return new PageDto<T>(pageNumber, items, totalPages);
+        return new PageDto<T>(pagination.PageNumber, items, totalPages);
     }
 }

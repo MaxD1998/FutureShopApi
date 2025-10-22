@@ -7,6 +7,7 @@ using Shared.Core.Dtos;
 using Shared.Core.Enums;
 using Shared.Infrastructure;
 using Shared.Infrastructure.Extensions;
+using Shared.Shared.Dtos;
 
 namespace Product.Core.Services;
 
@@ -22,7 +23,7 @@ public interface IProductBaseService
 
     Task<ResultDto<List<IdNameDto>>> GetListIdNameAsync(CancellationToken cancellationToken);
 
-    Task<ResultDto<PageDto<ProductBaseListDto>>> GetPageListAsync(int pageIndex, CancellationToken cancellationToken);
+    Task<ResultDto<PageDto<ProductBaseListDto>>> GetPageListAsync(PaginationDto pagination, CancellationToken cancellationToken);
 
     Task<ResultDto<ProductBaseResponseFormDto>> UpdateAsync(Guid id, ProductBaseRequestFormDto dto, CancellationToken cancellationToken);
 }
@@ -73,9 +74,9 @@ internal class ProductBaseService(IProductBaseRepository productBaseRepository, 
         return Success(results);
     }
 
-    public async Task<ResultDto<PageDto<ProductBaseListDto>>> GetPageListAsync(int pageIndex, CancellationToken cancellationToken)
+    public async Task<ResultDto<PageDto<ProductBaseListDto>>> GetPageListAsync(PaginationDto pagination, CancellationToken cancellationToken)
     {
-        var results = await _productBaseRepository.GetPageAsync(pageIndex, ProductBaseListDto.Map(), cancellationToken);
+        var results = await _productBaseRepository.GetPageAsync(pagination, ProductBaseListDto.Map(), cancellationToken);
 
         return Success(results);
     }

@@ -8,6 +8,7 @@ using Shared.Core.Dtos;
 using Shared.Core.Enums;
 using Shared.Infrastructure;
 using Shared.Infrastructure.Extensions;
+using Shared.Shared.Dtos;
 
 namespace Product.Core.Services;
 
@@ -25,7 +26,7 @@ public interface ICategoryService
 
     Task<ResultDto<List<IdNameDto>>> GetListPotentialSubcategoriesAsync(Guid? id, Guid? parentId, List<Guid> childIds, CancellationToken cancellationToken);
 
-    Task<ResultDto<PageDto<CategoryListDto>>> GetPageListAsync(int pageNumber, CancellationToken cancellationToken);
+    Task<ResultDto<PageDto<CategoryListDto>>> GetPageListAsync(PaginationDto pagination, CancellationToken cancellationToken);
 
     Task<ResultDto<CategoryResponseFormDto>> UpdateAsync(Guid id, CategoryRequestFormDto dto, CancellationToken cancellationToken);
 }
@@ -79,9 +80,9 @@ internal class CategoryService(ICategoryRepository categoryRepository, IRabbitMq
         return Success(results);
     }
 
-    public async Task<ResultDto<PageDto<CategoryListDto>>> GetPageListAsync(int pageNumber, CancellationToken cancellationToken)
+    public async Task<ResultDto<PageDto<CategoryListDto>>> GetPageListAsync(PaginationDto pagination, CancellationToken cancellationToken)
     {
-        var results = await _categoryRepository.GetPageAsync(pageNumber, CategoryListDto.Map(), cancellationToken);
+        var results = await _categoryRepository.GetPageAsync(pagination, CategoryListDto.Map(), cancellationToken);
 
         return Success(results);
     }

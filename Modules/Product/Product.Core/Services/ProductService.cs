@@ -6,6 +6,7 @@ using Shared.Core.Dtos;
 using Shared.Core.Enums;
 using Shared.Infrastructure;
 using Shared.Infrastructure.Extensions;
+using Shared.Shared.Dtos;
 
 namespace Product.Core.Services;
 
@@ -17,7 +18,7 @@ public interface IProductService
 
     Task<ResultDto<ProductResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
-    Task<ResultDto<PageDto<ProductListDto>>> GetPageListAsync(int indexPage, CancellationToken cancellationToken);
+    Task<ResultDto<PageDto<ProductListDto>>> GetPageListAsync(PaginationDto pagination, CancellationToken cancellationToken);
 
     Task<ResultDto<ProductResponseFormDto>> UpdateAsync(Guid id, ProductRequestFormDto dto, CancellationToken cancellationToken);
 }
@@ -53,9 +54,9 @@ internal class ProductService(IProductRepository productRepository, IRabbitMqCon
         return Success(result);
     }
 
-    public async Task<ResultDto<PageDto<ProductListDto>>> GetPageListAsync(int indexPage, CancellationToken cancellationToken)
+    public async Task<ResultDto<PageDto<ProductListDto>>> GetPageListAsync(PaginationDto pagination, CancellationToken cancellationToken)
     {
-        var results = await _productRepository.GetPageAsync(indexPage, ProductListDto.Map(), cancellationToken);
+        var results = await _productRepository.GetPageAsync(pagination, ProductListDto.Map(), cancellationToken);
 
         return Success(results);
     }

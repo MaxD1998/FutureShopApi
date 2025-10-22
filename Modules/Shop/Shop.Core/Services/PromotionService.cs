@@ -1,6 +1,7 @@
 ﻿using Shared.Core.Bases;
 using Shared.Core.Dtos;
 using Shared.Infrastructure.Extensions;
+using Shared.Shared.Dtos;
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.Promotion;
 using Shop.Infrastructure.Repositories;
@@ -19,7 +20,7 @@ public interface IPromotionService
 
     Task<ResultDto<List<IdNameDto>>> GetListIdNameAsync(CancellationToken cancellationToken);
 
-    Task<ResultDto<PageDto<PromotionListDto>>> GetPageAsync(int indexPage, CancellationToken cancellationToken);
+    Task<ResultDto<PageDto<PromotionListDto>>> GetPageAsync(PaginationDto pagination, CancellationToken cancellationToken);
 
     Task<ResultDto<PromotionResponseFormDto>> UpdateAsync(Guid id, PromotionRequestFormDto dto, CancellationToken cancellationToken);
 }
@@ -65,9 +66,9 @@ internal class PromotionService(IPromotionRepository promotionRepository) : Base
         return Success(results);
     }
 
-    public async Task<ResultDto<PageDto<PromotionListDto>>> GetPageAsync(int indexPage, CancellationToken cancellationToken)
+    public async Task<ResultDto<PageDto<PromotionListDto>>> GetPageAsync(PaginationDto pagination, CancellationToken cancellationToken)
     {
-        var results = await _promotionRepository.GetPageAsync(indexPage, PromotionListDto.Map(), cancellationToken);
+        var results = await _promotionRepository.GetPageAsync(pagination, PromotionListDto.Map(), cancellationToken);
 
         return Success(results);
     }

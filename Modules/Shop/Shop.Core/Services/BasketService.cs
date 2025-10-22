@@ -3,14 +3,13 @@ using Shared.Core.Dtos;
 using Shared.Core.Errors;
 using Shared.Core.Services;
 using Shared.Infrastructure.Constants;
+using Shared.Shared.Extensions;
 using Shop.Core.Dtos.Basket;
 using Shop.Core.Dtos.Basket.BasketItem;
 using Shop.Core.Factories;
-using Shop.Core.Logics.PromotionLogics.Models;
-using Shop.Infrastructure.Enums;
+using Shop.Core.Logics.PromotionLogics;
 using Shop.Infrastructure.Repositories;
 using System.Net;
-using System.Text.Json;
 
 namespace Shop.Core.Services;
 
@@ -20,7 +19,7 @@ public interface IBasketSerivce
 
     Task<ResultDto<BasketDto>> GetByAuthorizedUserAsync(CancellationToken cancellationToken);
 
-    Task<ResultDto<BasketDto>> GetByIdAsync(Guid id, Guid? favouriteId, CancellationToken cancellationToken);
+    Task<ResultDto<BasketDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
     Task<ResultDto<BasketDto>> ImportPurchaseListAsync(ImportPurchaseListToBasketDto dto, CancellationToken cancellationToken);
 
@@ -54,35 +53,27 @@ internal class BasketService(
     public async Task<ResultDto<BasketDto>> GetByAuthorizedUserAsync(CancellationToken cancellationToken)
     {
         var userId = _currentUserService.GetUserId();
-        var codesStr = _headerService.GetHeader(HeaderNameConst.Codes);
-        var codes = JsonSerializer.Deserialize<List<string>>(codesStr);
 
         if (!userId.HasValue)
             return Success<BasketDto>(null);
 
         var result = await _basketRepository.GetByUserIdAsync(userId.Value, BasketDto.Map(x => x.PurchaseList.UserId == userId), cancellationToken);
 
-        var promotions = await _promotionRepository.GetActivePromotionsAsync(codes, cancellationToken);
+        if (result == null)
+            return Success(result);
 
-        if (promotions != null && promotions.Count > 0)
-        {
-            var productList = result.BasketItems.Select(x => x.Product).ToList();
-            foreach (var promotion in promotions)
-            {
-                var promotionRequest = new SetPromotionForProductsRequestModel<BasketItemProductDto>(promotion, productList);
-                productList = promotion.Type switch
-                {
-                    PromotionType.Percent => await _logicFactory.ExecuteAsync(promotionRequest, f => f.SetPercentPromotionForProductsLogic<BasketItemProductDto>(), cancellationToken),
-                    _ => productList
-                };
-            }
-        }
+        var codes = _headerService.GetHeader(HeaderNameConst.Codes).ToListString();
+        var productList = result.BasketItems.Select(x => x.Product).ToList();
+        var promotionRequest = new SetPromotionForProductsRequestModel<BasketItemProductDto>(codes, productList);
+
+        await _logicFactory.ExecuteAsync(promotionRequest, f => f.SetPromotionForProductsLogic<BasketItemProductDto>(), cancellationToken);
 
         return Success(result);
     }
 
-    public async Task<ResultDto<BasketDto>> GetByIdAsync(Guid id, Guid? favouriteId, CancellationToken cancellationToken)
+    public async Task<ResultDto<BasketDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
+        var favouriteId = _headerService.GetHeader(HeaderNameConst.FavouriteId).ToNullableGuid();
         var result = await _basketRepository.GetByIdAsync(id, BasketDto.Map(x => x.PurchaseListId == favouriteId), cancellationToken);
 
         return Success(result);

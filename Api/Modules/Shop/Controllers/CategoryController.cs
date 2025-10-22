@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Infrastructure.Extensions;
+using Shared.Shared.Dtos;
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.Category;
 using Shop.Core.Services;
@@ -28,10 +29,10 @@ public class CategoryController(ICategoryService categoryService) : ShopModuleBa
     public Task<IActionResult> GetListByCategoryParentIdAsync(CancellationToken cancellationToken = default)
         => ApiResponseAsync(_categoryService.GetActiveListAsync, cancellationToken);
 
-    [HttpGet("Page/{pageNumber:int}")]
+    [HttpGet("Page")]
     [ProducesResponseType(typeof(PageDto<CategoryPageListDto>), StatusCodes.Status200OK)]
-    public Task<IActionResult> GetPageAsync([FromRoute] int pageNumber, CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_categoryService.GetPageListAsync, pageNumber, cancellationToken);
+    public Task<IActionResult> GetPageAsync([FromQuery] PaginationDto pagination, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_categoryService.GetPageListAsync, pagination, cancellationToken);
 
     [HttpPut("{id:guid}")]
     [ProducesResponseType(typeof(CategoryResponseFormDto), StatusCodes.Status200OK)]

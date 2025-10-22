@@ -28,6 +28,10 @@ public class AdCampaignConfig : BaseConfig<AdCampaignEntity>
             .HasColumnOrder(103)
             .IsRequired();
 
+        builder.Property(x => x.Type)
+            .HasColumnOrder(104)
+            .IsRequired();
+
         builder.HasMany(x => x.AdCampaignItems)
             .WithOne(x => x.AdCampaign)
             .HasForeignKey(x => x.AdCampaignId);

@@ -51,6 +51,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Shared", "Shared\Sha
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authorization.Infrastructure", "Modules\Authorization\Authorization.Infrastructure\Authorization.Infrastructure.csproj", "{08BD92EB-E28E-74F9-709C-E31711D13E31}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared.Test", "Shared\Shared.Test\Shared.Test.csproj", "{2F06783B-3187-4ADB-8FAB-73D287DCADBE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,6 +127,10 @@ Global
 		{08BD92EB-E28E-74F9-709C-E31711D13E31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08BD92EB-E28E-74F9-709C-E31711D13E31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08BD92EB-E28E-74F9-709C-E31711D13E31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F06783B-3187-4ADB-8FAB-73D287DCADBE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F06783B-3187-4ADB-8FAB-73D287DCADBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F06783B-3187-4ADB-8FAB-73D287DCADBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F06783B-3187-4ADB-8FAB-73D287DCADBE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -151,6 +157,7 @@ Global
 		{C3D7E43C-B1D3-477E-B0ED-3F157FA6B648} = {E82940B5-393F-464B-BACB-8C1CFBA46565}
 		{D999A1E0-0B75-4D32-A6DB-46AD2A296CD8} = {E2B1A148-C417-498C-BAC8-32E0A7611A22}
 		{08BD92EB-E28E-74F9-709C-E31711D13E31} = {C015221A-6C90-465D-8CDB-A435FEED5B1A}
+		{2F06783B-3187-4ADB-8FAB-73D287DCADBE} = {E2B1A148-C417-498C-BAC8-32E0A7611A22}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {839C8B2F-2FD5-4DB1-9272-C520B41954F5}

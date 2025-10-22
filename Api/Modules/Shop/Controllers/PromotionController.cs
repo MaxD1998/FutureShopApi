@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shared.Infrastructure.Extensions;
+using Shared.Shared.Dtos;
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.Promotion;
 using Shop.Core.Services;
@@ -35,10 +36,10 @@ public class PromotionController(IPromotionService promotionService) : ShopModul
     public Task<IActionResult> GetListIdNameAsync(CancellationToken cancellationToken = default)
     => ApiResponseAsync(_promotionService.GetListIdNameAsync, cancellationToken);
 
-    [HttpGet("Page/{pageNumber:int}")]
+    [HttpGet("Page")]
     [ProducesResponseType(typeof(PageDto<PromotionListDto>), StatusCodes.Status200OK)]
-    public Task<IActionResult> GetPageAsync([FromRoute] int pageNumber, CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_promotionService.GetPageAsync, pageNumber, cancellationToken);
+    public Task<IActionResult> GetPageAsync([FromQuery] PaginationDto pagination, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_promotionService.GetPageAsync, pagination, cancellationToken);
 
     [HttpPut("{id:guid}")]
     [ProducesResponseType(typeof(PromotionResponseFormDto), StatusCodes.Status200OK)]

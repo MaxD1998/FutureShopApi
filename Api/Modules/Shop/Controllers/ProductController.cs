@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shared.Infrastructure.Extensions;
+using Shared.Shared.Dtos;
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.Product;
 using Shop.Core.Dtos.Product.Price;
@@ -18,18 +19,18 @@ public class ProductController(IProductService productService) : ShopModuleBaseC
 
     [HttpGet("Details/{id:guid}")]
     [ProducesResponseType(typeof(ProductDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> GetDetailsByIdAsync([FromRoute] Guid id, [FromQuery] Guid? favouriteId = null, CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_productService.GetDetailsByIdAsync, id, favouriteId, cancellationToken);
+    public Task<IActionResult> GetDetailsByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_productService.GetDetailsByIdAsync, id, cancellationToken);
 
     [HttpGet("List")]
     [ProducesResponseType(typeof(ProductResponseFormDto), StatusCodes.Status200OK)]
     public Task<IActionResult> GetListIdNameAsync([FromQuery] List<Guid> excludedIds, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_productService.GetListIdNameAsync, excludedIds, cancellationToken);
 
-    [HttpGet("Page/{pageNumber:int}")]
+    [HttpGet("Page")]
     [ProducesResponseType(typeof(PageDto<ProductListDto>), StatusCodes.Status200OK)]
-    public Task<IActionResult> GetPageAsync([FromRoute] int pageNumber, CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_productService.GetPageListAsync, pageNumber, cancellationToken);
+    public Task<IActionResult> GetPageAsync([FromQuery] PaginationDto pagination, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_productService.GetPageListAsync, pagination, cancellationToken);
 
     [HttpGet("ShopList/{categoryId:guid}")]
     [ProducesResponseType(typeof(IEnumerable<ProductShopListDto>), StatusCodes.Status200OK)]

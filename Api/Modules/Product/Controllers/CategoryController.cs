@@ -5,6 +5,7 @@ using Product.Core.Services;
 using Shared.Api.Attributes;
 using Shared.Infrastructure.Enums;
 using Shared.Infrastructure.Extensions;
+using Shared.Shared.Dtos;
 
 namespace Api.Modules.Product.Controllers;
 
@@ -43,10 +44,10 @@ public class CategoryController(ICategoryService categoryService) : ProductModul
     public Task<IActionResult> GetListPotentialSubcategoriesAsync([FromRoute] Guid? id, [FromQuery] Guid? parentId, [FromQuery] List<Guid> childIds, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_categoryService.GetListPotentialSubcategoriesAsync, id, parentId, childIds, cancellationToken);
 
-    [HttpGet("Page/{pageNumber:int}")]
+    [HttpGet("Page")]
     [ProducesResponseType(typeof(PageDto<CategoryListDto>), StatusCodes.Status200OK)]
-    public Task<IActionResult> GetPageAsync([FromRoute] int pageNumber, CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_categoryService.GetPageListAsync, pageNumber, cancellationToken);
+    public Task<IActionResult> GetPageAsync([FromQuery] PaginationDto pagination, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_categoryService.GetPageListAsync, pagination, cancellationToken);
 
     [HttpPut("{id:guid}")]
     [ProducesResponseType(typeof(CategoryResponseFormDto), StatusCodes.Status200OK)]

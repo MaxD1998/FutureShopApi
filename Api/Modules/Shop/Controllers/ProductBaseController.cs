@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shared.Infrastructure.Extensions;
+using Shared.Shared.Dtos;
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.ProductBase;
 using Shop.Core.Services;
@@ -20,10 +21,10 @@ public class ProductBaseController(IProductBaseService productBaseService) : Sho
     public Task<IActionResult> GetIdNameByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_productBaseService.GetIdNametByIdAsync, id, cancellationToken);
 
-    [HttpGet("Page/{pageNumber:int}")]
+    [HttpGet("Page")]
     [ProducesResponseType(typeof(PageDto<ProductBaseListDto>), StatusCodes.Status200OK)]
-    public Task<IActionResult> GetPageAsync([FromRoute] int pageNumber, CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_productBaseService.GetPageAsync, pageNumber, cancellationToken);
+    public Task<IActionResult> GetPageAsync([FromQuery] PaginationDto pagination, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_productBaseService.GetPageAsync, pagination, cancellationToken);
 
     [HttpPut("{id:guid}")]
     [ProducesResponseType(typeof(ProductBaseResponseFormDto), StatusCodes.Status200OK)]

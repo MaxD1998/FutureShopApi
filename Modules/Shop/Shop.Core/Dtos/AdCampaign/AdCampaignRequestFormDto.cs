@@ -1,14 +1,15 @@
 ﻿using Shop.Core.Dtos.AdCampaign.AdCampaignItem;
 using Shop.Core.Dtos.AdCampaign.AdCampaignProduct;
 using Shop.Infrastructure.Entities.AdCampaigns;
+using Shop.Infrastructure.Enums;
 
 namespace Shop.Core.Dtos.AdCampaign;
 
 public class AdCampaignRequestFormDto
 {
-    public List<AdCampaignItemFormDto> AdCampaignItems { get; set; }
+    public List<AdCampaignItemFormDto> AdCampaignItems { get; set; } = [];
 
-    public List<AdCampaignProductFormDto> AdCampaignProducts { get; set; }
+    public List<AdCampaignProductFormDto> AdCampaignProducts { get; set; } = [];
 
     public DateTime End { get; set; }
 
@@ -16,7 +17,11 @@ public class AdCampaignRequestFormDto
 
     public string Name { get; set; }
 
+    public Guid? PromotionId { get; set; }
+
     public DateTime Start { get; set; }
+
+    public AdCampaignType Type { get; set; }
 
     public AdCampaignEntity ToEntity() => new()
     {
@@ -26,5 +31,6 @@ public class AdCampaignRequestFormDto
         IsActive = IsActive,
         Name = Name,
         Start = Start,
+        Type = Type
     };
 }

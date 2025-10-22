@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Extensions;
 using Shared.Infrastructure.Interfaces;
+using Shared.Shared.Dtos;
 using System.Linq.Expressions;
 
 namespace Shared.Infrastructure.Bases;
@@ -22,7 +23,7 @@ public interface IBaseRepository<TEntity> : IBaseRepository where TEntity : Base
 
     Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TEntity, bool>> condition, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken);
 
-    Task<PageDto<TResult>> GetPageAsync<TResult>(int pageNumber, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken);
+    Task<PageDto<TResult>> GetPageAsync<TResult>(PaginationDto pagination, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken);
 }
 
 public abstract class BaseRepository<TContext, TEntity>(TContext context) : IBaseRepository<TEntity> where TContext : BaseContext where TEntity : BaseEntity, IUpdate<TEntity>
@@ -55,8 +56,8 @@ public abstract class BaseRepository<TContext, TEntity>(TContext context) : IBas
     public Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TEntity, bool>> condition, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken)
         => _context.Set<TEntity>().AsNoTracking().Where(condition).Select(map).ToListAsync();
 
-    public Task<PageDto<TResult>> GetPageAsync<TResult>(int pageNumber, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken)
-        => _context.Set<TEntity>().AsNoTracking().Select(map).ToPageAsync(pageNumber, cancellationToken);
+    public Task<PageDto<TResult>> GetPageAsync<TResult>(PaginationDto pagination, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken)
+        => _context.Set<TEntity>().AsNoTracking().Select(map).ToPageAsync(pagination, cancellationToken);
 
     protected Task<bool> AnyAsync(Expression<Func<TEntity, bool>> condition, CancellationToken cancellationToken)
         => _context.Set<TEntity>().AnyAsync(condition, cancellationToken);

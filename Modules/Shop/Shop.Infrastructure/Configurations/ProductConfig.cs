@@ -24,6 +24,10 @@ public class ProductConfig : BaseExternalConfig<ProductEntity>
             .IsRequired()
             .HasDefaultValue(false);
 
+        builder.HasMany(x => x.AdCampaignProducts)
+            .WithOne(x => x.Product)
+            .HasForeignKey(x => x.ProductId);
+
         builder.HasMany(x => x.BasketItems)
             .WithOne(x => x.Product)
             .HasForeignKey(x => x.ProductId);
@@ -37,6 +41,10 @@ public class ProductConfig : BaseExternalConfig<ProductEntity>
             .HasForeignKey(x => x.ProductId);
 
         builder.HasMany(x => x.ProductPhotos)
+            .WithOne(x => x.Product)
+            .HasForeignKey(x => x.ProductId);
+
+        builder.HasMany(x => x.PromotionProducts)
             .WithOne(x => x.Product)
             .HasForeignKey(x => x.ProductId);
 

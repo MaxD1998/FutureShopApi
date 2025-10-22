@@ -4,6 +4,7 @@ using Shared.Infrastructure.Exceptions;
 using Shared.Infrastructure.Extensions;
 using Shared.Infrastructure.Interfaces;
 using Shop.Infrastructure.Entities.Promotions;
+using Shop.Infrastructure.Enums;
 using Shop.Infrastructure.Exceptions.AdCampaigns;
 
 namespace Shop.Infrastructure.Entities.AdCampaigns;
@@ -18,11 +19,13 @@ public class AdCampaignEntity : BaseEntity, IUpdate<AdCampaignEntity>, IEntityVa
 
     public DateTime Start { get; set; }
 
+    public AdCampaignType Type { get; set; }
+
     #region Related Data
 
-    public ICollection<AdCampaignItemEntity> AdCampaignItems { get; set; }
+    public ICollection<AdCampaignItemEntity> AdCampaignItems { get; set; } = [];
 
-    public ICollection<AdCampaignProductEntity> AdCampaignProducts { get; set; }
+    public ICollection<AdCampaignProductEntity> AdCampaignProducts { get; set; } = [];
 
     public PromotionEntity Promotion { get; set; }
 
@@ -37,6 +40,8 @@ public class AdCampaignEntity : BaseEntity, IUpdate<AdCampaignEntity>, IEntityVa
         Name = entity.Name;
         Start = entity.Start;
 
+        Promotion = entity.Promotion;
+
         AdCampaignItems.UpdateEntities(entity.AdCampaignItems);
         AdCampaignProducts.UpdateEntities(entity.AdCampaignProducts);
     }
@@ -47,8 +52,20 @@ public class AdCampaignEntity : BaseEntity, IUpdate<AdCampaignEntity>, IEntityVa
         ValidateName();
         ValidateStartEnd();
 
+        ValidateAdCampaignItems();
+
         AdCampaignItems.ValidateEntities();
         AdCampaignProducts.ValidateEntities();
+    }
+
+    private void ValidateAdCampaignItems()
+    {
+        if (AdCampaignItems.Count > 1)
+        {
+            var isDuplicated = AdCampaignItems.GroupBy(x => x.Lang).Any(g => g.Count() > 1);
+            if (isDuplicated)
+                throw new AdCampaignItemsMustBeUniqueException();
+        }
     }
 
     private void ValidateIsActive()

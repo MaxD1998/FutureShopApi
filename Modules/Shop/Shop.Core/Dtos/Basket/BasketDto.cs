@@ -7,7 +7,7 @@ namespace Shop.Core.Dtos.Basket;
 
 public class BasketDto
 {
-    public List<BasketItemDto> BasketItems { get; set; }
+    public List<BasketItemDto> BasketItems { get; set; } = [];
 
     public Guid Id { get; set; }
 
