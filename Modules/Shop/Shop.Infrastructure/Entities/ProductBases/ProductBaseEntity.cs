@@ -34,6 +34,7 @@ public class ProductBaseEntity : BaseExternalEntity, IUpdate<ProductBaseEntity>,
     public void UpdateEvent(ProductBaseEntity entity)
     {
         CategoryId = entity.CategoryId;
+        Name = entity.Name;
     }
 
     public void Validate()
