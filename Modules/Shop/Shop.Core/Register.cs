@@ -12,6 +12,7 @@ public static class Register
         services.AddScoped<ICategoryEventService, CategoryEventService>();
         services.AddScoped<IProductBaseEventService, ProductBaseEventService>();
         services.AddScoped<IProductEventService, ProductEventService>();
+        services.AddScoped<IUserEventService, UserEventService>();
 
         services.AddScoped<IAdCampaignService, AdCampaignService>();
         services.AddScoped<IBasketSerivce, BasketService>();

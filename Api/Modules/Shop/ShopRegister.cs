@@ -19,6 +19,7 @@ public static class ShopRegister
             x.AddEventHandler<CategoryEventHandler>();
             x.AddEventHandler<ProductBaseEventHandler>();
             x.AddEventHandler<ProductEventHandler>();
+            x.AddEventHandler<UserEventHandler>();
         });
     }
 

@@ -86,6 +86,11 @@ public class Program
 
         app.MapControllers();
 
+        app.MigrateDatabase<AuthContext>();
+        app.MigrateDatabase<ProductContext>();
+        app.MigrateDatabase<ShopContext>();
+        app.MigrateDatabase<WarehouseContext>();
+
         app.Run();
     }
 }

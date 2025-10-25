@@ -84,6 +84,22 @@ namespace Shop.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    FirstName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    ExternalId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AdCampaignItem",
                 columns: table => new
                 {
@@ -323,6 +339,36 @@ namespace Shop.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProductReview",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    ProductId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Rating = table.Column<int>(type: "integer", nullable: false),
+                    Comment = table.Column<string>(type: "text", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProductReview", x => x.Id);
+                    table.CheckConstraint("CK_ProductReview_Rating_Range", "\"Rating\" BETWEEN 1 AND 5");
+                    table.ForeignKey(
+                        name: "FK_ProductReview_Product_ProductId",
+                        column: x => x.ProductId,
+                        principalTable: "Product",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ProductReview_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ProductTranslation",
                 columns: table => new
                 {
@@ -448,6 +494,11 @@ namespace Shop.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.InsertData(
+                table: "User",
+                columns: new[] { "Id", "CreateTime", "ExternalId", "FirstName", "LastName", "ModifyTime" },
+                values: new object[] { new Guid("d6669a68-5afb-432d-858f-3f5181579a90"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("d6669a68-5afb-432d-858f-3f5181579a90"), "Super", "Admin", null });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AdCampaignItem_AdCampaignId_Position_Lang",
                 table: "AdCampaignItem",
@@ -547,6 +598,17 @@ namespace Shop.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProductReview_ProductId_UserId",
+                table: "ProductReview",
+                columns: new[] { "ProductId", "UserId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductReview_UserId",
+                table: "ProductReview",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ProductTranslation_ProductId_Lang",
                 table: "ProductTranslation",
                 columns: new[] { "ProductId", "Lang" },
@@ -607,6 +669,9 @@ namespace Shop.Infrastructure.Migrations
                 name: "ProductPhoto");
 
             migrationBuilder.DropTable(
+                name: "ProductReview");
+
+            migrationBuilder.DropTable(
                 name: "ProductTranslation");
 
             migrationBuilder.DropTable(
@@ -620,6 +685,9 @@ namespace Shop.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "ProductParameter");
+
+            migrationBuilder.DropTable(
+                name: "User");
 
             migrationBuilder.DropTable(
                 name: "Promotion");

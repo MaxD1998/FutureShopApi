@@ -36,6 +36,8 @@ public class ProductEntity : BaseExternalEntity, IUpdate<ProductEntity>, IUpdate
 
     public ICollection<ProductPhotoEntity> ProductPhotos { get; set; } = [];
 
+    public ICollection<ProductReviewEntity> ProductReviews { get; set; } = [];
+
     public ICollection<PromotionProductEntity> PromotionProducts { get; private set; } = [];
 
     public ICollection<PurchaseListItemEntity> PurchaseListItems { get; private set; } = [];

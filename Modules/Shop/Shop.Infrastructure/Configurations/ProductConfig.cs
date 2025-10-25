@@ -44,6 +44,10 @@ public class ProductConfig : BaseExternalConfig<ProductEntity>
             .WithOne(x => x.Product)
             .HasForeignKey(x => x.ProductId);
 
+        builder.HasMany(x => x.ProductReviews)
+            .WithOne(x => x.Product)
+            .HasForeignKey(x => x.ProductId);
+
         builder.HasMany(x => x.PromotionProducts)
             .WithOne(x => x.Product)
             .HasForeignKey(x => x.ProductId);
