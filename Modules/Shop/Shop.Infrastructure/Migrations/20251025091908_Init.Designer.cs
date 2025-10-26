@@ -13,7 +13,7 @@ using Shop.Infrastructure;
 namespace Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20251020174430_Init")]
+    [Migration("20251025091908_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -558,6 +558,50 @@ namespace Shop.Infrastructure.Migrations
                     b.ToTable("ProductPhoto", (string)null);
                 });
 
+            modelBuilder.Entity("Shop.Infrastructure.Entities.Products.ProductReviewEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("text")
+                        .HasColumnOrder(103);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(1);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(100);
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(101);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("ProductId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("ProductReview", null, t =>
+                        {
+                            t.HasCheckConstraint("CK_ProductReview_Rating_Range", "\"Rating\" BETWEEN 1 AND 5");
+                        });
+                });
+
             modelBuilder.Entity("Shop.Infrastructure.Entities.Products.ProductTranslationEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -752,6 +796,51 @@ namespace Shop.Infrastructure.Migrations
                     b.ToTable("PurchaseListItem", (string)null);
                 });
 
+            modelBuilder.Entity("Shop.Infrastructure.Entities.Users.UserEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(1);
+
+                    b.Property<Guid>("ExternalId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnOrder(100);
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnOrder(101);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("d6669a68-5afb-432d-858f-3f5181579a90"),
+                            CreateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ExternalId = new Guid("d6669a68-5afb-432d-858f-3f5181579a90"),
+                            FirstName = "Super",
+                            LastName = "Admin"
+                        });
+                });
+
             modelBuilder.Entity("Shop.Infrastructure.Entities.AdCampaigns.AdCampaignItemEntity", b =>
                 {
                     b.HasOne("Shop.Infrastructure.Entities.AdCampaigns.AdCampaignEntity", "AdCampaign")
@@ -907,6 +996,25 @@ namespace Shop.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Shop.Infrastructure.Entities.Products.ProductReviewEntity", b =>
+                {
+                    b.HasOne("Shop.Infrastructure.Entities.Products.ProductEntity", "Product")
+                        .WithMany("ProductReviews")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Shop.Infrastructure.Entities.Users.UserEntity", "User")
+                        .WithMany("ProductReviews")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Shop.Infrastructure.Entities.Products.ProductTranslationEntity", b =>
                 {
                     b.HasOne("Shop.Infrastructure.Entities.Products.ProductEntity", "Product")
@@ -1014,6 +1122,8 @@ namespace Shop.Infrastructure.Migrations
 
                     b.Navigation("ProductPhotos");
 
+                    b.Navigation("ProductReviews");
+
                     b.Navigation("PromotionProducts");
 
                     b.Navigation("PurchaseListItems");
@@ -1029,6 +1139,11 @@ namespace Shop.Infrastructure.Migrations
             modelBuilder.Entity("Shop.Infrastructure.Entities.PurchaseLists.PurchaseListEntity", b =>
                 {
                     b.Navigation("PurchaseListItems");
+                });
+
+            modelBuilder.Entity("Shop.Infrastructure.Entities.Users.UserEntity", b =>
+                {
+                    b.Navigation("ProductReviews");
                 });
 #pragma warning restore 612, 618
         }

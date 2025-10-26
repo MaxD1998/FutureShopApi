@@ -24,6 +24,8 @@ public interface IBaseRepository<TEntity> : IBaseRepository where TEntity : Base
     Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TEntity, bool>> condition, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken);
 
     Task<PageDto<TResult>> GetPageAsync<TResult>(PaginationDto pagination, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken);
+
+    Task<PageDto<TResult>> GetPageAsync<TResult>(PaginationDto pagination, Expression<Func<TEntity, bool>> condition, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken);
 }
 
 public abstract class BaseRepository<TContext, TEntity>(TContext context) : IBaseRepository<TEntity> where TContext : BaseContext where TEntity : BaseEntity, IUpdate<TEntity>
@@ -58,6 +60,9 @@ public abstract class BaseRepository<TContext, TEntity>(TContext context) : IBas
 
     public Task<PageDto<TResult>> GetPageAsync<TResult>(PaginationDto pagination, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken)
         => _context.Set<TEntity>().AsNoTracking().Select(map).ToPageAsync(pagination, cancellationToken);
+
+    public Task<PageDto<TResult>> GetPageAsync<TResult>(PaginationDto pagination, Expression<Func<TEntity, bool>> condition, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken)
+        => _context.Set<TEntity>().AsNoTracking().Where(condition).Select(map).ToPageAsync(pagination, cancellationToken);
 
     protected Task<bool> AnyAsync(Expression<Func<TEntity, bool>> condition, CancellationToken cancellationToken)
         => _context.Set<TEntity>().AnyAsync(condition, cancellationToken);

@@ -40,7 +40,6 @@ internal class PromotionService(IPromotionRepository promotionRepository) : Base
     public async Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         await _promotionRepository.DeleteByIdAsync(id, cancellationToken);
-
         return Success();
     }
 

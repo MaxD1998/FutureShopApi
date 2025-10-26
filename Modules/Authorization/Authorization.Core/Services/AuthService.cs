@@ -7,8 +7,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Shared.Core.Bases;
+using Shared.Core.Constans;
 using Shared.Core.Dtos;
+using Shared.Core.Enums;
 using Shared.Core.Errors;
+using Shared.Infrastructure;
 using Shared.Infrastructure.Constants;
 using Shared.Infrastructure.Enums;
 using Shared.Infrastructure.Settings;
@@ -35,6 +38,7 @@ internal class AuthService : BaseService, IAuthService
     private readonly ICookieService _cookieService;
     private readonly HttpContext _httpContext;
     private readonly JwtSettings _jwtSettings;
+    private readonly IRabbitMqContext _rabbitMqContext;
     private readonly IRefreshTokenRepository _refreshTokenRepository;
     private readonly RefreshTokenSettings _refreshTokenSettings;
     private readonly IUserRepository _userRepository;
@@ -45,12 +49,14 @@ internal class AuthService : BaseService, IAuthService
         IOptions<JwtSettings> jwtSettings,
         IRefreshTokenRepository refreshTokenRepository,
         IOptions<RefreshTokenSettings> refreshTokenSettings,
+        IRabbitMqContext rabbitMqContext,
         IUserRepository userRepository)
     {
         _cookieService = cookieService;
         _httpContext = accessor.HttpContext;
         _jwtSettings = jwtSettings.Value;
         _refreshTokenRepository = refreshTokenRepository;
+        _rabbitMqContext = rabbitMqContext;
         _refreshTokenSettings = refreshTokenSettings.Value;
         _userRepository = userRepository;
     }
@@ -117,6 +123,8 @@ internal class AuthService : BaseService, IAuthService
         var refreshToken = await AddOrUpdateRefreshTokenAsync(user.Id, cancellationToken);
         var result = new AuthorizeDto(user, GenerateJwt(user));
         var expireDays = _refreshTokenSettings.ExpireTime;
+
+        await _rabbitMqContext.SendMessageAsync(RabbitMqExchangeConst.AuthorizationModuleUser, EventMessageDto.Create(new UserEventDto(user), MessageType.AddOrUpdate));
 
         _cookieService.AddCookie(CookieNameConst.RefreshToken, refreshToken.ToString(), expireDays);
 

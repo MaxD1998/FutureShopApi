@@ -15,7 +15,9 @@ public static class Register
         services.AddScoped<IProductBaseRepository, ProductBaseRepository>();
         services.AddScoped<IProductParameterRepository, ProductParameterRepository>();
         services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<IProductReviewRepository, ProductReviewRepository>();
         services.AddScoped<IPromotionRepository, PromotionRepository>();
         services.AddScoped<IPurchaseListRepository, PurchaseListRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
     }
 }

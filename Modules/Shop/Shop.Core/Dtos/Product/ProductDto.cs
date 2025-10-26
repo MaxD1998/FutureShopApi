@@ -18,7 +18,13 @@ public class ProductDto : IProductPrice
 
     public decimal Price { get; set; }
 
-    public IEnumerable<IdNameValueDto> ProductParameters { get; set; }
+    public List<IdNameValueDto> ProductParameters { get; set; }
+
+    public double Rating { get; set; }
+
+    public int ReviewCount { get; set; }
+
+    public bool UserWasReviewer { get; set; }
 
     public static Expression<Func<ProductEntity, ProductDto>> Map(string lang, Guid? userId, Guid? favouriteId)
     {
@@ -33,6 +39,9 @@ public class ProductDto : IProductPrice
             OriginalPrice = entity.Prices.AsQueryable().Where(x => (!x.Start.HasValue || x.Start <= utcNow) && (!x.End.HasValue || utcNow < x.End)).Select(x => x.Price).FirstOrDefault(),
             Price = entity.Prices.AsQueryable().Where(x => (!x.Start.HasValue || x.Start <= utcNow) && (!x.End.HasValue || utcNow < x.End)).Select(x => x.Price).FirstOrDefault(),
             ProductParameters = entity.ProductParameterValues.AsQueryable().Select(IdNameValueDto.MapFromProductParameterValue(lang)).ToList(),
+            Rating = entity.ProductReviews.Any() ? entity.ProductReviews.Average(x => x.Rating) : 0,
+            ReviewCount = entity.ProductReviews.Count(),
+            UserWasReviewer = userId.HasValue ? entity.ProductReviews.AsQueryable().Any(x => x.UserId == userId) : false
         };
     }
 }

@@ -21,8 +21,8 @@ internal class CategoryRepository(ShopContext context) : BaseRepository<ShopCont
     public async Task CreateOrUpdateForEventAsync(CategoryEntity eventEntity, CancellationToken cancellationToken)
     {
         var entity = await _context.Set<CategoryEntity>()
-              .Include(x => x.SubCategories)
-              .FirstOrDefaultAsync(x => x.ExternalId == eventEntity.ExternalId, cancellationToken);
+            .Include(x => x.SubCategories)
+            .FirstOrDefaultAsync(x => x.ExternalId == eventEntity.ExternalId, cancellationToken);
 
         if (entity is null)
             await _context.Set<CategoryEntity>().AddAsync(eventEntity, cancellationToken);

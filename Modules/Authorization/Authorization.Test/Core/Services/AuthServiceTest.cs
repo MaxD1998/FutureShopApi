@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Moq;
 using Shared.Core.Dtos;
+using Shared.Infrastructure;
 using Shared.Infrastructure.Constants;
 using Shared.Infrastructure.Enums;
 using Shared.Infrastructure.Settings;
@@ -21,6 +22,7 @@ public class AuthServiceTest
     private readonly IAuthService _authService;
     private readonly Mock<ICookieService> _cookieServiceMock = new();
     private readonly Mock<IOptions<JwtSettings>> _jwtSettingsMock = new();
+    private readonly Mock<IRabbitMqContext> _rabbitMqContextMock = new();
     private readonly Mock<IRefreshTokenRepository> _refreshTokenRepositoryMock = new();
     private readonly Mock<IOptions<RefreshTokenSettings>> _refreshTokenSettingsMock = new();
     private readonly Mock<IUserRepository> _userRepositoryMock = new();
@@ -41,7 +43,7 @@ public class AuthServiceTest
         _jwtSettingsMock.Setup(x => x.Value).Returns(jwtSettings);
         _refreshTokenSettingsMock.Setup(x => x.Value).Returns(refreshTokenSettings);
 
-        _authService = new AuthService(_accessorMock.Object, _cookieServiceMock.Object, _jwtSettingsMock.Object, _refreshTokenRepositoryMock.Object, _refreshTokenSettingsMock.Object, _userRepositoryMock.Object);
+        _authService = new AuthService(_accessorMock.Object, _cookieServiceMock.Object, _jwtSettingsMock.Object, _refreshTokenRepositoryMock.Object, _refreshTokenSettingsMock.Object, _rabbitMqContextMock.Object, _userRepositoryMock.Object);
     }
 
     [Fact]
@@ -120,7 +122,7 @@ public class AuthServiceTest
         httpContextMock.User = claimsPrincipalMock.Object;
         accessorMock.Setup(x => x.HttpContext).Returns(httpContextMock);
 
-        var authService = new AuthService(accessorMock.Object, _cookieServiceMock.Object, _jwtSettingsMock.Object, _refreshTokenRepositoryMock.Object, _refreshTokenSettingsMock.Object, _userRepositoryMock.Object);
+        var authService = new AuthService(accessorMock.Object, _cookieServiceMock.Object, _jwtSettingsMock.Object, _refreshTokenRepositoryMock.Object, _refreshTokenSettingsMock.Object, _rabbitMqContextMock.Object, _userRepositoryMock.Object);
 
         // Act
         var result = await authService.LogoutAsync(default);
