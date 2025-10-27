@@ -9,7 +9,7 @@ using Shared.Shared.Dtos;
 
 namespace Api.Modules.Product.Controllers;
 
-[Role(UserType.User)]
+[Role(UserType.Employee)]
 public class ProductBaseController(IProductBaseService productBaseService) : ProductModuleBaseController
 {
     private readonly IProductBaseService _productBaseService = productBaseService;

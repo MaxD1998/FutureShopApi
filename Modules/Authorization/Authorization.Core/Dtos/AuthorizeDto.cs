@@ -1,5 +1,5 @@
 ﻿using Authorization.Core.Dtos.UserModule;
-using Authorization.Infrastructure.Entities;
+using Authorization.Infrastructure.Entities.Users;
 using Shared.Infrastructure.Enums;
 
 namespace Authorization.Core.Dtos;
@@ -11,7 +11,7 @@ public class AuthorizeDto
         Id = entity.Id;
         Username = $"{entity.FirstName} {entity.LastName}";
         Token = token;
-        Modules = entity.UserModules.Select(x => new UserModuleDto(x));
+        Modules = entity.UserPermissionModules.Select(x => new UserModuleDto(x));
         Roles = entity.Type.GetUserPrivileges();
     }
 

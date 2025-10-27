@@ -1,4 +1,4 @@
-﻿using Authorization.Infrastructure.Entities;
+﻿using Authorization.Infrastructure.Entities.Users;
 using Authorization.Infrastructure.Seeds;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -11,13 +11,16 @@ public class UserConfig : BaseConfig<UserEntity>
 {
     protected override void ConfigureEntity(EntityTypeBuilder<UserEntity> builder)
     {
+        builder.Property(x => x.UserPermissionGroupId)
+            .HasColumnOrder(100);
+
         builder.Property(x => x.FirstName)
-            .HasColumnOrder(100)
+            .HasColumnOrder(101)
             .HasMaxLength(StringLengthConst.MiddleString)
             .IsRequired();
 
         builder.Property(x => x.LastName)
-            .HasColumnOrder(101)
+            .HasColumnOrder(102)
             .HasMaxLength(StringLengthConst.LongString)
             .IsRequired();
 
@@ -49,7 +52,7 @@ public class UserConfig : BaseConfig<UserEntity>
             .WithOne(x => x.User)
             .HasForeignKey<RefreshTokenEntity>(x => x.UserId);
 
-        builder.HasMany(x => x.UserModules)
+        builder.HasMany(x => x.UserPermissionModules)
             .WithOne(x => x.User)
             .HasForeignKey(x => x.UserId);
 

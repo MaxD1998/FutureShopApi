@@ -1,11 +1,13 @@
-﻿using Authorization.Infrastructure.Exceptions.Users;
+﻿using Authorization.Infrastructure.Entities.Permissions;
+using Authorization.Infrastructure.Entities.PrermissionGroups;
+using Authorization.Infrastructure.Exceptions.Users;
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Constants;
 using Shared.Infrastructure.Enums;
 using Shared.Infrastructure.Exceptions;
 using Shared.Infrastructure.Interfaces;
 
-namespace Authorization.Infrastructure.Entities;
+namespace Authorization.Infrastructure.Entities.Users;
 
 public class UserEntity : BaseEntity, IUpdate<UserEntity>, IEntityValidation
 {
@@ -21,13 +23,17 @@ public class UserEntity : BaseEntity, IUpdate<UserEntity>, IEntityValidation
 
     public string PhoneNumber { get; set; }
 
-    public UserType Type { get; set; } = UserType.Client;
+    public UserType Type { get; set; } = UserType.Customer;
+
+    public Guid? UserPermissionGroupId { get; set; }
 
     #region Related Data
 
     public RefreshTokenEntity RefreshToken { get; set; }
 
-    public ICollection<UserModuleEntity> UserModules { get; set; } = [];
+    public PermissionGroupEntity UserPermissionGroup { get; set; }
+
+    public ICollection<PermissionModuleEntity> UserPermissionModules { get; set; } = [];
 
     #endregion Related Data
 

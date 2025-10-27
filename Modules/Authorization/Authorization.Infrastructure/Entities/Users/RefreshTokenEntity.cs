@@ -3,7 +3,7 @@ using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Exceptions;
 using Shared.Infrastructure.Interfaces;
 
-namespace Authorization.Infrastructure.Entities;
+namespace Authorization.Infrastructure.Entities.Users;
 
 public class RefreshTokenEntity : BaseEntity, IUpdate<RefreshTokenEntity>, IEntityValidation
 {

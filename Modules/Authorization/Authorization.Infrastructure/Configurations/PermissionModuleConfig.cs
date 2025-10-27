@@ -1,13 +1,13 @@
-﻿using Authorization.Infrastructure.Entities;
+﻿using Authorization.Infrastructure.Entities.Permissions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.Infrastructure.Bases;
 
 namespace Authorization.Infrastructure.Configurations;
 
-public class UserModuleConfig : BaseConfig<UserModuleEntity>
+public class PermissionModuleConfig : BaseConfig<PermissionModuleEntity>
 {
-    protected override void ConfigureEntity(EntityTypeBuilder<UserModuleEntity> builder)
+    protected override void ConfigureEntity(EntityTypeBuilder<PermissionModuleEntity> builder)
     {
         builder.Property(x => x.UserId)
             .HasColumnOrder(100)
@@ -15,14 +15,6 @@ public class UserModuleConfig : BaseConfig<UserModuleEntity>
 
         builder.Property(x => x.Type)
             .HasColumnOrder(101)
-            .IsRequired();
-
-        builder.Property(x => x.CanEdit)
-            .HasColumnOrder(102)
-            .IsRequired();
-
-        builder.Property(x => x.CanDelete)
-            .HasColumnOrder(103)
             .IsRequired();
 
         builder.HasIndex(x => new { x.UserId, x.Type })
