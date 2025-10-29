@@ -16,13 +16,24 @@ public class PermissionGroupConfig : BaseConfig<PermissionGroupEntity>
         builder.HasIndex(x => x.Name)
             .IsUnique();
 
-        builder.HasMany(x => x.UserPermissionModules)
-            .WithOne(x => x.UserPermissionGroup)
-            .HasForeignKey(x => x.UserPermissionGroupId);
+        builder.HasMany(x => x.UserPermissionGroups)
+            .WithOne(x => x.PermissionGroup)
+            .HasForeignKey(x => x.PermissionGroupId);
 
-        builder.HasMany(x => x.Users)
-            .WithOne(x => x.UserPermissionGroup)
-            .HasForeignKey(x => x.UserPermissionGroupId)
-            .OnDelete(DeleteBehavior.SetNull);
+        builder.HasMany(x => x.AuthorizationPermissions)
+            .WithOne(x => x.PermissionGroup)
+            .HasForeignKey(x => x.PermissionGroupId);
+
+        builder.HasMany(x => x.ProductPermissions)
+            .WithOne(x => x.PermissionGroup)
+            .HasForeignKey(x => x.PermissionGroupId);
+
+        builder.HasMany(x => x.ShopPermissions)
+            .WithOne(x => x.PermissionGroup)
+            .HasForeignKey(x => x.PermissionGroupId);
+
+        builder.HasMany(x => x.WarehousePermissions)
+            .WithOne(x => x.PermissionGroup)
+            .HasForeignKey(x => x.PermissionGroupId);
     }
 }

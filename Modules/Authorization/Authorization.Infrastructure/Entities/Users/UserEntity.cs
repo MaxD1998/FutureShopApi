@@ -1,6 +1,4 @@
-﻿using Authorization.Infrastructure.Entities.Permissions;
-using Authorization.Infrastructure.Entities.PrermissionGroups;
-using Authorization.Infrastructure.Exceptions.Users;
+﻿using Authorization.Infrastructure.Exceptions.Users;
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Constants;
 using Shared.Infrastructure.Enums;
@@ -25,15 +23,11 @@ public class UserEntity : BaseEntity, IUpdate<UserEntity>, IEntityValidation
 
     public UserType Type { get; set; } = UserType.Customer;
 
-    public Guid? UserPermissionGroupId { get; set; }
-
     #region Related Data
 
     public RefreshTokenEntity RefreshToken { get; set; }
 
-    public PermissionGroupEntity UserPermissionGroup { get; set; }
-
-    public ICollection<PermissionModuleEntity> UserPermissionModules { get; set; } = [];
+    public ICollection<UserPermissionGroupEntity> UserPermissionGroups { get; set; } = [];
 
     #endregion Related Data
 

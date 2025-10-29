@@ -11,13 +11,13 @@ public enum UserType
 
 public static class UserTypeExtension
 {
-    private static Dictionary<UserType, IEnumerable<UserType>> UserPrivilegesDictionary => new()
+    private static Dictionary<UserType, List<UserType>> UserPrivilegesDictionary => new()
     {
-        { UserType.SuperAdmin, new[] { UserType.SuperAdmin, UserType.Employee,  UserType.Customer } },
-        { UserType.Employee, new[] { UserType.Employee, UserType.Customer} },
-        { UserType.Customer, new[] { UserType.Customer} }
+        { UserType.SuperAdmin, new List<UserType> { UserType.SuperAdmin, UserType.Employee, UserType.Customer } },
+        { UserType.Employee, new List<UserType> { UserType.Employee, UserType.Customer} },
+        { UserType.Customer, new List<UserType> { UserType.Customer} }
     };
 
-    public static IEnumerable<UserType> GetUserPrivileges(this UserType type)
+    public static List<UserType> GetUserPrivileges(this UserType type)
         => UserPrivilegesDictionary[type];
 }

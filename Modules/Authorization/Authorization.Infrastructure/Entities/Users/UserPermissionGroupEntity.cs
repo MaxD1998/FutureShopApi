@@ -1,17 +1,19 @@
 ﻿using Authorization.Infrastructure.Entities.PrermissionGroups;
 using Shared.Infrastructure.Bases;
 
-namespace Authorization.Infrastructure.Bases;
+namespace Authorization.Infrastructure.Entities.Users;
 
-public class BasePermissionEntity<TPermissionEnum> : BaseEntity where TPermissionEnum : Enum
+public class UserPermissionGroupEntity : BaseEntity
 {
-    public TPermissionEnum Permission { get; set; }
-
     public Guid PermissionGroupId { get; set; }
+
+    public Guid UserId { get; set; }
 
     #region Related Data
 
     public PermissionGroupEntity PermissionGroup { get; set; }
+
+    public UserEntity User { get; set; }
 
     #endregion Related Data
 }

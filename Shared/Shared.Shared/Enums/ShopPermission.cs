@@ -3,16 +3,13 @@
 public enum ShopPermission
 {
     CategoryAddUpdate = 101,
-    CategoryDelete = 102,
-    CategoryRead = 103,
+    CategoryRead = 102,
 
-    ProductAddUpdateBase = 201,
-    ProductBaseDelete = 202,
-    ProductBaseRead = 203,
+    ProductBaseAddUpdate = 201,
+    ProductBaseRead = 202,
 
     ProductAddUpdate = 301,
-    ProductDelete = 302,
-    ProductRead = 303,
+    ProductRead = 302,
 
     AdCamaignAddUpdate = 401,
     AdCamaignDelete = 402,

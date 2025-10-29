@@ -10,9 +10,15 @@ public class PermissionGroupEntity : BaseEntity
 
     #region Related Data
 
-    public ICollection<PermissionModuleEntity> UserPermissionModules { get; set; } = [];
+    public ICollection<AuthorizationPermissionEntity> AuthorizationPermissions { get; set; } = [];
 
-    public ICollection<UserEntity> Users { get; set; } = [];
+    public ICollection<ProductPermissionEntity> ProductPermissions { get; set; } = [];
+
+    public ICollection<ShopPermissionEntity> ShopPermissions { get; set; } = [];
+
+    public ICollection<UserPermissionGroupEntity> UserPermissionGroups { get; set; } = [];
+
+    public ICollection<WarehousePermissionEntity> WarehousePermissions { get; set; } = [];
 
     #endregion Related Data
 }

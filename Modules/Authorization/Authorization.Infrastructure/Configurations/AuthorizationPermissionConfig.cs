@@ -9,7 +9,7 @@ public class AuthorizationPermissionConfig : BaseConfig<AuthorizationPermissionE
 {
     protected override void ConfigureEntity(EntityTypeBuilder<AuthorizationPermissionEntity> builder)
     {
-        builder.Property(x => x.UserPermissionModuleId)
+        builder.Property(x => x.PermissionGroupId)
             .HasColumnOrder(100)
             .IsRequired();
 
@@ -17,7 +17,7 @@ public class AuthorizationPermissionConfig : BaseConfig<AuthorizationPermissionE
             .HasColumnOrder(101)
             .IsRequired();
 
-        builder.HasIndex(x => new { x.UserPermissionModuleId, x.Permission })
+        builder.HasIndex(x => new { x.PermissionGroupId, x.Permission })
             .IsUnique();
     }
 }

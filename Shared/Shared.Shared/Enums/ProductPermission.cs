@@ -6,7 +6,7 @@ public enum ProductPermission
     CategoryDelete = 102,
     CategoryRead = 103,
 
-    ProductAddUpdateBase = 201,
+    ProductBaseAddUpdate = 201,
     ProductBaseDelete = 202,
     ProductBaseRead = 203,
 

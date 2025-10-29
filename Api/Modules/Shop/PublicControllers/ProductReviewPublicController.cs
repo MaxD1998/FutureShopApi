@@ -4,9 +4,10 @@ using Shared.Shared.Dtos;
 using Shop.Core.Dtos.ProductReview;
 using Shop.Core.Services;
 
-namespace Api.Modules.Shop.Controllers;
+namespace Api.Modules.Shop.PublicControllers;
 
-public class ProductReviewController(IProductReviewService productReviewService) : ShopModuleBaseController
+[Authorize]
+public class ProductReviewPublicController(IProductReviewService productReviewService) : ShopModuleBaseController
 {
     private readonly IProductReviewService _productReviewService = productReviewService;
 
