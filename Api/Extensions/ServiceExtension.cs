@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
 using Quartz;
+using Shared.Api.Handlers;
+using Shared.Api.Providers;
 using Shared.Infrastructure.Settings;
 using System.Text;
 
@@ -56,5 +59,11 @@ public static class ServiceExtension
                     ValidateAudience = false,
                 };
             });
+    }
+
+    public static void AddPermissionSecurity(this IServiceCollection services)
+    {
+        services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
+        services.AddScoped<IAuthorizationHandler, PermissionAuthorizationHandler>();
     }
 }

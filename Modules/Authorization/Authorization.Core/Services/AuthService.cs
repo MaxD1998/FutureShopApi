@@ -1,7 +1,7 @@
 ﻿using Authorization.Core.Dtos;
 using Authorization.Core.Dtos.Login;
 using Authorization.Core.Dtos.User;
-using Authorization.Infrastructure.Entities;
+using Authorization.Infrastructure.Entities.Users;
 using Authorization.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
@@ -139,11 +139,13 @@ internal class AuthService : BaseService, IAuthService
             new(JwtRegisteredClaimNames.Email, user.Email),
             new(JwtRegisteredClaimNames.Name, user.FirstName),
             new(JwtRegisteredClaimNames.FamilyName, user.LastName),
-            new(JwtClaimNameConst.Role, user.Type.ToString()),
         };
 
-        foreach (var type in user.Type.GetUserPrivileges())
-            result.Add(new Claim(JwtClaimNameConst.Role, type.ToString()));
+        foreach (var role in user.Type.GetUserPrivileges())
+            result.Add(new(JwtClaimNameConst.Role, role.ToString()));
+
+        foreach (var permissionGroupId in user.UserPermissionGroups.Select(x => x.PermissionGroupId.ToString()))
+            result.Add(new(JwtClaimNameConst.Permissions, permissionGroupId));
 
         return result;
     }

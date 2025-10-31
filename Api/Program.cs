@@ -30,6 +30,7 @@ public class Program
 
         services.AddAppsettings(config);
         services.AddJwtAuthentication(config);
+        services.AddPermissionSecurity();
         services.AddQuartzServer(config => config.WaitForJobsToComplete = true);
 
         services.AddScoped<ErrorHandlingMiddleware>();

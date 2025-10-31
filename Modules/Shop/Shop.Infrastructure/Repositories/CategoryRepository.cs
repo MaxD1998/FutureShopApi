@@ -2,6 +2,7 @@
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Interfaces;
 using Shop.Infrastructure.Entities.Categories;
+using System.Linq.Expressions;
 
 namespace Shop.Infrastructure.Repositories;
 
@@ -10,6 +11,8 @@ public interface ICategoryRepository : IBaseRepository<CategoryEntity>, IUpdateR
     Task CreateOrUpdateForEventAsync(CategoryEntity eventEntity, CancellationToken cancellationToken);
 
     Task DeleteByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
+
+    Task<TResult> GetActiveIdByIdAsync<TResult>(Guid id, Expression<Func<CategoryEntity, TResult>> map, CancellationToken cancellationToken);
 
     Task<Guid?> GetIdByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
 
@@ -34,6 +37,9 @@ internal class CategoryRepository(ShopContext context) : BaseRepository<ShopCont
 
     public Task DeleteByExternalIdAsync(Guid externalId, CancellationToken cancellationToken)
         => _context.Set<CategoryEntity>().Where(x => x.ExternalId == externalId).ExecuteDeleteAsync(cancellationToken);
+
+    public Task<TResult> GetActiveIdByIdAsync<TResult>(Guid id, Expression<Func<CategoryEntity, TResult>> map, CancellationToken cancellationToken)
+        => _context.Set<CategoryEntity>().Where(x => x.Id == id && x.IsActive).Select(map).FirstOrDefaultAsync(cancellationToken);
 
     public Task<Guid?> GetIdByExternalIdAsync(Guid externalId, CancellationToken cancellationToken)
         => _context.Set<CategoryEntity>().Where(x => x.ExternalId == externalId).Select(x => (Guid?)x.Id).FirstOrDefaultAsync(cancellationToken);

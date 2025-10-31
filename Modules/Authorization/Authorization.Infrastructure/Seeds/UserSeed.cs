@@ -1,4 +1,4 @@
-﻿using Authorization.Infrastructure.Entities;
+﻿using Authorization.Infrastructure.Entities.Users;
 using Shared.Infrastructure.Constants;
 using Shared.Infrastructure.Enums;
 

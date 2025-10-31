@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Authorization.Inrfrastructure.Migrations
+namespace Authorization.Infrastructure.Migrations
 {
     [DbContext(typeof(AuthContext))]
     partial class AuthContextModelSnapshot : ModelSnapshot
@@ -17,12 +17,164 @@ namespace Authorization.Inrfrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.4")
+                .HasAnnotation("ProductVersion", "9.0.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Authorization.Domain.Entities.RefreshTokenEntity", b =>
+            modelBuilder.Entity("Authorization.Infrastructure.Entities.Permissions.AuthorizationPermissionEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(1);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<int>("Permission")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<Guid>("PermissionGroupId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PermissionGroupId", "Permission")
+                        .IsUnique();
+
+                    b.ToTable("AuthorizationPermission", (string)null);
+                });
+
+            modelBuilder.Entity("Authorization.Infrastructure.Entities.Permissions.ProductPermissionEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(1);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<int>("Permission")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<Guid>("PermissionGroupId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PermissionGroupId", "Permission")
+                        .IsUnique();
+
+                    b.ToTable("ProductPermission", (string)null);
+                });
+
+            modelBuilder.Entity("Authorization.Infrastructure.Entities.Permissions.ShopPermissionEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(1);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<int>("Permission")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<Guid>("PermissionGroupId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PermissionGroupId", "Permission")
+                        .IsUnique();
+
+                    b.ToTable("ShopPermission", (string)null);
+                });
+
+            modelBuilder.Entity("Authorization.Infrastructure.Entities.Permissions.WarehousePermissionEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(1);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<int>("Permission")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(101);
+
+                    b.Property<Guid>("PermissionGroupId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PermissionGroupId", "Permission")
+                        .IsUnique();
+
+                    b.ToTable("WarehousePermission", (string)null);
+                });
+
+            modelBuilder.Entity("Authorization.Infrastructure.Entities.PrermissionGroups.PermissionGroupEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(1);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnOrder(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("PermissionGroup", (string)null);
+                });
+
+            modelBuilder.Entity("Authorization.Infrastructure.Entities.Users.RefreshTokenEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -61,7 +213,7 @@ namespace Authorization.Inrfrastructure.Migrations
                     b.ToTable("RefreshToken", (string)null);
                 });
 
-            modelBuilder.Entity("Authorization.Domain.Entities.UserEntity", b =>
+            modelBuilder.Entity("Authorization.Infrastructure.Entities.Users.UserEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -74,13 +226,13 @@ namespace Authorization.Inrfrastructure.Migrations
 
                     b.Property<DateOnly>("DateOfBirth")
                         .HasColumnType("date")
-                        .HasColumnOrder(106);
+                        .HasColumnOrder(105);
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
-                        .HasColumnOrder(104);
+                        .HasColumnOrder(103);
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -91,7 +243,7 @@ namespace Authorization.Inrfrastructure.Migrations
                     b.Property<string>("HashedPassword")
                         .IsRequired()
                         .HasColumnType("text")
-                        .HasColumnOrder(105);
+                        .HasColumnOrder(104);
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -106,11 +258,11 @@ namespace Authorization.Inrfrastructure.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(25)
                         .HasColumnType("character varying(25)")
-                        .HasColumnOrder(103);
+                        .HasColumnOrder(102);
 
                     b.Property<int>("Type")
                         .HasColumnType("integer")
-                        .HasColumnOrder(107);
+                        .HasColumnOrder(106);
 
                     b.HasKey("Id");
 
@@ -133,20 +285,12 @@ namespace Authorization.Inrfrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Authorization.Domain.Entities.UserModuleEntity", b =>
+            modelBuilder.Entity("Authorization.Infrastructure.Entities.Users.UserPermissionGroupEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnOrder(0);
-
-                    b.Property<bool>("CanDelete")
-                        .HasColumnType("boolean")
-                        .HasColumnOrder(103);
-
-                    b.Property<bool>("CanEdit")
-                        .HasColumnType("boolean")
-                        .HasColumnOrder(102);
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("timestamp with time zone")
@@ -156,8 +300,8 @@ namespace Authorization.Inrfrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(2);
 
-                    b.Property<int>("Type")
-                        .HasColumnType("integer")
+                    b.Property<Guid>("PermissionGroupId")
+                        .HasColumnType("uuid")
                         .HasColumnOrder(101);
 
                     b.Property<Guid>("UserId")
@@ -166,39 +310,106 @@ namespace Authorization.Inrfrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId", "Type")
+                    b.HasIndex("PermissionGroupId");
+
+                    b.HasIndex("UserId", "PermissionGroupId")
                         .IsUnique();
 
-                    b.ToTable("UserModule", (string)null);
+                    b.ToTable("UserPermissionGroup", (string)null);
                 });
 
-            modelBuilder.Entity("Authorization.Domain.Entities.RefreshTokenEntity", b =>
+            modelBuilder.Entity("Authorization.Infrastructure.Entities.Permissions.AuthorizationPermissionEntity", b =>
                 {
-                    b.HasOne("Authorization.Domain.Entities.UserEntity", "User")
+                    b.HasOne("Authorization.Infrastructure.Entities.PrermissionGroups.PermissionGroupEntity", "PermissionGroup")
+                        .WithMany("AuthorizationPermissions")
+                        .HasForeignKey("PermissionGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PermissionGroup");
+                });
+
+            modelBuilder.Entity("Authorization.Infrastructure.Entities.Permissions.ProductPermissionEntity", b =>
+                {
+                    b.HasOne("Authorization.Infrastructure.Entities.PrermissionGroups.PermissionGroupEntity", "PermissionGroup")
+                        .WithMany("ProductPermissions")
+                        .HasForeignKey("PermissionGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PermissionGroup");
+                });
+
+            modelBuilder.Entity("Authorization.Infrastructure.Entities.Permissions.ShopPermissionEntity", b =>
+                {
+                    b.HasOne("Authorization.Infrastructure.Entities.PrermissionGroups.PermissionGroupEntity", "PermissionGroup")
+                        .WithMany("ShopPermissions")
+                        .HasForeignKey("PermissionGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PermissionGroup");
+                });
+
+            modelBuilder.Entity("Authorization.Infrastructure.Entities.Permissions.WarehousePermissionEntity", b =>
+                {
+                    b.HasOne("Authorization.Infrastructure.Entities.PrermissionGroups.PermissionGroupEntity", "PermissionGroup")
+                        .WithMany("WarehousePermissions")
+                        .HasForeignKey("PermissionGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PermissionGroup");
+                });
+
+            modelBuilder.Entity("Authorization.Infrastructure.Entities.Users.RefreshTokenEntity", b =>
+                {
+                    b.HasOne("Authorization.Infrastructure.Entities.Users.UserEntity", "User")
                         .WithOne("RefreshToken")
-                        .HasForeignKey("Authorization.Domain.Entities.RefreshTokenEntity", "UserId")
+                        .HasForeignKey("Authorization.Infrastructure.Entities.Users.RefreshTokenEntity", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Authorization.Domain.Entities.UserModuleEntity", b =>
+            modelBuilder.Entity("Authorization.Infrastructure.Entities.Users.UserPermissionGroupEntity", b =>
                 {
-                    b.HasOne("Authorization.Domain.Entities.UserEntity", "User")
-                        .WithMany("UserModules")
+                    b.HasOne("Authorization.Infrastructure.Entities.PrermissionGroups.PermissionGroupEntity", "PermissionGroup")
+                        .WithMany("UserPermissionGroups")
+                        .HasForeignKey("PermissionGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Authorization.Infrastructure.Entities.Users.UserEntity", "User")
+                        .WithMany("UserPermissionGroups")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("PermissionGroup");
+
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Authorization.Domain.Entities.UserEntity", b =>
+            modelBuilder.Entity("Authorization.Infrastructure.Entities.PrermissionGroups.PermissionGroupEntity", b =>
+                {
+                    b.Navigation("AuthorizationPermissions");
+
+                    b.Navigation("ProductPermissions");
+
+                    b.Navigation("ShopPermissions");
+
+                    b.Navigation("UserPermissionGroups");
+
+                    b.Navigation("WarehousePermissions");
+                });
+
+            modelBuilder.Entity("Authorization.Infrastructure.Entities.Users.UserEntity", b =>
                 {
                     b.Navigation("RefreshToken");
 
-                    b.Navigation("UserModules");
+                    b.Navigation("UserPermissionGroups");
                 });
 #pragma warning restore 612, 618
         }

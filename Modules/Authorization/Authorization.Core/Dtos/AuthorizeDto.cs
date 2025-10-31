@@ -1,6 +1,6 @@
-﻿using Authorization.Core.Dtos.UserModule;
-using Authorization.Infrastructure.Entities;
+﻿using Authorization.Infrastructure.Entities.Users;
 using Shared.Infrastructure.Enums;
+using Shared.Shared.Enums;
 
 namespace Authorization.Core.Dtos;
 
@@ -11,17 +11,26 @@ public class AuthorizeDto
         Id = entity.Id;
         Username = $"{entity.FirstName} {entity.LastName}";
         Token = token;
-        Modules = entity.UserModules.Select(x => new UserModuleDto(x));
         Roles = entity.Type.GetUserPrivileges();
+        AuthorizationPermissions = entity.UserPermissionGroups.SelectMany(x => x.PermissionGroup.AuthorizationPermissions.Select(x => x.Permission)).ToList();
+        ProductPermissions = entity.UserPermissionGroups.SelectMany(x => x.PermissionGroup.ProductPermissions.Select(x => x.Permission)).ToList();
+        ShopPermissions = entity.UserPermissionGroups.SelectMany(x => x.PermissionGroup.ShopPermissions.Select(x => x.Permission)).ToList();
+        WarehousePermissions = entity.UserPermissionGroups.SelectMany(x => x.PermissionGroup.WarehousePermissions.Select(x => x.Permission)).ToList();
     }
+
+    public List<AuthorizationPermission> AuthorizationPermissions { get; set; }
 
     public Guid Id { get; }
 
-    public IEnumerable<UserModuleDto> Modules { get; set; }
+    public List<ProductPermission> ProductPermissions { get; set; }
 
-    public IEnumerable<UserType> Roles { get; set; }
+    public List<UserType> Roles { get; set; }
+
+    public List<ShopPermission> ShopPermissions { get; set; }
 
     public string Token { get; }
 
     public string Username { get; }
+
+    public List<WarehousePermission> WarehousePermissions { get; set; }
 }

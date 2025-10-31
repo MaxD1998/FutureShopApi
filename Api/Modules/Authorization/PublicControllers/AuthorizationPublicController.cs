@@ -5,9 +5,9 @@ using Authorization.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Modules.Authorization.Controllers;
+namespace Api.Modules.Authorization.PublicControllers;
 
-public class AuthController(IAuthService authService) : AuthModuleBaseController
+public class AuthorizationPublicController(IAuthService authService) : AuthModuleBaseController
 {
     private readonly IAuthService _authService = authService;
 
@@ -22,8 +22,8 @@ public class AuthController(IAuthService authService) : AuthModuleBaseController
         => ApiResponseAsync(_authService.LoginAsync, dto, cancellationToken);
 
     [HttpGet("Logout")]
-    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     public Task<IActionResult> Logout(CancellationToken cancellationToken = default)
         => ApiResponseAsync(_authService.LogoutAsync, cancellationToken);
 
