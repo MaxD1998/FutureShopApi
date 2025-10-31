@@ -17,7 +17,7 @@ public class PermissionAuthorizationHandler : AuthorizationHandler<PermissionReq
             .Select(c => c.Value)
             .FirstOrDefault();
 
-        if (Enum.TryParse<UserType>(userRole, out var role))
+        if (!Enum.TryParse<UserType>(userRole, out var role))
             return Task.CompletedTask;
 
         switch (role)
