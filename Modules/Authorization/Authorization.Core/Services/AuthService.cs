@@ -13,6 +13,7 @@ using Shared.Core.Enums;
 using Shared.Core.Errors;
 using Shared.Infrastructure;
 using Shared.Infrastructure.Constants;
+using Shared.Infrastructure.Enums;
 using Shared.Infrastructure.Settings;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
@@ -138,8 +139,10 @@ internal class AuthService : BaseService, IAuthService
             new(JwtRegisteredClaimNames.Email, user.Email),
             new(JwtRegisteredClaimNames.Name, user.FirstName),
             new(JwtRegisteredClaimNames.FamilyName, user.LastName),
-            new(JwtClaimNameConst.Role, user.Type.ToString()),
         };
+
+        foreach (var role in user.Type.GetUserPrivileges())
+            result.Add(new(JwtClaimNameConst.Role, role.ToString()));
 
         foreach (var permissionGroupId in user.UserPermissionGroups.Select(x => x.PermissionGroupId.ToString()))
             result.Add(new(JwtClaimNameConst.Permissions, permissionGroupId));
