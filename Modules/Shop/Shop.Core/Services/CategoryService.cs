@@ -12,6 +12,8 @@ namespace Shop.Core.Services;
 
 public interface ICategoryService
 {
+    Task<ResultDto<IdNameDto>> GetActiveIdNameByIdAsync(Guid id, CancellationToken cancellationToken);
+
     Task<ResultDto<List<CategoryListDto>>> GetActiveListAsync(CancellationToken cancellationToken);
 
     Task<ResultDto<CategoryResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
@@ -27,6 +29,13 @@ internal class CategoryService(ICategoryRepository categoryRepository, IHeaderSe
 {
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
     private readonly IHeaderService _headerService = headerService;
+
+    public async Task<ResultDto<IdNameDto>> GetActiveIdNameByIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var result = await _categoryRepository.GetActiveIdByIdAsync(id, IdNameDto.MapFromCategory(), cancellationToken);
+
+        return Success(result);
+    }
 
     public async Task<ResultDto<List<CategoryListDto>>> GetActiveListAsync(CancellationToken cancellationToken)
     {

@@ -9,13 +9,13 @@ public class CategoryPublicController(ICategoryService categoryService) : ShopMo
 {
     private readonly ICategoryService _categoryService = categoryService;
 
-    [HttpGet("IdName/{id:guid}")]
+    [HttpGet("Active/IdName/{id:guid}")]
     [ProducesResponseType(typeof(IdNameDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> GetIdNameByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
-    => ApiResponseAsync(_categoryService.GetIdNameByIdAsync, id, cancellationToken);
+    public Task<IActionResult> GetActiveIdNameByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_categoryService.GetActiveIdNameByIdAsync, id, cancellationToken);
 
-    [HttpGet("List")]
+    [HttpGet("Active/List")]
     [ProducesResponseType(typeof(List<CategoryListDto>), StatusCodes.Status200OK)]
-    public Task<IActionResult> GetListByCategoryParentIdAsync(CancellationToken cancellationToken = default)
+    public Task<IActionResult> GetActiveListAsync(CancellationToken cancellationToken = default)
         => ApiResponseAsync(_categoryService.GetActiveListAsync, cancellationToken);
 }
