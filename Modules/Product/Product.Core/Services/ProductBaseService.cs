@@ -28,7 +28,7 @@ public interface IProductBaseService
     Task<ResultDto<ProductBaseResponseFormDto>> UpdateAsync(Guid id, ProductBaseRequestFormDto dto, CancellationToken cancellationToken);
 }
 
-internal class ProductBaseService(IProductBaseRepository productBaseRepository, IRabbitMqContext rabbitMqContext) : BaseService, IProductBaseService
+internal class ProductBaseService(IProductBaseRepository productBaseRepository, IRabbitMqContext rabbitMqContext) : IProductBaseService
 {
     private readonly IProductBaseRepository _productBaseRepository = productBaseRepository;
     private readonly IRabbitMqContext _rabbitMqContext = rabbitMqContext;
@@ -41,7 +41,7 @@ internal class ProductBaseService(IProductBaseRepository productBaseRepository, 
 
         var result = await _productBaseRepository.GetByIdAsync(entity.Id, ProductBaseResponseFormDto.Map(), cancellationToken);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 
     public async Task<ResultDto> DeleteAsync(Guid id, CancellationToken cancellationToken)
@@ -50,35 +50,35 @@ internal class ProductBaseService(IProductBaseRepository productBaseRepository, 
 
         await _rabbitMqContext.SendMessageAsync(RabbitMqExchangeConst.ProductModuleProductBase, EventMessageDto.Create(id, MessageType.Delete));
 
-        return Success();
+        return ResultDto.Success();
     }
 
     public async Task<ResultDto<ProductBaseResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var result = await _productBaseRepository.GetByIdAsync(id, ProductBaseResponseFormDto.Map(), cancellationToken);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 
     public async Task<ResultDto<IdNameDto>> GetIdNameByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var results = await _productBaseRepository.GetByIdAsync(id, IdNameDto.MapFromProductBase(), cancellationToken);
 
-        return Success(results);
+        return ResultDto.Success(results);
     }
 
     public async Task<ResultDto<List<IdNameDto>>> GetListIdNameAsync(CancellationToken cancellationToken)
     {
         var results = await _productBaseRepository.GetListAsync(IdNameDto.MapFromProductBase(), cancellationToken);
 
-        return Success(results);
+        return ResultDto.Success(results);
     }
 
     public async Task<ResultDto<PageDto<ProductBaseListDto>>> GetPageListAsync(PaginationDto pagination, CancellationToken cancellationToken)
     {
         var results = await _productBaseRepository.GetPageAsync(pagination, ProductBaseListDto.Map(), cancellationToken);
 
-        return Success(results);
+        return ResultDto.Success(results);
     }
 
     public async Task<ResultDto<ProductBaseResponseFormDto>> UpdateAsync(Guid id, ProductBaseRequestFormDto dto, CancellationToken cancellationToken)
@@ -89,6 +89,6 @@ internal class ProductBaseService(IProductBaseRepository productBaseRepository, 
 
         var result = await _productBaseRepository.GetByIdAsync(entity.Id, ProductBaseResponseFormDto.Map(), cancellationToken);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 }

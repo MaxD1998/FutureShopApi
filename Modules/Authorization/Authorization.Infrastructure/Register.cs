@@ -9,6 +9,7 @@ public static class Register
     {
         services.AddDbContext<AuthContext>();
 
+        services.AddScoped<IPermissionGroupRepository, PermissionGroupRepository>();
         services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
     }

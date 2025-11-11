@@ -11,7 +11,7 @@ public interface IUserEventService
     Task DeleteByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
 }
 
-internal class UserEventService(IUserRepository userRepository) : BaseService, IUserEventService
+internal class UserEventService(IUserRepository userRepository) : IUserEventService
 {
     private readonly IUserRepository _userRepository = userRepository;
 

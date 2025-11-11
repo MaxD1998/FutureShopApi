@@ -38,7 +38,7 @@ internal class AdCampaignService(
     ICurrentUserService currentUserService,
     IHeaderService headerService,
     ILogicFactory logicFactory,
-    IPromotionRepository promotionRepository) : BaseService, IAdCampaignService
+    IPromotionRepository promotionRepository) : IAdCampaignService
 {
     private readonly IAdCampaignRepository _adCampaignRepository = adCampaignRepository;
     private readonly ICurrentUserService _currentUserService = currentUserService;
@@ -56,13 +56,13 @@ internal class AdCampaignService(
         entity = await _adCampaignRepository.CreateAsync(entity, cancellationToken);
         var result = await _adCampaignRepository.GetByIdAsync(entity.Id, AdCampaignResponseFormDto.Map(), cancellationToken);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 
     public async Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         await _adCampaignRepository.DeleteByIdAsync(id, cancellationToken);
-        return Success();
+        return ResultDto.Success();
     }
 
     public async Task<ResultDto<List<IdFileIdDto>>> GetActualAsync(CancellationToken cancellationToken)
@@ -72,7 +72,7 @@ internal class AdCampaignService(
 
         results = results.Where(x => !string.IsNullOrEmpty(x.FileId)).ToList();
 
-        return Success(results);
+        return ResultDto.Success(results);
     }
 
     public async Task<ResultDto<AdCampaignDto>> GetActualByIdAsync(Guid id, CancellationToken cancellationToken)
@@ -84,7 +84,7 @@ internal class AdCampaignService(
         var result = await _adCampaignRepository.GetActualByIdAsync(id, AdCampaignDto.Map(lang, userId, favouriteId), cancellationToken);
 
         if (string.IsNullOrEmpty(result.FileId))
-            return Success<AdCampaignDto>(null);
+            return ResultDto.Success<AdCampaignDto>(null);
 
         switch (result.Type)
         {
@@ -107,25 +107,25 @@ internal class AdCampaignService(
                 break;
         }
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 
     public async Task<ResultDto<AdCampaignResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var result = await _adCampaignRepository.GetByIdAsync(id, AdCampaignResponseFormDto.Map(), cancellationToken);
-        return Success(result);
+        return ResultDto.Success(result);
     }
 
     public async Task<ResultDto<List<IdNameDto>>> GetListIdNameAsync(CancellationToken cancellationToken)
     {
         var results = await _adCampaignRepository.GetListAsync(IdNameDto.MapFromAdCampaign(), cancellationToken);
-        return Success(results);
+        return ResultDto.Success(results);
     }
 
     public async Task<ResultDto<PageDto<AdCampaignListDto>>> GetPageAsync(PaginationDto pagination, CancellationToken cancellationToken)
     {
         var results = await _adCampaignRepository.GetPageAsync(pagination, AdCampaignListDto.Map(), cancellationToken);
-        return Success(results);
+        return ResultDto.Success(results);
     }
 
     public async Task<ResultDto<AdCampaignResponseFormDto>> UpdateAsync(Guid id, AdCampaignRequestFormDto dto, CancellationToken cancellationToken)
@@ -138,6 +138,6 @@ internal class AdCampaignService(
         entity = await _adCampaignRepository.UpdateAsync(id, entity, cancellationToken);
         var result = await _adCampaignRepository.GetByIdAsync(entity.Id, AdCampaignResponseFormDto.Map(), cancellationToken);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 }

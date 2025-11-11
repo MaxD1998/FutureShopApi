@@ -1,10 +1,14 @@
 ﻿using Authorization.Infrastructure.Entities.Permissions;
 using Authorization.Infrastructure.Entities.Users;
 using Shared.Infrastructure.Bases;
+using Shared.Infrastructure.Constants;
+using Shared.Infrastructure.Exceptions;
+using Shared.Infrastructure.Extensions;
+using Shared.Infrastructure.Interfaces;
 
 namespace Authorization.Infrastructure.Entities.PrermissionGroups;
 
-public class PermissionGroupEntity : BaseEntity
+public class PermissionGroupEntity : BaseEntity, IUpdate<PermissionGroupEntity>, IEntityValidation
 {
     public string Name { get; set; }
 
@@ -21,4 +25,33 @@ public class PermissionGroupEntity : BaseEntity
     public ICollection<WarehousePermissionEntity> WarehousePermissions { get; set; } = [];
 
     #endregion Related Data
+
+    #region Methods
+
+    public void Update(PermissionGroupEntity entity)
+    {
+        Name = entity.Name;
+        AuthorizationPermissions.UpdateEntities(entity.AuthorizationPermissions);
+        ProductPermissions.UpdateEntities(entity.ProductPermissions);
+        ShopPermissions.UpdateEntities(entity.ShopPermissions);
+        WarehousePermissions.UpdateEntities(entity.WarehousePermissions);
+    }
+
+    public void Validate()
+    {
+        ValidateName();
+    }
+
+    private void ValidateName()
+    {
+        if (string.IsNullOrWhiteSpace(Name))
+            throw new PropertyWasEmptyException(nameof(Name));
+
+        var length = StringLengthConst.LongString;
+
+        if (Name.Length > length)
+            throw new PropertyWasTooLongException(nameof(Name), length);
+    }
+
+    #endregion Methods
 }

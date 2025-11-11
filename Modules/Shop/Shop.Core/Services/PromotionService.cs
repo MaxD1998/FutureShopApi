@@ -25,7 +25,7 @@ public interface IPromotionService
     Task<ResultDto<PromotionResponseFormDto>> UpdateAsync(Guid id, PromotionRequestFormDto dto, CancellationToken cancellationToken);
 }
 
-internal class PromotionService(IPromotionRepository promotionRepository) : BaseService, IPromotionService
+internal class PromotionService(IPromotionRepository promotionRepository) : IPromotionService
 {
     private readonly IPromotionRepository _promotionRepository = promotionRepository;
 
@@ -34,13 +34,13 @@ internal class PromotionService(IPromotionRepository promotionRepository) : Base
         var entity = await _promotionRepository.CreateAsync(dto.ToEntity(), cancellationToken);
         var result = await _promotionRepository.GetByIdAsync(entity.Id, PromotionResponseFormDto.Map(), cancellationToken);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 
     public async Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         await _promotionRepository.DeleteByIdAsync(id, cancellationToken);
-        return Success();
+        return ResultDto.Success();
     }
 
     public async Task<ResultDto<List<string>>> GetActualCodesAsync(CancellationToken cancellationToken)
@@ -48,28 +48,28 @@ internal class PromotionService(IPromotionRepository promotionRepository) : Base
         var today = DateTime.UtcNow;
         var results = await _promotionRepository.GetListAsync(x => x.IsActive && x.Start <= today && today < x.End, x => x.Code, cancellationToken);
 
-        return Success(results);
+        return ResultDto.Success(results);
     }
 
     public async Task<ResultDto<PromotionResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var result = await _promotionRepository.GetByIdAsync(id, PromotionResponseFormDto.Map(), cancellationToken);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 
     public async Task<ResultDto<List<IdNameDto>>> GetListIdNameAsync(CancellationToken cancellationToken)
     {
         var results = await _promotionRepository.GetListAsync(IdNameDto.MapFromPromotion(), cancellationToken);
 
-        return Success(results);
+        return ResultDto.Success(results);
     }
 
     public async Task<ResultDto<PageDto<PromotionListDto>>> GetPageAsync(PaginationDto pagination, CancellationToken cancellationToken)
     {
         var results = await _promotionRepository.GetPageAsync(pagination, PromotionListDto.Map(), cancellationToken);
 
-        return Success(results);
+        return ResultDto.Success(results);
     }
 
     public async Task<ResultDto<PromotionResponseFormDto>> UpdateAsync(Guid id, PromotionRequestFormDto dto, CancellationToken cancellationToken)
@@ -77,6 +77,6 @@ internal class PromotionService(IPromotionRepository promotionRepository) : Base
         var entity = await _promotionRepository.UpdateAsync(id, dto.ToEntity(), cancellationToken);
         var result = await _promotionRepository.GetByIdAsync(entity.Id, PromotionResponseFormDto.Map(), cancellationToken);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 }

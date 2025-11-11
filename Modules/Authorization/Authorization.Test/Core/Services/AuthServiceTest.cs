@@ -1,5 +1,5 @@
 ﻿using Authorization.Core.Dtos.Login;
-using Authorization.Core.Dtos.User;
+using Authorization.Core.Dtos.Register;
 using Authorization.Core.Services;
 using Authorization.Infrastructure.Entities.Users;
 using Authorization.Infrastructure.Repositories;
@@ -64,11 +64,13 @@ public class AuthServiceTest
     public async Task LoginAsync_LoginSuccess_ReturnValue()
     {
         // Arrange
+        var email = "test@futureshop.pl";
+        var password = "password";
         var userEntity = new UserEntity()
         {
             Id = Guid.NewGuid(),
-            Email = "test@futureshop.pl",
-            HashedPassword = "HashedPassword",
+            Email = email,
+            HashedPassword = BCrypt.Net.BCrypt.HashPassword(password),
             FirstName = "Test",
             LastName = "User",
         };
@@ -85,8 +87,8 @@ public class AuthServiceTest
 
         var login = new LoginFormDto()
         {
-            Email = "test@futureshop.pl",
-            Password = "password",
+            Email = email,
+            Password = password,
         };
 
         _userRepositoryMock.Setup(x => x.GetByEmailAsync(It.IsAny<string>(), default)).ReturnsAsync(userEntity);
@@ -225,7 +227,7 @@ public class AuthServiceTest
             Token = Guid.NewGuid()
         };
 
-        var login = new UserFormDto()
+        var login = new RegisterFormDto()
         {
             Email = "test@futureshop.pl",
             Password = "HashedPassword",

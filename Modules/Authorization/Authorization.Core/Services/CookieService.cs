@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Shared.Core.Bases;
 using Shared.Core.Dtos;
 
 namespace Authorization.Core.Services;
@@ -13,7 +12,7 @@ public interface ICookieService
     ResultDto RemoveCookie(string name);
 }
 
-internal class CookieService : BaseService, ICookieService
+internal class CookieService : ICookieService
 {
     private readonly IResponseCookies _reponseCookies;
     private readonly IRequestCookieCollection _requestCookieCollection;
@@ -36,23 +35,23 @@ internal class CookieService : BaseService, ICookieService
 
         _reponseCookies.Append(name, value, cookie);
 
-        return Success();
+        return ResultDto.Success();
     }
 
     public ResultDto<string> GetCookieValue(string name)
     {
         var isValue = _requestCookieCollection.TryGetValue(name, out var value);
 
-        return Success(isValue ? value : string.Empty);
+        return ResultDto.Success(isValue ? value : string.Empty);
     }
 
     public ResultDto RemoveCookie(string name)
     {
         if (!_requestCookieCollection.ContainsKey(name))
-            return Success();
+            return ResultDto.Success();
 
         AddCookie(name, string.Empty, -1);
 
-        return Success();
+        return ResultDto.Success();
     }
 }

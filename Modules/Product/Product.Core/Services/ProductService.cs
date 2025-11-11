@@ -23,7 +23,7 @@ public interface IProductService
     Task<ResultDto<ProductResponseFormDto>> UpdateAsync(Guid id, ProductRequestFormDto dto, CancellationToken cancellationToken);
 }
 
-internal class ProductService(IProductRepository productRepository, IRabbitMqContext rabbitMqContext) : BaseService, IProductService
+internal class ProductService(IProductRepository productRepository, IRabbitMqContext rabbitMqContext) : IProductService
 {
     private readonly IProductRepository _productRepository = productRepository;
     private readonly IRabbitMqContext _rabbitMqContext = rabbitMqContext;
@@ -36,7 +36,7 @@ internal class ProductService(IProductRepository productRepository, IRabbitMqCon
 
         var result = await _productRepository.GetByIdAsync(entity.Id, ProductResponseFormDto.Map(), cancellationToken);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 
     public async Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken)
@@ -44,21 +44,21 @@ internal class ProductService(IProductRepository productRepository, IRabbitMqCon
         await _productRepository.DeleteByIdAsync(id, cancellationToken);
         await _rabbitMqContext.SendMessageAsync(RabbitMqExchangeConst.ProductModuleProduct, EventMessageDto.Create(id, MessageType.Delete));
 
-        return Success();
+        return ResultDto.Success();
     }
 
     public async Task<ResultDto<ProductResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var result = await _productRepository.GetByIdAsync(id, ProductResponseFormDto.Map(), cancellationToken);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 
     public async Task<ResultDto<PageDto<ProductListDto>>> GetPageListAsync(PaginationDto pagination, CancellationToken cancellationToken)
     {
         var results = await _productRepository.GetPageAsync(pagination, ProductListDto.Map(), cancellationToken);
 
-        return Success(results);
+        return ResultDto.Success(results);
     }
 
     public async Task<ResultDto<ProductResponseFormDto>> UpdateAsync(Guid id, ProductRequestFormDto dto, CancellationToken cancellationToken)
@@ -69,6 +69,6 @@ internal class ProductService(IProductRepository productRepository, IRabbitMqCon
 
         var result = await _productRepository.GetByIdAsync(entity.Id, ProductResponseFormDto.Map(), cancellationToken);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 }

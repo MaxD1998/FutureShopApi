@@ -25,7 +25,7 @@ public interface ICategoryService
     Task<ResultDto<CategoryResponseFormDto>> UdpateAsync(Guid id, CategoryRequestFormDto dto, CancellationToken cancellationToken);
 }
 
-internal class CategoryService(ICategoryRepository categoryRepository, IHeaderService headerService) : BaseService, ICategoryService
+internal class CategoryService(ICategoryRepository categoryRepository, IHeaderService headerService) : ICategoryService
 {
     private readonly ICategoryRepository _categoryRepository = categoryRepository;
     private readonly IHeaderService _headerService = headerService;
@@ -34,7 +34,7 @@ internal class CategoryService(ICategoryRepository categoryRepository, IHeaderSe
     {
         var result = await _categoryRepository.GetActiveIdByIdAsync(id, IdNameDto.MapFromCategory(), cancellationToken);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 
     public async Task<ResultDto<List<CategoryListDto>>> GetActiveListAsync(CancellationToken cancellationToken)
@@ -42,28 +42,28 @@ internal class CategoryService(ICategoryRepository categoryRepository, IHeaderSe
         var results = await _categoryRepository.GetListAsync(x => x.IsActive, CategoryListDto.Map(_headerService.GetHeader(HeaderNameConst.Lang)), cancellationToken);
         var tree = CategoryListDto.BuildTree(results);
 
-        return Success(tree);
+        return ResultDto.Success(tree);
     }
 
     public async Task<ResultDto<CategoryResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var result = await _categoryRepository.GetByIdAsync(id, CategoryResponseFormDto.Map(), cancellationToken);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 
     public async Task<ResultDto<IdNameDto>> GetIdNameByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var result = await _categoryRepository.GetByIdAsync(id, IdNameDto.MapFromCategory(), cancellationToken);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 
     public async Task<ResultDto<PageDto<CategoryPageListDto>>> GetPageListAsync(PaginationDto pagination, CancellationToken cancellationToken)
     {
         var results = await _categoryRepository.GetPageAsync(pagination, CategoryPageListDto.Map(), cancellationToken);
 
-        return Success(results);
+        return ResultDto.Success(results);
     }
 
     public async Task<ResultDto<CategoryResponseFormDto>> UdpateAsync(Guid id, CategoryRequestFormDto dto, CancellationToken cancellationToken)
@@ -71,6 +71,6 @@ internal class CategoryService(ICategoryRepository categoryRepository, IHeaderSe
         var entity = await _categoryRepository.UpdateAsync(id, dto.ToEntity(), cancellationToken);
         var result = await _categoryRepository.GetByIdAsync(entity.Id, CategoryResponseFormDto.Map(), cancellationToken);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 }

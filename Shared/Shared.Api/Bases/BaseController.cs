@@ -26,6 +26,19 @@ public abstract class BaseController : ControllerBase
     protected async Task<IActionResult> ApiResponseAsync(Func<CancellationToken, Task<ResultDto>> executeAsync, CancellationToken cancellationToken)
         => ApiResponse(await executeAsync(cancellationToken));
 
+    protected async Task<IActionResult> ApiResponseAsync<T1, T2>(Func<T1, T2, CancellationToken, Task<ResultDto>> executeAsync, T1 param1, T2 param2, CancellationToken cancellationToken)
+    {
+        if (param1 is IValidator validator1)
+            if (!validator1.Validate(out var result))
+                return ApiResponse(result);
+
+        if (param2 is IValidator validator2)
+            if (!validator2.Validate(out var result))
+                return ApiResponse(result);
+
+        return ApiResponse(await executeAsync(param1, param2, cancellationToken));
+    }
+
     protected async Task<IActionResult> ApiResponseAsync<TRespone>(Func<CancellationToken, Task<ResultDto<TRespone>>> executeAsync, CancellationToken cancellationToken)
         => ApiResponse(await executeAsync(cancellationToken));
 

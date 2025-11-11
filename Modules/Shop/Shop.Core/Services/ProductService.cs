@@ -41,7 +41,7 @@ internal class ProductService(
     ICurrentUserService currentUserService,
     ILogicFactory logicFactory,
     IProductRepository productRepository,
-    IPromotionRepository promotionRepository) : BaseService, IProductService
+    IPromotionRepository promotionRepository) : IProductService
 {
     private readonly ICurrentUserService _currentUserService = currentUserService;
     private readonly IHeaderService _headerService = headerService;
@@ -53,7 +53,7 @@ internal class ProductService(
     {
         var result = await _productRepository.GetByIdAsync(id, ProductResponseFormDto.Map(), cancellationToken);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 
     public async Task<ResultDto<ProductDto>> GetDetailsByIdAsync(Guid id, CancellationToken cancellationToken)
@@ -74,21 +74,21 @@ internal class ProductService(
 
         var promotions = await _promotionRepository.GetActivePromotionsAsync(codes, cancellationToken);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 
     public async Task<ResultDto<List<IdNameDto>>> GetListIdNameAsync(List<Guid> excludedIds, CancellationToken cancellationToken)
     {
         var results = await _productRepository.GetListAsync(x => !excludedIds.Contains(x.Id), IdNameDto.MapFromProduct(), cancellationToken);
 
-        return Success(results);
+        return ResultDto.Success(results);
     }
 
     public async Task<ResultDto<PageDto<ProductListDto>>> GetPageListAsync(PaginationDto pagination, CancellationToken cancellationToken)
     {
         var results = await _productRepository.GetPageAsync(pagination, ProductListDto.Map(), cancellationToken);
 
-        return Success(results);
+        return ResultDto.Success(results);
     }
 
     public async Task<ResultDto<List<ProductShopListDto>>> GetShopListByCategoryIdAsync(Guid id, ProductShopListFilterRequestDto request, CancellationToken cancellationToken)
@@ -109,7 +109,7 @@ internal class ProductService(
         var promotionRequest = new SetPromotionForProductsRequestModel<ProductShopListDto>(codes, results);
         results = await _logicFactory.ExecuteAsync(promotionRequest, f => f.SetPromotionForProductsLogic<ProductShopListDto>(), cancellationToken);
 
-        return Success(results);
+        return ResultDto.Success(results);
     }
 
     public async Task<ResultDto<List<SimulatePriceFormDto>>> SimulateAddPriceAsync(SimulatePriceRequestDto request, CancellationToken cancellationToken)
@@ -126,6 +126,6 @@ internal class ProductService(
         var entity = await _productRepository.UpdateAsync(id, dto.ToEntity(), cancellationToken);
         var result = await _productRepository.GetByIdAsync(entity.Id, ProductResponseFormDto.Map(), cancellationToken);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 }

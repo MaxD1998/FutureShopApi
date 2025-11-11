@@ -1,13 +1,13 @@
 ﻿using Authorization.Core.Dtos;
 using Authorization.Core.Dtos.Login;
-using Authorization.Core.Dtos.User;
+using Authorization.Core.Dtos.Register;
 using Authorization.Core.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Api.Modules.Authorization.PublicControllers;
+namespace Api.Modules.Authorization.Controllers;
 
-public class AuthorizationPublicController(IAuthService authService) : AuthModuleBaseController
+public class AuthorizationController(IAuthService authService) : AuthModuleBaseController
 {
     private readonly IAuthService _authService = authService;
 
@@ -29,6 +29,6 @@ public class AuthorizationPublicController(IAuthService authService) : AuthModul
 
     [HttpPost("Register")]
     [ProducesResponseType(typeof(AuthorizeDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> RegisterAsync([FromBody] UserFormDto dto, CancellationToken cancellationToken = default)
+    public Task<IActionResult> RegisterAsync([FromBody] RegisterFormDto dto, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_authService.RegisterAsync, dto, cancellationToken);
 }

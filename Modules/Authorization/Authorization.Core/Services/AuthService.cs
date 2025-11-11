@@ -1,12 +1,13 @@
 ﻿using Authorization.Core.Dtos;
 using Authorization.Core.Dtos.Login;
+using Authorization.Core.Dtos.Register;
 using Authorization.Core.Dtos.User;
+using Authorization.Core.Errors;
 using Authorization.Infrastructure.Entities.Users;
 using Authorization.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using Shared.Core.Bases;
 using Shared.Core.Constans;
 using Shared.Core.Dtos;
 using Shared.Core.Enums;
@@ -19,6 +20,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
+using Crypt = BCrypt.Net.BCrypt;
 
 namespace Authorization.Core.Services;
 
@@ -30,10 +32,10 @@ public interface IAuthService
 
     Task<ResultDto<AuthorizeDto>> RefreshTokenAsync(CancellationToken cancellationToken = default);
 
-    Task<ResultDto<AuthorizeDto>> RegisterAsync(UserFormDto dto, CancellationToken cancellationToken = default);
+    Task<ResultDto<AuthorizeDto>> RegisterAsync(RegisterFormDto dto, CancellationToken cancellationToken = default);
 }
 
-internal class AuthService : BaseService, IAuthService
+internal class AuthService : IAuthService
 {
     private readonly ICookieService _cookieService;
     private readonly HttpContext _httpContext;
@@ -65,8 +67,8 @@ internal class AuthService : BaseService, IAuthService
     {
         var user = await _userRepository.GetByEmailAsync(dto.Email, cancellationToken);
 
-        if (user is null)
-            return Error<AuthorizeDto>(HttpStatusCode.Forbidden, CommonExceptionMessage.C004WrongEmailOrPassword);
+        if (user is null || !Crypt.Verify(dto.Password, user?.HashedPassword))
+            return ResultDto.Error<AuthorizeDto>(HttpStatusCode.Forbidden, ExceptionMessage.User001WrongEmailOrPassword);
 
         var refreshToken = await AddOrUpdateRefreshTokenAsync(user.Id, cancellationToken);
         var result = new AuthorizeDto(user, GenerateJwt(user));
@@ -74,7 +76,7 @@ internal class AuthService : BaseService, IAuthService
 
         _cookieService.AddCookie(CookieNameConst.RefreshToken, refreshToken.ToString(), expireDays);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 
     public async Task<ResultDto> LogoutAsync(CancellationToken cancellationToken = default)
@@ -82,13 +84,13 @@ internal class AuthService : BaseService, IAuthService
         var nullableUserId = _httpContext.User.Claims.FirstOrDefault(x => x.Type == JwtClaimNameConst.Id)?.Value;
 
         if (!Guid.TryParse(nullableUserId, out var userId))
-            return Error(HttpStatusCode.BadRequest, CommonExceptionMessage.C005BadGuidFormat);
+            return ResultDto.Error(HttpStatusCode.BadRequest, CommonExceptionMessage.C002BadGuidFormat);
 
         await _refreshTokenRepository.DeleteByUserId(userId, cancellationToken);
 
         _cookieService.RemoveCookie(CookieNameConst.RefreshToken);
 
-        return Success();
+        return ResultDto.Success();
     }
 
     public async Task<ResultDto<AuthorizeDto>> RefreshTokenAsync(CancellationToken cancellationToken = default)
@@ -96,28 +98,28 @@ internal class AuthService : BaseService, IAuthService
         var userRefreshToken = _cookieService.GetCookieValue(CookieNameConst.RefreshToken).Result;
 
         if (string.IsNullOrEmpty(userRefreshToken))
-            return Success<AuthorizeDto>(null);
+            return ResultDto.Success<AuthorizeDto>(null);
 
         if (!Guid.TryParse(userRefreshToken, out var token))
-            return Error<AuthorizeDto>(HttpStatusCode.Forbidden, CommonExceptionMessage.C003WrongRefreshTokenFormat);
+            return ResultDto.Error<AuthorizeDto>(HttpStatusCode.Forbidden, ExceptionMessage.User002WrongRefreshTokenFormat);
 
         var user = await _userRepository.GetByTokenAsync(token, cancellationToken);
 
         if (user is null)
         {
             _cookieService.RemoveCookie(CookieNameConst.RefreshToken);
-            return Error<AuthorizeDto>(HttpStatusCode.Forbidden, CommonExceptionMessage.C001SessionHasExpired);
+            return ResultDto.Error<AuthorizeDto>(HttpStatusCode.Forbidden, CommonExceptionMessage.C001SessionHasExpired);
         }
 
-        return Success(new AuthorizeDto(user, GenerateJwt(user)));
+        return ResultDto.Success(new AuthorizeDto(user, GenerateJwt(user)));
     }
 
-    public async Task<ResultDto<AuthorizeDto>> RegisterAsync(UserFormDto dto, CancellationToken cancellationToken = default)
+    public async Task<ResultDto<AuthorizeDto>> RegisterAsync(RegisterFormDto dto, CancellationToken cancellationToken = default)
     {
         var isExist = await _userRepository.AnyByEmailAsync(dto.Email, cancellationToken);
 
         if (isExist)
-            return Error<AuthorizeDto>(HttpStatusCode.Conflict, CommonExceptionMessage.C006RecordAlreadyExists);
+            return ResultDto.Error<AuthorizeDto>(HttpStatusCode.Conflict, CommonExceptionMessage.C003RecordAlreadyExists);
 
         var user = await _userRepository.CreateAsync(dto.ToEntity(), cancellationToken);
         var refreshToken = await AddOrUpdateRefreshTokenAsync(user.Id, cancellationToken);
@@ -128,7 +130,7 @@ internal class AuthService : BaseService, IAuthService
 
         _cookieService.AddCookie(CookieNameConst.RefreshToken, refreshToken.ToString(), expireDays);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 
     private static List<Claim> GetClaims(UserEntity user)

@@ -3,6 +3,7 @@ using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Constants;
 using Shared.Infrastructure.Enums;
 using Shared.Infrastructure.Exceptions;
+using Shared.Infrastructure.Extensions;
 using Shared.Infrastructure.Interfaces;
 
 namespace Authorization.Infrastructure.Entities.Users;
@@ -40,6 +41,7 @@ public class UserEntity : BaseEntity, IUpdate<UserEntity>, IEntityValidation
         FirstName = entity.FirstName;
         LastName = entity.LastName;
         PhoneNumber = entity.PhoneNumber;
+        UserPermissionGroups.UpdateEntities(entity.UserPermissionGroups);
     }
 
     public void Validate()

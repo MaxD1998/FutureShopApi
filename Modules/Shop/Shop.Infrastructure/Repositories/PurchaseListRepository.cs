@@ -23,6 +23,8 @@ internal class PurchaseListRepository(ShopContext context) : BaseRepository<Shop
                 return null;
         }
 
+        entity.Validate();
+
         await _context.Set<PurchaseListEntity>().AddAsync(entity, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 

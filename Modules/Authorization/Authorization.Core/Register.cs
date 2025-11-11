@@ -9,5 +9,7 @@ public static class Register
     {
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ICookieService, CookieService>();
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IPermissionGroupService, PermissionGroupService>();
     }
 }

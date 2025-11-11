@@ -1,9 +1,9 @@
 ﻿using Authorization.Infrastructure.Entities.Users;
-using Crypt = BCrypt.Net.BCrypt;
+using Shared.Infrastructure.Enums;
 
 namespace Authorization.Core.Dtos.User;
 
-public class UserFormDto
+public class UserUpdateRequestFormDto
 {
     public DateTime DateOfBirth { get; set; }
 
@@ -13,17 +13,17 @@ public class UserFormDto
 
     public string LastName { get; set; }
 
-    public string Password { get; set; }
+    public UserType Type { get; set; }
 
-    public string PhoneNumber { get; set; }
+    public List<UserPermissionGroupFromDto> UserPermissionGroups { get; set; }
 
-    public UserEntity ToEntity() => new()
+    public virtual UserEntity ToEntity() => new()
     {
         DateOfBirth = DateOnly.FromDateTime(DateOfBirth),
         Email = Email,
         FirstName = FirstName,
         LastName = LastName,
-        HashedPassword = Crypt.HashPassword(Password),
-        PhoneNumber = PhoneNumber
+        Type = Type,
+        UserPermissionGroups = UserPermissionGroups.Select(x => x.ToEntity()).ToList()
     };
 }

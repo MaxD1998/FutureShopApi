@@ -32,7 +32,7 @@ internal class BasketService(
     IHeaderService headerService,
     ILogicFactory logicFactory,
     IPromotionRepository promotionRepository,
-    IPurchaseListRepository purchaseListRepository) : BaseService, IBasketSerivce
+    IPurchaseListRepository purchaseListRepository) : IBasketSerivce
 {
     private readonly IBasketRepository _basketRepository = basketRepository;
     private readonly ICurrentUserService _currentUserService = currentUserService;
@@ -47,7 +47,7 @@ internal class BasketService(
         var entity = await _basketRepository.CreateAsync(dto.ToEntity(userId), cancellationToken);
         var result = await _basketRepository.GetByIdAsync(entity.Id, BasketResponseFormDto.Map(), cancellationToken);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 
     public async Task<ResultDto<BasketDto>> GetByAuthorizedUserAsync(CancellationToken cancellationToken)
@@ -55,12 +55,12 @@ internal class BasketService(
         var userId = _currentUserService.GetUserId();
 
         if (!userId.HasValue)
-            return Success<BasketDto>(null);
+            return ResultDto.Success<BasketDto>(null);
 
         var result = await _basketRepository.GetByUserIdAsync(userId.Value, BasketDto.Map(x => x.PurchaseList.UserId == userId), cancellationToken);
 
         if (result == null)
-            return Success(result);
+            return ResultDto.Success(result);
 
         var codes = _headerService.GetHeader(HeaderNameConst.Codes).ToListString();
         var productList = result.BasketItems.Select(x => x.Product).ToList();
@@ -68,7 +68,7 @@ internal class BasketService(
 
         await _logicFactory.ExecuteAsync(promotionRequest, f => f.SetPromotionForProductsLogic<BasketItemProductDto>(), cancellationToken);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 
     public async Task<ResultDto<BasketDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
@@ -76,7 +76,7 @@ internal class BasketService(
         var favouriteId = _headerService.GetHeader(HeaderNameConst.FavouriteId).ToNullableGuid();
         var result = await _basketRepository.GetByIdAsync(id, BasketDto.Map(x => x.PurchaseListId == favouriteId), cancellationToken);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 
     public async Task<ResultDto<BasketDto>> ImportPurchaseListAsync(ImportPurchaseListToBasketDto dto, CancellationToken cancellationToken)
@@ -87,7 +87,7 @@ internal class BasketService(
         var purchaseList = await _purchaseListRepository.GetByIdAsync(dto.PurchaseListId, cancellationToken);
 
         if (basket is null || purchaseList is null)
-            return Error<BasketDto>(HttpStatusCode.NotFound, CommonExceptionMessage.C007RecordWasNotFound);
+            return ResultDto.Error<BasketDto>(HttpStatusCode.NotFound, CommonExceptionMessage.C004RecordWasNotFound);
 
         foreach (var purchaseListItem in purchaseList.PurchaseListItems)
         {
@@ -100,7 +100,7 @@ internal class BasketService(
         var entity = await _basketRepository.UpdateAsync(basket.Id, basket, cancellationToken);
         var result = await _basketRepository.GetByIdAsync(entity.Id, BasketDto.Map(x => x.PurchaseListId == dto.PurchaseListId), cancellationToken);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 
     public async Task<ResultDto<BasketResponseFormDto>> UpdateAsync(Guid id, BasketRequestFormDto dto, CancellationToken cancellationToken)
@@ -109,6 +109,6 @@ internal class BasketService(
         var entity = await _basketRepository.UpdateAsync(id, dto.ToEntity(userId), cancellationToken);
         var result = await _basketRepository.GetByIdAsync(entity.Id, BasketResponseFormDto.Map(), cancellationToken);
 
-        return Success(result);
+        return ResultDto.Success(result);
     }
 }

@@ -4,9 +4,9 @@ using Shop.Core.Dtos.Basket;
 using Shop.Core.Dtos.PurchaseList;
 using Shop.Core.Services;
 
-namespace Api.Modules.Shop.PublicControllers;
+namespace Api.Modules.Shop.Controllers;
 
-public class PurchaseListPublicController(IPurchaseListService purchaseListService) : ShopModuleBaseController
+public class PurchaseListController(IPurchaseListService purchaseListService) : ShopModuleBaseController
 {
     private readonly IPurchaseListService _purchaseListService = purchaseListService;
 

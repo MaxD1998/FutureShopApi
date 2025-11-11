@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Shop.Core.Dtos.Basket;
 using Shop.Core.Services;
 
-namespace Api.Modules.Shop.PublicControllers;
+namespace Api.Modules.Shop.Controllers;
 
-public class BasketPublicController(IBasketSerivce basketSerivce) : ShopModuleBaseController
+public class BasketController(IBasketSerivce basketSerivce) : ShopModuleBaseController
 {
     private readonly IBasketSerivce _basketSerivce = basketSerivce;
 

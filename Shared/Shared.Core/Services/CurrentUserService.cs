@@ -8,6 +8,8 @@ namespace Shared.Core.Services;
 public interface ICurrentUserService
 {
     Guid? GetUserId();
+
+    bool IsRecordOwner(Guid inputId);
 }
 
 internal class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICurrentUserService
@@ -20,4 +22,7 @@ internal class CurrentUserService(IHttpContextAccessor httpContextAccessor) : IC
 
         return id.ToNullableGuid();
     }
+
+    public bool IsRecordOwner(Guid inputId)
+        => GetUserId() == inputId;
 }
