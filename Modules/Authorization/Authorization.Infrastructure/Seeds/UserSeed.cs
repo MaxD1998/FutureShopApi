@@ -12,7 +12,6 @@ public class UserSeed
         CreateTime = DateTime.MinValue,
         FirstName = "Super",
         LastName = "Admin",
-        DateOfBirth = DateOnly.MinValue,
         Email = "superadmin@futureshop.pl",
         HashedPassword = "$2a$11$v1B9qwcIeH.PJLuFjnmK7O1Nu3TSUsc6oZ49.5DXOJhkIDcfzPD..", // Crypt.HashPassword("123456789"),
         Type = UserType.SuperAdmin

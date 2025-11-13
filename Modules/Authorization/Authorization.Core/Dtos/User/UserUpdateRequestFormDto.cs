@@ -19,7 +19,6 @@ public class UserUpdateRequestFormDto
 
     public virtual UserEntity ToEntity() => new()
     {
-        DateOfBirth = DateOnly.FromDateTime(DateOfBirth),
         Email = Email,
         FirstName = FirstName,
         LastName = LastName,

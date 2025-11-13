@@ -18,8 +18,6 @@ public class UserDetailsRequestFormDto
     {
         FirstName = FirstName,
         LastName = LastName,
-        DateOfBirth = DateOfBirth,
         Email = Email,
-        PhoneNumber = PhoneNumber,
     };
 }

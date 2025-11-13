@@ -19,11 +19,9 @@ public class RegisterFormDto
 
     public UserEntity ToEntity() => new()
     {
-        DateOfBirth = DateOnly.FromDateTime(DateOfBirth),
         Email = Email,
         FirstName = FirstName,
         LastName = LastName,
         HashedPassword = Crypt.HashPassword(Password),
-        PhoneNumber = PhoneNumber
     };
 }

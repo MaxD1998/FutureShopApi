@@ -21,10 +21,6 @@ public class UserConfig : BaseConfig<UserEntity>
             .HasMaxLength(StringLengthConst.LongString)
             .IsRequired();
 
-        builder.Property(x => x.PhoneNumber)
-            .HasColumnOrder(102)
-            .HasMaxLength(StringLengthConst.ShortString);
-
         builder.Property(x => x.Email)
             .HasColumnOrder(103)
             .HasMaxLength(StringLengthConst.LongString)
@@ -33,11 +29,6 @@ public class UserConfig : BaseConfig<UserEntity>
         builder.Property(x => x.HashedPassword)
             .HasColumnOrder(104)
             .IsRequired();
-
-        builder.Property(x => x.DateOfBirth)
-            .HasColumnOrder(105)
-            .IsRequired();
-
         builder.Property(x => x.Type)
             .HasColumnOrder(106)
             .IsRequired();
