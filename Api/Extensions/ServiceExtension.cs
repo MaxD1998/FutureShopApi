@@ -34,7 +34,7 @@ public static class ServiceExtension
         var jobName = typeof(TJob).Name;
         var jobKey = new JobKey(jobName);
 
-        quartz.AddJob<TJob>(jobKey);
+        quartz.AddJob<TJob>(opts => opts.WithIdentity(jobKey));
         quartz.AddTrigger(opt => opt
             .ForJob(jobKey)
             .WithIdentity($"{jobName}-trigger")

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.OpenApi;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 
 namespace Api.OpenApi;
 
@@ -11,7 +11,7 @@ internal class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvider aut
         var authenticationSchemes = await authenticationSchemeProvider.GetAllSchemesAsync();
         if (authenticationSchemes.Any(authScheme => authScheme.Name == "Bearer"))
         {
-            var requirements = new Dictionary<string, OpenApiSecurityScheme>
+            var requirements = new Dictionary<string, IOpenApiSecurityScheme>
             {
                 ["Bearer"] = new OpenApiSecurityScheme
                 {
@@ -26,9 +26,10 @@ internal class BearerSecuritySchemeTransformer(IAuthenticationSchemeProvider aut
 
             foreach (var operation in document.Paths.Values.SelectMany(path => path.Operations))
             {
+                operation.Value.Security ??= [];
                 operation.Value.Security.Add(new OpenApiSecurityRequirement
                 {
-                    [new OpenApiSecurityScheme { Reference = new OpenApiReference { Id = "Bearer", Type = ReferenceType.SecurityScheme } }] = Array.Empty<string>()
+                    [new OpenApiSecuritySchemeReference("Bearer", document)] = []
                 });
             }
         }
