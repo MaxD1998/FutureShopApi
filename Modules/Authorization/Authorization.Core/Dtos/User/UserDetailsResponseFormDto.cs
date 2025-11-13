@@ -12,8 +12,6 @@ public class UserDetailsResponseFormDto : UserDetailsRequestFormDto
         Id = entity.Id,
         FirstName = entity.FirstName,
         LastName = entity.LastName,
-        DateOfBirth = entity.DateOfBirth,
         Email = entity.Email,
-        PhoneNumber = entity.PhoneNumber,
     };
 }

@@ -6,6 +6,10 @@ namespace Shop.Infrastructure.Entities.Users;
 
 public class UserEntity : BaseExternalEntity, IUpdate<UserEntity>, IUpdateEvent<UserEntity>
 {
+    public DateOnly DateOfBirth { get; set; }
+
+    public string Email { get; set; }
+
     public string FirstName { get; set; }
 
     public string LastName { get; set; }

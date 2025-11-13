@@ -10,8 +10,6 @@ namespace Authorization.Infrastructure.Entities.Users;
 
 public class UserEntity : BaseEntity, IUpdate<UserEntity>, IEntityValidation
 {
-    public DateOnly DateOfBirth { get; set; }
-
     public string Email { get; set; }
 
     public string FirstName { get; set; }
@@ -19,8 +17,6 @@ public class UserEntity : BaseEntity, IUpdate<UserEntity>, IEntityValidation
     public string HashedPassword { get; set; }
 
     public string LastName { get; set; }
-
-    public string PhoneNumber { get; set; }
 
     public UserType Type { get; set; } = UserType.Customer;
 
@@ -36,11 +32,9 @@ public class UserEntity : BaseEntity, IUpdate<UserEntity>, IEntityValidation
 
     public void Update(UserEntity entity)
     {
-        DateOfBirth = entity.DateOfBirth;
         Email = entity.Email;
         FirstName = entity.FirstName;
         LastName = entity.LastName;
-        PhoneNumber = entity.PhoneNumber;
         UserPermissionGroups.UpdateEntities(entity.UserPermissionGroups);
     }
 
@@ -50,7 +44,6 @@ public class UserEntity : BaseEntity, IUpdate<UserEntity>, IEntityValidation
         ValidateFirstName();
         ValidateHashedPassword();
         ValidateLastName();
-        ValidatePhoneNumber();
     }
 
     private bool IsValidEmail(string email)
@@ -106,15 +99,6 @@ public class UserEntity : BaseEntity, IUpdate<UserEntity>, IEntityValidation
 
         if (LastName.Length > length)
             throw new PropertyWasTooLongException(nameof(LastName), length);
-    }
-
-    private void ValidatePhoneNumber()
-    {
-        var phoneNumber = PhoneNumber ?? string.Empty;
-        var length = StringLengthConst.ShortString;
-
-        if (phoneNumber.Length > length)
-            throw new PropertyWasTooLongException(nameof(PhoneNumber), length);
     }
 
     #endregion Methods
