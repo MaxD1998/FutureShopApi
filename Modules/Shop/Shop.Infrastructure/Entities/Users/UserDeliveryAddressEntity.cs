@@ -1,25 +1,24 @@
 ﻿using Shared.Infrastructure.Bases;
-using Shop.Infrastructure.Enums;
 
 namespace Shop.Infrastructure.Entities.Users;
 
-public class UserCompanyDetailsEntity : BaseEntity
+public class UserDeliveryAddressEntity : BaseEntity
 {
     public string ApartamentNumber { get; set; }
 
     public string City { get; set; }
 
-    public string CompanyIdentifierNumber { get; set; }
+    public string Email { get; set; }
 
     public string HouseNumber { get; set; }
 
     public bool IsDefault { get; set; }
 
+    public string PhoneNumber { get; set; }
+
     public string PostalCode { get; set; }
 
     public string Street { get; set; }
-
-    public CompanyIdentifierNumberType Type { get; set; }
 
     public Guid UserId { get; set; }
 

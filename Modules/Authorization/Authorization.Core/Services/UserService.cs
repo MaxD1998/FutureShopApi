@@ -23,13 +23,9 @@ public interface IUserService
 
     Task<ResultDto<UserResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
-    Task<ResultDto<UserDetailsResponseFormDto>> GetOwnByIdAsync(Guid id, CancellationToken cancellationToken);
-
     Task<ResultDto<PageDto<UserListDto>>> GetPageListAsync(PaginationDto pagination, CancellationToken cancellationToken);
 
     Task<ResultDto<UserResponseFormDto>> UpdateAsync(Guid id, UserUpdateRequestFormDto dto, CancellationToken cancellationToken);
-
-    Task<ResultDto<UserDetailsResponseFormDto>> UpdateOwnAsync(Guid id, UserDetailsRequestFormDto dto, CancellationToken cancellationToken);
 
     Task<ResultDto> UpdateOwnPasswordAsync(Guid id, UserPasswordFormDto dto, CancellationToken cancellationToken);
 }
@@ -72,16 +68,6 @@ internal class UserService(ICurrentUserService currentUserService, IRabbitMqCont
         return ResultDto.Success(result);
     }
 
-    public async Task<ResultDto<UserDetailsResponseFormDto>> GetOwnByIdAsync(Guid id, CancellationToken cancellationToken)
-    {
-        if (!_currentUserService.IsRecordOwner(id))
-            return ResultDto.Error<UserDetailsResponseFormDto>(HttpStatusCode.Forbidden, CommonExceptionMessage.C005UserIsNotTheOwnerOfThisRecord);
-
-        var result = await _userRepository.GetByIdAsync(id, UserDetailsResponseFormDto.Map(), cancellationToken);
-
-        return ResultDto.Success(result);
-    }
-
     public async Task<ResultDto<PageDto<UserListDto>>> GetPageListAsync(PaginationDto pagination, CancellationToken cancellationToken)
     {
         var results = await _userRepository.GetPageAsync(pagination, UserListDto.Map(), cancellationToken);
@@ -100,24 +86,6 @@ internal class UserService(ICurrentUserService currentUserService, IRabbitMqCont
         await _rabbitMqContext.SendMessageAsync(RabbitMqExchangeConst.AuthorizationModuleUser, entity);
 
         var result = await _userRepository.GetByIdAsync(entity.Id, UserResponseFormDto.Map(), cancellationToken);
-
-        return ResultDto.Success(result);
-    }
-
-    public async Task<ResultDto<UserDetailsResponseFormDto>> UpdateOwnAsync(Guid id, UserDetailsRequestFormDto dto, CancellationToken cancellationToken)
-    {
-        if (!_currentUserService.IsRecordOwner(id))
-            return ResultDto.Error<UserDetailsResponseFormDto>(HttpStatusCode.Forbidden, CommonExceptionMessage.C005UserIsNotTheOwnerOfThisRecord);
-
-        var entity = dto.ToEntity();
-        entity = await _userRepository.UpdateAsync(id, entity, cancellationToken);
-
-        if (entity is null)
-            return ResultDto.Error<UserDetailsResponseFormDto>(HttpStatusCode.NotFound, CommonExceptionMessage.C004RecordWasNotFound);
-
-        await _rabbitMqContext.SendMessageAsync(RabbitMqExchangeConst.AuthorizationModuleUser, entity);
-
-        var result = await _userRepository.GetByIdAsync(entity.Id, UserDetailsResponseFormDto.Map(), cancellationToken);
 
         return ResultDto.Success(result);
     }

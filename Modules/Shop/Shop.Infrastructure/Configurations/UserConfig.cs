@@ -26,6 +26,14 @@ public class UserConfig : BaseConfig<UserEntity>
             .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.SetNull);
 
+        builder.HasMany(x => x.UserCompanyDetails)
+            .WithOne(x => x.User)
+            .HasForeignKey(x => x.UserId);
+
+        builder.HasMany(x => x.UserDeliveryAddresses)
+            .WithOne(x => x.User)
+            .HasForeignKey(x => x.UserId);
+
         builder.HasData(UserSeed.Seed());
     }
 }

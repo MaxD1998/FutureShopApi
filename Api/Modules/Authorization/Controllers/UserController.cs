@@ -59,19 +59,6 @@ public class UserController(IUserService userService) : AuthModuleBaseController
     public Task<IActionResult> DeleteOwnAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_userService.DeleteOwnAsync, id, cancellationToken);
 
-    [HttpGet("Own/{id:guid}")]
-    [Role(UserType.Customer)]
-    [Permission(AuthorizationPermission.UserRead)]
-    [ProducesResponseType(typeof(UserDetailsResponseFormDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> GeOwntByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_userService.GetOwnByIdAsync, id, cancellationToken);
-
-    [HttpPut("Own/{id:guid}")]
-    [Role(UserType.Customer)]
-    [ProducesResponseType(typeof(UserDetailsResponseFormDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> UpdateOwnAsync([FromRoute] Guid id, [FromBody] UserDetailsRequestFormDto dto, CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_userService.UpdateOwnAsync, id, dto, cancellationToken);
-
     [HttpPatch("Own/Password/{id:guid}")]
     [Role(UserType.Customer)]
     [ProducesResponseType(StatusCodes.Status200OK)]

@@ -18,6 +18,10 @@ public class UserEntity : BaseExternalEntity, IUpdate<UserEntity>, IUpdateEvent<
 
     public ICollection<ProductReviewEntity> ProductReviews { get; set; } = [];
 
+    public ICollection<UserCompanyDetailsEntity> UserCompanyDetails { get; set; }
+
+    public ICollection<UserDeliveryAddressEntity> UserDeliveryAddresses { get; set; }
+
     #endregion Related Data
 
     public void Update(UserEntity entity)

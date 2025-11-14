@@ -18,7 +18,7 @@ namespace Shop.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.9")
+                .HasAnnotation("ProductVersion", "9.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -793,6 +793,148 @@ namespace Shop.Infrastructure.Migrations
                     b.ToTable("PurchaseListItem", (string)null);
                 });
 
+            modelBuilder.Entity("Shop.Infrastructure.Entities.Users.UserCompanyDetailsEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("ApartamentNumber")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("character varying(25)")
+                        .HasColumnOrder(108);
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnOrder(105);
+
+                    b.Property<string>("CompanyIdentifierNumber")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("character varying(25)")
+                        .HasColumnOrder(103);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("HouseNumber")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("character varying(25)")
+                        .HasColumnOrder(107);
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("boolean")
+                        .HasColumnOrder(101);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("character varying(25)")
+                        .HasColumnOrder(104);
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnOrder(106);
+
+                    b.Property<int>("Type")
+                        .HasColumnType("integer")
+                        .HasColumnOrder(102);
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserCompanyDetails", (string)null);
+                });
+
+            modelBuilder.Entity("Shop.Infrastructure.Entities.Users.UserDeliveryAddressEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("ApartamentNumber")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("character varying(25)")
+                        .HasColumnOrder(108);
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnOrder(105);
+
+                    b.Property<DateTime>("CreateTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(1);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnOrder(102);
+
+                    b.Property<string>("HouseNumber")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("character varying(25)")
+                        .HasColumnOrder(107);
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("boolean")
+                        .HasColumnOrder(101);
+
+                    b.Property<DateTime?>("ModifyTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnOrder(2);
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("character varying(25)")
+                        .HasColumnOrder(103);
+
+                    b.Property<string>("PostalCode")
+                        .IsRequired()
+                        .HasMaxLength(25)
+                        .HasColumnType("character varying(25)")
+                        .HasColumnOrder(104);
+
+                    b.Property<string>("Street")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnOrder(106);
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnOrder(100);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserDeliveryAddress", (string)null);
+                });
+
             modelBuilder.Entity("Shop.Infrastructure.Entities.Users.UserEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -803,6 +945,12 @@ namespace Shop.Infrastructure.Migrations
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(1);
+
+                    b.Property<DateOnly>("DateOfBirth")
+                        .HasColumnType("date");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
 
                     b.Property<Guid>("ExternalId")
                         .HasColumnType("uuid");
@@ -832,6 +980,7 @@ namespace Shop.Infrastructure.Migrations
                         {
                             Id = new Guid("d6669a68-5afb-432d-858f-3f5181579a90"),
                             CreateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            DateOfBirth = new DateOnly(1, 1, 1),
                             ExternalId = new Guid("d6669a68-5afb-432d-858f-3f5181579a90"),
                             FirstName = "Super",
                             LastName = "Admin"
@@ -1070,6 +1219,28 @@ namespace Shop.Infrastructure.Migrations
                     b.Navigation("PurchaseList");
                 });
 
+            modelBuilder.Entity("Shop.Infrastructure.Entities.Users.UserCompanyDetailsEntity", b =>
+                {
+                    b.HasOne("Shop.Infrastructure.Entities.Users.UserEntity", "User")
+                        .WithMany("UserCompanyDetails")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Shop.Infrastructure.Entities.Users.UserDeliveryAddressEntity", b =>
+                {
+                    b.HasOne("Shop.Infrastructure.Entities.Users.UserEntity", "User")
+                        .WithMany("UserDeliveryAddresses")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Shop.Infrastructure.Entities.AdCampaigns.AdCampaignEntity", b =>
                 {
                     b.Navigation("AdCampaignItems");
@@ -1141,6 +1312,10 @@ namespace Shop.Infrastructure.Migrations
             modelBuilder.Entity("Shop.Infrastructure.Entities.Users.UserEntity", b =>
                 {
                     b.Navigation("ProductReviews");
+
+                    b.Navigation("UserCompanyDetails");
+
+                    b.Navigation("UserDeliveryAddresses");
                 });
 #pragma warning restore 612, 618
         }

@@ -5,8 +5,6 @@ namespace Authorization.Core.Dtos.User;
 
 public class UserUpdateRequestFormDto
 {
-    public DateTime DateOfBirth { get; set; }
-
     public string Email { get; set; }
 
     public string FirstName { get; set; }
