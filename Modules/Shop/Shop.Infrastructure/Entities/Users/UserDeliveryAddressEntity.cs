@@ -1,8 +1,9 @@
 ﻿using Shared.Infrastructure.Bases;
+using Shared.Infrastructure.Interfaces;
 
 namespace Shop.Infrastructure.Entities.Users;
 
-public class UserDeliveryAddressEntity : BaseEntity
+public class UserDeliveryAddressEntity : BaseEntity, IUpdate<UserDeliveryAddressEntity>, IEntityValidation
 {
     public string ApartamentNumber { get; set; }
 
@@ -27,4 +28,24 @@ public class UserDeliveryAddressEntity : BaseEntity
     public UserEntity User { get; set; }
 
     #endregion Related Data
+
+    #region Methods
+
+    public void Update(UserDeliveryAddressEntity entity)
+    {
+        ApartamentNumber = entity.ApartamentNumber;
+        City = entity.City;
+        Email = entity.Email;
+        HouseNumber = entity.HouseNumber;
+        IsDefault = entity.IsDefault;
+        PhoneNumber = entity.PhoneNumber;
+        PostalCode = entity.PostalCode;
+        Street = entity.Street;
+    }
+
+    public void Validate()
+    {
+    }
+
+    #endregion Methods
 }

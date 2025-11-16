@@ -9,6 +9,8 @@ public interface IUserRepository : IBaseRepository<UserEntity>
     Task CreateOrUpdateForEventAsync(UserEntity eventEntity, CancellationToken cancellationToken);
 
     Task DeleteByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
+
+    Task<Guid> GetIdByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
 }
 
 internal class UserRepository(ShopContext context) : BaseRepository<ShopContext, UserEntity>(context), IUserRepository
@@ -28,4 +30,7 @@ internal class UserRepository(ShopContext context) : BaseRepository<ShopContext,
 
     public Task DeleteByExternalIdAsync(Guid externalId, CancellationToken cancellationToken)
         => _context.Set<UserEntity>().Where(x => x.ExternalId == externalId).ExecuteDeleteAsync(cancellationToken);
+
+    public Task<Guid> GetIdByExternalIdAsync(Guid externalId, CancellationToken cancellationToken)
+        => _context.Set<UserEntity>().Where(x => x.ExternalId == externalId).Select(x => x.Id).FirstOrDefaultAsync(cancellationToken);
 }
