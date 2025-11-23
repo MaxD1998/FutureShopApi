@@ -53,17 +53,17 @@ public class UserController(IUserService userService) : AuthModuleBaseController
 
     #region For Customers
 
-    [HttpDelete("Own/{id:guid}")]
+    [HttpDelete("Own/")]
     [Role(UserType.Customer)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public Task<IActionResult> DeleteOwnAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_userService.DeleteOwnAsync, id, cancellationToken);
+    public Task<IActionResult> DeleteOwnAsync(CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_userService.DeleteOwnAsync, cancellationToken);
 
-    [HttpPatch("Own/Password/{id:guid}")]
+    [HttpPatch("Own/Password/")]
     [Role(UserType.Customer)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public Task<IActionResult> UpdateOwnPasswordAsync([FromRoute] Guid id, [FromBody] UserPasswordFormDto dto, CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_userService.UpdateOwnPasswordAsync, id, dto, cancellationToken);
+    public Task<IActionResult> UpdateOwnPasswordAsync([FromBody] UserPasswordFormDto dto, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_userService.UpdateOwnPasswordAsync, dto, cancellationToken);
 
     #endregion For Customers
 }
