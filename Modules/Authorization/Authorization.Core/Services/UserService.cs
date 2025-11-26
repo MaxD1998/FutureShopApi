@@ -23,6 +23,8 @@ public interface IUserService
 
     Task<ResultDto<UserResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
+    Task<ResultDto<UserBasicInfoFormDto>> GetOwnBasicInfoAsync(CancellationToken cancellationToken);
+
     Task<ResultDto<PageDto<UserListDto>>> GetPageListAsync(PaginationDto pagination, CancellationToken cancellationToken);
 
     Task<ResultDto<UserResponseFormDto>> UpdateAsync(Guid id, UserUpdateRequestFormDto dto, CancellationToken cancellationToken);
@@ -69,6 +71,19 @@ public interface IUserService
         public async Task<ResultDto<UserResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             var result = await _userRepository.GetByIdAsync(id, UserResponseFormDto.Map(), cancellationToken);
+
+            return ResultDto.Success(result);
+        }
+
+        public async Task<ResultDto<UserBasicInfoFormDto>> GetOwnBasicInfoAsync(CancellationToken cancellationToken)
+        {
+            var nullableId = _currentUserService.GetUserId();
+
+            if (!nullableId.HasValue)
+                return ResultDto.Error<UserBasicInfoFormDto>(HttpStatusCode.Unauthorized, CommonExceptionMessage.C005YouMustBeLoggedInToPerformThisAction);
+
+            var id = nullableId.Value;
+            var result = await _userRepository.GetByIdAsync(id, UserBasicInfoFormDto.Map(), cancellationToken);
 
             return ResultDto.Success(result);
         }

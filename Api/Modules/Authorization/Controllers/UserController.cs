@@ -59,6 +59,12 @@ public class UserController(IUserService userService) : AuthModuleBaseController
     public Task<IActionResult> DeleteOwnAccountAsync(CancellationToken cancellationToken = default)
         => ApiResponseAsync(_userService.DeleteOwnAccountAsync, cancellationToken);
 
+    [HttpGet("Own/BasicInfo/")]
+    [Role(UserType.Customer)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public Task<IActionResult> GetOwnBasicInfoAsync(CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_userService.GetOwnBasicInfoAsync, cancellationToken);
+
     [HttpPatch("Own/BasicInfo/")]
     [Role(UserType.Customer)]
     [ProducesResponseType(StatusCodes.Status200OK)]
