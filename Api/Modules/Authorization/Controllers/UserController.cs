@@ -53,11 +53,17 @@ public class UserController(IUserService userService) : AuthModuleBaseController
 
     #region For Customers
 
-    [HttpDelete("Own/")]
+    [HttpDelete("Own/Account")]
     [Role(UserType.Customer)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public Task<IActionResult> DeleteOwnAsync(CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_userService.DeleteOwnAsync, cancellationToken);
+    public Task<IActionResult> DeleteOwnAccountAsync(CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_userService.DeleteOwnAccountAsync, cancellationToken);
+
+    [HttpPatch("Own/BasicInfo/")]
+    [Role(UserType.Customer)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public Task<IActionResult> UpdateOwnBasicInfoAsync([FromBody] UserBasicInfoFormDto dto, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_userService.UpdateOwnBasicInfoAsync, dto, cancellationToken);
 
     [HttpPatch("Own/Password/")]
     [Role(UserType.Customer)]
