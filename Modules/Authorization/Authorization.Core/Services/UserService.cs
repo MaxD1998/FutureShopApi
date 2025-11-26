@@ -104,7 +104,7 @@ public interface IUserService
 
             var id = nullableId.Value;
             var entity = dto.ToEntity();
-            entity = await _userRepository.UpdateAsync(id, entity, cancellationToken);
+            entity = await _userRepository.UpdateBasicInfoAsync(id, entity, cancellationToken);
 
             if (entity is null)
                 return ResultDto.Error<UserBasicInfoFormDto>(HttpStatusCode.NotFound, CommonExceptionMessage.C004RecordWasNotFound);
@@ -139,3 +139,4 @@ public interface IUserService
             return ResultDto.Success();
         }
     }
+}

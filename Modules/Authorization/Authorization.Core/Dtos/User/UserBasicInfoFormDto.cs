@@ -5,12 +5,15 @@ namespace Authorization.Core.Dtos.User;
 
 public class UserBasicInfoFormDto
 {
+    public string Email { get; set; }
+
     public string FirstName { get; set; }
 
     public string LastName { get; set; }
 
     public static Expression<Func<UserEntity, UserBasicInfoFormDto>> Map() => entity => new()
     {
+        Email = entity.Email,
         FirstName = entity.FirstName,
         LastName = entity.LastName,
     };

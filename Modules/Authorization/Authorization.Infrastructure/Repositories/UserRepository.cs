@@ -14,6 +14,8 @@ public interface IUserRepository : IBaseRepository<UserEntity>, IUpdateRepositor
 
     Task<UserEntity> GetByTokenAsync(Guid token, CancellationToken cancellationToken);
 
+    Task<UserEntity> UpdateBasicInfoAsync(Guid id, UserEntity entity, CancellationToken cancellationToken);
+
     Task UpdatePasswordAsync(Guid id, string hashedPassword, CancellationToken cancellationToken);
 }
 
@@ -42,6 +44,21 @@ internal class UserRepository(AuthContext context) : BaseRepository<AuthContext,
         await _context.SaveChangesAsync();
 
         return entitytoUpdate;
+    }
+
+    public async Task<UserEntity> UpdateBasicInfoAsync(Guid id, UserEntity entity, CancellationToken cancellationToken)
+    {
+        var entityToUpdate = await _context.Set<UserEntity>().Where(x => x.Id == id).FirstOrDefaultAsync(cancellationToken);
+
+        if (entityToUpdate == null)
+            throw new RecordWasNotFoundException(id);
+
+        entityToUpdate.FirstName = entity.FirstName;
+        entityToUpdate.LastName = entity.LastName;
+
+        await _context.SaveChangesAsync();
+
+        return entityToUpdate;
     }
 
     public async Task UpdatePasswordAsync(Guid id, string hashedPassword, CancellationToken cancellationToken)
