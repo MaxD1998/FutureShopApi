@@ -23,7 +23,7 @@ public class UserCompanyDetailsController(IUserCompanyDetailsService userCompany
 
     [HttpGet("List")]
     [ProducesResponseType(typeof(List<UserCompanyDetailsResponseFormDto>), StatusCodes.Status200OK)]
-    public Task<IActionResult> GetListByUserExternalIdAsync(CancellationToken cancellationToken = default)
+    public Task<IActionResult> GetListAsync(CancellationToken cancellationToken = default)
         => ApiResponseAsync(_userCompanyDetailsService.GetListAsync, cancellationToken);
 
     [HttpPut("{id:guid}")]
