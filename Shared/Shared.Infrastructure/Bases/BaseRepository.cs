@@ -47,16 +47,16 @@ public abstract class BaseRepository<TContext, TEntity>(TContext context) : IBas
         => _context.Set<TEntity>().Where(x => x.Id == id).ExecuteDeleteAsync(cancellationToken);
 
     public Task<TEntity> GetByIdAsync(Guid id, CancellationToken cancellationToken)
-        => _context.Set<TEntity>().AsNoTracking().Where(x => x.Id == id).FirstOrDefaultAsync();
+        => _context.Set<TEntity>().AsNoTracking().Where(x => x.Id == id).FirstOrDefaultAsync(cancellationToken);
 
     public Task<TResult> GetByIdAsync<TResult>(Guid id, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken)
-        => _context.Set<TEntity>().AsNoTracking().Where(x => x.Id == id).Select(map).FirstOrDefaultAsync();
+        => _context.Set<TEntity>().AsNoTracking().Where(x => x.Id == id).Select(map).FirstOrDefaultAsync(cancellationToken);
 
     public Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken)
-        => _context.Set<TEntity>().AsNoTracking().Select(map).ToListAsync();
+        => _context.Set<TEntity>().AsNoTracking().Select(map).ToListAsync(cancellationToken);
 
     public Task<List<TResult>> GetListAsync<TResult>(Expression<Func<TEntity, bool>> condition, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken)
-        => _context.Set<TEntity>().AsNoTracking().Where(condition).Select(map).ToListAsync();
+        => _context.Set<TEntity>().AsNoTracking().Where(condition).Select(map).ToListAsync(cancellationToken);
 
     public Task<PageDto<TResult>> GetPageAsync<TResult>(PaginationDto pagination, Expression<Func<TEntity, TResult>> map, CancellationToken cancellationToken)
         => _context.Set<TEntity>().AsNoTracking().Select(map).ToPageAsync(pagination, cancellationToken);

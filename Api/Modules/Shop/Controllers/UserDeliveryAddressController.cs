@@ -21,15 +21,10 @@ public class UserDeliveryAddressController(IUserDeliveryAddressService userDeliv
     public Task<IActionResult> DeleteByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
         => ApiResponseAsync(_userDeliveryAddressService.DeleteByIdAsync, id, cancellationToken);
 
-    [HttpGet("{externalId:guid}")]
-    [ProducesResponseType(typeof(UserDeliveryAddressResponseFormDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> GetByUserExternalIdAsync([FromRoute] Guid externalId, CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_userDeliveryAddressService.GetByUserExternalIdAsync, externalId, cancellationToken);
-
-    [HttpGet("List/{externalId:guid}")]
+    [HttpGet("List")]
     [ProducesResponseType(typeof(List<UserDeliveryAddressResponseFormDto>), StatusCodes.Status200OK)]
-    public Task<IActionResult> GetListByUserExternalIdAsync([FromRoute] Guid externalId, CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_userDeliveryAddressService.GetListByUserExternalIdAsync, externalId, cancellationToken);
+    public Task<IActionResult> GetListByUserExternalIdAsync(CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_userDeliveryAddressService.GetListAsync, cancellationToken);
 
     [HttpPut("{id:guid}")]
     [ProducesResponseType(typeof(UserDeliveryAddressResponseFormDto), StatusCodes.Status200OK)]
