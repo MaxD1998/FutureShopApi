@@ -21,8 +21,6 @@ public class UserCompanyDetailsRequestFormDto
 
     public CompanyIdentifierNumberType Type { get; set; }
 
-    public Guid UserExternalId { get; set; }
-
     public UserCompanyDetailsEntity ToEntity() => new()
     {
         ApartamentNumber = ApartamentNumber,
