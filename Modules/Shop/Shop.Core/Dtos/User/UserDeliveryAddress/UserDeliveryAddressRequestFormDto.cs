@@ -20,8 +20,6 @@ public class UserDeliveryAddressRequestFormDto
 
     public string Street { get; set; }
 
-    public Guid UserExternalId { get; set; }
-
     public UserDeliveryAddressEntity ToEntity() => new()
     {
         ApartamentNumber = ApartamentNumber,
