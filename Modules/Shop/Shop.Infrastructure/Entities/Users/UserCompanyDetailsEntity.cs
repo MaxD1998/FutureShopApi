@@ -12,6 +12,8 @@ public class UserCompanyDetailsEntity : BaseEntity, IUpdate<UserCompanyDetailsEn
 
     public string CompanyIdentifierNumber { get; set; }
 
+    public string CompanyName { get; set; }
+
     public string HouseNumber { get; set; }
 
     public bool IsDefault { get; set; }
@@ -37,6 +39,7 @@ public class UserCompanyDetailsEntity : BaseEntity, IUpdate<UserCompanyDetailsEn
         ApartamentNumber = entity.ApartamentNumber;
         City = entity.City;
         CompanyIdentifierNumber = entity.CompanyIdentifierNumber;
+        CompanyName = entity.CompanyName;
         HouseNumber = entity.HouseNumber;
         IsDefault = entity.IsDefault;
         PostalCode = entity.PostalCode;

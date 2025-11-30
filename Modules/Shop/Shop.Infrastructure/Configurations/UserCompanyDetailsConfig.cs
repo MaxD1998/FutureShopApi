@@ -22,33 +22,38 @@ public class UserCompanyDetailsConfig : BaseConfig<UserCompanyDetailsEntity>
             .HasColumnOrder(102)
             .IsRequired();
 
-        builder.Property(x => x.CompanyIdentifierNumber)
+        builder.Property(x => x.CompanyName)
             .HasColumnOrder(103)
-            .HasMaxLength(StringLengthConst.ShortString)
+            .HasMaxLength(StringLengthConst.LongString)
             .IsRequired();
 
-        builder.Property(x => x.PostalCode)
+        builder.Property(x => x.CompanyIdentifierNumber)
             .HasColumnOrder(104)
             .HasMaxLength(StringLengthConst.ShortString)
             .IsRequired();
 
-        builder.Property(x => x.City)
+        builder.Property(x => x.PostalCode)
             .HasColumnOrder(105)
-            .HasMaxLength(StringLengthConst.LongString)
+            .HasMaxLength(StringLengthConst.ShortString)
             .IsRequired();
 
-        builder.Property(x => x.Street)
+        builder.Property(x => x.City)
             .HasColumnOrder(106)
             .HasMaxLength(StringLengthConst.LongString)
             .IsRequired();
 
-        builder.Property(x => x.HouseNumber)
+        builder.Property(x => x.Street)
             .HasColumnOrder(107)
+            .HasMaxLength(StringLengthConst.LongString)
+            .IsRequired();
+
+        builder.Property(x => x.HouseNumber)
+            .HasColumnOrder(108)
             .HasMaxLength(StringLengthConst.ShortString)
             .IsRequired();
 
         builder.Property(x => x.ApartamentNumber)
-            .HasColumnOrder(108)
+            .HasColumnOrder(109)
             .HasMaxLength(StringLengthConst.ShortString)
             .IsRequired();
     }

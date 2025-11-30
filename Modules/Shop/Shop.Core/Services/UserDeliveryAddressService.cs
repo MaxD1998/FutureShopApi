@@ -32,6 +32,15 @@ public class UserDeliveryAddressService(ICurrentUserService currentUserService, 
             return ResultDto.Error<UserDeliveryAddressResponseFormDto>(HttpStatusCode.Unauthorized, CommonExceptionMessage.C005YouMustBeLoggedInToPerformThisAction);
 
         var userId = nullableUserId.Value;
+
+        if (dto.IsDefault)
+        {
+            var otherRecordIsDefault = await _userDeliveryAddressRepository.AnyIsDefaultByUserExternalIdAsync(userId, cancellationToken);
+
+            if (otherRecordIsDefault)
+                await _userDeliveryAddressRepository.ClearIsDefaultByUserExternalIdAsync(userId, cancellationToken);
+        }
+
         var entity = dto.ToEntity();
 
         entity.UserId = userId;
@@ -68,6 +77,15 @@ public class UserDeliveryAddressService(ICurrentUserService currentUserService, 
             return ResultDto.Error<UserDeliveryAddressResponseFormDto>(HttpStatusCode.Unauthorized, CommonExceptionMessage.C005YouMustBeLoggedInToPerformThisAction);
 
         var userId = nullableUserId.Value;
+
+        if (dto.IsDefault)
+        {
+            var otherRecordIsDefault = await _userDeliveryAddressRepository.AnyIsDefaultByUserExternalIdAsync(userId, cancellationToken);
+
+            if (otherRecordIsDefault)
+                await _userDeliveryAddressRepository.ClearIsDefaultByUserExternalIdAsync(userId, cancellationToken);
+        }
+
         var entity = dto.ToEntity();
 
         entity.UserId = userId;

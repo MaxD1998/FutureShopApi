@@ -11,9 +11,13 @@ public class UserDeliveryAddressEntity : BaseEntity, IUpdate<UserDeliveryAddress
 
     public string Email { get; set; }
 
+    public string FirstName { get; set; }
+
     public string HouseNumber { get; set; }
 
     public bool IsDefault { get; set; }
+
+    public string LastName { get; set; }
 
     public string PhoneNumber { get; set; }
 
@@ -36,8 +40,10 @@ public class UserDeliveryAddressEntity : BaseEntity, IUpdate<UserDeliveryAddress
         ApartamentNumber = entity.ApartamentNumber;
         City = entity.City;
         Email = entity.Email;
+        FirstName = entity.FirstName;
         HouseNumber = entity.HouseNumber;
         IsDefault = entity.IsDefault;
+        LastName = entity.LastName;
         PhoneNumber = entity.PhoneNumber;
         PostalCode = entity.PostalCode;
         Street = entity.Street;

@@ -31,6 +31,15 @@ internal class UserCompanyDetailsService(ICurrentUserService currentUserService,
             return ResultDto.Error<UserCompanyDetailsResponseFormDto>(HttpStatusCode.Unauthorized, CommonExceptionMessage.C005YouMustBeLoggedInToPerformThisAction);
 
         var userId = nullableUserId.Value;
+
+        if (dto.IsDefault)
+        {
+            var otherRecordIsDefault = await _userCompanyDetailsRepository.AnyIsDefaultByUserExternalIdAsync(userId, cancellationToken);
+
+            if (otherRecordIsDefault)
+                await _userCompanyDetailsRepository.ClearIsDefaultByUserExternalIdAsync(userId, cancellationToken);
+        }
+
         var entity = dto.ToEntity();
 
         entity.UserId = userId;
@@ -67,6 +76,15 @@ internal class UserCompanyDetailsService(ICurrentUserService currentUserService,
             return ResultDto.Error<UserCompanyDetailsResponseFormDto>(HttpStatusCode.Unauthorized, CommonExceptionMessage.C005YouMustBeLoggedInToPerformThisAction);
 
         var userId = nullableUserId.Value;
+
+        if (dto.IsDefault)
+        {
+            var otherRecordIsDefault = await _userCompanyDetailsRepository.AnyIsDefaultByUserExternalIdAsync(userId, cancellationToken);
+
+            if (otherRecordIsDefault)
+                await _userCompanyDetailsRepository.ClearIsDefaultByUserExternalIdAsync(userId, cancellationToken);
+        }
+
         var entity = dto.ToEntity();
 
         entity.UserId = userId;

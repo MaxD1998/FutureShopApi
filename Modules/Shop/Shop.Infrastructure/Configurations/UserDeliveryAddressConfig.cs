@@ -18,38 +18,48 @@ public class UserDeliveryAddressConfig : BaseConfig<UserDeliveryAddressEntity>
             .HasColumnOrder(101)
             .IsRequired();
 
-        builder.Property(x => x.Email)
+        builder.Property(x => x.FirstName)
             .HasColumnOrder(102)
+            .HasMaxLength(StringLengthConst.MiddleString)
+            .IsRequired();
+
+        builder.Property(x => x.LastName)
+            .HasColumnOrder(103)
+            .HasMaxLength(StringLengthConst.LongString)
+            .IsRequired();
+
+        builder.Property(x => x.Email)
+            .HasColumnOrder(104)
             .HasMaxLength(StringLengthConst.LongString)
             .IsRequired();
 
         builder.Property(x => x.PhoneNumber)
-            .HasColumnOrder(103)
+            .HasColumnOrder(105)
             .HasMaxLength(StringLengthConst.ShortString)
             .IsRequired();
 
         builder.Property(x => x.PostalCode)
-            .HasColumnOrder(104)
+            .HasColumnOrder(106)
             .HasMaxLength(StringLengthConst.ShortString)
             .IsRequired();
 
         builder.Property(x => x.City)
-            .HasColumnOrder(105)
+            .HasColumnOrder(107)
             .HasMaxLength(StringLengthConst.LongString)
             .IsRequired();
 
         builder.Property(x => x.Street)
-            .HasColumnOrder(106)
+            .HasColumnOrder(108)
             .HasMaxLength(StringLengthConst.LongString)
             .IsRequired();
 
         builder.Property(x => x.HouseNumber)
-            .HasColumnOrder(107)
+            .HasColumnOrder(109)
             .HasMaxLength(StringLengthConst.ShortString)
             .IsRequired();
 
         builder.Property(x => x.ApartamentNumber)
-            .HasColumnOrder(108)
+            .HasColumnOrder(110)
             .HasMaxLength(StringLengthConst.ShortString)
             .IsRequired();
     }

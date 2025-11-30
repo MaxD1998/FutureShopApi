@@ -804,18 +804,24 @@ namespace Shop.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("character varying(25)")
-                        .HasColumnOrder(108);
+                        .HasColumnOrder(109);
 
                     b.Property<string>("City")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
-                        .HasColumnOrder(105);
+                        .HasColumnOrder(106);
 
                     b.Property<string>("CompanyIdentifierNumber")
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("character varying(25)")
+                        .HasColumnOrder(104);
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
                         .HasColumnOrder(103);
 
                     b.Property<DateTime>("CreateTime")
@@ -826,7 +832,7 @@ namespace Shop.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("character varying(25)")
-                        .HasColumnOrder(107);
+                        .HasColumnOrder(108);
 
                     b.Property<bool>("IsDefault")
                         .HasColumnType("boolean")
@@ -840,13 +846,13 @@ namespace Shop.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("character varying(25)")
-                        .HasColumnOrder(104);
+                        .HasColumnOrder(105);
 
                     b.Property<string>("Street")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
-                        .HasColumnOrder(106);
+                        .HasColumnOrder(107);
 
                     b.Property<int>("Type")
                         .HasColumnType("integer")
@@ -874,13 +880,13 @@ namespace Shop.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("character varying(25)")
-                        .HasColumnOrder(108);
+                        .HasColumnOrder(110);
 
                     b.Property<string>("City")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
-                        .HasColumnOrder(105);
+                        .HasColumnOrder(107);
 
                     b.Property<DateTime>("CreateTime")
                         .HasColumnType("timestamp with time zone")
@@ -890,17 +896,29 @@ namespace Shop.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
+                        .HasColumnOrder(104);
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnOrder(102);
 
                     b.Property<string>("HouseNumber")
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("character varying(25)")
-                        .HasColumnOrder(107);
+                        .HasColumnOrder(109);
 
                     b.Property<bool>("IsDefault")
                         .HasColumnType("boolean")
                         .HasColumnOrder(101);
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnOrder(103);
 
                     b.Property<DateTime?>("ModifyTime")
                         .HasColumnType("timestamp with time zone")
@@ -910,19 +928,19 @@ namespace Shop.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("character varying(25)")
-                        .HasColumnOrder(103);
+                        .HasColumnOrder(105);
 
                     b.Property<string>("PostalCode")
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("character varying(25)")
-                        .HasColumnOrder(104);
+                        .HasColumnOrder(106);
 
                     b.Property<string>("Street")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
-                        .HasColumnOrder(106);
+                        .HasColumnOrder(108);
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid")

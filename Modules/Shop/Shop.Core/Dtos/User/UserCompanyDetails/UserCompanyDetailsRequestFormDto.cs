@@ -11,6 +11,8 @@ public class UserCompanyDetailsRequestFormDto
 
     public string CompanyIdentifierNumber { get; set; }
 
+    public string CompanyName { get; set; }
+
     public string HouseNumber { get; set; }
 
     public bool IsDefault { get; set; }
@@ -26,6 +28,7 @@ public class UserCompanyDetailsRequestFormDto
         ApartamentNumber = ApartamentNumber,
         City = City,
         CompanyIdentifierNumber = CompanyIdentifierNumber,
+        CompanyName = CompanyName,
         HouseNumber = HouseNumber,
         IsDefault = IsDefault,
         PostalCode = PostalCode,
