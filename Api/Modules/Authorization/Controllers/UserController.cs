@@ -53,30 +53,29 @@ public class UserController(IUserService userService) : AuthModuleBaseController
 
     #region For Customers
 
-    [HttpDelete("Own/{id:guid}")]
+    [HttpDelete("Own/Account")]
     [Role(UserType.Customer)]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public Task<IActionResult> DeleteOwnAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_userService.DeleteOwnAsync, id, cancellationToken);
+    public Task<IActionResult> DeleteOwnAccountAsync(CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_userService.DeleteOwnAccountAsync, cancellationToken);
 
-    [HttpGet("Own/{id:guid}")]
-    [Role(UserType.Customer)]
-    [Permission(AuthorizationPermission.UserRead)]
-    [ProducesResponseType(typeof(UserDetailsResponseFormDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> GeOwntByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_userService.GetOwnByIdAsync, id, cancellationToken);
-
-    [HttpPut("Own/{id:guid}")]
-    [Role(UserType.Customer)]
-    [ProducesResponseType(typeof(UserDetailsResponseFormDto), StatusCodes.Status200OK)]
-    public Task<IActionResult> UpdateOwnAsync([FromRoute] Guid id, [FromBody] UserDetailsRequestFormDto dto, CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_userService.UpdateOwnAsync, id, dto, cancellationToken);
-
-    [HttpPatch("Own/Password/{id:guid}")]
+    [HttpGet("Own/BasicInfo/")]
     [Role(UserType.Customer)]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public Task<IActionResult> UpdateOwnPasswordAsync([FromRoute] Guid id, [FromBody] UserPasswordFormDto dto, CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_userService.UpdateOwnPasswordAsync, id, dto, cancellationToken);
+    public Task<IActionResult> GetOwnBasicInfoAsync(CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_userService.GetOwnBasicInfoAsync, cancellationToken);
+
+    [HttpPatch("Own/BasicInfo/")]
+    [Role(UserType.Customer)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public Task<IActionResult> UpdateOwnBasicInfoAsync([FromBody] UserBasicInfoFormDto dto, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_userService.UpdateOwnBasicInfoAsync, dto, cancellationToken);
+
+    [HttpPatch("Own/Password/")]
+    [Role(UserType.Customer)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public Task<IActionResult> UpdateOwnPasswordAsync([FromBody] UserPasswordFormDto dto, CancellationToken cancellationToken = default)
+        => ApiResponseAsync(_userService.UpdateOwnPasswordAsync, dto, cancellationToken);
 
     #endregion For Customers
 }

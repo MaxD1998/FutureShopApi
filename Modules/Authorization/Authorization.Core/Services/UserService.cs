@@ -19,19 +19,19 @@ public interface IUserService
 
     Task<ResultDto> DeleteAsync(Guid id, CancellationToken cancellationToken);
 
-    Task<ResultDto> DeleteOwnAsync(Guid id, CancellationToken cancellationToken);
+    Task<ResultDto> DeleteOwnAccountAsync(CancellationToken cancellationToken);
 
     Task<ResultDto<UserResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
-    Task<ResultDto<UserDetailsResponseFormDto>> GetOwnByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<ResultDto<UserBasicInfoFormDto>> GetOwnBasicInfoAsync(CancellationToken cancellationToken);
 
     Task<ResultDto<PageDto<UserListDto>>> GetPageListAsync(PaginationDto pagination, CancellationToken cancellationToken);
 
     Task<ResultDto<UserResponseFormDto>> UpdateAsync(Guid id, UserUpdateRequestFormDto dto, CancellationToken cancellationToken);
 
-    Task<ResultDto<UserDetailsResponseFormDto>> UpdateOwnAsync(Guid id, UserDetailsRequestFormDto dto, CancellationToken cancellationToken);
+    Task<ResultDto<UserBasicInfoFormDto>> UpdateOwnBasicInfoAsync(UserBasicInfoFormDto dto, CancellationToken cancellationToken);
 
-    Task<ResultDto> UpdateOwnPasswordAsync(Guid id, UserPasswordFormDto dto, CancellationToken cancellationToken);
+    Task<ResultDto> UpdateOwnPasswordAsync(UserPasswordFormDto dto, CancellationToken cancellationToken);
 }
 
 internal class UserService(ICurrentUserService currentUserService, IRabbitMqContext rabbitMqContext, IUserRepository userRepository) : IUserService
@@ -57,10 +57,14 @@ internal class UserService(ICurrentUserService currentUserService, IRabbitMqCont
         return ResultDto.Success();
     }
 
-    public Task<ResultDto> DeleteOwnAsync(Guid id, CancellationToken cancellationToken)
+    public Task<ResultDto> DeleteOwnAccountAsync(CancellationToken cancellationToken)
     {
-        if (!_currentUserService.IsRecordOwner(id))
-            return Task.FromResult(ResultDto.Error(HttpStatusCode.Forbidden, CommonExceptionMessage.C005UserIsNotTheOwnerOfThisRecord));
+        var nullableId = _currentUserService.GetUserId();
+
+        if (!nullableId.HasValue)
+            return Task.FromResult(ResultDto.Error(HttpStatusCode.Unauthorized, CommonExceptionMessage.C005YouMustBeLoggedInToPerformThisAction));
+
+        var id = nullableId.Value;
 
         return DeleteAsync(id, cancellationToken);
     }
@@ -72,12 +76,15 @@ internal class UserService(ICurrentUserService currentUserService, IRabbitMqCont
         return ResultDto.Success(result);
     }
 
-    public async Task<ResultDto<UserDetailsResponseFormDto>> GetOwnByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ResultDto<UserBasicInfoFormDto>> GetOwnBasicInfoAsync(CancellationToken cancellationToken)
     {
-        if (!_currentUserService.IsRecordOwner(id))
-            return ResultDto.Error<UserDetailsResponseFormDto>(HttpStatusCode.Forbidden, CommonExceptionMessage.C005UserIsNotTheOwnerOfThisRecord);
+        var nullableId = _currentUserService.GetUserId();
 
-        var result = await _userRepository.GetByIdAsync(id, UserDetailsResponseFormDto.Map(), cancellationToken);
+        if (!nullableId.HasValue)
+            return ResultDto.Error<UserBasicInfoFormDto>(HttpStatusCode.Unauthorized, CommonExceptionMessage.C005YouMustBeLoggedInToPerformThisAction);
+
+        var id = nullableId.Value;
+        var result = await _userRepository.GetByIdAsync(id, UserBasicInfoFormDto.Map(), cancellationToken);
 
         return ResultDto.Success(result);
     }
@@ -104,29 +111,35 @@ internal class UserService(ICurrentUserService currentUserService, IRabbitMqCont
         return ResultDto.Success(result);
     }
 
-    public async Task<ResultDto<UserDetailsResponseFormDto>> UpdateOwnAsync(Guid id, UserDetailsRequestFormDto dto, CancellationToken cancellationToken)
+    public async Task<ResultDto<UserBasicInfoFormDto>> UpdateOwnBasicInfoAsync(UserBasicInfoFormDto dto, CancellationToken cancellationToken)
     {
-        if (!_currentUserService.IsRecordOwner(id))
-            return ResultDto.Error<UserDetailsResponseFormDto>(HttpStatusCode.Forbidden, CommonExceptionMessage.C005UserIsNotTheOwnerOfThisRecord);
+        var nullableId = _currentUserService.GetUserId();
 
+        if (!nullableId.HasValue)
+            return ResultDto.Error<UserBasicInfoFormDto>(HttpStatusCode.Unauthorized, CommonExceptionMessage.C005YouMustBeLoggedInToPerformThisAction);
+
+        var id = nullableId.Value;
         var entity = dto.ToEntity();
-        entity = await _userRepository.UpdateAsync(id, entity, cancellationToken);
+        entity = await _userRepository.UpdateBasicInfoAsync(id, entity, cancellationToken);
 
         if (entity is null)
-            return ResultDto.Error<UserDetailsResponseFormDto>(HttpStatusCode.NotFound, CommonExceptionMessage.C004RecordWasNotFound);
+            return ResultDto.Error<UserBasicInfoFormDto>(HttpStatusCode.NotFound, CommonExceptionMessage.C004RecordWasNotFound);
 
         await _rabbitMqContext.SendMessageAsync(RabbitMqExchangeConst.AuthorizationModuleUser, entity);
 
-        var result = await _userRepository.GetByIdAsync(entity.Id, UserDetailsResponseFormDto.Map(), cancellationToken);
+        var result = await _userRepository.GetByIdAsync(entity.Id, UserBasicInfoFormDto.Map(), cancellationToken);
 
         return ResultDto.Success(result);
     }
 
-    public async Task<ResultDto> UpdateOwnPasswordAsync(Guid id, UserPasswordFormDto dto, CancellationToken cancellationToken)
+    public async Task<ResultDto> UpdateOwnPasswordAsync(UserPasswordFormDto dto, CancellationToken cancellationToken)
     {
-        if (!_currentUserService.IsRecordOwner(id))
-            return ResultDto.Error(HttpStatusCode.Forbidden, CommonExceptionMessage.C005UserIsNotTheOwnerOfThisRecord);
+        var nullableId = _currentUserService.GetUserId();
 
+        if (!nullableId.HasValue)
+            return ResultDto.Error(HttpStatusCode.Unauthorized, CommonExceptionMessage.C005YouMustBeLoggedInToPerformThisAction);
+
+        var id = nullableId.Value;
         var hashedPassword = await _userRepository.GetByIdAsync(id, x => x.HashedPassword, cancellationToken);
 
         if (hashedPassword is null)

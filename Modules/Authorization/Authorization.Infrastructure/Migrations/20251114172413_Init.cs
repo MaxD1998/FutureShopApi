@@ -34,10 +34,8 @@ namespace Authorization.Infrastructure.Migrations
                     ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     FirstName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: true),
                     Email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     HashedPassword = table.Column<string>(type: "text", nullable: false),
-                    DateOfBirth = table.Column<DateOnly>(type: "date", nullable: false),
                     Type = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -181,8 +179,8 @@ namespace Authorization.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "User",
-                columns: new[] { "Id", "CreateTime", "DateOfBirth", "Email", "FirstName", "HashedPassword", "LastName", "ModifyTime", "PhoneNumber", "Type" },
-                values: new object[] { new Guid("d6669a68-5afb-432d-858f-3f5181579a90"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateOnly(1, 1, 1), "superadmin@futureshop.pl", "Super", "$2a$11$v1B9qwcIeH.PJLuFjnmK7O1Nu3TSUsc6oZ49.5DXOJhkIDcfzPD..", "Admin", null, null, 0 });
+                columns: new[] { "Id", "CreateTime", "Email", "FirstName", "HashedPassword", "LastName", "ModifyTime", "Type" },
+                values: new object[] { new Guid("d6669a68-5afb-432d-858f-3f5181579a90"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "superadmin@futureshop.pl", "Super", "$2a$11$v1B9qwcIeH.PJLuFjnmK7O1Nu3TSUsc6oZ49.5DXOJhkIDcfzPD..", "Admin", null, 0 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AuthorizationPermission_PermissionGroupId_Permission",

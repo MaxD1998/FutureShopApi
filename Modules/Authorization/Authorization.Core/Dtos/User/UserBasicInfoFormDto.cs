@@ -1,25 +1,26 @@
 ﻿using Authorization.Infrastructure.Entities.Users;
+using System.Linq.Expressions;
 
 namespace Authorization.Core.Dtos.User;
 
-public class UserDetailsRequestFormDto
+public class UserBasicInfoFormDto
 {
-    public DateOnly DateOfBirth { get; set; }
-
     public string Email { get; set; }
 
     public string FirstName { get; set; }
 
     public string LastName { get; set; }
 
-    public string PhoneNumber { get; set; }
+    public static Expression<Func<UserEntity, UserBasicInfoFormDto>> Map() => entity => new()
+    {
+        Email = entity.Email,
+        FirstName = entity.FirstName,
+        LastName = entity.LastName,
+    };
 
     public UserEntity ToEntity() => new()
     {
         FirstName = FirstName,
         LastName = LastName,
-        DateOfBirth = DateOfBirth,
-        Email = Email,
-        PhoneNumber = PhoneNumber,
     };
 }

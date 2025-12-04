@@ -6,6 +6,10 @@ namespace Shop.Infrastructure.Entities.Users;
 
 public class UserEntity : BaseExternalEntity, IUpdate<UserEntity>, IUpdateEvent<UserEntity>
 {
+    public DateOnly DateOfBirth { get; set; }
+
+    public string Email { get; set; }
+
     public string FirstName { get; set; }
 
     public string LastName { get; set; }
@@ -13,6 +17,10 @@ public class UserEntity : BaseExternalEntity, IUpdate<UserEntity>, IUpdateEvent<
     #region Related Data
 
     public ICollection<ProductReviewEntity> ProductReviews { get; set; } = [];
+
+    public ICollection<UserCompanyDetailsEntity> UserCompanyDetails { get; set; }
+
+    public ICollection<UserDeliveryAddressEntity> UserDeliveryAddresses { get; set; }
 
     #endregion Related Data
 

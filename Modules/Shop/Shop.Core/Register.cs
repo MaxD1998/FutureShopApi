@@ -22,6 +22,8 @@ public static class Register
         services.AddScoped<IProductReviewService, ProductReviewService>();
         services.AddScoped<IPromotionService, PromotionService>();
         services.AddScoped<IPurchaseListService, PurchaseListService>();
+        services.AddScoped<IUserCompanyDetailsService, UserCompanyDetailsService>();
+        services.AddScoped<IUserDeliveryAddressService, UserDeliveryAddressService>();
 
         services.AddScoped<ILogicFactory, LogicFactory>();
     }

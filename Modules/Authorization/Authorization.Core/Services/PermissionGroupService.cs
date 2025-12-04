@@ -9,7 +9,6 @@ namespace Authorization.Core.Services;
 
 public interface IPermissionGroupService
 {
-    //101473Fital MichalskaF
     Task<ResultDto<PermissionGroupResponseFormDto>> CreateAsync(PermissionGroupRequestFormDto dto, CancellationToken cancellationToken);
 
     Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken);

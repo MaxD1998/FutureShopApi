@@ -17,7 +17,7 @@ namespace Authorization.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.9")
+                .HasAnnotation("ProductVersion", "9.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -224,10 +224,6 @@ namespace Authorization.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(1);
 
-                    b.Property<DateOnly>("DateOfBirth")
-                        .HasColumnType("date")
-                        .HasColumnOrder(105);
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -255,11 +251,6 @@ namespace Authorization.Infrastructure.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnOrder(2);
 
-                    b.Property<string>("PhoneNumber")
-                        .HasMaxLength(25)
-                        .HasColumnType("character varying(25)")
-                        .HasColumnOrder(102);
-
                     b.Property<int>("Type")
                         .HasColumnType("integer")
                         .HasColumnOrder(106);
@@ -276,7 +267,6 @@ namespace Authorization.Infrastructure.Migrations
                         {
                             Id = new Guid("d6669a68-5afb-432d-858f-3f5181579a90"),
                             CreateTime = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            DateOfBirth = new DateOnly(1, 1, 1),
                             Email = "superadmin@futureshop.pl",
                             FirstName = "Super",
                             HashedPassword = "$2a$11$v1B9qwcIeH.PJLuFjnmK7O1Nu3TSUsc6oZ49.5DXOJhkIDcfzPD..",

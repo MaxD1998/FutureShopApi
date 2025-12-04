@@ -92,6 +92,8 @@ namespace Shop.Infrastructure.Migrations
                     ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     FirstName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    DateOfBirth = table.Column<DateOnly>(type: "date", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: true),
                     ExternalId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
@@ -188,6 +190,65 @@ namespace Shop.Infrastructure.Migrations
                         name: "FK_ProductBase_Category_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Category",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserCompanyDetails",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    IsDefault = table.Column<bool>(type: "boolean", nullable: false),
+                    Type = table.Column<int>(type: "integer", nullable: false),
+                    CompanyName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    CompanyIdentifierNumber = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
+                    PostalCode = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
+                    City = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Street = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    HouseNumber = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
+                    ApartamentNumber = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserCompanyDetails", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserCompanyDetails_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserDeliveryAddress",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreateTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifyTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    IsDefault = table.Column<bool>(type: "boolean", nullable: false),
+                    FirstName = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    LastName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
+                    PostalCode = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
+                    City = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Street = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    HouseNumber = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
+                    ApartamentNumber = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserDeliveryAddress", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserDeliveryAddress_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -496,8 +557,8 @@ namespace Shop.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "User",
-                columns: new[] { "Id", "CreateTime", "ExternalId", "FirstName", "LastName", "ModifyTime" },
-                values: new object[] { new Guid("d6669a68-5afb-432d-858f-3f5181579a90"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new Guid("d6669a68-5afb-432d-858f-3f5181579a90"), "Super", "Admin", null });
+                columns: new[] { "Id", "CreateTime", "DateOfBirth", "Email", "ExternalId", "FirstName", "LastName", "ModifyTime" },
+                values: new object[] { new Guid("d6669a68-5afb-432d-858f-3f5181579a90"), new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new DateOnly(1, 1, 1), null, new Guid("d6669a68-5afb-432d-858f-3f5181579a90"), "Super", "Admin", null });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AdCampaignItem_AdCampaignId_Position_Lang",
@@ -639,6 +700,16 @@ namespace Shop.Infrastructure.Migrations
                 name: "IX_PurchaseListItem_PurchaseListId",
                 table: "PurchaseListItem",
                 column: "PurchaseListId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserCompanyDetails_UserId",
+                table: "UserCompanyDetails",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserDeliveryAddress_UserId",
+                table: "UserDeliveryAddress",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -681,13 +752,16 @@ namespace Shop.Infrastructure.Migrations
                 name: "PurchaseListItem");
 
             migrationBuilder.DropTable(
+                name: "UserCompanyDetails");
+
+            migrationBuilder.DropTable(
+                name: "UserDeliveryAddress");
+
+            migrationBuilder.DropTable(
                 name: "Basket");
 
             migrationBuilder.DropTable(
                 name: "ProductParameter");
-
-            migrationBuilder.DropTable(
-                name: "User");
 
             migrationBuilder.DropTable(
                 name: "Promotion");
@@ -697,6 +771,9 @@ namespace Shop.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "PurchaseList");
+
+            migrationBuilder.DropTable(
+                name: "User");
 
             migrationBuilder.DropTable(
                 name: "AdCampaign");

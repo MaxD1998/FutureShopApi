@@ -13,7 +13,6 @@ public class UserResponseFormDto : UserUpdateRequestFormDto
         FirstName = entity.FirstName,
         LastName = entity.LastName,
         Email = entity.Email,
-        DateOfBirth = entity.DateOfBirth.ToDateTime(TimeOnly.MinValue),
         Type = entity.Type,
         UserPermissionGroups = entity.UserPermissionGroups.AsQueryable().Select(UserPermissionGroupFromDto.Map()).ToList()
     };
