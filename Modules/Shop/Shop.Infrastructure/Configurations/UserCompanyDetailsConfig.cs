@@ -54,7 +54,6 @@ public class UserCompanyDetailsConfig : BaseConfig<UserCompanyDetailsEntity>
 
         builder.Property(x => x.ApartamentNumber)
             .HasColumnOrder(109)
-            .HasMaxLength(StringLengthConst.ShortString)
-            .IsRequired();
+            .HasMaxLength(StringLengthConst.ShortString);
     }
 }

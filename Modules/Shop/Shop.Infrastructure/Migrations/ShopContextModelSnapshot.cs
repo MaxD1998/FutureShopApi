@@ -801,7 +801,6 @@ namespace Shop.Infrastructure.Migrations
                         .HasColumnOrder(0);
 
                     b.Property<string>("ApartamentNumber")
-                        .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("character varying(25)")
                         .HasColumnOrder(109);
@@ -877,7 +876,6 @@ namespace Shop.Infrastructure.Migrations
                         .HasColumnOrder(0);
 
                     b.Property<string>("ApartamentNumber")
-                        .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("character varying(25)")
                         .HasColumnOrder(110);

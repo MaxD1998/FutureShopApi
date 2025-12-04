@@ -13,7 +13,7 @@ using Shop.Infrastructure;
 namespace Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20251130073650_Init")]
+    [Migration("20251203192235_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -804,7 +804,6 @@ namespace Shop.Infrastructure.Migrations
                         .HasColumnOrder(0);
 
                     b.Property<string>("ApartamentNumber")
-                        .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("character varying(25)")
                         .HasColumnOrder(109);
@@ -880,7 +879,6 @@ namespace Shop.Infrastructure.Migrations
                         .HasColumnOrder(0);
 
                     b.Property<string>("ApartamentNumber")
-                        .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("character varying(25)")
                         .HasColumnOrder(110);

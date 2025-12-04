@@ -13,6 +13,7 @@ public class UserCompanyDetailsResponseFormDto : UserCompanyDetailsRequestFormDt
         ApartamentNumber = entity.ApartamentNumber,
         City = entity.City,
         CompanyIdentifierNumber = entity.CompanyIdentifierNumber,
+        CompanyName = entity.CompanyName,
         HouseNumber = entity.HouseNumber,
         IsDefault = entity.IsDefault,
         PostalCode = entity.PostalCode,

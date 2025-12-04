@@ -210,7 +210,7 @@ namespace Shop.Infrastructure.Migrations
                     City = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Street = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     HouseNumber = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
-                    ApartamentNumber = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false)
+                    ApartamentNumber = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -240,7 +240,7 @@ namespace Shop.Infrastructure.Migrations
                     City = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Street = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     HouseNumber = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
-                    ApartamentNumber = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false)
+                    ApartamentNumber = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: true)
                 },
                 constraints: table =>
                 {

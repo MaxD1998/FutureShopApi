@@ -60,7 +60,6 @@ public class UserDeliveryAddressConfig : BaseConfig<UserDeliveryAddressEntity>
 
         builder.Property(x => x.ApartamentNumber)
             .HasColumnOrder(110)
-            .HasMaxLength(StringLengthConst.ShortString)
-            .IsRequired();
+            .HasMaxLength(StringLengthConst.ShortString);
     }
 }
