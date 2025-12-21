@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Shop.Core.Dtos.Basket;
 using Shop.Core.Dtos.PurchaseList;
-using Shop.Core.Services;
+using Shop.Core.Interfaces.Services;
 
 namespace Api.Modules.Shop.Controllers;
 

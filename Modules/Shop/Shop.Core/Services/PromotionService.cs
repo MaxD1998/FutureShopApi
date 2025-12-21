@@ -3,25 +3,9 @@ using Shared.Shared.Dtos;
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.Promotion;
 using Shop.Core.Interfaces.Repositories;
+using Shop.Core.Interfaces.Services;
 
 namespace Shop.Core.Services;
-
-public interface IPromotionService
-{
-    Task<ResultDto<PromotionResponseFormDto>> CreateAsync(PromotionRequestFormDto dto, CancellationToken cancellationToken);
-
-    Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<List<string>>> GetActualCodesAsync(CancellationToken cancellationToken);
-
-    Task<ResultDto<PromotionResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<List<IdNameDto>>> GetListIdNameAsync(CancellationToken cancellationToken);
-
-    Task<ResultDto<PageDto<PromotionListDto>>> GetPageAsync(PaginationDto pagination, CancellationToken cancellationToken);
-
-    Task<ResultDto<PromotionResponseFormDto>> UpdateAsync(Guid id, PromotionRequestFormDto dto, CancellationToken cancellationToken);
-}
 
 internal class PromotionService(IPromotionRepository promotionRepository) : IPromotionService
 {

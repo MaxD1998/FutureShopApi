@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Shared.Shared.Dtos;
 using Shop.Core.Dtos.ProductReview;
-using Shop.Core.Services;
+using Shop.Core.Interfaces.Services;
 
 namespace Api.Modules.Shop.Controllers;
 

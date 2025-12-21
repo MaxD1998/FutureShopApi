@@ -5,7 +5,7 @@ using Shared.Shared.Dtos;
 using Shared.Shared.Enums;
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.AdCampaign;
-using Shop.Core.Services;
+using Shop.Core.Interfaces.Services;
 
 namespace Api.Modules.Shop.Controllers;
 

@@ -3,20 +3,10 @@ using Shared.Core.Errors;
 using Shared.Core.Interfaces.Services;
 using Shop.Core.Dtos.User.UserDeliveryAddress;
 using Shop.Core.Interfaces.Repositories;
+using Shop.Core.Interfaces.Services;
 using System.Net;
 
 namespace Shop.Core.Services;
-
-public interface IUserDeliveryAddressService
-{
-    Task<ResultDto<UserDeliveryAddressResponseFormDto>> CreateAsync(UserDeliveryAddressRequestFormDto dto, CancellationToken cancellationToken);
-
-    Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<List<UserDeliveryAddressResponseFormDto>>> GetListAsync(CancellationToken cancellationToken);
-
-    Task<ResultDto<UserDeliveryAddressResponseFormDto>> UpdateAsync(Guid id, UserDeliveryAddressRequestFormDto dto, CancellationToken cancellationToken);
-}
 
 public class UserDeliveryAddressService(ICurrentUserService currentUserService, IUserDeliveryAddressRepository userDeliveryAddressRepository, IUserRepository userRepository) : IUserDeliveryAddressService
 {

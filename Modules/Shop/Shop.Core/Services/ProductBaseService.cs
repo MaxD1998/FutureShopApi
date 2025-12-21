@@ -3,19 +3,9 @@ using Shared.Shared.Dtos;
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.ProductBase;
 using Shop.Core.Interfaces.Repositories;
+using Shop.Core.Interfaces.Services;
 
 namespace Shop.Core.Services;
-
-public interface IProductBaseService
-{
-    Task<ResultDto<ProductBaseResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<IdNameDto>> GetIdNameByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<PageDto<ProductBaseListDto>>> GetPageAsync(PaginationDto pagination, CancellationToken cancellationToken);
-
-    Task<ResultDto<ProductBaseResponseFormDto>> UpdateAsync(Guid id, ProductBaseRequestFormDto dto, CancellationToken cancellationToken);
-}
 
 internal class ProductBaseService(IProductBaseRepository productBaseRepository) : IProductBaseService
 {

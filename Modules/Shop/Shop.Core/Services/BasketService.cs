@@ -1,30 +1,17 @@
 ﻿using Shared.Core.Dtos;
 using Shared.Core.Errors;
-using Shared.Core.Services;
+using Shared.Core.Interfaces.Services;
 using Shared.Shared.Constants;
 using Shared.Shared.Extensions;
 using Shop.Core.Dtos.Basket;
 using Shop.Core.Dtos.Basket.BasketItem;
 using Shop.Core.Factories;
 using Shop.Core.Interfaces.Repositories;
+using Shop.Core.Interfaces.Services;
 using Shop.Core.Logics.PromotionLogics;
 using System.Net;
-using Shared.Core.Interfaces.Services;
 
 namespace Shop.Core.Services;
-
-public interface IBasketService
-{
-    Task<ResultDto<BasketResponseFormDto>> CreateAsync(BasketRequestFormDto dto, CancellationToken cancellationToken);
-
-    Task<ResultDto<BasketDto>> GetByAuthorizedUserAsync(CancellationToken cancellationToken);
-
-    Task<ResultDto<BasketDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<BasketDto>> ImportPurchaseListAsync(ImportPurchaseListToBasketDto dto, CancellationToken cancellationToken);
-
-    Task<ResultDto<BasketResponseFormDto>> UpdateAsync(Guid id, BasketRequestFormDto dto, CancellationToken cancellationToken);
-}
 
 internal class BasketService(
     IBasketRepository basketRepository,

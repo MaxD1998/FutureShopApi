@@ -4,6 +4,7 @@ using Shop.Core.Dtos.Basket;
 using Shop.Core.Dtos.Basket.BasketItem;
 using Shop.Core.Factories;
 using Shop.Core.Interfaces.Repositories;
+using Shop.Core.Interfaces.Services;
 using Shop.Core.Services;
 using Shop.Domain.Entities.Baskets;
 using System.Linq.Expressions;

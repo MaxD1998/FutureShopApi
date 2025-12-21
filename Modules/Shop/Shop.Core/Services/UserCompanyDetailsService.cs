@@ -3,20 +3,10 @@ using Shared.Core.Errors;
 using Shared.Core.Interfaces.Services;
 using Shop.Core.Dtos.User.UserCompanyDetails;
 using Shop.Core.Interfaces.Repositories;
+using Shop.Core.Interfaces.Services;
 using System.Net;
 
 namespace Shop.Core.Services;
-
-public interface IUserCompanyDetailsService
-{
-    Task<ResultDto<UserCompanyDetailsResponseFormDto>> CreateAsync(UserCompanyDetailsRequestFormDto dto, CancellationToken cancellationToken);
-
-    Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<List<UserCompanyDetailsResponseFormDto>>> GetListAsync(CancellationToken cancellationToken);
-
-    Task<ResultDto<UserCompanyDetailsResponseFormDto>> UpdateAsync(Guid id, UserCompanyDetailsRequestFormDto dto, CancellationToken cancellationToken);
-}
 
 internal class UserCompanyDetailsService(ICurrentUserService currentUserService, IUserCompanyDetailsRepository userCompanyDetailsRepository) : IUserCompanyDetailsService
 {

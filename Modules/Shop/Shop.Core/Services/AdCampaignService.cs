@@ -11,27 +11,9 @@ using Shop.Core.Interfaces.Repositories;
 using Shop.Core.Logics.PromotionLogics;
 using Shop.Domain.Enums;
 using Shared.Core.Interfaces.Services;
+using Shop.Core.Interfaces.Services;
 
 namespace Shop.Core.Services;
-
-public interface IAdCampaignService
-{
-    Task<ResultDto<AdCampaignResponseFormDto>> CreateAsync(AdCampaignRequestFormDto dto, CancellationToken cancellationToken);
-
-    Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<List<IdFileIdDto>>> GetActualAsync(CancellationToken cancellationToken);
-
-    Task<ResultDto<AdCampaignDto>> GetActualByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<AdCampaignResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<List<IdNameDto>>> GetListIdNameAsync(CancellationToken cancellationToken);
-
-    Task<ResultDto<PageDto<AdCampaignListDto>>> GetPageAsync(PaginationDto pagination, CancellationToken cancellationToken);
-
-    Task<ResultDto<AdCampaignResponseFormDto>> UpdateAsync(Guid id, AdCampaignRequestFormDto dto, CancellationToken cancellationToken);
-}
 
 internal class AdCampaignService(
     IAdCampaignRepository adCampaignRepository,

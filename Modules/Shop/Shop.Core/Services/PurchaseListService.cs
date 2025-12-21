@@ -5,23 +5,9 @@ using Shop.Core.Dtos.PurchaseList;
 using Shop.Core.Interfaces.Repositories;
 using Shop.Domain.Entities.PurchaseLists;
 using System.Net;
+using Shop.Core.Interfaces.Services;
 
 namespace Shop.Core.Services;
-
-public interface IPurchaseListService
-{
-    Task<ResultDto<PurchaseListResponseFormDto>> CreateAsync(PurchaseListRequestFormDto dto, CancellationToken cancellationToken);
-
-    Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<PurchaseListDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<List<PurchaseListDto>>> GetListByAuthorizedUserAsync(CancellationToken cancellationToken);
-
-    Task<ResultDto<PurchaseListDto>> ImportBasketAsync(ImportBasketToPurchaseListDto dto, CancellationToken cancellationToken);
-
-    Task<ResultDto<PurchaseListResponseFormDto>> UpdateAsync(Guid id, PurchaseListRequestFormDto dto, CancellationToken cancellationToken);
-}
 
 internal class PurchaseListService(IBasketRepository basketRepository, ICurrentUserService currentUserService, IPurchaseListRepository purchaseListRepository) : IPurchaseListService
 {

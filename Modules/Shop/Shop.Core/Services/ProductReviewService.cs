@@ -6,19 +6,9 @@ using Shop.Core.Errors;
 using Shop.Core.Interfaces.Repositories;
 using System.Net;
 using Shared.Core.Interfaces.Services;
+using Shop.Core.Interfaces.Services;
 
 namespace Shop.Core.Services;
-
-public interface IProductReviewService
-{
-    Task<ResultDto<ProductReviewResponseFormDto>> CreateAsync(ProductReviewRequestFormDto dto, CancellationToken cancellationToken);
-
-    Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<PageDto<ProductReviewResponseFormDto>>> GetPageByProductIdAsync(Guid productId, PaginationDto pagination, CancellationToken cancellationToken);
-
-    Task<ResultDto<ProductReviewResponseFormDto>> UpdateAsync(Guid id, ProductReviewRequestFormDto dto, CancellationToken cancellationToken);
-}
 
 internal class ProductReviewService(ICurrentUserService currentUserService, IProductReviewRepository productReviewRepository) : IProductReviewService
 {

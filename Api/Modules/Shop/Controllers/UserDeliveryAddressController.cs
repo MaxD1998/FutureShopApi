@@ -2,7 +2,7 @@
 using Shared.Api.Attributes;
 using Shared.Domain.Enums;
 using Shop.Core.Dtos.User.UserDeliveryAddress;
-using Shop.Core.Services;
+using Shop.Core.Interfaces.Services;
 
 namespace Api.Modules.Shop.Controllers;
 
