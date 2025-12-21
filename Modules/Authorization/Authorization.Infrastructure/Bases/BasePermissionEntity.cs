@@ -1,5 +1,5 @@
 ﻿using Authorization.Infrastructure.Entities.PrermissionGroups;
-using Shared.Infrastructure.Bases;
+using Shared.Domain.Bases;
 
 namespace Authorization.Infrastructure.Bases;
 

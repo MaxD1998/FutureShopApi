@@ -1,4 +1,4 @@
-﻿using Shared.Infrastructure.Bases;
+﻿using Shared.Domain.Bases;
 using Warehouse.Infrastructure.Enums;
 
 namespace Warehouse.Infrastructure.Entities;

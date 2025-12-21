@@ -1,10 +1,10 @@
 ﻿using Authorization.Infrastructure.Entities.Permissions;
 using Authorization.Infrastructure.Entities.Users;
-using Shared.Infrastructure.Bases;
+using Shared.Domain.Bases;
+using Shared.Domain.Exceptions;
+using Shared.Domain.Interfaces;
 using Shared.Infrastructure.Constants;
-using Shared.Infrastructure.Exceptions;
 using Shared.Infrastructure.Extensions;
-using Shared.Infrastructure.Interfaces;
 
 namespace Authorization.Infrastructure.Entities.PrermissionGroups;
 

@@ -1,4 +1,4 @@
-﻿using Shared.Infrastructure.Bases;
+﻿using Shared.Shared.Bases;
 using Shop.Infrastructure.Persistence.Entities.AdCampaigns;
 using System.Net;
 

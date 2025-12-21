@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Shared.Infrastructure.Bases;
-using Shared.Infrastructure.Dtos;
+using Shared.Core.Dtos;
+using Shared.Shared.Bases;
 
 namespace Shared.Api.Middlewares;
 

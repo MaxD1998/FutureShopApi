@@ -1,5 +1,5 @@
-﻿using Shared.Infrastructure.Bases;
-using Shared.Infrastructure.Interfaces;
+﻿using Shared.Domain.Bases;
+using Shared.Domain.Interfaces;
 
 namespace Shop.Infrastructure.Persistence.Entities.Users;
 

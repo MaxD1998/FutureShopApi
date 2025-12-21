@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Shared.Infrastructure.Bases;
+namespace Shared.Shared.Bases;
 
 public abstract class BaseException : Exception
 {

@@ -1,4 +1,4 @@
-﻿using Shared.Infrastructure.Dtos;
+﻿using Shared.Core.Dtos;
 
 namespace Product.Core.Errors;
 

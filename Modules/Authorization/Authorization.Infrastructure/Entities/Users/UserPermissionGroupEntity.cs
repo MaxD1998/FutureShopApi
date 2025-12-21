@@ -1,6 +1,6 @@
 ﻿using Authorization.Infrastructure.Entities.PrermissionGroups;
-using Shared.Infrastructure.Bases;
-using Shared.Infrastructure.Interfaces;
+using Shared.Domain.Bases;
+using Shared.Domain.Interfaces;
 
 namespace Authorization.Infrastructure.Entities.Users;
 

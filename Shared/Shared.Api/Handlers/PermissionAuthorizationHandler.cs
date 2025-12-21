@@ -2,6 +2,7 @@
 using Shared.Api.Requirements;
 using Shared.Infrastructure.Constants;
 using Shared.Infrastructure.Enums;
+using Shared.Shared.Constants;
 using System.Security.Claims;
 
 namespace Shared.Api.Handlers;

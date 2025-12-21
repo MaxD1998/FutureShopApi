@@ -1,6 +1,6 @@
-﻿using Shared.Infrastructure.Bases;
+﻿using Shared.Domain.Bases;
+using Shared.Domain.Interfaces;
 using Shared.Infrastructure.Extensions;
-using Shared.Infrastructure.Interfaces;
 using Shared.Shared.Helpers;
 using Shared.Shared.Interfaces;
 

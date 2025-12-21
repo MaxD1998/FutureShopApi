@@ -1,4 +1,4 @@
-﻿namespace Shared.Infrastructure.Dtos;
+﻿namespace Shared.Core.Dtos;
 
 public class ErrorDto
 {

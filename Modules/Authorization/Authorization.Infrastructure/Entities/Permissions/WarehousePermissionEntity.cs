@@ -1,5 +1,5 @@
 ﻿using Authorization.Infrastructure.Bases;
-using Shared.Infrastructure.Interfaces;
+using Shared.Domain.Interfaces;
 using Shared.Shared.Enums;
 
 namespace Authorization.Infrastructure.Entities.Permissions;

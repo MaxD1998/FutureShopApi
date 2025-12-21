@@ -1,4 +1,4 @@
-﻿using Shared.Infrastructure.Bases;
+﻿using Shared.Shared.Bases;
 using System.Net;
 
 namespace Authorization.Infrastructure.Exceptions.RefreshTokens;

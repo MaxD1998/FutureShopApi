@@ -1,4 +1,4 @@
-﻿namespace Shared.Infrastructure.Interfaces;
+﻿namespace Shared.Domain.Interfaces;
 
 public interface IEntity
 {

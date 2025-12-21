@@ -1,7 +1,6 @@
-﻿using Shared.Infrastructure.Bases;
-using Shared.Infrastructure.Exceptions;
-using Shared.Infrastructure.Interfaces;
-using Shop.Infrastructure.Exceptions.AdCampaigns;
+﻿using Shared.Domain.Bases;
+using Shared.Domain.Exceptions;
+using Shared.Domain.Interfaces;
 
 namespace Shop.Infrastructure.Persistence.Entities.Products;
 

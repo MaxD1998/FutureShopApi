@@ -1,4 +1,4 @@
-﻿namespace Shared.Infrastructure.Constants;
+﻿namespace Shared.Shared.Constants;
 
 public static class JwtClaimNameConst
 {

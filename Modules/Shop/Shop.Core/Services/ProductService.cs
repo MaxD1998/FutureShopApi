@@ -1,5 +1,4 @@
-﻿using Shared.Core.Bases;
-using Shared.Core.Dtos;
+﻿using Shared.Core.Dtos;
 using Shared.Core.Services;
 using Shared.Infrastructure.Constants;
 using Shared.Infrastructure.Extensions;
@@ -10,7 +9,7 @@ using Shop.Core.Dtos.Product;
 using Shop.Core.Dtos.Product.Price;
 using Shop.Core.Factories;
 using Shop.Core.Logics.PromotionLogics;
-using Shop.Infrastructure.Models.Products;
+using Shop.Infrastructure.Persistence.Models.Products;
 using Shop.Infrastructure.Persistence.Repositories;
 
 namespace Shop.Core.Services;

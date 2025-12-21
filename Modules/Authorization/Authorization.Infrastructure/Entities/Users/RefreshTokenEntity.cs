@@ -1,7 +1,7 @@
 ﻿using Authorization.Infrastructure.Exceptions.RefreshTokens;
-using Shared.Infrastructure.Bases;
-using Shared.Infrastructure.Exceptions;
-using Shared.Infrastructure.Interfaces;
+using Shared.Domain.Bases;
+using Shared.Domain.Exceptions;
+using Shared.Domain.Interfaces;
 
 namespace Authorization.Infrastructure.Entities.Users;
 

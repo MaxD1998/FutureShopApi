@@ -1,8 +1,8 @@
-﻿using Shared.Infrastructure.Bases;
+﻿using Shared.Shared.Bases;
 using Shared.Shared.Helpers;
 using System.Net;
 
-namespace Shared.Infrastructure.Exceptions;
+namespace Shared.Domain.Exceptions;
 
 public class InvalidDateRangeException : BaseException
 {

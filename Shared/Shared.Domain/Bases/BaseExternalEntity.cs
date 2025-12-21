@@ -1,4 +1,4 @@
-﻿namespace Shared.Infrastructure.Bases;
+﻿namespace Shared.Domain.Bases;
 
 public class BaseExternalEntity : BaseEntity
 {

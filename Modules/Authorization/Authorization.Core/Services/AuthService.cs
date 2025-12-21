@@ -16,6 +16,7 @@ using Shared.Infrastructure;
 using Shared.Infrastructure.Constants;
 using Shared.Infrastructure.Enums;
 using Shared.Infrastructure.Settings;
+using Shared.Shared.Constants;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Security.Claims;

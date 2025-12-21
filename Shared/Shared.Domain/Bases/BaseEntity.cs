@@ -1,6 +1,6 @@
-﻿using Shared.Infrastructure.Interfaces;
+﻿using Shared.Domain.Interfaces;
 
-namespace Shared.Infrastructure.Bases;
+namespace Shared.Domain.Bases;
 
 public abstract class BaseEntity : IEntity
 {

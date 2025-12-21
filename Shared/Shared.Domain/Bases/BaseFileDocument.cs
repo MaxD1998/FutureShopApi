@@ -1,7 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 
-namespace Shared.Infrastructure.Bases;
+namespace Shared.Domain.Bases;
 
 public class BaseFileDocument : BaseDocument
 {

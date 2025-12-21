@@ -1,5 +1,4 @@
-﻿using Shared.Infrastructure.Dtos;
-using System.Net;
+﻿using System.Net;
 
 namespace Shared.Core.Dtos;
 
