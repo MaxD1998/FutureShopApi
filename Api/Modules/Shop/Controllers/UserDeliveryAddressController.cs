@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Shared.Api.Attributes;
-using Shared.Infrastructure.Enums;
+using Shared.Domain.Enums;
 using Shop.Core.Dtos.User.UserDeliveryAddress;
 using Shop.Core.Services;
 

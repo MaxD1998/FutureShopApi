@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Product.Core.Dtos.ProductPhoto;
 using Shared.Api.Attributes;
-using Shared.Infrastructure.Enums;
+using Shared.Domain.Enums;
 
 namespace Api.Modules.File.Controllers;
 

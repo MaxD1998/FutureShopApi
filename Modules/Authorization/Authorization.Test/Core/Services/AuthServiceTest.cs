@@ -8,11 +8,11 @@ using Microsoft.Extensions.Options;
 using Moq;
 using Shared.Core.Dtos;
 using Shared.Infrastructure;
-using Shared.Infrastructure.Constants;
-using Shared.Infrastructure.Enums;
+using Shared.Shared.Constants;
 using Shared.Infrastructure.Settings;
 using System.Net;
 using System.Security.Claims;
+using Shared.Domain.Enums;
 
 namespace Authorization.Test.Core.Services;
 

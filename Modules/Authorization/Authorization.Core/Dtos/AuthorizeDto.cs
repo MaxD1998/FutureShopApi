@@ -1,5 +1,5 @@
 ﻿using Authorization.Infrastructure.Entities.Users;
-using Shared.Infrastructure.Enums;
+using Shared.Domain.Enums;
 using Shared.Shared.Enums;
 
 namespace Authorization.Core.Dtos;

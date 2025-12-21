@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.Domain.Bases;
-using Shared.Infrastructure.Constants;
+using Shared.Shared.Constants;
 
 namespace Shared.Infrastructure.Bases;
 

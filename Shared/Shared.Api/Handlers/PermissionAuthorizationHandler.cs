@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Shared.Api.Requirements;
-using Shared.Infrastructure.Constants;
-using Shared.Infrastructure.Enums;
+using Shared.Shared.Constants;
+using Shared.Domain.Enums;
 using Shared.Shared.Constants;
 using System.Security.Claims;
 

@@ -2,7 +2,7 @@
 using Authorization.Core.Services;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Api.Attributes;
-using Shared.Infrastructure.Enums;
+using Shared.Domain.Enums;
 using Shared.Infrastructure.Extensions;
 using Shared.Shared.Dtos;
 using Shared.Shared.Enums;

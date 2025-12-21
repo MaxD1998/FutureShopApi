@@ -2,7 +2,7 @@
 using Shared.Core.Dtos;
 using Shared.Core.Errors;
 using Shared.Core.Services;
-using Shared.Infrastructure.Constants;
+using Shared.Shared.Constants;
 using Shared.Shared.Extensions;
 using Shop.Core.Dtos.Basket;
 using Shop.Core.Dtos.Basket.BasketItem;

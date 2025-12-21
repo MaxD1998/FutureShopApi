@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.Infrastructure.Bases;
-using Shared.Infrastructure.Constants;
+using Shared.Shared.Constants;
 using Shop.Infrastructure.Persistence.Entities.Categories;
 
 namespace Shop.Infrastructure.Persistence.Configurations;

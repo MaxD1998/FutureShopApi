@@ -13,7 +13,7 @@ using Shared.Core.Dtos;
 using Shared.Core.Enums;
 using Shared.Core.Errors;
 using Shared.Infrastructure;
-using Shared.Infrastructure.Constants;
+using Shared.Shared.Constants;
 using Shared.Infrastructure.Enums;
 using Shared.Infrastructure.Settings;
 using Shared.Shared.Constants;

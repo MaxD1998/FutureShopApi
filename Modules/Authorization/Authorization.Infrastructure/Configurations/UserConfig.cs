@@ -3,7 +3,7 @@ using Authorization.Infrastructure.Seeds;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.Infrastructure.Bases;
-using Shared.Infrastructure.Constants;
+using Shared.Shared.Constants;
 
 namespace Authorization.Infrastructure.Configurations;
 

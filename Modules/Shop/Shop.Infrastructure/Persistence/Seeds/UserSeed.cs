@@ -1,4 +1,4 @@
-﻿using Shared.Infrastructure.Constants;
+﻿using Shared.Shared.Constants;
 using Shop.Infrastructure.Persistence.Entities.Users;
 
 namespace Shop.Infrastructure.Persistence.Seeds;

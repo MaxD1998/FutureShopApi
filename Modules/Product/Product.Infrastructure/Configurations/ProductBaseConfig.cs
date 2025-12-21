@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Product.Infrastructure.Entities;
 using Shared.Infrastructure.Bases;
-using Shared.Infrastructure.Constants;
+using Shared.Shared.Constants;
 
 namespace Product.Infrastructure.Configurations;
 
