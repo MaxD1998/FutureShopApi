@@ -10,7 +10,7 @@ public interface IProductBaseService
 {
     Task<ResultDto<ProductBaseResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
 
-    Task<ResultDto<IdNameDto>> GetIdNametByIdAsync(Guid id, CancellationToken cancellationToken);
+    Task<ResultDto<IdNameDto>> GetIdNameByIdAsync(Guid id, CancellationToken cancellationToken);
 
     Task<ResultDto<PageDto<ProductBaseListDto>>> GetPageAsync(PaginationDto pagination, CancellationToken cancellationToken);
 
@@ -28,7 +28,7 @@ internal class ProductBaseService(IProductBaseRepository productBaseRepository) 
         return ResultDto.Success(result);
     }
 
-    public async Task<ResultDto<IdNameDto>> GetIdNametByIdAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ResultDto<IdNameDto>> GetIdNameByIdAsync(Guid id, CancellationToken cancellationToken)
     {
         var result = await _productBaseRepository.GetByIdAsync(id, IdNameDto.MapFromProductBase(), cancellationToken);
 

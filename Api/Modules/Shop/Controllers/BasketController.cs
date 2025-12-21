@@ -5,33 +5,33 @@ using Shop.Core.Services;
 
 namespace Api.Modules.Shop.Controllers;
 
-public class BasketController(IBasketSerivce basketSerivce) : ShopModuleBaseController
+public class BasketController(IBasketService basketService) : ShopModuleBaseController
 {
-    private readonly IBasketSerivce _basketSerivce = basketSerivce;
+    private readonly IBasketService _basketService = basketService;
 
     [HttpPost]
     [ProducesResponseType(typeof(BasketResponseFormDto), StatusCodes.Status200OK)]
     public Task<IActionResult> CreateAsync([FromBody] BasketRequestFormDto dto, CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_basketSerivce.CreateAsync, dto, cancellationToken);
+        => ApiResponseAsync(_basketService.CreateAsync, dto, cancellationToken);
 
     [HttpGet("{id:guid}")]
     [ProducesResponseType(typeof(BasketDto), StatusCodes.Status200OK)]
     public Task<IActionResult> GetByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_basketSerivce.GetByIdAsync, id, cancellationToken);
+        => ApiResponseAsync(_basketService.GetByIdAsync, id, cancellationToken);
 
     [HttpGet("UserBasket")]
     [Authorize]
     [ProducesResponseType(typeof(BasketDto), StatusCodes.Status200OK)]
     public Task<IActionResult> GetUserBasketAsync(CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_basketSerivce.GetByAuthorizedUserAsync, cancellationToken);
+        => ApiResponseAsync(_basketService.GetByAuthorizedUserAsync, cancellationToken);
 
     [HttpPost("ImportPurchaseList")]
     [ProducesResponseType(typeof(BasketDto), StatusCodes.Status200OK)]
     public Task<IActionResult> ImportPurchaseList([FromBody] ImportPurchaseListToBasketDto dto, CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_basketSerivce.ImportPurchaseListAsync, dto, cancellationToken);
+        => ApiResponseAsync(_basketService.ImportPurchaseListAsync, dto, cancellationToken);
 
     [HttpPut("{id:guid}")]
     [ProducesResponseType(typeof(BasketResponseFormDto), StatusCodes.Status200OK)]
     public Task<IActionResult> UpdateAsync([FromRoute] Guid id, [FromBody] BasketRequestFormDto dto, CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_basketSerivce.UpdateAsync, id, dto, cancellationToken);
+        => ApiResponseAsync(_basketService.UpdateAsync, id, dto, cancellationToken);
 }

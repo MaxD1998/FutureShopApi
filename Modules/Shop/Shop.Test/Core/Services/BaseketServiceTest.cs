@@ -1,6 +1,7 @@
 ﻿using Moq;
 using Shared.Core.Interfaces.Services;
 using Shop.Core.Dtos.Basket;
+using Shop.Core.Dtos.Basket.BasketItem;
 using Shop.Core.Factories;
 using Shop.Core.Interfaces.Repositories;
 using Shop.Core.Services;
@@ -12,7 +13,7 @@ namespace Shop.Test.Core.Services;
 public class BaseketServiceTest
 {
     private readonly Mock<IBasketRepository> _basketRepositoryMock = new();
-    private readonly IBasketSerivce _basketSerivce;
+    private readonly IBasketService _basketService;
     private readonly Mock<ICurrentUserService> _currentUserServiceMock = new();
     private readonly Mock<IHeaderService> _headerService = new();
     private readonly Mock<ILogicFactory> _logicFactory = new();
@@ -21,7 +22,7 @@ public class BaseketServiceTest
 
     public BaseketServiceTest()
     {
-        _basketSerivce = new BasketService(
+        _basketService = new BasketService(
             _basketRepositoryMock.Object,
             _currentUserServiceMock.Object,
             _headerService.Object,
@@ -40,7 +41,7 @@ public class BaseketServiceTest
         var userId = guidString == null ? null : (Guid?)Guid.Parse(guidString);
         var basketDto = new BasketRequestFormDto()
         {
-            BasketItems = [],
+            BasketItems = new List<BasketItemFormDto>(),
         };
 
         var basketInputEntity = basketDto.ToEntity(userId);
@@ -62,10 +63,10 @@ public class BaseketServiceTest
             .ReturnsAsync(new BasketResponseFormDto
             {
                 Id = basketOutputEntity.Id,
-                BasketItems = []
+                BasketItems = new List<BasketItemFormDto>()
             });
         //Act
-        var result = await _basketSerivce.CreateAsync(basketDto, default);
+        var result = await _basketService.CreateAsync(basketDto, default);
         //Assert
         _basketRepositoryMock
             .Verify(x =>
@@ -80,7 +81,7 @@ public class BaseketServiceTest
             .ReturnsAsync(new BasketResponseFormDto
             {
                 Id = basketOutputEntity.Id,
-                BasketItems = []
+                BasketItems = new List<BasketItemFormDto>()
             });
 
         Assert.True(result.IsSuccess);

@@ -27,7 +27,7 @@ public class ProductBaseController(IProductBaseService productBaseService) : Sho
     [Permission(ShopPermission.ProductBaseRead, ShopPermission.ProductRead)]
     [ProducesResponseType(typeof(IdNameDto), StatusCodes.Status200OK)]
     public Task<IActionResult> GetIdNameByIdAsync([FromRoute] Guid id, CancellationToken cancellationToken = default)
-        => ApiResponseAsync(_productBaseService.GetIdNametByIdAsync, id, cancellationToken);
+        => ApiResponseAsync(_productBaseService.GetIdNameByIdAsync, id, cancellationToken);
 
     [HttpGet("Page")]
     [Role(UserType.Employee)]

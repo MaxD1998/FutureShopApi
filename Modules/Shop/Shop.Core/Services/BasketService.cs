@@ -13,7 +13,7 @@ using Shared.Core.Interfaces.Services;
 
 namespace Shop.Core.Services;
 
-public interface IBasketSerivce
+public interface IBasketService
 {
     Task<ResultDto<BasketResponseFormDto>> CreateAsync(BasketRequestFormDto dto, CancellationToken cancellationToken);
 
@@ -32,7 +32,7 @@ internal class BasketService(
     IHeaderService headerService,
     ILogicFactory logicFactory,
     IPromotionRepository promotionRepository,
-    IPurchaseListRepository purchaseListRepository) : IBasketSerivce
+    IPurchaseListRepository purchaseListRepository) : IBasketService
 {
     private readonly IBasketRepository _basketRepository = basketRepository;
     private readonly ICurrentUserService _currentUserService = currentUserService;
