@@ -21,19 +21,9 @@ using System.Net;
 using System.Security.Claims;
 using System.Text;
 using Crypt = BCrypt.Net.BCrypt;
+using Authorization.Core.Interfaces.Services;
 
 namespace Authorization.Core.Services;
-
-public interface IAuthService
-{
-    Task<ResultDto<AuthorizeDto>> LoginAsync(LoginFormDto dto, CancellationToken cancellationToken = default);
-
-    Task<ResultDto> LogoutAsync(CancellationToken cancellationToken = default);
-
-    Task<ResultDto<AuthorizeDto>> RefreshTokenAsync(CancellationToken cancellationToken = default);
-
-    Task<ResultDto<AuthorizeDto>> RegisterAsync(RegisterFormDto dto, CancellationToken cancellationToken = default);
-}
 
 internal class AuthService : IAuthService
 {

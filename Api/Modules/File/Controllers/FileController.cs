@@ -1,4 +1,4 @@
-﻿using File.Core.Services;
+﻿using File.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 using Product.Core.Dtos.ProductPhoto;
 using Shared.Api.Attributes;

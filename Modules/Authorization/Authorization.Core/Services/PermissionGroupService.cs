@@ -1,25 +1,11 @@
 ﻿using Authorization.Core.Dtos;
 using Authorization.Core.Dtos.PermissionGroup;
 using Authorization.Core.Interfaces.Repositories;
+using Authorization.Core.Interfaces.Services;
 using Shared.Core.Dtos;
 using Shared.Shared.Dtos;
 
 namespace Authorization.Core.Services;
-
-public interface IPermissionGroupService
-{
-    Task<ResultDto<PermissionGroupResponseFormDto>> CreateAsync(PermissionGroupRequestFormDto dto, CancellationToken cancellationToken);
-
-    Task<ResultDto> DeleteByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<PermissionGroupResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<List<IdNameDto>>> GetListIdNameAsync(List<Guid> excludedIds, CancellationToken cancellationToken);
-
-    Task<ResultDto<PageDto<PermissionGroupListDto>>> GetPageListAsync(PaginationDto pagination, CancellationToken cancellationToken);
-
-    Task<ResultDto<PermissionGroupResponseFormDto>> UpdateAsync(Guid id, PermissionGroupRequestFormDto dto, CancellationToken cancellationToken);
-}
 
 internal class PermissionGroupService(IPermissionGroupRepository permissionGroupRepository) : IPermissionGroupService
 {

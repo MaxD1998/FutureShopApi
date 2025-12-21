@@ -3,13 +3,9 @@ using Shared.Core.Constans;
 using Shared.Core.Dtos;
 using Shared.Core.Enums;
 using Shared.Core.Interfaces;
+using File.Core.JobServices.Interfaces;
 
 namespace File.Core.JobServices;
-
-public interface IFileJobService
-{
-    Task<ResultDto> SendIdBatchesForAssignmentCheck(CancellationToken cancellationToken);
-}
 
 internal class FileJobService(IFileRepository fileRepository, IRabbitMqContext rabbitMqContext) : IFileJobService
 {

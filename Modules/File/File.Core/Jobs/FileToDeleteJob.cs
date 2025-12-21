@@ -1,4 +1,4 @@
-﻿using File.Core.JobServices;
+﻿using File.Core.JobServices.Interfaces;
 using Quartz;
 
 namespace File.Core.Jobs;

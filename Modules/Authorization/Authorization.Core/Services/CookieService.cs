@@ -1,16 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Shared.Core.Dtos;
+using Authorization.Core.Interfaces.Services;
 
 namespace Authorization.Core.Services;
-
-public interface ICookieService
-{
-    ResultDto AddCookie(string name, string value, int expire);
-
-    ResultDto<string> GetCookieValue(string name);
-
-    ResultDto RemoveCookie(string name);
-}
 
 internal class CookieService : ICookieService
 {

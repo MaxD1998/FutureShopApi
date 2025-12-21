@@ -5,6 +5,7 @@ using Shop.Core.Dtos.ProductReview;
 using Shop.Core.Errors;
 using Shop.Core.Interfaces.Repositories;
 using System.Net;
+using Shared.Core.Interfaces.Services;
 
 namespace Shop.Core.Services;
 

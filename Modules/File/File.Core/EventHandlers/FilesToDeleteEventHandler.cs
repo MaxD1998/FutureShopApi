@@ -1,4 +1,4 @@
-﻿using File.Core.Services;
+﻿using File.Core.Interfaces.Services;
 using Shared.Core.Constans;
 using Shared.Core.Dtos;
 using Shared.Core.Enums;

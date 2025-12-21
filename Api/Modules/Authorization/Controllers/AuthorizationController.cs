@@ -1,7 +1,7 @@
 ﻿using Authorization.Core.Dtos;
 using Authorization.Core.Dtos.Login;
 using Authorization.Core.Dtos.Register;
-using Authorization.Core.Services;
+using Authorization.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

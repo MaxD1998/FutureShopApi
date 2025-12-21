@@ -1,6 +1,6 @@
 ﻿using Shared.Core.Dtos;
 using Shared.Core.Errors;
-using Shared.Core.Services;
+using Shared.Core.Interfaces.Services;
 using Shop.Core.Dtos.PurchaseList;
 using Shop.Core.Interfaces.Repositories;
 using Shop.Domain.Entities.PurchaseLists;

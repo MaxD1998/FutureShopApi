@@ -9,6 +9,7 @@ using Shop.Core.Factories;
 using Shop.Core.Interfaces.Repositories;
 using Shop.Core.Logics.PromotionLogics;
 using System.Net;
+using Shared.Core.Interfaces.Services;
 
 namespace Shop.Core.Services;
 

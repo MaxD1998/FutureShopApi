@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Product.Core.Dtos;
 using Product.Core.Dtos.ProductBase;
-using Product.Core.Services;
+using Product.Core.Interfaces.Services;
 using Shared.Api.Attributes;
 using Shared.Domain.Enums;
 using Shared.Shared.Dtos;

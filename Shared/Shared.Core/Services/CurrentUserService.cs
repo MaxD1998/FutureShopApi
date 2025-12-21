@@ -2,15 +2,9 @@
 using Shared.Shared.Constants;
 using Shared.Shared.Extensions;
 using System.Security.Claims;
+using Shared.Core.Interfaces.Services;
 
 namespace Shared.Core.Services;
-
-public interface ICurrentUserService
-{
-    Guid? GetUserId();
-
-    bool IsRecordOwner(Guid inputId);
-}
 
 internal class CurrentUserService(IHttpContextAccessor httpContextAccessor) : ICurrentUserService
 {

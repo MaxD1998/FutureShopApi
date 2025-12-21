@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Shared.Core.Interfaces.Services;
 
 namespace Shared.Core.Services;
-
-public interface IHeaderService
-{
-    string GetHeader(string name);
-}
 
 internal class HeaderService(IHttpContextAccessor accessor) : IHeaderService
 {

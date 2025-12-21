@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Shared.Core.Services;
+using Shared.Core.Interfaces.Services;
 
 namespace Shared.Core;
 

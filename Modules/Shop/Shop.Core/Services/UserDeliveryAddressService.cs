@@ -1,6 +1,6 @@
 ﻿using Shared.Core.Dtos;
 using Shared.Core.Errors;
-using Shared.Core.Services;
+using Shared.Core.Interfaces.Services;
 using Shop.Core.Dtos.User.UserDeliveryAddress;
 using Shop.Core.Interfaces.Repositories;
 using System.Net;

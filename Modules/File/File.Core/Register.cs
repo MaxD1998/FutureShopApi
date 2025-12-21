@@ -1,5 +1,7 @@
 ﻿using File.Core.JobServices;
 using File.Core.Services;
+using File.Core.Interfaces.Services;
+using File.Core.JobServices.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace File.Core;

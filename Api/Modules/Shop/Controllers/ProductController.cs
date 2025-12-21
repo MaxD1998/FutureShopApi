@@ -6,7 +6,7 @@ using Shared.Shared.Enums;
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.Product;
 using Shop.Core.Dtos.Product.Price;
-using Shop.Core.Services;
+using Shop.Core.Interfaces.Services;
 
 namespace Api.Modules.Shop.Controllers;
 

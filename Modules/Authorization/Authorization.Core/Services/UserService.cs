@@ -1,37 +1,17 @@
 ﻿using Authorization.Core.Dtos.User;
 using Authorization.Core.Errors;
 using Authorization.Core.Interfaces.Repositories;
+using Authorization.Core.Interfaces.Services;
 using Shared.Core.Constans;
 using Shared.Core.Dtos;
 using Shared.Core.Errors;
 using Shared.Core.Interfaces;
-using Shared.Core.Services;
+using Shared.Core.Interfaces.Services;
 using Shared.Shared.Dtos;
 using System.Net;
 using Crypt = BCrypt.Net.BCrypt;
 
 namespace Authorization.Core.Services;
-
-public interface IUserService
-{
-    Task<ResultDto<UserResponseFormDto>> CreateAsync(UserCreateRequestFormDto dto, CancellationToken cancellationToken);
-
-    Task<ResultDto> DeleteAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto> DeleteOwnAccountAsync(CancellationToken cancellationToken);
-
-    Task<ResultDto<UserResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<UserBasicInfoFormDto>> GetOwnBasicInfoAsync(CancellationToken cancellationToken);
-
-    Task<ResultDto<PageDto<UserListDto>>> GetPageListAsync(PaginationDto pagination, CancellationToken cancellationToken);
-
-    Task<ResultDto<UserResponseFormDto>> UpdateAsync(Guid id, UserUpdateRequestFormDto dto, CancellationToken cancellationToken);
-
-    Task<ResultDto<UserBasicInfoFormDto>> UpdateOwnBasicInfoAsync(UserBasicInfoFormDto dto, CancellationToken cancellationToken);
-
-    Task<ResultDto> UpdateOwnPasswordAsync(UserPasswordFormDto dto, CancellationToken cancellationToken);
-}
 
 internal class UserService(ICurrentUserService currentUserService, IRabbitMqContext rabbitMqContext, IUserRepository userRepository) : IUserService
 {

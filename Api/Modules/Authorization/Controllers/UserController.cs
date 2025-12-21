@@ -1,5 +1,5 @@
 ﻿using Authorization.Core.Dtos.User;
-using Authorization.Core.Services;
+using Authorization.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Api.Attributes;
 using Shared.Domain.Enums;

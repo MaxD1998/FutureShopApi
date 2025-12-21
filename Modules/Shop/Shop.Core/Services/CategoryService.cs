@@ -5,23 +5,10 @@ using Shared.Shared.Dtos;
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.Category;
 using Shop.Core.Interfaces.Repositories;
+using Shop.Core.Interfaces.Services;
+using Shared.Core.Interfaces.Services;
 
 namespace Shop.Core.Services;
-
-public interface ICategoryService
-{
-    Task<ResultDto<IdNameDto>> GetActiveIdNameByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<List<CategoryListDto>>> GetActiveListAsync(CancellationToken cancellationToken);
-
-    Task<ResultDto<CategoryResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<IdNameDto>> GetIdNameByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<PageDto<CategoryPageListDto>>> GetPageListAsync(PaginationDto pagination, CancellationToken cancellationToken);
-
-    Task<ResultDto<CategoryResponseFormDto>> UdpateAsync(Guid id, CategoryRequestFormDto dto, CancellationToken cancellationToken);
-}
 
 internal class CategoryService(ICategoryRepository categoryRepository, IHeaderService headerService) : ICategoryService
 {

@@ -6,25 +6,9 @@ using Shared.Core.Dtos;
 using Shared.Core.Enums;
 using Shared.Core.Interfaces;
 using Shared.Shared.Dtos;
+using Product.Core.Interfaces.Services;
 
 namespace Product.Core.Services;
-
-public interface IProductBaseService
-{
-    Task<ResultDto<ProductBaseResponseFormDto>> CreateAsync(ProductBaseRequestFormDto dto, CancellationToken cancellationToken);
-
-    Task<ResultDto> DeleteAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<ProductBaseResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<IdNameDto>> GetIdNameByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<List<IdNameDto>>> GetListIdNameAsync(CancellationToken cancellationToken);
-
-    Task<ResultDto<PageDto<ProductBaseListDto>>> GetPageListAsync(PaginationDto pagination, CancellationToken cancellationToken);
-
-    Task<ResultDto<ProductBaseResponseFormDto>> UpdateAsync(Guid id, ProductBaseRequestFormDto dto, CancellationToken cancellationToken);
-}
 
 internal class ProductBaseService(IProductBaseRepository productBaseRepository, IRabbitMqContext rabbitMqContext) : IProductBaseService
 {

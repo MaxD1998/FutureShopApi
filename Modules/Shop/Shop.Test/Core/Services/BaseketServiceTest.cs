@@ -1,5 +1,5 @@
 ﻿using Moq;
-using Shared.Core.Services;
+using Shared.Core.Interfaces.Services;
 using Shop.Core.Dtos.Basket;
 using Shop.Core.Factories;
 using Shop.Core.Interfaces.Repositories;

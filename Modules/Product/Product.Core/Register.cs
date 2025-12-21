@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Product.Core.EventServices;
+using Product.Core.Interfaces.Services;
 using Product.Core.Services;
 
 namespace Product.Core;

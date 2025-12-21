@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Shop.Core.EventServices;
 using Shop.Core.Factories;
+using Shop.Core.Interfaces.Services;
 using Shop.Core.Services;
 
 namespace Shop.Core;

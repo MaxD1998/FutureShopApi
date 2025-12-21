@@ -10,29 +10,10 @@ using Shop.Core.Factories;
 using Shop.Core.Interfaces.Repositories;
 using Shop.Core.Logics.PromotionLogics;
 using Shop.Core.Models.Products;
+using Shop.Core.Interfaces.Services;
+using Shared.Core.Interfaces.Services;
 
 namespace Shop.Core.Services;
-
-public interface IProductService
-{
-    Task<ResultDto<ProductResponseFormDto>> GetByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<ProductDto>> GetDetailsByIdAsync(Guid id, CancellationToken cancellationToken);
-
-    Task<ResultDto<List<IdNameDto>>> GetListIdNameAsync(List<Guid> excludedIds, CancellationToken cancellationToken);
-
-    Task<ResultDto<PageDto<ProductListDto>>> GetPageListAsync(PaginationDto pagination, CancellationToken cancellationToken);
-
-    Task<ResultDto<List<ProductShopListDto>>> GetShopListByCategoryIdAsync(Guid id, ProductShopListFilterRequestDto request, CancellationToken cancellationToken);
-
-    Task<ResultDto<List<SimulatePriceFormDto>>> SimulateAddPriceAsync(SimulatePriceRequestDto request, CancellationToken cancellationToken);
-
-    Task<ResultDto<List<SimulatePriceFormDto>>> SimulateRemovePriceAsync(SimulateRemovePriceRequestDto request, CancellationToken cancellationToken);
-
-    Task<ResultDto<List<SimulatePriceFormDto>>> SimulateUpdatePriceAsync(SimulatePriceRequestDto request, CancellationToken cancellationToken);
-
-    Task<ResultDto<ProductResponseFormDto>> UpdateAsync(Guid id, ProductRequestFormDto dto, CancellationToken cancellationToken);
-}
 
 internal class ProductService(
     IHeaderService headerService,

@@ -1,6 +1,6 @@
 ﻿using Authorization.Core.Dtos;
 using Authorization.Core.Dtos.PermissionGroup;
-using Authorization.Core.Services;
+using Authorization.Core.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Api.Attributes;
 using Shared.Domain.Enums;

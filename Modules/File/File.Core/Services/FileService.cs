@@ -6,19 +6,9 @@ using File.Domain.Documents;
 using Microsoft.AspNetCore.Http;
 using Shared.Core.Dtos;
 using System.Net;
+using File.Core.Interfaces.Services;
 
 namespace File.Core.Services;
-
-public interface IFileService
-{
-    Task<ResultDto<List<string>>> CreateListAsync(IFormFileCollection files, CancellationToken cancellationToken);
-
-    Task DeleteManyAsync(List<string> ids, CancellationToken cancellationToken);
-
-    Task<ResultDto<FileDocument>> GetByIdAsync(string id, CancellationToken cancellationToken);
-
-    Task<ResultDto<List<ProductPhotoInfoDto>>> GetListInfoByIdsAsync(List<string> ids, CancellationToken cancellationToken);
-}
 
 internal class FileService(IFileRepository fileRepository) : IFileService
 {
@@ -27,7 +17,7 @@ internal class FileService(IFileRepository fileRepository) : IFileService
     public async Task<ResultDto<List<string>>> CreateListAsync(IFormFileCollection files, CancellationToken cancellationToken)
     {
         if (!files.Any())
-            return ResultDto.Success<List<string>>([]);
+            return ResultDto.Success<List<string>>(new List<string>());
 
         if (files.Any(x => x.Length == 0))
             return ResultDto.Error<List<string>>(HttpStatusCode.BadRequest, ExceptionMessage.ProductPhoto001OneOfFilesWasEmpty);
