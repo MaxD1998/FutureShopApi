@@ -1,18 +1,18 @@
 ﻿using Authorization.Core.Dtos.Login;
 using Authorization.Core.Dtos.Register;
+using Authorization.Core.Interfaces.Repositories;
 using Authorization.Core.Services;
 using Authorization.Domain.Entities.Users;
-using Authorization.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Moq;
 using Shared.Core.Dtos;
-using Shared.Infrastructure;
+using Shared.Core.Interfaces;
+using Shared.Domain.Enums;
 using Shared.Shared.Constants;
-using Shared.Infrastructure.Settings;
+using Shared.Shared.Settings;
 using System.Net;
 using System.Security.Claims;
-using Shared.Domain.Enums;
 
 namespace Authorization.Test.Core.Services;
 

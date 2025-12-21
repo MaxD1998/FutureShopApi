@@ -1,5 +1,4 @@
-﻿using Shared.Core.Bases;
-using Shared.Core.Dtos;
+﻿using Shared.Core.Dtos;
 using Shared.Core.Errors;
 using Shared.Core.Services;
 using Shared.Shared.Constants;
@@ -7,8 +6,8 @@ using Shared.Shared.Extensions;
 using Shop.Core.Dtos.Basket;
 using Shop.Core.Dtos.Basket.BasketItem;
 using Shop.Core.Factories;
+using Shop.Core.Interfaces.Repositories;
 using Shop.Core.Logics.PromotionLogics;
-using Shop.Infrastructure.Persistence.Repositories;
 using System.Net;
 
 namespace Shop.Core.Services;

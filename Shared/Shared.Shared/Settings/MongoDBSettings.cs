@@ -1,4 +1,4 @@
-﻿namespace Shared.Infrastructure.Settings;
+﻿namespace Shared.Shared.Settings;
 
 public class MongoDBSettings
 {

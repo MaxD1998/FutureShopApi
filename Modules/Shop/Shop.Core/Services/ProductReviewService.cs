@@ -1,10 +1,9 @@
-﻿using Shared.Core.Bases;
-using Shared.Core.Dtos;
+﻿using Shared.Core.Dtos;
 using Shared.Core.Services;
 using Shared.Shared.Dtos;
 using Shop.Core.Dtos.ProductReview;
 using Shop.Core.Errors;
-using Shop.Infrastructure.Persistence.Repositories;
+using Shop.Core.Interfaces.Repositories;
 using System.Net;
 
 namespace Shop.Core.Services;

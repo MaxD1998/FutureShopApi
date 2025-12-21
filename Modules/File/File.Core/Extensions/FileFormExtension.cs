@@ -1,4 +1,4 @@
-﻿using File.Infrastructure.Documents;
+﻿using File.Domain.Documents;
 using Microsoft.AspNetCore.Http;
 using Shared.Core.Helpers;
 

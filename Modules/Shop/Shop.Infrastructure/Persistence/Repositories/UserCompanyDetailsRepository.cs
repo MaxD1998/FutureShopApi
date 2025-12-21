@@ -1,17 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
-using Shared.Infrastructure.Interfaces;
-using Shop.Infrastructure.Persistence;
+using Shop.Core.Interfaces.Repositories;
 using Shop.Domain.Entities.Users;
 
 namespace Shop.Infrastructure.Persistence.Repositories;
-
-public interface IUserCompanyDetailsRepository : IBaseRepository<UserCompanyDetailsEntity>, IUpdateRepository<UserCompanyDetailsEntity>
-{
-    Task<bool> AnyIsDefaultByUserExternalIdAsync(Guid userExternalId, CancellationToken cancellationToken);
-
-    Task ClearIsDefaultByUserExternalIdAsync(Guid userExternalId, CancellationToken cancellationToken);
-}
 
 internal class UserCompanyDetailsRepository(ShopContext context) : BaseRepository<ShopContext, UserCompanyDetailsEntity>(context), IUserCompanyDetailsRepository
 {

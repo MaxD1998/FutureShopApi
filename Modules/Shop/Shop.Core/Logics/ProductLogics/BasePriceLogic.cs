@@ -1,4 +1,4 @@
-﻿using Shop.Infrastructure.Persistence.Repositories;
+﻿using Shop.Core.Interfaces.Repositories;
 
 namespace Shop.Core.Logics.ProductLogics;
 

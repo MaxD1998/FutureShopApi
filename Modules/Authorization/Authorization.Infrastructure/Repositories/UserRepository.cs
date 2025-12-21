@@ -1,23 +1,10 @@
-﻿using Authorization.Domain.Entities.Users;
+﻿using Authorization.Core.Interfaces.Repositories;
+using Authorization.Domain.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Exceptions;
-using Shared.Infrastructure.Interfaces;
 
 namespace Authorization.Infrastructure.Repositories;
-
-public interface IUserRepository : IBaseRepository<UserEntity>, IUpdateRepository<UserEntity>
-{
-    Task<bool> AnyByEmailAsync(string email, CancellationToken cancellationToken);
-
-    Task<UserEntity> GetByEmailAsync(string email, CancellationToken cancellationToken);
-
-    Task<UserEntity> GetByTokenAsync(Guid token, CancellationToken cancellationToken);
-
-    Task<UserEntity> UpdateBasicInfoAsync(Guid id, UserEntity entity, CancellationToken cancellationToken);
-
-    Task UpdatePasswordAsync(Guid id, string hashedPassword, CancellationToken cancellationToken);
-}
 
 internal class UserRepository(AuthContext context) : BaseRepository<AuthContext, UserEntity>(context), IUserRepository
 {

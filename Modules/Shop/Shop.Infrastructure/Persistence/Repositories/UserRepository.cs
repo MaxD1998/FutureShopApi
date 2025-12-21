@@ -2,17 +2,9 @@
 using Shared.Infrastructure.Bases;
 using Shop.Infrastructure.Persistence;
 using Shop.Domain.Entities.Users;
+using Shop.Core.Interfaces.Repositories;
 
 namespace Shop.Infrastructure.Persistence.Repositories;
-
-public interface IUserRepository : IBaseRepository<UserEntity>
-{
-    Task CreateOrUpdateForEventAsync(UserEntity eventEntity, CancellationToken cancellationToken);
-
-    Task DeleteByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
-
-    Task<Guid> GetIdByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
-}
 
 internal class UserRepository(ShopContext context) : BaseRepository<ShopContext, UserEntity>(context), IUserRepository
 {

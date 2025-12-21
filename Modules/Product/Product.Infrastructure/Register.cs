@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Product.Infrastructure.Repositories;
+using Product.Core.Interfaces.Repositories;
 
 namespace Product.Infrastructure;
 

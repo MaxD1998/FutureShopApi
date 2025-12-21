@@ -1,11 +1,10 @@
-﻿using Shared.Core.Bases;
-using Shared.Core.Dtos;
+﻿using Shared.Core.Dtos;
 using Shared.Core.Services;
 using Shared.Shared.Constants;
 using Shared.Shared.Dtos;
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.Category;
-using Shop.Infrastructure.Persistence.Repositories;
+using Shop.Core.Interfaces.Repositories;
 
 namespace Shop.Core.Services;
 

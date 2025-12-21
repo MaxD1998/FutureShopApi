@@ -1,15 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
-using Shared.Infrastructure.Interfaces;
-using Shop.Infrastructure.Persistence;
+using Shop.Core.Interfaces.Repositories;
 using Shop.Domain.Entities.Products;
 
 namespace Shop.Infrastructure.Persistence.Repositories;
-
-public interface IProductReviewRepository : IBaseRepository<ProductReviewEntity>, IUpdateRepository<ProductReviewEntity>
-{
-    Task<bool> AnyByUserIdAndProductIdAsync(Guid userId, Guid productId, CancellationToken cancellationToken);
-}
 
 internal class ProductReviewRepository(ShopContext context) : BaseRepository<ShopContext, ProductReviewEntity>(context), IProductReviewRepository
 {

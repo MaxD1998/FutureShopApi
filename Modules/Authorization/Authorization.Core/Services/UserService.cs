@@ -1,11 +1,11 @@
 ﻿using Authorization.Core.Dtos.User;
 using Authorization.Core.Errors;
-using Authorization.Infrastructure.Repositories;
+using Authorization.Core.Interfaces.Repositories;
 using Shared.Core.Constans;
 using Shared.Core.Dtos;
 using Shared.Core.Errors;
+using Shared.Core.Interfaces;
 using Shared.Core.Services;
-using Shared.Infrastructure;
 using Shared.Shared.Dtos;
 using System.Net;
 using Crypt = BCrypt.Net.BCrypt;

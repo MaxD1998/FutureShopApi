@@ -1,13 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Product.Core.Interfaces.Repositories;
 using Product.Domain.Entities;
 using Shared.Infrastructure.Bases;
-using Shared.Infrastructure.Interfaces;
 
 namespace Product.Infrastructure.Repositories;
-
-public interface IProductRepository : IBaseRepository<ProductEntity>, IUpdateRepository<ProductEntity>
-{
-}
 
 internal class ProductRepository(ProductContext context) : BaseRepository<ProductContext, ProductEntity>(context), IProductRepository
 {

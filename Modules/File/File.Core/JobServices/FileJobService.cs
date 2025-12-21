@@ -1,9 +1,8 @@
-﻿using File.Infrastructure.Repositories;
-using Shared.Core.Bases;
+﻿using File.Core.Interfaces.Repositories;
 using Shared.Core.Constans;
 using Shared.Core.Dtos;
 using Shared.Core.Enums;
-using Shared.Infrastructure;
+using Shared.Core.Interfaces;
 
 namespace File.Core.JobServices;
 

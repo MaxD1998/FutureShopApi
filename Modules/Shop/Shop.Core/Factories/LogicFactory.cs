@@ -4,9 +4,9 @@ using Shared.Shared.Interfaces;
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.Product.Price;
 using Shop.Core.Interfaces;
+using Shop.Core.Interfaces.Repositories;
 using Shop.Core.Logics.ProductLogics;
 using Shop.Core.Logics.PromotionLogics;
-using Shop.Infrastructure.Persistence.Repositories;
 
 namespace Shop.Core.Factories;
 

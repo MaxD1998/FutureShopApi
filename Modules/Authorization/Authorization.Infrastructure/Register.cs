@@ -1,5 +1,6 @@
-﻿using Authorization.Infrastructure.Repositories;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Authorization.Infrastructure.Repositories;
+using Authorization.Core.Interfaces.Repositories;
 
 namespace Authorization.Infrastructure;
 

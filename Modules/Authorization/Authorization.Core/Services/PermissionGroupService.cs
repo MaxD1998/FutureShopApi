@@ -1,6 +1,6 @@
 ﻿using Authorization.Core.Dtos;
 using Authorization.Core.Dtos.PermissionGroup;
-using Authorization.Infrastructure.Repositories;
+using Authorization.Core.Interfaces.Repositories;
 using Shared.Core.Dtos;
 using Shared.Shared.Dtos;
 

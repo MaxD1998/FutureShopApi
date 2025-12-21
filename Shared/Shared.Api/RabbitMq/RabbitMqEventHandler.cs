@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Shared.Core.Interfaces;
 using Shared.Infrastructure.RabbitMq;
-using Shared.Infrastructure.Settings;
+using Shared.Shared.Settings;
 
 namespace Shared.Api.RabbitMq;
 

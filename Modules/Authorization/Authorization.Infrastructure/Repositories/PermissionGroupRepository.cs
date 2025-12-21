@@ -1,13 +1,9 @@
-﻿using Authorization.Domain.Entities.PrermissionGroups;
+﻿using Authorization.Core.Interfaces.Repositories;
+using Authorization.Domain.Entities.PrermissionGroups;
 using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
-using Shared.Infrastructure.Interfaces;
 
 namespace Authorization.Infrastructure.Repositories;
-
-public interface IPermissionGroupRepository : IBaseRepository<PermissionGroupEntity>, IUpdateRepository<PermissionGroupEntity>
-{
-}
 
 internal class PermissionGroupRepository(AuthContext context) : BaseRepository<AuthContext, PermissionGroupEntity>(context), IPermissionGroupRepository
 {

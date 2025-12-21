@@ -1,11 +1,10 @@
 ﻿using Product.Core.Dtos;
 using Product.Core.Dtos.ProductBase;
-using Product.Infrastructure.Repositories;
-using Shared.Core.Bases;
+using Product.Core.Interfaces.Repositories;
 using Shared.Core.Constans;
 using Shared.Core.Dtos;
 using Shared.Core.Enums;
-using Shared.Infrastructure;
+using Shared.Core.Interfaces;
 using Shared.Shared.Dtos;
 
 namespace Product.Core.Services;

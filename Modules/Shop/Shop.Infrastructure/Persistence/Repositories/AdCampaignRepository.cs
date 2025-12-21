@@ -1,18 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
-using Shared.Infrastructure.Interfaces;
-using Shop.Infrastructure.Persistence;
+using Shop.Core.Interfaces.Repositories;
 using Shop.Domain.Entities.AdCampaigns;
 using System.Linq.Expressions;
 
 namespace Shop.Infrastructure.Persistence.Repositories;
-
-public interface IAdCampaignRepository : IBaseRepository<AdCampaignEntity>, IUpdateRepository<AdCampaignEntity>
-{
-    Task<List<TResult>> GetActualAsync<TResult>(Expression<Func<AdCampaignEntity, TResult>> map, CancellationToken cancellationToken);
-
-    Task<TResult> GetActualByIdAsync<TResult>(Guid id, Expression<Func<AdCampaignEntity, TResult>> map, CancellationToken cancellationToken);
-}
 
 internal class AdCampaignRepository(ShopContext context) : BaseRepository<ShopContext, AdCampaignEntity>(context), IAdCampaignRepository
 {

@@ -1,7 +1,6 @@
-﻿using Shared.Core.Bases;
-using Shop.Core.Dtos.ProductBase;
+﻿using Shop.Core.Dtos.ProductBase;
+using Shop.Core.Interfaces.Repositories;
 using Shop.Domain.Entities.ProductBases;
-using Shop.Infrastructure.Persistence.Repositories;
 
 namespace Shop.Core.EventServices;
 

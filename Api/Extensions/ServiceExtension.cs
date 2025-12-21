@@ -4,7 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using Quartz;
 using Shared.Api.Handlers;
 using Shared.Api.Providers;
-using Shared.Infrastructure.Settings;
+using Shared.Shared.Settings;
 using System.Text;
 
 namespace Api.Extensions;

@@ -1,7 +1,7 @@
 ﻿using Shop.Core.Dtos.Product;
 using Shop.Core.Dtos.Promotion;
 using Shop.Domain.Entities.AdCampaigns;
-using Shop.Infrastructure.Persistence.Enums;
+using Shop.Domain.Enums;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.AdCampaign;

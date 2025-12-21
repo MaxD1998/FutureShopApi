@@ -1,12 +1,15 @@
 ﻿using Shared.Core.Dtos;
 using Shared.Core.Services;
+using Shared.Shared.Constants;
 using Shared.Shared.Dtos;
 using Shared.Shared.Extensions;
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.AdCampaign;
 using Shop.Core.Dtos.Product;
 using Shop.Core.Factories;
+using Shop.Core.Interfaces.Repositories;
 using Shop.Core.Logics.PromotionLogics;
+using Shop.Domain.Enums;
 
 namespace Shop.Core.Services;
 

@@ -1,16 +1,12 @@
 ﻿using Microsoft.Extensions.Options;
 using RabbitMQ.Client;
-using Shared.Infrastructure.Settings;
+using Shared.Core.Interfaces;
+using Shared.Shared.Settings;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace Shared.Infrastructure;
-
-public interface IRabbitMqContext
-{
-    Task SendMessageAsync(string exchange, object body);
-}
 
 public class RabbitMqContext(IOptions<ConnectionSettings> connectionSettings) : IRabbitMqContext
 {

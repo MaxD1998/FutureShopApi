@@ -12,6 +12,7 @@ using Product.Infrastructure;
 using Quartz.AspNetCore;
 using Scalar.AspNetCore;
 using Shared.Api.Middlewares;
+using Shared.Core.Interfaces;
 using Shared.Infrastructure;
 using Shop.Infrastructure.Persistence;
 using Warehouse.Infrastructure;

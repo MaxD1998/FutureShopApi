@@ -2,8 +2,8 @@
 using Shared.Core.Errors;
 using Shared.Core.Services;
 using Shop.Core.Dtos.PurchaseList;
+using Shop.Core.Interfaces.Repositories;
 using Shop.Domain.Entities.PurchaseLists;
-using Shop.Infrastructure.Persistence.Repositories;
 using System.Net;
 
 namespace Shop.Core.Services;

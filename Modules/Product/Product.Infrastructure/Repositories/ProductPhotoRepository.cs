@@ -1,13 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Product.Domain.Entities;
 using Shared.Infrastructure.Bases;
+using Product.Core.Interfaces.Repositories;
 
 namespace Product.Infrastructure.Repositories;
-
-public interface IProductPhotoRepository : IBaseRepository<ProductPhotoEntity>
-{
-    Task<List<string>> GetMissingFileIdsAsync(List<string> fileIds, CancellationToken cancellationToken);
-}
 
 internal class ProductPhotoRepository(ProductContext context) : BaseRepository<ProductContext, ProductPhotoEntity>(context), IProductPhotoRepository
 {

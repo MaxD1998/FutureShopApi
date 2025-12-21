@@ -3,7 +3,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Shared.Domain.Bases;
 using Shared.Infrastructure.Exceptions;
-using Shared.Infrastructure.Settings;
+using Shared.Shared.Settings;
 using System.Diagnostics;
 
 namespace Shared.Infrastructure.Bases;

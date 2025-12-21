@@ -1,7 +1,7 @@
 ﻿using Shared.Shared.Interfaces;
 using Shop.Domain.Entities.Products;
 
-namespace Shop.Infrastructure.Persistence.Models.Products;
+namespace Shop.Core.Models.Products;
 
 public class GetProductListByCategoryIdParams
 {

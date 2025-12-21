@@ -1,22 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 using Shared.Domain.Bases;
+using Shared.Domain.Interfaces;
 using System.Linq.Expressions;
 
 namespace Shared.Infrastructure.Bases;
-
-public interface IBaseNoSqlRepository<TDocument> where TDocument : BaseDocument
-{
-    Task<long> CountAsync(CancellationToken cancellationToken);
-
-    Task<List<TDocument>> CreateListAsync(List<TDocument> entities, CancellationToken cancellationToken);
-
-    Task DeleteManyByIdsAsync(List<string> ids, CancellationToken cancellationToken);
-
-    Task<TDocument> GetByIdAsync(string id, CancellationToken cancellationToken);
-
-    Task<List<TResult>> GetListByAsync<TResult>(Expression<Func<TDocument, bool>> filter, Expression<Func<TDocument, TResult>> map, CancellationToken cancellationToken);
-}
 
 public class BaseNoSqlRepository<TContext, TDocument>(TContext context) : IBaseNoSqlRepository<TDocument> where TContext : BaseNoSqlContext where TDocument : BaseDocument
 {

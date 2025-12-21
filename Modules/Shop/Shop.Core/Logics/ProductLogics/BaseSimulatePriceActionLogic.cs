@@ -2,8 +2,8 @@
 using Shared.Shared.Interfaces;
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.Product.Price;
+using Shop.Core.Interfaces.Repositories;
 using Shop.Domain.Entities.Products;
-using Shop.Infrastructure.Persistence.Repositories;
 
 namespace Shop.Core.Logics.ProductLogics;
 

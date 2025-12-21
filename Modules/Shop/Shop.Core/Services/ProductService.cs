@@ -7,9 +7,9 @@ using Shop.Core.Dtos;
 using Shop.Core.Dtos.Product;
 using Shop.Core.Dtos.Product.Price;
 using Shop.Core.Factories;
+using Shop.Core.Interfaces.Repositories;
 using Shop.Core.Logics.PromotionLogics;
-using Shop.Infrastructure.Persistence.Models.Products;
-using Shop.Infrastructure.Persistence.Repositories;
+using Shop.Core.Models.Products;
 
 namespace Shop.Core.Services;
 

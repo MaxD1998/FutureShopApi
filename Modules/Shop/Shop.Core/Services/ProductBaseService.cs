@@ -1,9 +1,8 @@
-﻿using Shared.Core.Bases;
-using Shared.Core.Dtos;
+﻿using Shared.Core.Dtos;
 using Shared.Shared.Dtos;
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.ProductBase;
-using Shop.Infrastructure.Persistence.Repositories;
+using Shop.Core.Interfaces.Repositories;
 
 namespace Shop.Core.Services;
 

@@ -1,5 +1,6 @@
-﻿using File.Infrastructure.Repositories;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using File.Infrastructure.Repositories;
+using File.Core.Interfaces.Repositories;
 
 namespace File.Infrastructure;
 

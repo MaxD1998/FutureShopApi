@@ -1,15 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
-using Shared.Infrastructure.Interfaces;
-using Shop.Infrastructure.Persistence;
+using Shop.Core.Interfaces.Repositories;
 using Shop.Domain.Entities.Promotions;
 
 namespace Shop.Infrastructure.Persistence.Repositories;
-
-public interface IPromotionRepository : IBaseRepository<PromotionEntity>, IUpdateRepository<PromotionEntity>
-{
-    Task<List<PromotionEntity>> GetActivePromotionsAsync(List<string> codes, CancellationToken cancellationToken);
-}
 
 public class PromotionRepository(ShopContext context) : BaseRepository<ShopContext, PromotionEntity>(context), IPromotionRepository
 {

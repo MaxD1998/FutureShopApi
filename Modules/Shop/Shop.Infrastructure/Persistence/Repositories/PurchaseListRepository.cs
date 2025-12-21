@@ -1,16 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
-using Shared.Infrastructure.Interfaces;
-using Shop.Infrastructure.Persistence;
+using Shop.Core.Interfaces.Repositories;
 using Shop.Domain.Entities.PurchaseLists;
 using System.Linq.Expressions;
 
 namespace Shop.Infrastructure.Persistence.Repositories;
-
-public interface IPurchaseListRepository : IBaseRepository<PurchaseListEntity>, IUpdateRepository<PurchaseListEntity>
-{
-    Task<List<TResult>> GetByUserIdAsync<TResult>(Guid userId, Expression<Func<PurchaseListEntity, TResult>> map, CancellationToken cancellationToken);
-}
 
 internal class PurchaseListRepository(ShopContext context) : BaseRepository<ShopContext, PurchaseListEntity>(context), IPurchaseListRepository
 {

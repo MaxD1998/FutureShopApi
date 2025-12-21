@@ -1,15 +1,9 @@
 ﻿using Authorization.Domain.Entities.Users;
 using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
+using Authorization.Core.Interfaces.Repositories;
 
 namespace Authorization.Infrastructure.Repositories;
-
-public interface IRefreshTokenRepository : IBaseRepository<RefreshTokenEntity>
-{
-    Task<RefreshTokenEntity> CreateOrUpdateByUserIdAsync(RefreshTokenEntity entityToUpdate, CancellationToken cancellationToken);
-
-    Task DeleteByUserId(Guid userId, CancellationToken cancellationToken);
-}
 
 internal class RefreshTokenRepository(AuthContext context) : BaseRepository<AuthContext, RefreshTokenEntity>(context), IRefreshTokenRepository
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Shared.Infrastructure.Bases;
-using Shared.Infrastructure.Settings;
+using Shared.Shared.Settings;
 
 namespace File.Infrastructure;
 

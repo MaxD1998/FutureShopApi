@@ -1,6 +1,6 @@
 ﻿using Shop.Core.Dtos.Promotion.PromotionProduct;
 using Shop.Domain.Entities.Promotions;
-using Shop.Infrastructure.Persistence.Enums;
+using Shop.Domain.Enums;
 using System.Text.Json;
 
 namespace Shop.Core.Dtos.Promotion;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Shared.Infrastructure.Bases;
-using Shared.Infrastructure.Settings;
+using Shared.Shared.Settings;
 using System.Reflection;
 
 namespace Product.Infrastructure;

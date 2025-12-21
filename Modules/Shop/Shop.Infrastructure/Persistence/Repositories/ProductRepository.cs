@@ -1,25 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Extensions;
-using Shared.Infrastructure.Interfaces;
-using Shop.Infrastructure.Persistence;
+using Shop.Core.Interfaces.Repositories;
+using Shop.Core.Models.Products;
 using Shop.Domain.Entities.Categories;
 using Shop.Domain.Entities.Products;
-using Shop.Infrastructure.Persistence.Models.Products;
 using System.Linq.Expressions;
 
 namespace Shop.Infrastructure.Persistence.Repositories;
-
-public interface IProductRepository : IBaseRepository<ProductEntity>, IUpdateRepository<ProductEntity>
-{
-    Task CreateOrUpdateForEventAsync(ProductEntity eventEntity, CancellationToken cancellationToken);
-
-    Task DeleteByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
-
-    Task<Guid?> GetIdByExternalIdAsync(Guid externalId, CancellationToken cancellationToken);
-
-    Task<List<TResult>> GetListByCategoryIdAsync<TResult>(GetProductListByCategoryIdParams parameters, Expression<Func<ProductEntity, TResult>> map, CancellationToken cancellationToken);
-}
 
 internal class ProductRepository(ShopContext context) : BaseRepository<ShopContext, ProductEntity>(context), IProductRepository
 {

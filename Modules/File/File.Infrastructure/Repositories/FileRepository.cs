@@ -1,13 +1,9 @@
-﻿using File.Infrastructure.Documents;
+﻿using File.Domain.Documents;
 using MongoDB.Driver;
 using Shared.Infrastructure.Bases;
+using File.Core.Interfaces.Repositories;
 
 namespace File.Infrastructure.Repositories;
-
-public interface IFileRepository : IBaseNoSqlRepository<FileDocument>
-{
-    Task<List<string>> Get1000IdAsync(int pageIndex, CancellationToken cancellationToken);
-}
 
 internal class FileRepository(FileContext context) : BaseNoSqlRepository<FileContext, FileDocument>(context), IFileRepository
 {

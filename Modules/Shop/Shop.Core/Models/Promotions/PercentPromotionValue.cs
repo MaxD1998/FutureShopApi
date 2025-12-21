@@ -1,4 +1,4 @@
-﻿namespace Shop.Infrastructure.Persistence.Models.Promotions;
+﻿namespace Shop.Core.Models.Promotions;
 
 public class PercentPromotionValue
 {

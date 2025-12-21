@@ -1,6 +1,6 @@
 ﻿using Shared.Domain.Bases;
 
-namespace Shared.Infrastructure.Interfaces;
+namespace Shared.Core.Interfaces;
 
 public interface IUpdateRepository<TEntity> where TEntity : BaseEntity
 {

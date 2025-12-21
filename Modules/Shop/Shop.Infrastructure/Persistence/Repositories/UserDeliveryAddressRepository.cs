@@ -1,17 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
-using Shared.Infrastructure.Interfaces;
-using Shop.Infrastructure.Persistence;
+using Shop.Core.Interfaces.Repositories;
 using Shop.Domain.Entities.Users;
 
 namespace Shop.Infrastructure.Persistence.Repositories;
-
-public interface IUserDeliveryAddressRepository : IBaseRepository<UserDeliveryAddressEntity>, IUpdateRepository<UserDeliveryAddressEntity>
-{
-    Task<bool> AnyIsDefaultByUserExternalIdAsync(Guid userExternalId, CancellationToken cancellationToken);
-
-    Task ClearIsDefaultByUserExternalIdAsync(Guid userExternalId, CancellationToken cancellationToken);
-}
 
 internal class UserDeliveryAddressRepository(ShopContext context) : BaseRepository<ShopContext, UserDeliveryAddressEntity>(context), IUserDeliveryAddressRepository
 {
