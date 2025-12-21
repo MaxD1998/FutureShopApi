@@ -1,6 +1,6 @@
 ﻿using Shop.Core.Dtos.AdCampaign.AdCampaignItem;
 using Shop.Core.Dtos.AdCampaign.AdCampaignProduct;
-using Shop.Infrastructure.Persistence.Entities.AdCampaigns;
+using Shop.Domain.Entities.AdCampaigns;
 using Shop.Infrastructure.Persistence.Enums;
 
 namespace Shop.Core.Dtos.AdCampaign;

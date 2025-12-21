@@ -3,7 +3,7 @@ using Shared.Core.Services;
 using Shop.Core.Dtos.Basket;
 using Shop.Core.Factories;
 using Shop.Core.Services;
-using Shop.Infrastructure.Persistence.Entities.Baskets;
+using Shop.Domain.Entities.Baskets;
 using Shop.Infrastructure.Persistence.Repositories;
 using System.Linq.Expressions;
 

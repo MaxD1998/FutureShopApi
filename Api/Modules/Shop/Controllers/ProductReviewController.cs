@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Infrastructure.Extensions;
 using Shared.Shared.Dtos;
 using Shop.Core.Dtos.ProductReview;
 using Shop.Core.Services;

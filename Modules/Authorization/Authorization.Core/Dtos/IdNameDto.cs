@@ -1,4 +1,4 @@
-﻿using Authorization.Infrastructure.Entities.PrermissionGroups;
+﻿using Authorization.Domain.Entities.PrermissionGroups;
 using Shared.Core.Bases;
 using System.Linq.Expressions;
 

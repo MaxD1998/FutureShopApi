@@ -1,6 +1,6 @@
 ﻿using Shared.Shared.Interfaces;
 using Shop.Core.Interfaces;
-using Shop.Infrastructure.Persistence.Entities.Promotions;
+using Shop.Domain.Entities.Promotions;
 using Shop.Infrastructure.Persistence.Enums;
 using Shop.Infrastructure.Persistence.Models.Promotions;
 using Shop.Infrastructure.Persistence.Repositories;

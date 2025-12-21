@@ -1,4 +1,4 @@
-﻿namespace Shared.Infrastructure.Extensions;
+﻿namespace Shared.Shared.Dtos;
 
 public class PageDto<T>
 {

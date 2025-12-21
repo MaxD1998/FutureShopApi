@@ -1,4 +1,4 @@
-﻿using Authorization.Infrastructure.Entities.Users;
+﻿using Authorization.Domain.Entities.Users;
 using Crypt = BCrypt.Net.BCrypt;
 
 namespace Authorization.Core.Dtos.User;

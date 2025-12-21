@@ -2,7 +2,7 @@
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Interfaces;
 using Shop.Infrastructure.Persistence;
-using Shop.Infrastructure.Persistence.Entities.AdCampaigns;
+using Shop.Domain.Entities.AdCampaigns;
 using System.Linq.Expressions;
 
 namespace Shop.Infrastructure.Persistence.Repositories;

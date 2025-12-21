@@ -3,7 +3,6 @@ using Product.Core.Dtos.Product;
 using Product.Core.Services;
 using Shared.Api.Attributes;
 using Shared.Domain.Enums;
-using Shared.Infrastructure.Extensions;
 using Shared.Shared.Dtos;
 using Shared.Shared.Enums;
 

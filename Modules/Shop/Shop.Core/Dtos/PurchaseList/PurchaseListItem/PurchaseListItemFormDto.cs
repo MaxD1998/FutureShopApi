@@ -1,4 +1,4 @@
-﻿using Shop.Infrastructure.Persistence.Entities.PurchaseLists;
+﻿using Shop.Domain.Entities.PurchaseLists;
 
 namespace Shop.Core.Dtos.PurchaseList.PurchaseListItem;
 

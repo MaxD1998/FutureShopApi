@@ -1,4 +1,4 @@
-﻿using Authorization.Infrastructure.Entities.Users;
+﻿using Authorization.Domain.Entities.Users;
 using System.Linq.Expressions;
 
 namespace Authorization.Core.Dtos.User;

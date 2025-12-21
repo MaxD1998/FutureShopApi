@@ -6,7 +6,6 @@ using Shared.Core.Dtos;
 using Shared.Core.Errors;
 using Shared.Core.Services;
 using Shared.Infrastructure;
-using Shared.Infrastructure.Extensions;
 using Shared.Shared.Dtos;
 using System.Net;
 using Crypt = BCrypt.Net.BCrypt;

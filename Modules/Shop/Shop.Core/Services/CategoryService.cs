@@ -2,7 +2,6 @@
 using Shared.Core.Dtos;
 using Shared.Core.Services;
 using Shared.Shared.Constants;
-using Shared.Infrastructure.Extensions;
 using Shared.Shared.Dtos;
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.Category;

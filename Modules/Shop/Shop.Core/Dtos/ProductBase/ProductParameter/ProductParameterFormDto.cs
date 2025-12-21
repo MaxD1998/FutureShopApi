@@ -1,5 +1,5 @@
 ﻿using Shop.Core.Dtos.Product.ProductParameterTranslation;
-using Shop.Infrastructure.Persistence.Entities.ProductBases;
+using Shop.Domain.Entities.ProductBases;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.ProductBase.ProductParameter;

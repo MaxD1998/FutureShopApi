@@ -1,6 +1,5 @@
 ﻿using Shared.Core.Bases;
 using Shared.Core.Dtos;
-using Shared.Infrastructure.Extensions;
 using Shared.Shared.Dtos;
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.ProductBase;

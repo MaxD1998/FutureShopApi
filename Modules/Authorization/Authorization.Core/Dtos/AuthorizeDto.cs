@@ -1,4 +1,4 @@
-﻿using Authorization.Infrastructure.Entities.Users;
+﻿using Authorization.Domain.Entities.Users;
 using Shared.Domain.Enums;
 using Shared.Shared.Enums;
 

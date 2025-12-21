@@ -1,5 +1,5 @@
 ﻿using Authorization.Core.Bases;
-using Authorization.Infrastructure.Entities.Permissions;
+using Authorization.Domain.Entities.Permissions;
 using Shared.Shared.Enums;
 using System.Linq.Expressions;
 

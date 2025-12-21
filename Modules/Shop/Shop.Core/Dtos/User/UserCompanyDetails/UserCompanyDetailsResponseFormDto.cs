@@ -1,4 +1,4 @@
-﻿using Shop.Infrastructure.Persistence.Entities.Users;
+﻿using Shop.Domain.Entities.Users;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.User.UserCompanyDetails;

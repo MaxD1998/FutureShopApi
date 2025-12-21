@@ -1,7 +1,7 @@
 ﻿using Authorization.Core.Dtos.Login;
 using Authorization.Core.Dtos.Register;
 using Authorization.Core.Services;
-using Authorization.Infrastructure.Entities.Users;
+using Authorization.Domain.Entities.Users;
 using Authorization.Infrastructure.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;

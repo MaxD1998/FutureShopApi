@@ -1,13 +1,14 @@
-﻿using Shop.Infrastructure.Persistence.Entities.Products;
+﻿using Shop.Domain.Entities.Products;
 
 namespace Shop.Core.Dtos.Product.Price;
 
 public class SimulatePriceFormDto : PriceFormDto
 {
     public int FakeId { get; set; }
+
     public bool IsNew { get; set; }
 
-    public static new Func<PriceEntity, SimulatePriceFormDto> Map() => entity => new()
+    public new static Func<PriceEntity, SimulatePriceFormDto> Map() => entity => new()
     {
         End = entity.End,
         Id = entity.Id,

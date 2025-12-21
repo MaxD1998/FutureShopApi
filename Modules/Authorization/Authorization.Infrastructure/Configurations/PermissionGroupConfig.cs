@@ -1,4 +1,4 @@
-﻿using Authorization.Infrastructure.Entities.PrermissionGroups;
+﻿using Authorization.Domain.Entities.PrermissionGroups;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.Infrastructure.Bases;

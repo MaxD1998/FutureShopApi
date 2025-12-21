@@ -1,5 +1,5 @@
 ﻿using Authorization.Core.Dtos.PermissionGroup.Permissions;
-using Authorization.Infrastructure.Entities.PrermissionGroups;
+using Authorization.Domain.Entities.PrermissionGroups;
 
 namespace Authorization.Core.Dtos.PermissionGroup;
 

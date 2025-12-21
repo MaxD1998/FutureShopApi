@@ -1,12 +1,12 @@
 ﻿using Shared.Domain.Bases;
 using Shared.Domain.Exceptions;
+using Shared.Domain.Extensions;
 using Shared.Domain.Interfaces;
 using Shared.Shared.Constants;
 using Shop.Domain.Entities.AdCampaigns;
 using Shop.Domain.Enums;
-using Shop.Infrastructure.Persistence.Exceptions.AdCampaigns;
+using Shop.Domain.Exceptions.AdCampaigns;
 using System.Text.Json;
-using Shared.Domain.Extensions;
 
 namespace Shop.Domain.Entities.Promotions;
 

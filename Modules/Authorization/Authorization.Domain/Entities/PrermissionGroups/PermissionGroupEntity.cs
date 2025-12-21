@@ -4,6 +4,7 @@ using Shared.Domain.Bases;
 using Shared.Domain.Exceptions;
 using Shared.Domain.Extensions;
 using Shared.Domain.Interfaces;
+using Shared.Shared.Constants;
 
 namespace Authorization.Domain.Entities.PrermissionGroups;
 

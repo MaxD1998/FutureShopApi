@@ -1,6 +1,6 @@
 ﻿using Shop.Core.Dtos.Product;
 using Shop.Core.Dtos.Promotion;
-using Shop.Infrastructure.Persistence.Entities.AdCampaigns;
+using Shop.Domain.Entities.AdCampaigns;
 using Shop.Infrastructure.Persistence.Enums;
 using System.Linq.Expressions;
 

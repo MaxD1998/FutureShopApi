@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Product.Infrastructure.Entities;
+using Product.Domain.Entities;
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Interfaces;
 

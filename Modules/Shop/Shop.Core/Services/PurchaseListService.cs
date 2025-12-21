@@ -2,7 +2,7 @@
 using Shared.Core.Errors;
 using Shared.Core.Services;
 using Shop.Core.Dtos.PurchaseList;
-using Shop.Infrastructure.Persistence.Entities.PurchaseLists;
+using Shop.Domain.Entities.PurchaseLists;
 using Shop.Infrastructure.Persistence.Repositories;
 using System.Net;
 

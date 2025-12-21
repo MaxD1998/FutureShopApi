@@ -2,7 +2,7 @@
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Interfaces;
 using Shop.Infrastructure.Persistence;
-using Shop.Infrastructure.Persistence.Entities.Users;
+using Shop.Domain.Entities.Users;
 
 namespace Shop.Infrastructure.Persistence.Repositories;
 

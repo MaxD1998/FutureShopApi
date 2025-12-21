@@ -1,5 +1,4 @@
-﻿using Shop.Infrastructure.Persistence.Entities.Products;
-using System.Linq.Expressions;
+﻿using Shop.Domain.Entities.Products;
 
 namespace Shop.Core.Dtos.Product.ProductParameterValue;
 

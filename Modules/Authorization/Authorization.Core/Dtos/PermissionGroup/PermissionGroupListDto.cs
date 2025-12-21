@@ -1,4 +1,4 @@
-﻿using Authorization.Infrastructure.Entities.PrermissionGroups;
+﻿using Authorization.Domain.Entities.PrermissionGroups;
 using System.Linq.Expressions;
 
 namespace Authorization.Core.Dtos.PermissionGroup;

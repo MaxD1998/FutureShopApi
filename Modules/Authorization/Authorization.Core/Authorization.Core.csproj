@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Shared\Shared.Core\Shared.Core.csproj" />
-    <ProjectReference Include="..\Authorization.Infrastructure\Authorization.Infrastructure.csproj" />
+    <ProjectReference Include="..\Authorization.Domain\Authorization.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

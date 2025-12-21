@@ -1,5 +1,5 @@
 ﻿using Shop.Core.Dtos.PurchaseList.PurchaseListItem;
-using Shop.Infrastructure.Persistence.Entities.PurchaseLists;
+using Shop.Domain.Entities.PurchaseLists;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.PurchaseList;

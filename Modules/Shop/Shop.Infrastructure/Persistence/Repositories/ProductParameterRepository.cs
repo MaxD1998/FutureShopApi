@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shop.Infrastructure.Persistence;
-using Shop.Infrastructure.Persistence.Entities.ProductBases;
+using Shop.Domain.Entities.ProductBases;
 using System.Linq.Expressions;
 
 namespace Shop.Infrastructure.Persistence.Repositories;

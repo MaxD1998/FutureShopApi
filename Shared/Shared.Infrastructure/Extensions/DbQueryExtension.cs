@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Shared.Infrastructure.Interfaces;
 using Shared.Shared.Dtos;
+using Shared.Shared.Interfaces;
 
 namespace Shared.Infrastructure.Extensions;
 

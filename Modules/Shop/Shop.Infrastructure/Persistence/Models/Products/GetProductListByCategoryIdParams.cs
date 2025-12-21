@@ -1,5 +1,5 @@
-﻿using Shared.Infrastructure.Interfaces;
-using Shop.Infrastructure.Persistence.Entities.Products;
+﻿using Shared.Shared.Interfaces;
+using Shop.Domain.Entities.Products;
 
 namespace Shop.Infrastructure.Persistence.Models.Products;
 

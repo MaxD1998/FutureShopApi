@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shared.Infrastructure.Bases;
-using Shop.Infrastructure.Persistence.Entities.AdCampaigns;
+using Shop.Domain.Entities.AdCampaigns;
 
 namespace Shop.Infrastructure.Persistence.Configurations;
 

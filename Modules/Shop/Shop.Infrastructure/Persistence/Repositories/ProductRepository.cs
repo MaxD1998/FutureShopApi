@@ -3,8 +3,8 @@ using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Extensions;
 using Shared.Infrastructure.Interfaces;
 using Shop.Infrastructure.Persistence;
-using Shop.Infrastructure.Persistence.Entities.Categories;
-using Shop.Infrastructure.Persistence.Entities.Products;
+using Shop.Domain.Entities.Categories;
+using Shop.Domain.Entities.Products;
 using Shop.Infrastructure.Persistence.Models.Products;
 using System.Linq.Expressions;
 

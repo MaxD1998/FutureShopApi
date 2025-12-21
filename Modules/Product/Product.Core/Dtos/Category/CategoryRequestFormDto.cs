@@ -1,4 +1,4 @@
-﻿using Product.Infrastructure.Entities;
+﻿using Product.Domain.Entities;
 
 namespace Product.Core.Dtos.Category;
 

@@ -2,7 +2,7 @@
 using Shared.Infrastructure.Bases;
 using Shared.Infrastructure.Interfaces;
 using Shop.Infrastructure.Persistence;
-using Shop.Infrastructure.Persistence.Entities.PurchaseLists;
+using Shop.Domain.Entities.PurchaseLists;
 using System.Linq.Expressions;
 
 namespace Shop.Infrastructure.Persistence.Repositories;

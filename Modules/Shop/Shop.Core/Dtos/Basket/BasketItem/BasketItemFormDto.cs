@@ -1,4 +1,4 @@
-﻿using Shop.Infrastructure.Persistence.Entities.Baskets;
+﻿using Shop.Domain.Entities.Baskets;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.Basket.BasketItem;

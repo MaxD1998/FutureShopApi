@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Shared.Infrastructure.Bases;
 using Shop.Infrastructure.Persistence;
-using Shop.Infrastructure.Persistence.Entities.Users;
+using Shop.Domain.Entities.Users;
 
 namespace Shop.Infrastructure.Persistence.Repositories;
 

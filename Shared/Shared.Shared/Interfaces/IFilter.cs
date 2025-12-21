@@ -1,4 +1,4 @@
-﻿namespace Shared.Infrastructure.Interfaces;
+﻿namespace Shared.Shared.Interfaces;
 
 public interface IFilter<T> where T : class
 {

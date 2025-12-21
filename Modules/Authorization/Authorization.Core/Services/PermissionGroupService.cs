@@ -2,7 +2,6 @@
 using Authorization.Core.Dtos.PermissionGroup;
 using Authorization.Infrastructure.Repositories;
 using Shared.Core.Dtos;
-using Shared.Infrastructure.Extensions;
 using Shared.Shared.Dtos;
 
 namespace Authorization.Core.Services;

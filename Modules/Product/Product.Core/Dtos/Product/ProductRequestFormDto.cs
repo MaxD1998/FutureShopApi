@@ -1,5 +1,5 @@
 ﻿using Product.Core.Dtos.ProductPhoto;
-using Product.Infrastructure.Entities;
+using Product.Domain.Entities;
 
 namespace Product.Core.Dtos.Product;
 
