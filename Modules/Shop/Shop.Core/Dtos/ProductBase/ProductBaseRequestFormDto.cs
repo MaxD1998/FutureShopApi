@@ -1,5 +1,5 @@
 ﻿using Shop.Core.Dtos.ProductBase.ProductParameter;
-using Shop.Infrastructure.Entities.ProductBases;
+using Shop.Infrastructure.Persistence.Entities.ProductBases;
 
 namespace Shop.Core.Dtos.ProductBase;
 

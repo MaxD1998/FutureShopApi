@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using Shop.Infrastructure.Repositories;
+using Shop.Infrastructure.Persistence;
+using Shop.Infrastructure.Persistence.Repositories;
 
 namespace Shop.Infrastructure;
 

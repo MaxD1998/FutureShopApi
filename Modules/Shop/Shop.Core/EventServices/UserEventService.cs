@@ -1,6 +1,6 @@
 ﻿using Shared.Core.Bases;
 using Shop.Core.Dtos.User;
-using Shop.Infrastructure.Repositories;
+using Shop.Infrastructure.Persistence.Repositories;
 
 namespace Shop.Core.EventServices;
 

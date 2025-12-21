@@ -1,5 +1,5 @@
 ﻿using Shop.Core.Dtos.Basket.BasketItem;
-using Shop.Infrastructure.Entities.Baskets;
+using Shop.Infrastructure.Persistence.Entities.Baskets;
 
 namespace Shop.Core.Dtos.Basket;
 

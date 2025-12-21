@@ -1,4 +1,4 @@
-﻿using Shop.Infrastructure.Entities.AdCampaigns;
+﻿using Shop.Infrastructure.Persistence.Entities.AdCampaigns;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.AdCampaign.AdCampaignItem;

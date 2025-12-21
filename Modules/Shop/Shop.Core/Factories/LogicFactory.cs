@@ -6,7 +6,7 @@ using Shop.Core.Dtos.Product.Price;
 using Shop.Core.Interfaces;
 using Shop.Core.Logics.ProductLogics;
 using Shop.Core.Logics.PromotionLogics;
-using Shop.Infrastructure.Repositories;
+using Shop.Infrastructure.Persistence.Repositories;
 
 namespace Shop.Core.Factories;
 

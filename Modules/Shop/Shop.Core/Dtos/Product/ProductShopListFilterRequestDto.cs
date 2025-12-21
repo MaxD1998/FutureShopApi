@@ -1,6 +1,6 @@
 ﻿using Shared.Infrastructure.Interfaces;
 using Shop.Core.Enums;
-using Shop.Infrastructure.Entities.Products;
+using Shop.Infrastructure.Persistence.Entities.Products;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.Product;

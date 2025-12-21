@@ -3,6 +3,7 @@ using Shared.Api.Middlewares;
 using Shop.Core;
 using Shop.Core.EventHandlers;
 using Shop.Infrastructure;
+using Shop.Infrastructure.Persistence;
 
 namespace Api.Modules.Shop;
 

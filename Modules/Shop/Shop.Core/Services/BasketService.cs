@@ -8,7 +8,7 @@ using Shop.Core.Dtos.Basket;
 using Shop.Core.Dtos.Basket.BasketItem;
 using Shop.Core.Factories;
 using Shop.Core.Logics.PromotionLogics;
-using Shop.Infrastructure.Repositories;
+using Shop.Infrastructure.Persistence.Repositories;
 using System.Net;
 
 namespace Shop.Core.Services;

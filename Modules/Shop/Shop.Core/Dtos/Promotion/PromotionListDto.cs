@@ -1,4 +1,4 @@
-﻿using Shop.Infrastructure.Entities.Promotions;
+﻿using Shop.Infrastructure.Persistence.Entities.Promotions;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.Promotion;

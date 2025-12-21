@@ -3,8 +3,8 @@ using Shared.Core.Services;
 using Shop.Core.Dtos.Basket;
 using Shop.Core.Factories;
 using Shop.Core.Services;
-using Shop.Infrastructure.Entities.Baskets;
-using Shop.Infrastructure.Repositories;
+using Shop.Infrastructure.Persistence.Entities.Baskets;
+using Shop.Infrastructure.Persistence.Repositories;
 using System.Linq.Expressions;
 
 namespace Shop.Test.Core.Services;

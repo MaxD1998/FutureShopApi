@@ -13,7 +13,7 @@ using Quartz.AspNetCore;
 using Scalar.AspNetCore;
 using Shared.Api.Middlewares;
 using Shared.Infrastructure;
-using Shop.Infrastructure;
+using Shop.Infrastructure.Persistence;
 using Warehouse.Infrastructure;
 
 namespace Api;

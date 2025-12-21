@@ -1,5 +1,5 @@
 ﻿using Shared.Core.Interfaces;
-using Shop.Infrastructure.Entities.Categories;
+using Shop.Infrastructure.Persistence.Entities.Categories;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos.Category;

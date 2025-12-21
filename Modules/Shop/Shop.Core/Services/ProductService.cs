@@ -11,7 +11,7 @@ using Shop.Core.Dtos.Product.Price;
 using Shop.Core.Factories;
 using Shop.Core.Logics.PromotionLogics;
 using Shop.Infrastructure.Models.Products;
-using Shop.Infrastructure.Repositories;
+using Shop.Infrastructure.Persistence.Repositories;
 
 namespace Shop.Core.Services;
 

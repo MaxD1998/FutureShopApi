@@ -1,9 +1,9 @@
 ﻿using Shared.Shared.Interfaces;
 using Shop.Core.Interfaces;
-using Shop.Infrastructure.Entities.Promotions;
-using Shop.Infrastructure.Enums;
-using Shop.Infrastructure.Models.Promotions;
-using Shop.Infrastructure.Repositories;
+using Shop.Infrastructure.Persistence.Entities.Promotions;
+using Shop.Infrastructure.Persistence.Enums;
+using Shop.Infrastructure.Persistence.Models.Promotions;
+using Shop.Infrastructure.Persistence.Repositories;
 using System.Text.Json;
 
 namespace Shop.Core.Logics.PromotionLogics;

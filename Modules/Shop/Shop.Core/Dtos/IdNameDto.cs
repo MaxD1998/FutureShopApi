@@ -1,9 +1,9 @@
 ﻿using Shared.Core.Bases;
-using Shop.Infrastructure.Entities.AdCampaigns;
-using Shop.Infrastructure.Entities.Categories;
-using Shop.Infrastructure.Entities.ProductBases;
-using Shop.Infrastructure.Entities.Products;
-using Shop.Infrastructure.Entities.Promotions;
+using Shop.Infrastructure.Persistence.Entities.AdCampaigns;
+using Shop.Infrastructure.Persistence.Entities.Categories;
+using Shop.Infrastructure.Persistence.Entities.ProductBases;
+using Shop.Infrastructure.Persistence.Entities.Products;
+using Shop.Infrastructure.Persistence.Entities.Promotions;
 using System.Linq.Expressions;
 
 namespace Shop.Core.Dtos;

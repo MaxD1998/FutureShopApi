@@ -10,7 +10,8 @@ using Shop.Core.Dtos.AdCampaign;
 using Shop.Core.Dtos.Product;
 using Shop.Core.Factories;
 using Shop.Core.Logics.PromotionLogics;
-using Shop.Infrastructure.Repositories;
+using Shop.Infrastructure.Persistence.Enums;
+using Shop.Infrastructure.Persistence.Repositories;
 
 namespace Shop.Core.Services;
 
@@ -88,7 +89,7 @@ internal class AdCampaignService(
 
         switch (result.Type)
         {
-            case Infrastructure.Enums.AdCampaignType.Product:
+            case AdCampaignType.Product:
             {
                 var codes = _headerService.GetHeader(HeaderNameConst.Codes).ToListString();
                 var request = new SetPromotionForProductsRequestModel<ProductShopListDto>(codes, result.Products);
@@ -96,7 +97,7 @@ internal class AdCampaignService(
                 break;
             }
 
-            case Infrastructure.Enums.AdCampaignType.Promotion:
+            case AdCampaignType.Promotion:
             {
                 var request = new SetPromotionForProductsRequestModel<ProductShopListDto>([result.Promotion.Code], result.Promotion.Products);
                 result.Promotion.Products = await _logicFactory.ExecuteAsync(request, f => f.SetPromotionForProductsLogic<ProductShopListDto>(), cancellationToken);

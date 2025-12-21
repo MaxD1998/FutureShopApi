@@ -1,4 +1,4 @@
-﻿using Shop.Infrastructure.Entities.Users;
+﻿using Shop.Infrastructure.Persistence.Entities.Users;
 
 namespace Shop.Core.Dtos.User;
 

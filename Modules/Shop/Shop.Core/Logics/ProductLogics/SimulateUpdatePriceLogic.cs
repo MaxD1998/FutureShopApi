@@ -1,6 +1,6 @@
-﻿using Shop.Infrastructure.DomainLogics;
-using Shop.Infrastructure.Entities.Products;
-using Shop.Infrastructure.Repositories;
+﻿using Shop.Infrastructure.Persistence.DomainLogics;
+using Shop.Infrastructure.Persistence.Entities.Products;
+using Shop.Infrastructure.Persistence.Repositories;
 
 namespace Shop.Core.Logics.ProductLogics;
 

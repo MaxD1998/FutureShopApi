@@ -4,7 +4,7 @@ using Shared.Infrastructure.Extensions;
 using Shared.Shared.Dtos;
 using Shop.Core.Dtos;
 using Shop.Core.Dtos.Promotion;
-using Shop.Infrastructure.Repositories;
+using Shop.Infrastructure.Persistence.Repositories;
 
 namespace Shop.Core.Services;
 

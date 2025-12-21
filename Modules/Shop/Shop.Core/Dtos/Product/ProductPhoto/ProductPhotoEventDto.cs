@@ -1,4 +1,4 @@
-﻿using Shop.Infrastructure.Entities.Products;
+﻿using Shop.Infrastructure.Persistence.Entities.Products;
 
 namespace Shop.Core.Dtos.Product.ProductPhoto;
 

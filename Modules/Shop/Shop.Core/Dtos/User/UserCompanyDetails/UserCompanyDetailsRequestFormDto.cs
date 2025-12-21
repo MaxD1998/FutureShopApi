@@ -1,5 +1,5 @@
-﻿using Shop.Infrastructure.Entities.Users;
-using Shop.Infrastructure.Enums;
+﻿using Shop.Infrastructure.Persistence.Entities.Users;
+using Shop.Infrastructure.Persistence.Enums;
 
 namespace Shop.Core.Dtos.User.UserCompanyDetails;
 

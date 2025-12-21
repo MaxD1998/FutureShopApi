@@ -1,5 +1,5 @@
 ﻿using Shared.Core.Bases;
-using Shop.Infrastructure.Entities.ProductBases;
+using Shop.Infrastructure.Persistence.Entities.ProductBases;
 
 namespace Shop.Core.Dtos.Product.ProductParameterTranslation;
 
